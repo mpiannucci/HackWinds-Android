@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory 
+        android:title="@string/pref_about_title"
+        android:key="pref_key_other">
+        
+        <Preference
+            android:key="pref_key_about_app"
+            android:title="@string/app_name"
+            android:summary="@string/pref_about_app_summary" />
+        
+        <Preference 
+            android:key="pref_key_contact"
+            android:title="@string/pref_contact_title"
+            android:summary="@string/pref_contact_email" />
+        
+    </PreferenceCategory>
+</PreferenceScreen>
