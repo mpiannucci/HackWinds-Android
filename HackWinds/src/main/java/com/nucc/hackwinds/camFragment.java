@@ -8,19 +8,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
+import android.support.v4.widget.SwipeRefreshLayout;
 
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.nucc.hackwinds.R;
-import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
-import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
-import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
 
-public class camFragment extends Fragment implements OnRefreshListener {
+
+public class camFragment extends Fragment {
 	ImageView img;
 	int cacheDuration = 3000;
 	static String urlBase = "http://www.warmwinds.com/wp-content/uploads/surf-cam-stills/image0000";
 	static String urlExt = ".jpg";
-	private PullToRefreshLayout mPullToRefreshLayout;
+
+	private SwipeRefreshLayout mSwipeRefreshLayout;
 
 	int[] resIds = {
 			R.id.imageView1,
@@ -38,28 +38,37 @@ public class camFragment extends Fragment implements OnRefreshListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 		View V = inflater.inflate(R.layout.cam_fragment, container, false);
-		mPullToRefreshLayout = (PullToRefreshLayout) V.findViewById(R.id.ptr_layout);
-        ActionBarPullToRefresh.from(getActivity())
-                .allChildrenArePullable()
-                .listener(this)
-                .setup(mPullToRefreshLayout);
+		mSwipeRefreshLayout = (SwipeRefreshLayout) V.findViewById(R.id.swipe_layout);
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+                // Set the refresh state to false
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
+        // Set the color scheme of the SwipeRefreshLayout by providing 4 color resource ids
+        // mSwipeRefreshLayout.setColorScheme(
+        //         R.color.swipe_color_1, R.color.swipe_color_2,
+        //         R.color.swipe_color_3, R.color.swipe_color_4);
 
 		loadImages(V);
 		return V;
 	}
 
-    @Override
-	public
-	void onRefreshStarted(View view) {
-    	for (int i=0; i<resIds.length; i++) {
-    		img = (ImageView) getActivity().findViewById(resIds[i]);
-    		UrlImageViewHelper.setUrlDrawable(img, urlBase + Integer.toString(i) + urlExt, null, cacheDuration);
-    		img.getLayoutParams().width = LayoutParams.MATCH_PARENT;
-    		img.setScaleType(ScaleType.FIT_XY);
-    		img.setAdjustViewBounds(true);
-    	}
-    	mPullToRefreshLayout.setRefreshComplete();
-    }
+    // @Override
+    // public void onRefresh(View view) {
+    //     // for (int i=0; i<resIds.length; i++) {
+    //     //     img = (ImageView) getActivity().findViewById(resIds[i]);
+    //     //     UrlImageViewHelper.setUrlDrawable(img, urlBase + Integer.toString(i) + urlExt, null, cacheDuration);
+    //     //     img.getLayoutParams().width = LayoutParams.MATCH_PARENT;
+    //     //     img.setScaleType(ScaleType.FIT_XY);
+    //     //     img.setAdjustViewBounds(true);
+    //     // }
+    //     mSwipeRefreshLayout.setRefreshing(false);
+    // }
 
     // Function to update the images on call
     public void loadImages(View rootView) {
