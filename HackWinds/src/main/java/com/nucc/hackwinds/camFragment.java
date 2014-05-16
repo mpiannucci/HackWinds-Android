@@ -43,7 +43,13 @@ public class camFragment extends Fragment {
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-
+                for (int i=0; i<resIds.length; i++) {
+                img = (ImageView) getActivity().findViewById(resIds[i]);
+                UrlImageViewHelper.setUrlDrawable(img, urlBase + Integer.toString(i) + urlExt, null, cacheDuration);
+                img.getLayoutParams().width = LayoutParams.MATCH_PARENT;
+                img.setScaleType(ScaleType.FIT_XY);
+                img.setAdjustViewBounds(true);
+                }
                 // Set the refresh state to false
                 mSwipeRefreshLayout.setRefreshing(false);
             }
@@ -57,18 +63,6 @@ public class camFragment extends Fragment {
 		loadImages(V);
 		return V;
 	}
-
-    // @Override
-    // public void onRefresh(View view) {
-    //     // for (int i=0; i<resIds.length; i++) {
-    //     //     img = (ImageView) getActivity().findViewById(resIds[i]);
-    //     //     UrlImageViewHelper.setUrlDrawable(img, urlBase + Integer.toString(i) + urlExt, null, cacheDuration);
-    //     //     img.getLayoutParams().width = LayoutParams.MATCH_PARENT;
-    //     //     img.setScaleType(ScaleType.FIT_XY);
-    //     //     img.setAdjustViewBounds(true);
-    //     // }
-    //     mSwipeRefreshLayout.setRefreshing(false);
-    // }
 
     // Function to update the images on call
     public void loadImages(View rootView) {
