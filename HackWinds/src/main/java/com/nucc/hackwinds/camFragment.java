@@ -15,30 +15,30 @@ import com.nucc.hackwinds.R;
 
 
 public class camFragment extends Fragment {
-	ImageView img;
-	int cacheDuration = 3000;
-	static String urlBase = "http://www.warmwinds.com/wp-content/uploads/surf-cam-stills/image0000";
-	static String urlExt = ".jpg";
+    ImageView img;
+    int cacheDuration = 3000;
+    static String urlBase = "http://www.warmwinds.com/wp-content/uploads/surf-cam-stills/image0000";
+    static String urlExt = ".jpg";
 
-	private SwipeRefreshLayout mSwipeRefreshLayout;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
-	int[] resIds = {
-			R.id.imageView1,
-			R.id.imageView2,
-			R.id.imageView3,
-			R.id.imageView4,
-			R.id.imageView5,
-			R.id.imageView6,
-			R.id.imageView7,
-			R.id.imageView8,
-			R.id.imageView9
-	};
+    int[] resIds = {
+            R.id.imageView1,
+            R.id.imageView2,
+            R.id.imageView3,
+            R.id.imageView4,
+            R.id.imageView5,
+            R.id.imageView6,
+            R.id.imageView7,
+            R.id.imageView8,
+            R.id.imageView9
+    };
 
-	@Override
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-		View V = inflater.inflate(R.layout.cam_fragment, container, false);
-		mSwipeRefreshLayout = (SwipeRefreshLayout) V.findViewById(R.id.swipe_layout);
+        View V = inflater.inflate(R.layout.cam_fragment, container, false);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) V.findViewById(R.id.swipe_layout);
 
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -56,22 +56,22 @@ public class camFragment extends Fragment {
         });
 
         // Set the color scheme of the SwipeRefreshLayout by providing 4 color resource ids
-        // mSwipeRefreshLayout.setColorScheme(
-        //         R.color.swipe_color_1, R.color.swipe_color_2,
-        //         R.color.swipe_color_3, R.color.swipe_color_4);
+        mSwipeRefreshLayout.setColorScheme(
+                R.color.jblue, R.color.swipe_color_4,
+                R.color.swipe_color_2, R.color.swipe_color_3);
 
-		loadImages(V);
-		return V;
-	}
+        loadImages(V);
+        return V;
+    }
 
     // Function to update the images on call
     public void loadImages(View rootView) {
-    	for (int i=0; i<resIds.length; i++) {
-    		img = (ImageView) rootView.findViewById(resIds[i]);
-    		UrlImageViewHelper.setUrlDrawable(img, urlBase + Integer.toString(i) + urlExt, null, cacheDuration);
-    		img.getLayoutParams().width = LayoutParams.MATCH_PARENT;
-    		img.setScaleType(ScaleType.FIT_XY);
-    		img.setAdjustViewBounds(true);
-    	}
+        for (int i=0; i<resIds.length; i++) {
+            img = (ImageView) rootView.findViewById(resIds[i]);
+            UrlImageViewHelper.setUrlDrawable(img, urlBase + Integer.toString(i) + urlExt, null, cacheDuration);
+            img.getLayoutParams().width = LayoutParams.MATCH_PARENT;
+            img.setScaleType(ScaleType.FIT_XY);
+            img.setAdjustViewBounds(true);
+        }
     }
 }

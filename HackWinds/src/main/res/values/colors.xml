@@ -5,4 +5,8 @@
     <color name="jblue">#33B5E5</color>
     <color name="NewBlue">#47A3FF</color>
     <color name="dkGrey">#222222</color>
+    <color name="swipe_color_1">#C2F9FF</color>
+    <color name="swipe_color_2">#41D8FC</color>
+    <color name="swipe_color_3">#007EFF</color>
+    <color name="swipe_color_4">#0019FF</color>
 </resources>
