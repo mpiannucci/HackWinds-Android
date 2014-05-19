@@ -10,10 +10,22 @@ android {
         versionCode 1
         versionName "1.0"
     }
+
+    signingConfigs {
+        release {
+            storeFile file("/home/matthew/GDrive/Development/Android/hackWinds/hackWindsKeyStore")
+            storePassword "erfer1"
+            keyAlias "rhodysurf"
+            keyPassword "erfer1"
+        }
+    }
+
     buildTypes {
         release {
             runProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            signingConfig signingConfigs.release
+            }
         }
     }
 }
