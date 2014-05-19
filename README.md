@@ -13,7 +13,7 @@ Note
 ----
 Before building, a file must be created called keystore.properties in the project's root directory. The following should be added and completed for the specific keystore. 
 
-```Java
+```java
 storePassword=
 keyPassword=
 keyAlias=
