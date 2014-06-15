@@ -5,6 +5,7 @@ import java.util.Locale;
 import com.nucc.hackwinds.R;
 import com.nucc.hackwinds.forecastFragment;
 import com.nucc.hackwinds.camFragment;
+import com.nucc.hackwinds.streamFragment;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
@@ -120,11 +121,6 @@ public class MainActivity extends FragmentActivity implements
 			FragmentTransaction fragmentTransaction) {
 	}
 
-    // Called when the refresh button is clicked
-    public void sendCamRefresh() {
-    	// Call the function to re-load the images
-    }
-
 	/**
 	 * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
 	 * one of the sections/tabs/pages.
@@ -141,10 +137,13 @@ public class MainActivity extends FragmentActivity implements
 			// Return a DummySectionFragment (defined as a static inner class
 			// below) with the page number as its lone argument.
 			switch (position) {
-			case 0:
-				// Return the default screen (camera)
-				return new camFragment();
+			case 0: 
+				// Return the video stream 
+				return new streamFragment();
 			case 1:
+				// Return the still camera
+				return new camFragment();
+			case 2:
 				// Return the second fragment view
 				return new forecastFragment();
 			}
@@ -154,7 +153,7 @@ public class MainActivity extends FragmentActivity implements
 		@Override
 		public int getCount() {
 			// Show 2 total pages.
-			return 2;
+			return 3;
 		}
 
 		@Override
@@ -162,8 +161,10 @@ public class MainActivity extends FragmentActivity implements
 			Locale l = Locale.getDefault();
 			switch (position) {
 			case 0:
-				return getString(R.string.action_cam).toUpperCase(l);
+				return getString(R.string.action_live).toUpperCase(l);
 			case 1:
+				return getString(R.string.action_cam).toUpperCase(l);
+			case 2:
 				return getString(R.string.action_forecast).toUpperCase(l);
 			}
 			return null;

@@ -15,7 +15,8 @@
     <string name="disclaimer_message">This app was created for non commercial purposes. I
         do not own the images displayed or the forecast data, nor do I claim to.</string>
     <string name="action_forecast">Forecast</string>
-    <string name="action_cam">Live Camera</string>
+    <string name="action_cam">Still Camera</string>
+    <string name="action_live">Live Camera</string>
     <string name="header_forecast">Swell Forecast</string>
     <string name="today_header">Today</string>
     <string name="tomorrow_header">Tomorrow</string>
