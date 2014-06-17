@@ -27,14 +27,14 @@ public class streamFragment extends Fragment {
             VideoView streamView = (VideoView) V.findViewById(R.id.videoStreamView);
 
             // Change the MediaController
-            MediaController mediaController = new MediaController(this.getActivity());
-            mediaController.setAnchorView(streamView);
+            //MediaController mediaController = new MediaController(this.getActivity());
+            //mediaController.setAnchorView(streamView);
 
             // Specify the URI of the live stream
             Uri uri = Uri.parse(streamURL);
 
             // Setting the media controller
-            streamView.setMediaController(mediaController);
+            //streamView.setMediaController(mediaController);
             streamView.setVideoURI(uri);
             streamView.requestFocus();
 

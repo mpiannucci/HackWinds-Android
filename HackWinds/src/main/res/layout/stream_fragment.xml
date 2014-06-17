@@ -1,16 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="@color/white"
     tools:context=".StreamActivity" >
 
     <VideoView  
         android:id="@+id/videoStreamView"  
         android:layout_width="fill_parent"  
-        android:layout_height="fill_parent"  
+        android:layout_height="wrap_content"  
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true" />  
+        android:layout_centerVertical="false" />
 
-</RelativeLayout>
+    <ScrollView
+        android:id="@+id/OverviewScroll"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2" >
+
+        <LinearLayout
+            android:id="@+id/OverviewLinear"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >
+
+            <TextView
+                android:id="@+id/Overviewtext"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/today_header" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
