@@ -23,14 +23,55 @@
         <LinearLayout
             android:id="@+id/OverviewLinear"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent" >
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
 
-            <TextView
-                android:id="@+id/Overviewtext"
+            <LinearLayout
+                android:id="@+id/OverheaderLinear"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="horizontal" >
+                
+                <TextView
+                    android:id="@+id/swellHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/swell_header"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                <TextView
+                    android:id="@+id/windHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/wind_header"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/OverarrowsLinear"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:text="@string/today_header" />
+                android:orientation="horizontal" >
 
+                <ImageView
+                    android:id="@+id/sa_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/swell_arrow"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:id="@+id/wa_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/wind_arrow"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
