@@ -119,20 +119,22 @@
                 android:id="@+id/OverarrowsLinear"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" >
+                android:orientation="horizontal"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp" >
 
                 <ImageView
                     android:id="@+id/sa_image"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/swell_arrow"
+                    android:layout_height="30dp"
+                    android:src="@drawable/arrow_up"
                     android:layout_weight="1" />
 
                 <ImageView
                     android:id="@+id/wa_image"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/wind_arrow"
+                    android:layout_height="30dp"
+                    android:src="@drawable/arrow_up"
                     android:layout_weight="1" />
 
             </LinearLayout>
@@ -140,7 +142,8 @@
                 android:id="@+id/OverDataLinear"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:orientation="horizontal" >
+                android:orientation="horizontal"
+                android:layout_marginBottom="5dp" >
                 
                 <TextView
                     android:id="@+id/swellData"
