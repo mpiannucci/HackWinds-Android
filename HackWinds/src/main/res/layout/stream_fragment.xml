@@ -14,8 +14,8 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="false" />
 
-    <ScrollView
-        android:id="@+id/OverviewScroll"
+    <LinearLayout
+        android:id="@+id/OverviewLayout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_weight="2"
@@ -33,28 +33,38 @@
                 android:id="@+id/OverBreakLinear"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:orientation="horizontal" >
+                android:orientation="horizontal"
+                android:layout_marginBottom="5dp" >
 
                 <TextView
                     android:id="@+id/breakHeader"
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/break_header"
                     android:gravity="center"
                     style="@style/HeaderText" />
 
             </LinearLayout>
+            <View 
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"       
+                android:background="@color/ltgrey"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginBottom="5dp" />
             <LinearLayout
                 android:id="@+id/OverBreakDataLinear"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:orientation="horizontal" >
+                android:orientation="horizontal"
+                android:layout_marginBottom="5dp" >
 
                 <ImageView
                     android:id="@+id/rating_image"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="38dp"
                     android:src="@drawable/thumbs_up"
+                    android:adjustViewBounds="true"
                     android:layout_weight="1" />
 
                 <TextView
@@ -62,17 +72,23 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/break_holder"
-                    android:gravity="center"
-                    android:layout_weight="3"
-                    style="@style/OverDataText" />
+                    android:layout_toRightOf="@id/rating_image"
+                    style="@style/OverDataText"
+                    android:layout_weight="1" />
 
             </LinearLayout>
-
+            <View 
+                android:layout_width="fill_parent"
+                android:layout_height="10dp"       
+                android:background="@color/ltgrey"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp" />
             <LinearLayout
                 android:id="@+id/OverheaderLinear"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:orientation="horizontal" >
+                android:orientation="horizontal"
+                android:layout_marginBottom="5dp" >
                 
                 <TextView
                     android:id="@+id/swellHeader"
@@ -92,7 +108,13 @@
                     android:gravity="center"
                     style="@style/HeaderText" />
             </LinearLayout>
-
+            <View 
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"       
+                android:background="@color/ltgrey"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginBottom="5dp" />
             <LinearLayout
                 android:id="@+id/OverarrowsLinear"
                 android:layout_width="fill_parent"
@@ -139,6 +161,6 @@
                     style="@style/OverDataText" />
             </LinearLayout>
         </LinearLayout>
-    </ScrollView>
+    </LinearLayout>
 
 </LinearLayout>
