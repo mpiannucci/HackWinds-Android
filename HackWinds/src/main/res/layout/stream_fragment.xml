@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/white"
+    android:background="@color/ltgrey"
     tools:context=".StreamActivity" >
 
     <VideoView  
@@ -18,13 +18,16 @@
         android:id="@+id/OverviewScroll"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="2" >
+        android:layout_weight="2"
+        android:background="@color/ltgrey" >
 
         <LinearLayout
             android:id="@+id/OverviewLinear"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:layout_margin="10dp" >
 
             <LinearLayout
                 android:id="@+id/OverheaderLinear"
@@ -39,6 +42,7 @@
                     android:text="@string/swell_header"
                     android:layout_weight="1"
                     android:gravity="center"
+                    style="@style/HeaderText"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
 
                 <TextView
@@ -48,6 +52,7 @@
                     android:text="@string/wind_header"
                     android:layout_weight="1"
                     android:gravity="center"
+                    style="@style/HeaderText"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
             </LinearLayout>
 

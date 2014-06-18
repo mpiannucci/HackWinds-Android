@@ -6,7 +6,10 @@
     -->
 
     <!-- Styles for individual views go here -->
-
+    <style name="HeaderText">
+        <item name="android:textColor">@color/numixGrey</item>
+        <item name="android:textSize">40sp</item>
+    </style>
 
     <style name="AppBaseTheme" parent="android:Theme.Light">
         <!--
