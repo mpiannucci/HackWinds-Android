@@ -11,6 +11,11 @@
         <item name="android:textSize">40sp</item>
     </style>
 
+    <style name="OverDataText">
+        <item name="android:textColor">@color/numixGrey</item>
+        <item name="android:textSize">25sp</item>
+    </style>
+
     <style name="AppBaseTheme" parent="android:Theme.Light">
         <!--
             Theme customizations available in newer API levels can go in
