@@ -22,10 +22,10 @@
             android:orientation="vertical" >
 
     		<TextView
-        		android:id="@+id/todayForecastHeader"
-        		android:layout_width="wrap_content"
-        		android:layout_height="wrap_content"
-        		android:layout_marginTop="10dp"
+                android:id="@+id/todayForecastHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
         		android:text="@string/today_header"
         		android:textAppearance="?android:attr/textAppearanceLarge" />
 

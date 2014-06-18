@@ -9,11 +9,13 @@
     <style name="HeaderText">
         <item name="android:textColor">@color/numixGrey</item>
         <item name="android:textSize">40sp</item>
+        <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
-    <style name="OverDataText">
+    <style name="DataText">
         <item name="android:textColor">@color/numixGrey</item>
         <item name="android:textSize">25sp</item>
+        <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
     <style name="AppBaseTheme" parent="android:Theme.Light">

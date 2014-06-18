@@ -1,6 +1,7 @@
 package com.nucc.hackwinds;
 
 import com.nucc.hackwinds.R;
+import com.nucc.hackwinds.ConditionArrayAdapter;
 
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -32,8 +33,9 @@ public class currentFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-            R.layout.list_item, R.id.itemHeader, conditionHeaders);
+        ConditionArrayAdapter adapter = new ConditionArrayAdapter(getActivity(), conditionHeaders);
+        // ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+        //     R.layout.list_item, R.id.itemHeader, conditionHeaders);
         setListAdapter(adapter);
     }
 
