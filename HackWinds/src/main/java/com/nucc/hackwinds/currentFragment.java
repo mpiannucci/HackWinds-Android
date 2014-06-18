@@ -16,7 +16,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 
 
-public class streamFragment extends ListFragment {
+public class currentFragment extends ListFragment {
 
     String streamURL = "http://162.243.101.197:1935/surfcam/live.stream/playlist.m3u8";
 

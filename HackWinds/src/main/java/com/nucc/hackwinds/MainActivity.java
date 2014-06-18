@@ -5,7 +5,7 @@ import java.util.Locale;
 import com.nucc.hackwinds.R;
 import com.nucc.hackwinds.forecastFragment;
 import com.nucc.hackwinds.camFragment;
-import com.nucc.hackwinds.streamFragment;
+import com.nucc.hackwinds.currentFragment;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
@@ -139,7 +139,7 @@ public class MainActivity extends FragmentActivity implements
 			switch (position) {
 			case 0: 
 				// Return the video stream 
-				return new streamFragment();
+				return new currentFragment();
 			case 1:
 				// Return the still camera
 				return new camFragment();
