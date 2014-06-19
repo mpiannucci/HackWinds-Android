@@ -13,11 +13,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.ArrayList;
 import java.lang.Integer;
+import android.graphics.Matrix;
+import android.graphics.drawable.Drawable;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.BitmapFactory;
 
 public class ConditionArrayAdapter extends ArrayAdapter<Condition> {
 
+    Context cont;
     public ConditionArrayAdapter(Context context, ArrayList<Condition> values) {
         super(context, 0, values);
+        cont = context;
     }
 
     // Returns the number of types of Views that will be created by getView(int, View, ViewGroup)
@@ -85,7 +92,11 @@ public class ConditionArrayAdapter extends ArrayAdapter<Condition> {
             }
 
         } else if (type == Condition.ConditionTypes.WIND.ordinal()) {
-
+            TextView tvData = (TextView) convertView.findViewById(R.id.itemData);
+            ImageView windArr = (ImageView) convertView.findViewById(R.id.itemThumb);
+            tvData.setText(condition.text[0]+" mph");
+            windArr.setImageResource(R.drawable.arrow_up);
+            windArr.setImageBitmap(rotateImage(BitmapFactory.decodeResource(cont.getResources(), R.drawable.arrow_up),Integer.parseInt(condition.text[1])));
         } else if (type == Condition.ConditionTypes.SWELL.ordinal()) {
 
         } else if (type == Condition.ConditionTypes.TIDE.ordinal()) {
@@ -93,5 +104,13 @@ public class ConditionArrayAdapter extends ArrayAdapter<Condition> {
         } else if (type == Condition.ConditionTypes.DATA.ordinal()) {
 
         }
+    }
+    public Bitmap rotateImage(Bitmap src, float degree) {
+        // create new matrix object
+        Matrix matrix = new Matrix();
+        // setup rotation degree
+        matrix.postRotate(degree);
+        // return new bitmap rotated using matrix
+        return Bitmap.createBitmap(src, 0, 0, src.getWidth(), src.getHeight(), matrix, true);
     }
 }
