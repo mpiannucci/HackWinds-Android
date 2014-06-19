@@ -6,8 +6,7 @@ public class Condition {
         WAVEHEIGHT,
         WIND,
         SWELL,
-        TIDE,
-        DATA
+        TIDE
     }
 
     public Condition(ConditionTypes condition, String[] text) {

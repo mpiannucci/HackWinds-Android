@@ -72,8 +72,6 @@ public class ConditionArrayAdapter extends ArrayAdapter<Condition> {
             return LayoutInflater.from(getContext()).inflate(R.layout.swell_item, null);
         } else if (type == Condition.ConditionTypes.TIDE.ordinal()) {
             return LayoutInflater.from(getContext()).inflate(R.layout.tide_item, null);
-        } else if (type == Condition.ConditionTypes.DATA.ordinal()) {
-            return LayoutInflater.from(getContext()).inflate(R.layout.data_item, null);
         } else {
             return null;
         }
@@ -105,11 +103,10 @@ public class ConditionArrayAdapter extends ArrayAdapter<Condition> {
             swellArr.setImageBitmap(rotateImage(BitmapFactory.decodeResource(cont.getResources(), R.drawable.arrow_up),Integer.parseInt(condition.text[1])));
         } else if (type == Condition.ConditionTypes.TIDE.ordinal()) {
 
-        } else if (type == Condition.ConditionTypes.DATA.ordinal()) {
-
         }
     }
-    public Bitmap rotateImage(Bitmap src, float degree) {
+
+    private Bitmap rotateImage(Bitmap src, float degree) {
         // create new matrix object
         Matrix matrix = new Matrix();
         // setup rotation degree

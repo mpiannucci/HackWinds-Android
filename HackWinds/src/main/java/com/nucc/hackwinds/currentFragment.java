@@ -22,14 +22,13 @@ import java.util.ArrayList;
 public class currentFragment extends ListFragment {
 
     String streamURL = "http://162.243.101.197:1935/surfcam/live.stream/playlist.m3u8";
-    String mswURL = "http://magicseaweed.com/api/nFSL2f845QOAf1Tuv7Pf5Pd9PXa5sVTS/forecast/?spot_id=1103";
+    String mswURL = "http://magicseaweed.com/api/nFSL2f845QOAf1Tuv7Pf5Pd9PXa5sVTS/forecast/?spot_id=1103&fields=swell.*,wind.*";
     String wuURL = "http://api.wunderground.com/api/2e5424aab8c91757/tide/q/RI/Point_Judith.json";
 
-    String[] breakk = {"1","2"};                        // {minheight, maxheight}
-    String[] wind = {"15", "90"};                       // {speed, direction}
+    String[] breakk = {"1","2"};                         // {minheight, maxheight}
+    String[] wind = {"15", "90"};                        // {speed, direction}
     String[] swelll = {"2", "8", "5"};                   // {size, period, direction}
-    String[] tide = {"6:39", "12:39", "6:39", "12:39"}; // {Low1, High1, Low2, High2}
-    String[] data = {"5:59", "7:05", "63", "70"};       // {sunrise, sunset, watertemp, airtemp}
+    String[] tide = {"6:39", "12:39", "6:39", "12:39", "5:59", "7:05"};  // {Low1, High1, Low2, High2, sunrise, sunset}
 
     Condition swell;
 
