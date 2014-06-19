@@ -22,7 +22,7 @@ import java.util.ArrayList;
 public class currentFragment extends ListFragment {
 
     String streamURL = "http://162.243.101.197:1935/surfcam/live.stream/playlist.m3u8";
-    String[] temp = {"3-5 feet"};
+    String[] temp = {"1","2"};
     Condition swell;
 
     @Override
@@ -31,9 +31,8 @@ public class currentFragment extends ListFragment {
         
         ArrayList<Condition> conditionValues = new ArrayList<Condition>();
         conditionValues.add(new Condition(Condition.ConditionTypes.WAVEHEIGHT, temp));
+        
         ConditionArrayAdapter adapter = new ConditionArrayAdapter(getActivity(), conditionValues);
-        // ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-        //     R.layout.list_item, R.id.itemHeader, conditionHeaders);
         setListAdapter(adapter);
     }
 
