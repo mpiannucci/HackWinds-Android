@@ -1,6 +1,7 @@
 package com.nucc.hackwinds;
 
 import com.nucc.hackwinds.R;
+import com.nucc.hackwinds.Condition;
 import com.nucc.hackwinds.ConditionArrayAdapter;
 
 import android.os.Bundle;
@@ -15,25 +16,22 @@ import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import java.util.ArrayList;
 
 
 public class currentFragment extends ListFragment {
 
     String streamURL = "http://162.243.101.197:1935/surfcam/live.stream/playlist.m3u8";
-
-    private String conditionHeaders[] = new String[] {
-        "Overview",
-        "Wind",
-        "Swell",
-        "Tide",
-        "Conditions"
-    };
+    String[] temp = {"3-5 feet"};
+    Condition swell;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        ConditionArrayAdapter adapter = new ConditionArrayAdapter(getActivity(), conditionHeaders);
+        
+        ArrayList<Condition> conditionValues = new ArrayList<Condition>();
+        conditionValues.add(new Condition(Condition.ConditionTypes.WAVEHEIGHT, temp));
+        ConditionArrayAdapter adapter = new ConditionArrayAdapter(getActivity(), conditionValues);
         // ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
         //     R.layout.list_item, R.id.itemHeader, conditionHeaders);
         setListAdapter(adapter);
