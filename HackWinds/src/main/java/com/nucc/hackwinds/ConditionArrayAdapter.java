@@ -98,7 +98,11 @@ public class ConditionArrayAdapter extends ArrayAdapter<Condition> {
             windArr.setImageResource(R.drawable.arrow_up);
             windArr.setImageBitmap(rotateImage(BitmapFactory.decodeResource(cont.getResources(), R.drawable.arrow_up),Integer.parseInt(condition.text[1])));
         } else if (type == Condition.ConditionTypes.SWELL.ordinal()) {
-
+            TextView tvData = (TextView) convertView.findViewById(R.id.itemData);
+            ImageView swellArr = (ImageView) convertView.findViewById(R.id.itemThumb);
+            tvData.setText(condition.text[0]+" feet @ "+condition.text[1]+" seconds");
+            swellArr.setImageResource(R.drawable.arrow_up);
+            swellArr.setImageBitmap(rotateImage(BitmapFactory.decodeResource(cont.getResources(), R.drawable.arrow_up),Integer.parseInt(condition.text[1])));
         } else if (type == Condition.ConditionTypes.TIDE.ordinal()) {
 
         } else if (type == Condition.ConditionTypes.DATA.ordinal()) {

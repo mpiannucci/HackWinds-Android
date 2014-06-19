@@ -27,9 +27,9 @@ public class currentFragment extends ListFragment {
 
     String[] breakk = {"1","2"};                        // {minheight, maxheight}
     String[] wind = {"15", "90"};                       // {speed, direction}
-    String[] swell = {"2", "8", "5"};                   // {size, period, direction}
+    String[] swelll = {"2", "8", "5"};                   // {size, period, direction}
     String[] tide = {"6:39", "12:39", "6:39", "12:39"}; // {Low1, High1, Low2, High2}
-    String[] data = {"5:59", "7:05", "63", "70"}        // {sunrise, sunset, watertemp, airtemp}
+    String[] data = {"5:59", "7:05", "63", "70"};       // {sunrise, sunset, watertemp, airtemp}
 
     Condition swell;
 
@@ -40,7 +40,8 @@ public class currentFragment extends ListFragment {
         ArrayList<Condition> conditionValues = new ArrayList<Condition>();
         conditionValues.add(new Condition(Condition.ConditionTypes.WAVEHEIGHT, breakk));
         conditionValues.add(new Condition(Condition.ConditionTypes.WIND, wind));
-        
+        conditionValues.add(new Condition(Condition.ConditionTypes.SWELL, swelll));
+
         ConditionArrayAdapter adapter = new ConditionArrayAdapter(getActivity(), conditionValues);
         setListAdapter(adapter);
     }
