@@ -17,6 +17,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import java.util.ArrayList;
+import android.os.AsyncTask;
+import android.app.ProgressDialog;
+import android.media.MediaPlayer;
 
 
 public class currentFragment extends ListFragment {
@@ -32,10 +35,12 @@ public class currentFragment extends ListFragment {
 
     Condition swell;
 
+    public VideoView streamView;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+
         ArrayList<Condition> conditionValues = new ArrayList<Condition>();
         conditionValues.add(new Condition(Condition.ConditionTypes.WAVEHEIGHT, breakk));
         conditionValues.add(new Condition(Condition.ConditionTypes.WIND, wind));
@@ -49,31 +54,53 @@ public class currentFragment extends ListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View V = inflater.inflate(R.layout.current_fragment, container, false);
-
-        try {
-            // Create the VideoView
-            VideoView streamView = (VideoView) V.findViewById(R.id.currentVideoStreamView);
-
-            // Change the MediaController
-            //MediaController mediaController = new MediaController(this.getActivity());
-            //mediaController.setAnchorView(streamView);
-
-            // Specify the URI of the live stream
-            Uri uri = Uri.parse(streamURL);
-
-            // Setting the media controller
-            //streamView.setMediaController(mediaController);
-            streamView.setVideoURI(uri);
-            streamView.requestFocus();
-
-            // Start the video
-            streamView.start();
-        }
-        catch (Exception ex) {
-            Log.e(this.toString(), ex.toString());
-        }
-
+        streamView = (VideoView) V.findViewById(R.id.currentVideoStreamView);
+        new BackgroundVideoAsyncTask().execute(streamURL);
         return V;
     }
 
+    public class BackgroundVideoAsyncTask extends AsyncTask<String, Uri, Void> {
+        ProgressDialog dialog;
+ 
+        protected void onPreExecute() {
+            dialog = new ProgressDialog(getActivity());
+            dialog.setMessage("Loading Live Stream...");
+            dialog.setCancelable(true);
+            dialog.show();
+        }
+ 
+        protected void onProgressUpdate(final Uri... uri) {
+ 
+            try {
+                streamView.setVideoURI(uri[0]);
+                streamView.requestFocus();
+                streamView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+ 
+                    public void onPrepared(MediaPlayer arg0) {
+                        streamView.start();
+                        dialog.dismiss();
+                    }
+                });
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            } catch (SecurityException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+ 
+        @Override
+        protected Void doInBackground(String... params) {
+            try {
+                Uri uri = Uri.parse(params[0]);
+                 
+                publishProgress(uri);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }   
+    }
 }

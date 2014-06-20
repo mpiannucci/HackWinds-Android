@@ -4,7 +4,6 @@ import java.util.Locale;
 
 import com.nucc.hackwinds.R;
 import com.nucc.hackwinds.forecastFragment;
-import com.nucc.hackwinds.camFragment;
 import com.nucc.hackwinds.currentFragment;
 
 import android.app.ActionBar;
@@ -141,9 +140,6 @@ public class MainActivity extends FragmentActivity implements
 				// Return the video stream 
 				return new currentFragment();
 			case 1:
-				// Return the still camera
-				return new camFragment();
-			case 2:
 				// Return the second fragment view
 				return new forecastFragment();
 			}
@@ -153,7 +149,7 @@ public class MainActivity extends FragmentActivity implements
 		@Override
 		public int getCount() {
 			// Show 2 total pages.
-			return 3;
+			return 2;
 		}
 
 		@Override
@@ -163,8 +159,6 @@ public class MainActivity extends FragmentActivity implements
 			case 0:
 				return getString(R.string.action_live).toUpperCase(l);
 			case 1:
-				return getString(R.string.action_cam).toUpperCase(l);
-			case 2:
 				return getString(R.string.action_forecast).toUpperCase(l);
 			}
 			return null;
