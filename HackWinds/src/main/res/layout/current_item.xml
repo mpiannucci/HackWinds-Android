@@ -19,7 +19,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             style="@style/HeaderText"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+             />
 
         <View android:id="@+id/separator" 
             android:background="@color/ltgrey" 
@@ -34,7 +35,8 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+            android:layout_marginBottom="5dp"  >
 
             <ImageView
                 android:id="@+id/breakThumb"
@@ -57,7 +59,8 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+            android:layout_marginBottom="5dp" >
 
             <ImageView
                 android:id="@+id/windThumb"

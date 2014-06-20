@@ -19,7 +19,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="@string/loading_text"
-                android:style="@style/HeaderText" />
+                style="@style/HeaderText" />
 
             <View android:id="@+id/separator" 
                 android:background="@color/ltgrey" 
@@ -36,14 +36,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/loading_text"
-                android:style="@style/DataText" />
+                style="@style/DataText" />
 
             <TextView
                 android:id="@+id/todayCond"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=""
-                android:style="@style/DescripText" />
+                style="@style/DescripText" />
 
     </LinearLayout>
 </FrameLayout>

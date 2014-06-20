@@ -40,7 +40,7 @@ public class currentFragment extends ListFragment {
         //     String windSpeed, String windDeg, String windDir, String swellHeight,
         //     String swellPeriod, String swellDeg) 
         ArrayList<Condition> conditionValues = new ArrayList<Condition>();
-        conditionValues.add(new Condition("Friday 6:00 AM", "3","5","15","45","W","6","7","10"));
+        conditionValues.add(new Condition("Friday 6:00 AM", "3","5","15","45","W","6","7","45"));
 
         ConditionArrayAdapter adapter = new ConditionArrayAdapter(getActivity(), conditionValues);
         setListAdapter(adapter);

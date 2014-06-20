@@ -47,10 +47,10 @@ public class ConditionArrayAdapter extends ArrayAdapter<Condition> {
         if (rowView == null) { 
             LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View rowView = inflater.inflate(R.layout.current_item, parent, false);
+            rowView = inflater.inflate(R.layout.current_item, parent, false);
 
             // Set the view holder
-            ViewHolder ViewHolder = new ViewHolder();
+            ViewHolder viewHolder = new ViewHolder();
             viewHolder.dateTV = (TextView) rowView.findViewById(R.id.itemHeader);
             viewHolder.breakTV = (TextView) rowView.findViewById(R.id.breakData);
             viewHolder.breakIV = (ImageView) rowView.findViewById(R.id.breakThumb);
@@ -62,12 +62,12 @@ public class ConditionArrayAdapter extends ArrayAdapter<Condition> {
             rowView.setTag(viewHolder);
         }
         // Fill the data
-        Condition condition = values[position];
+        Condition condition = values.get(position);
         ViewHolder holder = (ViewHolder) rowView.getTag();
 
         holder.dateTV.setText(condition.date);
         holder.breakTV.setText(condition.minBreak+" - "+condition.maxBreak+" feet");
-        if ((Integer.parseInt(condition.minBreak) >= 2) || (Integer.parseInt(condition.maxBreak >= 3)) {
+        if ((Integer.parseInt(condition.minBreak) >= 2) || (Integer.parseInt(condition.maxBreak) >= 3)) {
             holder.breakIV.setImageResource(R.drawable.thumbs_up);
         }else {
             holder.breakIV.setImageResource(R.drawable.thumbs_down);
@@ -82,7 +82,7 @@ public class ConditionArrayAdapter extends ArrayAdapter<Condition> {
             R.drawable.arrow_up),Integer.parseInt(condition.swellDeg)));
         
         // Return the completed view to render on screen
-        return convertView;
+        return rowView;
     }
 
     private Bitmap rotateImage(Bitmap src, float degree) {
