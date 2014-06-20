@@ -18,6 +18,12 @@
         <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
+    <style name="DescripText">
+        <item name="android:textColor">@color/numixGrey</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+
     <style name="AppBaseTheme" parent="android:Theme.Light">
         <!--
             Theme customizations available in newer API levels can go in
