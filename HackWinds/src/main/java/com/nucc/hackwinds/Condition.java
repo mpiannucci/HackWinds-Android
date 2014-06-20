@@ -8,7 +8,7 @@ public class Condition {
         // Call the constructor
         super();
         this.date = date;
-        this.minbreak = date;
+        this.minbreak = minbreak;
         this.maxBreak = maxBreak;
         this.windSpeed = windSpeed;
         this.windDeg = windDeg;

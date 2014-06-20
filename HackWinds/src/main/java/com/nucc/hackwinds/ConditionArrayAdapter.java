@@ -23,6 +23,16 @@ public class ConditionArrayAdapter extends ArrayAdapter<Condition> {
     private final Context context;
     private final ArrayList<Condition> values;
 
+    static class ViewHolder {
+        public TextView dateTV;
+        public TextView breakTV;
+        public ImageView breakIV;
+        public TextView windTV;
+        public ImageView windIV;
+        public TextView swellTV;
+        public ImageView swellIV;
+    }
+
     Context cont;
     public ConditionArrayAdapter(Context context, ArrayList<Condition> values) {
         super(context, R.layout.current_item, values);
@@ -32,18 +42,45 @@ public class ConditionArrayAdapter extends ArrayAdapter<Condition> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = (LayoutInflater) context
-            .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = inflater.inflate(R.layout.current_item, parent, false);
+        View rowView = convertView;
+        // Make the view reusable
+        if (rowView == null) { 
+            LayoutInflater inflater = (LayoutInflater) context
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View rowView = inflater.inflate(R.layout.current_item, parent, false);
 
-        // Get the data item for this position
-        Condition condition = values[position];
-        int type = 0;
-        // Check if an existing view is being reused, otherwise inflate the view
-        if (convertView == null) {
-            // Get the data item type for this position
+            // Set the view holder
+            ViewHolder ViewHolder = new ViewHolder();
+            viewHolder.dateTV = (TextView) rowView.findViewById(R.id.itemHeader);
+            viewHolder.breakTV = (TextView) rowView.findViewById(R.id.breakData);
+            viewHolder.breakIV = (ImageView) rowView.findViewById(R.id.breakThumb);
+            viewHolder.windTV = (TextView) rowView.findViewById(R.id.windData);
+            viewHolder.windIV = (ImageView) rowView.findViewById(R.id.windThumb);
+            viewHolder.swellTV = (TextView) rowView.findViewById(R.id.swellData);
+            viewHolder.swellIV = (ImageView) rowView.findViewById(R.id.swellThumb);
+
+            rowView.setTag(viewHolder);
         }
+        // Fill the data
+        Condition condition = values[position];
+        ViewHolder holder = (ViewHolder) rowView.getTag();
 
+        holder.dateTV.setText(condition.date);
+        holder.breakTV.setText(condition.minBreak+" - "+condition.maxBreak+" feet");
+        if ((Integer.parseInt(condition.minBreak) >= 2) || (Integer.parseInt(condition.maxBreak >= 3)) {
+            holder.breakIV.setImageResource(R.drawable.thumbs_up);
+        }else {
+            holder.breakIV.setImageResource(R.drawable.thumbs_down);
+        }
+        holder.windTV.setText(condition.windDir+" "+condition.windSpeed+" mph");
+        holder.windIV.setImageResource(R.drawable.arrow_up);
+        holder.windIV.setImageBitmap(rotateImage(BitmapFactory.decodeResource(context.getResources(), 
+            R.drawable.arrow_up),Integer.parseInt(condition.windDeg)));
+        holder.swellTV.setText(condition.swellHeight+" feet @ "+condition.swellPeriod+" seconds");
+        holder.swellIV.setImageResource(R.drawable.arrow_up);
+        holder.swellIV.setImageBitmap(rotateImage(BitmapFactory.decodeResource(context.getResources(), 
+            R.drawable.arrow_up),Integer.parseInt(condition.swellDeg)));
+        
         // Return the completed view to render on screen
         return convertView;
     }

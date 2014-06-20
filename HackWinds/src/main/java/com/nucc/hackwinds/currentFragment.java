@@ -25,13 +25,8 @@ import android.media.MediaPlayer;
 public class currentFragment extends ListFragment {
 
     String streamURL = "http://162.243.101.197:1935/surfcam/live.stream/playlist.m3u8";
-    String mswURL = "http://magicseaweed.com/api/nFSL2f845QOAf1Tuv7Pf5Pd9PXa5sVTS/forecast/?spot_id=1103&fields=swell.*,wind.*";
+    String mswURL = "http://magicseaweed.com/api/nFSL2f845QOAf1Tuv7Pf5Pd9PXa5sVTS/forecast/?spot_id=1103&fields=swell.*,wind.*,localtimestamp";
     String wuURL = "http://api.wunderground.com/api/2e5424aab8c91757/tide/q/RI/Point_Judith.json";
-
-    String[] breakk = {"1","2"};                         // {minheight, maxheight}
-    String[] wind = {"15", "90"};                        // {speed, direction}
-    String[] swelll = {"2", "8", "5"};                   // {size, period, direction}
-    String[] tide = {"6:39", "12:39", "6:39", "12:39", "5:59", "7:05"};  // {Low1, High1, Low2, High2, sunrise, sunset}
 
     Condition swell;
 
@@ -41,10 +36,11 @@ public class currentFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // public Condition(String date, String minbreak, String maxBreak, 
+        //     String windSpeed, String windDeg, String windDir, String swellHeight,
+        //     String swellPeriod, String swellDeg) 
         ArrayList<Condition> conditionValues = new ArrayList<Condition>();
-        conditionValues.add(new Condition(Condition.ConditionTypes.WAVEHEIGHT, breakk));
-        conditionValues.add(new Condition(Condition.ConditionTypes.WIND, wind));
-        conditionValues.add(new Condition(Condition.ConditionTypes.SWELL, swelll));
+        conditionValues.add(new Condition("Friday 6:00 AM", "3","5","15","45","W","6","7","10"));
 
         ConditionArrayAdapter adapter = new ConditionArrayAdapter(getActivity(), conditionValues);
         setListAdapter(adapter);
