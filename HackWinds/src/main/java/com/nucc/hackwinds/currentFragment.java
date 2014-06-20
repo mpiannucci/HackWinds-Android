@@ -136,10 +136,10 @@ public class currentFragment extends ListFragment {
                         String windDir = wind.getString("compassDirection");
                         String swellHeight = swell.getJSONObject("components").getJSONObject("primary").getString("height");
                         String swellPeriod = swell.getJSONObject("components").getJSONObject("primary").getString("period");
-                        String swellDeg = swell.getJSONObject("components").getJSONObject("primary").getString("direction");
+                        String swellDir = swell.getJSONObject("components").getJSONObject("primary").getString("compassDirection");
                         
                         conditionValues.add(new Condition(date, minBreak, maxBreak, windSpeed, windDeg,
-                            windDir, swellHeight, swellPeriod, swellDeg));
+                            windDir, swellHeight, swellPeriod, swellDir));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

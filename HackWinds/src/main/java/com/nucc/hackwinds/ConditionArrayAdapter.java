@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.os.AsyncTask;
 import java.util.ArrayList;
 import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
@@ -29,9 +30,10 @@ public class ConditionArrayAdapter extends ArrayAdapter<Condition> {
         public TextView breakTV;
         public ImageView breakIV;
         public TextView windTV;
-        public ImageView windIV;
+        //public ImageView windIV;
         public TextView swellTV;
-        public ImageView swellIV;
+        //public ImageView swellIV;
+        public int position;
     }
 
 
@@ -42,7 +44,7 @@ public class ConditionArrayAdapter extends ArrayAdapter<Condition> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         View rowView = convertView;
         // Make the view reusable
         if (rowView == null) { 
@@ -56,10 +58,10 @@ public class ConditionArrayAdapter extends ArrayAdapter<Condition> {
             viewHolder.breakTV = (TextView) rowView.findViewById(R.id.breakData);
             viewHolder.breakIV = (ImageView) rowView.findViewById(R.id.breakThumb);
             viewHolder.windTV = (TextView) rowView.findViewById(R.id.windData);
-            viewHolder.windIV = (ImageView) rowView.findViewById(R.id.windThumb);
+            //viewHolder.windIV = (ImageView) rowView.findViewById(R.id.windThumb);
             viewHolder.swellTV = (TextView) rowView.findViewById(R.id.swellData);
-            viewHolder.swellIV = (ImageView) rowView.findViewById(R.id.swellThumb);
-
+            //viewHolder.swellIV = (ImageView) rowView.findViewById(R.id.swellThumb);
+            viewHolder.position = position;
             rowView.setTag(viewHolder);
         }
         // Fill the data
@@ -74,13 +76,9 @@ public class ConditionArrayAdapter extends ArrayAdapter<Condition> {
             holder.breakIV.setImageResource(R.drawable.thumbs_down);
         }
         holder.windTV.setText(condition.windDir+" "+condition.windSpeed+" mph");
-        holder.windIV.setImageResource(R.drawable.arrow_up);
-        holder.windIV.setImageBitmap(rotateImage(BitmapFactory.decodeResource(context.getResources(), 
-            R.drawable.arrow_up),Float.valueOf(condition.windDeg)));
-        holder.swellTV.setText(condition.swellHeight+" feet @ "+condition.swellPeriod+" seconds");
-        holder.swellIV.setImageResource(R.drawable.arrow_up);
-        holder.swellIV.setImageBitmap(rotateImage(BitmapFactory.decodeResource(context.getResources(), 
-            R.drawable.arrow_up),Float.valueOf(condition.swellDeg)));
+        //holder.windIV.setImageResource(R.drawable.arrow_up);
+        holder.swellTV.setText(condition.swellDeg+" "+condition.swellHeight+" ft @ "+condition.swellPeriod+" s");
+        //holder.swellIV.setImageResource(R.drawable.arrow_up);
         
         // Return the completed view to render on screen
         return rowView;
@@ -94,4 +92,6 @@ public class ConditionArrayAdapter extends ArrayAdapter<Condition> {
         // return new bitmap rotated using matrix
         return Bitmap.createBitmap(src, 0, 0, src.getWidth(), src.getHeight(), matrix, true);
     }
+
+    // Using an AsyncTask to load the slow images in a background thread
 }
