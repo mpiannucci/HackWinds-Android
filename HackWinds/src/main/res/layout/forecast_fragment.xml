@@ -1,137 +1,17 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    tools:context=".ForecastActivity" >
+    android:orientation="vertical"
+    android:background="@color/ltgrey">
 
-    <ScrollView
-        android:id="@+id/scrollView1"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        android:layout_marginLeft="3dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true" >
+    <ListView
+        android:id="@android:id/list"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:divider="@null"
+        android:dividerHeight="0dp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
-
-    		<TextView
-                android:id="@+id/todayForecastHeader"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-        		android:text="@string/today_header"
-        		android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    		<TextView
-        		android:id="@+id/todayForecast"
-        		android:layout_width="wrap_content"
-        		android:layout_height="wrap_content"
-        		android:text="@string/loading_text"
-        		android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    		<TextView
-        		android:id="@+id/todayCond"
-        		android:layout_width="wrap_content"
-        		android:layout_height="wrap_content"
-        		android:text=""
-        		android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    		<TextView
-        		android:id="@+id/tomorrowForecastHeader"
-        		android:layout_width="wrap_content"
-        		android:layout_height="wrap_content"
-        		android:layout_marginTop="20dp"
-        		android:text="@string/tomorrow_header"
-        		android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    		<TextView
-        		android:id="@+id/tomorrowForecast"
-        		android:layout_width="wrap_content"
-        		android:layout_height="wrap_content"
-        		android:text="@string/loading_text"
-        		android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    		<TextView
-        		android:id="@+id/tomorrowCond"
-        		android:layout_width="wrap_content"
-        		android:layout_height="wrap_content"
-        		android:text=""
-        		android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    		<TextView
-        		android:id="@+id/nextDayForecastHeader"
-        		android:layout_width="wrap_content"
-        		android:layout_height="wrap_content"
-        		android:layout_marginTop="20dp"
-        		android:text="@string/next_day_header"
-        		android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    		<TextView
-        		android:id="@+id/nextDayForecast"
-        		android:layout_width="wrap_content"
-        		android:layout_height="wrap_content"
-        		android:text="@string/loading_text"
-        		android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    		<TextView
-        		android:id="@+id/nextDayCond"
-        		android:layout_width="wrap_content"
-        		android:layout_height="wrap_content"
-        		android:text=""
-        		android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    		<TextView
-        		android:id="@+id/fourthDayForecastHeader"
-        		android:layout_width="wrap_content"
-        		android:layout_height="wrap_content"
-        		android:layout_marginTop="20dp"
-        		android:text="@string/next_day_header"
-        		android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    		<TextView
-        		android:id="@+id/fourthDayForecast"
-        		android:layout_width="wrap_content"
-        		android:layout_height="wrap_content"
-        		android:text="@string/loading_text"
-        		android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    		<TextView
-        		android:id="@+id/fourthDayCond"
-        		android:layout_width="wrap_content"
-        		android:layout_height="wrap_content"
-        		android:text=""
-        		android:textAppearance="?android:attr/textAppearanceSmall" />
-    		<TextView
-        		android:id="@+id/fifthDayForecastHeader"
-        		android:layout_width="wrap_content"
-        		android:layout_height="wrap_content"
-        		android:layout_marginTop="20dp"
-        		android:text="@string/next_day_header"
-        		android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    		<TextView
-        		android:id="@+id/fifthDayForecast"
-        		android:layout_width="wrap_content"
-        		android:layout_height="wrap_content"
-        		android:text="@string/loading_text"
-        		android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    		<TextView
-        		android:id="@+id/fifthDayCond"
-        		android:layout_width="wrap_content"
-        		android:layout_height="wrap_content"
-        		android:text=""
-        		android:textAppearance="?android:attr/textAppearanceSmall" />
-
-        </LinearLayout>
-
-    </ScrollView>
-
-</RelativeLayout>
+</LinearLayout>
