@@ -26,14 +26,22 @@ import android.os.AsyncTask;
 import android.app.ProgressDialog;
 import android.media.MediaPlayer;
 import java.lang.Integer;
+import java.text.DateFormat;
+import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.util.TimeZone;
+import java.lang.Long;
 
 
 public class currentFragment extends ListFragment {
 
     String streamURL = "http://162.243.101.197:1935/surfcam/live.stream/playlist.m3u8";
-    String mswURL = "http://magicseaweed.com/api/nFSL2f845QOAf1Tuv7Pf5Pd9PXa5sVTS/forecast/?spot_id=1103&fields=localTimestamp,swell.*,wind.*";
+    public String mswURL = "http://magicseaweed.com/api/nFSL2f845QOAf1Tuv7Pf5Pd9PXa5sVTS/forecast/?spot_id=1103&fields=localTimestamp,swell.*,wind.*";
+    //String[] days = new String[] {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
     //String wuURL = "http://api.wunderground.com/api/2e5424aab8c91757/tide/q/RI/Point_Judith.json";
 
+    ArrayList<Condition> conditionValues;
+    ConditionArrayAdapter adapter;
     public VideoView streamView;
 
     @Override
@@ -43,12 +51,8 @@ public class currentFragment extends ListFragment {
         // public Condition(String date, String minbreak, String maxBreak, 
         //     String windSpeed, String windDeg, String windDir, String swellHeight,
         //     String swellPeriod, String swellDeg) 
-        new BackgroundMSWAsyncTask().execute();
-        ArrayList<Condition> conditionValues = new ArrayList<Condition>();
-        conditionValues.add(new Condition("Friday 6:00 AM", "3","5","15","45","W","6","7","45"));
-
-        ConditionArrayAdapter adapter = new ConditionArrayAdapter(getActivity(), conditionValues);
-        setListAdapter(adapter);
+        conditionValues = new ArrayList<Condition>();
+        new BackgroundMSWAsyncTask().execute(1);
     }
 
     @Override
@@ -105,32 +109,43 @@ public class currentFragment extends ListFragment {
         }   
     }
 
-    public class BackgroundMSWAsyncTask extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
+    public class BackgroundMSWAsyncTask extends AsyncTask<Integer, Void, Void> {
 
         @Override
-        protected Void doInBackground(Void... arg0) {
+        protected Void doInBackground(Integer... ints) {
             // Creating service handler class instance
             ServiceHandler sh = new ServiceHandler();
  
             // Making a request to url and getting response
             String jsonStr = sh.makeServiceCall(mswURL, ServiceHandler.GET);
-
             if (jsonStr != null) {
                 try {
                     JSONArray jsonArr = new JSONArray(jsonStr);
-                    Log.e("hackwinds", Integer.toString(jsonArr.length()));
-                    JSONObject jsonObj = jsonArr.getJSONObject(0);
-                    Log.e("hackwinds", jsonObj.getString("localTimestamp"));
+                    for (int i = 0; i < ints[0]; i++) {
+                        JSONObject jsonObj = jsonArr.getJSONObject(i);
 
+                        // Fill a new Condition object and append it
+                        String date = formatDate(jsonObj.getLong("localTimestamp"));
+                        JSONObject swell = jsonObj.getJSONObject("swell");
+                        JSONObject wind = jsonObj.getJSONObject("wind");
+
+                        String minBreak = swell.getString("minBreakingHeight");
+                        String maxBreak = swell.getString("maxBreakingHeight");
+                        String windSpeed = wind.getString("speed");
+                        String windDeg = wind.getString("direction");
+                        String windDir = wind.getString("compassDirection");
+                        String swellHeight = swell.getJSONObject("components").getJSONObject("primary").getString("height");
+                        String swellPeriod = swell.getJSONObject("components").getJSONObject("primary").getString("period");
+                        String swellDeg = swell.getJSONObject("components").getJSONObject("primary").getString("direction");
+                        
+                        conditionValues.add(new Condition(date, minBreak, maxBreak, windSpeed, windDeg,
+                            windDir, swellHeight, swellPeriod, swellDeg));
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             } else {
-                Log.e("ServiceHandler", "Couldn't get any data from the url");
+                Log.e("hackwinds", "Couldn't get any data from the msw url");
             }
  
             return null;
@@ -139,12 +154,19 @@ public class currentFragment extends ListFragment {
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            // Dismiss the progress dialog
-
-            /**
-             * Updating parsed JSON data into ListView
-             * */
+            Log.e("hackwinds", String.valueOf(conditionValues.size()));
+            adapter = new ConditionArrayAdapter(getActivity(), conditionValues);
+            setListAdapter(adapter);
         }
  
+    }
+
+    // Return a pretty timestamp for headers
+    public String formatDate(Long timestamp) {
+        Date date = new Date(timestamp*1000);
+        DateFormat format = new SimpleDateFormat("EEE HH:mm");
+        format.setTimeZone(TimeZone.getTimeZone("Etc/UTC"));
+        String formatted = format.format(date);
+        return formatted;
     }
 }

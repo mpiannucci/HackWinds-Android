@@ -12,12 +12,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.ArrayList;
-import java.lang.Integer;
 import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.BitmapFactory;
+import java.lang.Double;
+import java.lang.Float;
 
 public class ConditionArrayAdapter extends ArrayAdapter<Condition> {
     private final Context context;
@@ -67,7 +68,7 @@ public class ConditionArrayAdapter extends ArrayAdapter<Condition> {
 
         holder.dateTV.setText(condition.date);
         holder.breakTV.setText(condition.minBreak+" - "+condition.maxBreak+" feet");
-        if ((Integer.parseInt(condition.minBreak) >= 2) || (Integer.parseInt(condition.maxBreak) >= 3)) {
+        if ((Double.valueOf(condition.minBreak) >= 2) || (Double.valueOf(condition.maxBreak) >= 3)) {
             holder.breakIV.setImageResource(R.drawable.thumbs_up);
         }else {
             holder.breakIV.setImageResource(R.drawable.thumbs_down);
@@ -75,11 +76,11 @@ public class ConditionArrayAdapter extends ArrayAdapter<Condition> {
         holder.windTV.setText(condition.windDir+" "+condition.windSpeed+" mph");
         holder.windIV.setImageResource(R.drawable.arrow_up);
         holder.windIV.setImageBitmap(rotateImage(BitmapFactory.decodeResource(context.getResources(), 
-            R.drawable.arrow_up),Integer.parseInt(condition.windDeg)));
+            R.drawable.arrow_up),Float.valueOf(condition.windDeg)));
         holder.swellTV.setText(condition.swellHeight+" feet @ "+condition.swellPeriod+" seconds");
         holder.swellIV.setImageResource(R.drawable.arrow_up);
         holder.swellIV.setImageBitmap(rotateImage(BitmapFactory.decodeResource(context.getResources(), 
-            R.drawable.arrow_up),Integer.parseInt(condition.swellDeg)));
+            R.drawable.arrow_up),Float.valueOf(condition.swellDeg)));
         
         // Return the completed view to render on screen
         return rowView;

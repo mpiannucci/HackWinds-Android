@@ -80,7 +80,6 @@ public class forecastFragment extends ListFragment {
                         count++;
                     }
                 }
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -90,24 +89,6 @@ public class forecastFragment extends ListFragment {
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            // int[] views = {
-            //         R.id.todayForecast,
-            //         R.id.todayCond,
-            //         R.id.tomorrowForecast,
-            //         R.id.tomorrowCond,
-            //         R.id.nextDayForecast,
-            //         R.id.nextDayCond,
-            //         R.id.fourthDayForecast,
-            //         R.id.fourthDayCond,
-            //         R.id.fifthDayForecast,
-            //         R.id.fifthDayCond
-            // };
-            // getDate(getView());
-            // for (int i=0; i<views.length; i++) {
-            //     TextView forcSet = (TextView) getView().findViewById(views[i]);
-            //     forcSet.setText(forcData[i]);
-            // }
-            // Set the list adapter
             adapter = new ForecastArrayAdapter(getActivity(), forecastValues);
             setListAdapter(adapter);
         }
