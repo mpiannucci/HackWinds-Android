@@ -20,90 +20,32 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.BitmapFactory;
 
 public class ConditionArrayAdapter extends ArrayAdapter<Condition> {
+    private final Context context;
+    private final ArrayList<Condition> values;
 
     Context cont;
     public ConditionArrayAdapter(Context context, ArrayList<Condition> values) {
-        super(context, 0, values);
-        cont = context;
-    }
-
-    // Returns the number of types of Views that will be created by getView(int, View, ViewGroup)
-    @Override
-    public int getViewTypeCount() {
-       // Returns the number of types of Views that will be created by this adapter
-       // Each type represents a set of views that can be converted
-        return Condition.ConditionTypes.values().length;
-    }
-
-    // Get the type of View that will be created by getView(int, View, ViewGroup) for the specified item.
-    @Override
-    public int getItemViewType(int position) {
-       // Return an integer here representing the type of View.
-       // Note: Integers must be in the range 0 to getViewTypeCount() - 1
-        return getItem(position).condition.ordinal();
+        super(context, R.layout.current_item, values);
+        this.context = context;
+        this.values = values;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        LayoutInflater inflater = (LayoutInflater) context
+            .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View rowView = inflater.inflate(R.layout.current_item, parent, false);
+
         // Get the data item for this position
-        Condition condition = getItem(position);
+        Condition condition = values[position];
         int type = 0;
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
             // Get the data item type for this position
-            type = getItemViewType(position);
-            // Inflate XML layout based on the type     
-            convertView = getInflatedLayoutForType(type);
         }
-        // Set the UI depending on the type
-        updateCard(type, convertView, condition);
 
         // Return the completed view to render on screen
         return convertView;
-    }
-
-    // Given the item type, responsible for returning the correct inflated XML layout file
-    private View getInflatedLayoutForType(int type) {
-        if (type == Condition.ConditionTypes.WAVEHEIGHT.ordinal()) {
-            return LayoutInflater.from(getContext()).inflate(R.layout.break_item, null);
-        } else if (type == Condition.ConditionTypes.WIND.ordinal()) {
-            return LayoutInflater.from(getContext()).inflate(R.layout.wind_item, null);
-        } else if (type == Condition.ConditionTypes.SWELL.ordinal()) {
-            return LayoutInflater.from(getContext()).inflate(R.layout.swell_item, null);
-        } else if (type == Condition.ConditionTypes.TIDE.ordinal()) {
-            return LayoutInflater.from(getContext()).inflate(R.layout.tide_item, null);
-        } else {
-            return null;
-        }
-    }
-
-    // Given the item type, set the ui to the correct data
-    private void updateCard(int type, View convertView, Condition condition) {
-        if (type == Condition.ConditionTypes.WAVEHEIGHT.ordinal()) {
-            TextView tvData = (TextView) convertView.findViewById(R.id.itemData);
-            ImageView thumb = (ImageView) convertView.findViewById(R.id.itemThumb);
-            tvData.setText(condition.text[0]+" - "+condition.text[1]+" feet");
-            if (Integer.parseInt(condition.text[0]) >= 2 | Integer.parseInt(condition.text[1]) >= 3) {
-                thumb.setImageResource(R.drawable.thumbs_up);
-            } else {
-                thumb.setImageResource(R.drawable.thumbs_down);
-            }
-
-        } else if (type == Condition.ConditionTypes.WIND.ordinal()) {
-            TextView tvData = (TextView) convertView.findViewById(R.id.itemData);
-            ImageView windArr = (ImageView) convertView.findViewById(R.id.itemThumb);
-            tvData.setText(condition.text[0]+" mph");
-            windArr.setImageResource(R.drawable.arrow_up);
-            windArr.setImageBitmap(rotateImage(BitmapFactory.decodeResource(cont.getResources(), R.drawable.arrow_up),Integer.parseInt(condition.text[1])));
-        } else if (type == Condition.ConditionTypes.SWELL.ordinal()) {
-            TextView tvData = (TextView) convertView.findViewById(R.id.itemData);
-            ImageView swellArr = (ImageView) convertView.findViewById(R.id.itemThumb);
-            tvData.setText(condition.text[0]+" feet @ "+condition.text[1]+" seconds");
-            swellArr.setImageResource(R.drawable.arrow_up);
-            swellArr.setImageBitmap(rotateImage(BitmapFactory.decodeResource(cont.getResources(), R.drawable.arrow_up),Integer.parseInt(condition.text[1])));
-        } else if (type == Condition.ConditionTypes.TIDE.ordinal()) {
-
-        }
     }
 
     private Bitmap rotateImage(Bitmap src, float degree) {

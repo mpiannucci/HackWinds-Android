@@ -99,30 +99,6 @@
                 android:text="Data Here"
                 android:layout_weight="1" />
         </LinearLayout>
-        <LinearLayout
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_width="fill_parent"
-            android:orientation="horizontal" >
-
-            <ImageView
-                android:id="@+id/tideThumb"
-                android:layout_gravity="left|center_vertical"
-                android:layout_width="fill_parent"
-                android:layout_height="33dp"
-                android:layout_weight="3"
-                android:src="@drawable/arrow_up"/>
-
-            <TextView
-                android:id="@+id/tideData"
-                android:layout_gravity="left|center_vertical"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                style="@style/DataText"
-                android:text="Data Here"
-                android:layout_weight="1" />
-        </LinearLayout>
-
     </LinearLayout>
 
 </FrameLayout>
