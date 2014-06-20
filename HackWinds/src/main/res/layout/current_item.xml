@@ -21,7 +21,6 @@
             style="@style/HeaderText"
             android:layout_weight="1" />
 
-
         <View android:id="@+id/separator" 
             android:background="@color/ltgrey" 
             android:layout_width="fill_parent"
