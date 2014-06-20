@@ -5,6 +5,7 @@ import java.util.Locale;
 import com.nucc.hackwinds.R;
 import com.nucc.hackwinds.forecastFragment;
 import com.nucc.hackwinds.currentFragment;
+import com.nucc.hackWinds.hourlyFragment;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
@@ -141,6 +142,9 @@ public class MainActivity extends FragmentActivity implements
 				return new currentFragment();
 			case 1:
 				// Return the second fragment view
+				return new hourlyFragment();
+			case 2:
+				// Return the second fragment view
 				return new forecastFragment();
 			}
 			return null;
@@ -149,7 +153,7 @@ public class MainActivity extends FragmentActivity implements
 		@Override
 		public int getCount() {
 			// Show 2 total pages.
-			return 2;
+			return 3;
 		}
 
 		@Override
@@ -159,6 +163,8 @@ public class MainActivity extends FragmentActivity implements
 			case 0:
 				return getString(R.string.action_live).toUpperCase(l);
 			case 1:
+				return getString(R.string.action_48).toUpperCase(l);
+			case 2:
 				return getString(R.string.action_forecast).toUpperCase(l);
 			}
 			return null;
