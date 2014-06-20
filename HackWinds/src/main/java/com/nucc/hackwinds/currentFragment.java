@@ -31,6 +31,7 @@ import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 import java.lang.Long;
+import java.util.Calendar;
 
 
 public class currentFragment extends ListFragment {
@@ -121,11 +122,17 @@ public class currentFragment extends ListFragment {
             if (jsonStr != null) {
                 try {
                     JSONArray jsonArr = new JSONArray(jsonStr);
-                    for (int i = 0; i < ints[0]; i++) {
-                        JSONObject jsonObj = jsonArr.getJSONObject(i);
-
+                    int i = 0;
+                    int j = 0;
+                    while (i < ints[0]) {
+                        JSONObject jsonObj = jsonArr.getJSONObject(j);
+                        j++;
                         // Fill a new Condition object and append it
                         String date = formatDate(jsonObj.getLong("localTimestamp"));
+                        if (checkDate(date) == false) {
+                            continue;
+                        }
+                        // check the date 
                         JSONObject swell = jsonObj.getJSONObject("swell");
                         JSONObject wind = jsonObj.getJSONObject("wind");
 
@@ -140,6 +147,7 @@ public class currentFragment extends ListFragment {
                         
                         conditionValues.add(new Condition(date, minBreak, maxBreak, windSpeed, windDeg,
                             windDir, swellHeight, swellPeriod, swellDir));
+                        i++;
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -164,9 +172,21 @@ public class currentFragment extends ListFragment {
     // Return a pretty timestamp for headers
     public String formatDate(Long timestamp) {
         Date date = new Date(timestamp*1000);
-        DateFormat format = new SimpleDateFormat("EEE HH:mm");
+        DateFormat format = new SimpleDateFormat("EEEE HH a");
         format.setTimeZone(TimeZone.getTimeZone("Etc/UTC"));
         String formatted = format.format(date);
+
         return formatted;
+    }
+
+    // Check the time
+    public boolean checkDate(String dateString) {
+        String hourStamp = dateString.substring(5,7);
+        Log.e("hackwinds", hourStamp);
+        String ampmStamp = dateString.substring(9,10);
+        if ((ampmStamp == "AM") && (hourStamp == "0")) {
+            return false;
+        }
+        return true;
     }
 }

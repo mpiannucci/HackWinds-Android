@@ -19,7 +19,6 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.BitmapFactory;
 import java.lang.Double;
-import java.lang.Float;
 
 public class ConditionArrayAdapter extends ArrayAdapter<Condition> {
     private final Context context;
@@ -30,9 +29,7 @@ public class ConditionArrayAdapter extends ArrayAdapter<Condition> {
         public TextView breakTV;
         public ImageView breakIV;
         public TextView windTV;
-        //public ImageView windIV;
         public TextView swellTV;
-        //public ImageView swellIV;
         public int position;
     }
 
@@ -58,9 +55,7 @@ public class ConditionArrayAdapter extends ArrayAdapter<Condition> {
             viewHolder.breakTV = (TextView) rowView.findViewById(R.id.breakData);
             viewHolder.breakIV = (ImageView) rowView.findViewById(R.id.breakThumb);
             viewHolder.windTV = (TextView) rowView.findViewById(R.id.windData);
-            //viewHolder.windIV = (ImageView) rowView.findViewById(R.id.windThumb);
             viewHolder.swellTV = (TextView) rowView.findViewById(R.id.swellData);
-            //viewHolder.swellIV = (ImageView) rowView.findViewById(R.id.swellThumb);
             viewHolder.position = position;
             rowView.setTag(viewHolder);
         }
@@ -76,22 +71,9 @@ public class ConditionArrayAdapter extends ArrayAdapter<Condition> {
             holder.breakIV.setImageResource(R.drawable.thumbs_down);
         }
         holder.windTV.setText(condition.windDir+" "+condition.windSpeed+" mph");
-        //holder.windIV.setImageResource(R.drawable.arrow_up);
         holder.swellTV.setText(condition.swellDeg+" "+condition.swellHeight+" ft @ "+condition.swellPeriod+" s");
-        //holder.swellIV.setImageResource(R.drawable.arrow_up);
         
         // Return the completed view to render on screen
         return rowView;
     }
-
-    private Bitmap rotateImage(Bitmap src, float degree) {
-        // create new matrix object
-        Matrix matrix = new Matrix();
-        // setup rotation degree
-        matrix.postRotate(degree);
-        // return new bitmap rotated using matrix
-        return Bitmap.createBitmap(src, 0, 0, src.getWidth(), src.getHeight(), matrix, true);
-    }
-
-    // Using an AsyncTask to load the slow images in a background thread
 }
