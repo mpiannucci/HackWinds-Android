@@ -3,6 +3,11 @@ package com.nucc.hackwinds;
 import com.nucc.hackwinds.R;
 import com.nucc.hackwinds.Condition;
 import com.nucc.hackwinds.ConditionArrayAdapter;
+import com.nucc.hackwinds.ServiceHandler;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -20,12 +25,13 @@ import java.util.ArrayList;
 import android.os.AsyncTask;
 import android.app.ProgressDialog;
 import android.media.MediaPlayer;
+import java.lang.Integer;
 
 
 public class currentFragment extends ListFragment {
 
     String streamURL = "http://162.243.101.197:1935/surfcam/live.stream/playlist.m3u8";
-    String mswURL = "http://magicseaweed.com/api/nFSL2f845QOAf1Tuv7Pf5Pd9PXa5sVTS/forecast/?spot_id=1103&fields=swell.*,wind.*,localtimestamp";
+    String mswURL = "http://magicseaweed.com/api/nFSL2f845QOAf1Tuv7Pf5Pd9PXa5sVTS/forecast/?spot_id=1103&fields=localTimestamp,swell.*,wind.*";
     //String wuURL = "http://api.wunderground.com/api/2e5424aab8c91757/tide/q/RI/Point_Judith.json";
 
     public VideoView streamView;
@@ -37,6 +43,7 @@ public class currentFragment extends ListFragment {
         // public Condition(String date, String minbreak, String maxBreak, 
         //     String windSpeed, String windDeg, String windDir, String swellHeight,
         //     String swellPeriod, String swellDeg) 
+        new BackgroundMSWAsyncTask().execute();
         ArrayList<Condition> conditionValues = new ArrayList<Condition>();
         conditionValues.add(new Condition("Friday 6:00 AM", "3","5","15","45","W","6","7","45"));
 
@@ -96,5 +103,48 @@ public class currentFragment extends ListFragment {
             }
             return null;
         }   
+    }
+
+    public class BackgroundMSWAsyncTask extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... arg0) {
+            // Creating service handler class instance
+            ServiceHandler sh = new ServiceHandler();
+ 
+            // Making a request to url and getting response
+            String jsonStr = sh.makeServiceCall(mswURL, ServiceHandler.GET);
+
+            if (jsonStr != null) {
+                try {
+                    JSONArray jsonArr = new JSONArray(jsonStr);
+                    Log.e("hackwinds", Integer.toString(jsonArr.length()));
+                    JSONObject jsonObj = jsonArr.getJSONObject(0);
+                    Log.e("hackwinds", jsonObj.getString("localTimestamp"));
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Log.e("ServiceHandler", "Couldn't get any data from the url");
+            }
+ 
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            // Dismiss the progress dialog
+
+            /**
+             * Updating parsed JSON data into ListView
+             * */
+        }
+ 
     }
 }
