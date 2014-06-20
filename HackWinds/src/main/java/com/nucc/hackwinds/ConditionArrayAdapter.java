@@ -33,7 +33,7 @@ public class ConditionArrayAdapter extends ArrayAdapter<Condition> {
         public ImageView swellIV;
     }
 
-    Context cont;
+
     public ConditionArrayAdapter(Context context, ArrayList<Condition> values) {
         super(context, R.layout.current_item, values);
         this.context = context;

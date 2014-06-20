@@ -14,7 +14,7 @@
         android:orientation="vertical">
 
             <TextView
-                android:id="@+id/todayForecastHeader"
+                android:id="@+id/forecastHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -32,14 +32,14 @@
 
 
             <TextView
-                android:id="@+id/todayForecast"
+                android:id="@+id/forecastOverview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/loading_text"
                 style="@style/DataText" />
 
             <TextView
-                android:id="@+id/todayCond"
+                android:id="@+id/forecastDetail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=""
