@@ -52,7 +52,7 @@ public class currentFragment extends ListFragment {
         //     String windSpeed, String windDeg, String windDir, String swellHeight,
         //     String swellPeriod, String swellDeg) 
         conditionValues = new ArrayList<Condition>();
-        new BackgroundMSWAsyncTask().execute(1);
+        new BackgroundMSWAsyncTask().execute(5);
     }
 
     @Override

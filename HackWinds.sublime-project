@@ -14,9 +14,9 @@
             {
                 "args": [
                     "-cp",
-                    "/home/matthew/Development/Android/platforms/android-19/android.jar:/home/matthew/Development/ActionBar-PullToRefresh-0.9.3/library/bin/classes:/home/matthew/Development/hackWinds/hackWinds/libs/android-support-v4.jar:/home/matthew/Development/hackWinds/hackWinds/libs/jsoup-1.7.2.jar:/home/matthew/Development/hackWinds/hackWinds/libs/urlimageviewhelper-1.0.4.jar",
+                    "/home/matthew/Development/android-sdk-linux/platforms/android-19/android.jar:/home/matthew/Development/android-sdk-linux/extras/android/m2repository/com/android/support/support-v4/19.1.0/support-v4-19.1.0.jar:/home/matthew/Development/HackWinds/HackWinds/libs/jsoup-1.7.2.jar:/home/matthew/Development/HackWinds/HackWinds/libs/urlimageviewhelper-1.0.4.jar",
                     "-sourcepath",
-                    "/home/matthew/Development/hackWinds/hackWinds/src:/home/matthew/Development/hackWinds/hackWinds/gen"
+                    "/home/matthew/Development/HackWinds/HackWinds/src/main/java:/home/matthew/Development/HackWinds/HackWinds/build/source/r/debug"
                 ]
             }
         }

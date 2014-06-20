@@ -4,3 +4,4 @@
 .DS_Store
 *.sublime-workspace
 keystore.properties
+*.class

@@ -4,9 +4,9 @@
     <string name="app_name">HackWinds</string>
     <string name="action_settings">Settings</string>
     <string name="action_refresh">Refresh</string>
-    <string name="action_forecast">5 Days</string>
+    <string name="action_forecast">Forecast</string>
     <string name="action_48">48 Hour</string>
-    <string name="action_live">Now</string>
+    <string name="action_live">Live</string>
     <string name="action_tide">Tide</string>
 
     <!-- Overview Page -->
