@@ -181,10 +181,11 @@ public class currentFragment extends ListFragment {
 
     // Check the time
     public boolean checkDate(String dateString) {
-        String hourStamp = dateString.substring(5,7);
-        Log.e("hackwinds", hourStamp);
-        String ampmStamp = dateString.substring(9,10);
-        if ((ampmStamp == "AM") && (hourStamp == "0")) {
+        boolean check = false;
+        int ampmStamp = dateString.indexOf("AM"); 
+        int hour00 = dateString.indexOf("00");
+        int hour03 = dateString.indexOf("03");
+        if ((ampmStamp > -1) && ((hour00 > -1)) || (hour03 > -1)) {
             return false;
         }
         return true;
