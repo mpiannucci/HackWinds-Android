@@ -125,14 +125,16 @@ public class currentFragment extends ListFragment {
                     int i = 0;
                     int j = 0;
                     while (i < ints[0]) {
+                        
                         JSONObject jsonObj = jsonArr.getJSONObject(j);
                         j++;
+
                         // Fill a new Condition object and append it
                         String date = formatDate(jsonObj.getLong("localTimestamp"));
                         if (checkDate(date) == false) {
                             continue;
                         }
-                        // check the date 
+
                         JSONObject swell = jsonObj.getJSONObject("swell");
                         JSONObject wind = jsonObj.getJSONObject("wind");
 
@@ -172,19 +174,23 @@ public class currentFragment extends ListFragment {
     // Return a pretty timestamp for headers
     public String formatDate(Long timestamp) {
         Date date = new Date(timestamp*1000);
-        DateFormat format = new SimpleDateFormat("EEEE HH a");
+        DateFormat format = new SimpleDateFormat("EEEE K a");
         format.setTimeZone(TimeZone.getTimeZone("Etc/UTC"));
         String formatted = format.format(date);
-
+        if (formatted.indexOf("0") > -1) {
+            format = new SimpleDateFormat("EEEE HH a");
+            format.setTimeZone(TimeZone.getTimeZone("Etc/UTC"));
+            formatted = format.format(date);
+        }
         return formatted;
     }
 
-    // Check the time
+    // Check the time. If its irrelevant, skip the JSon Objects
     public boolean checkDate(String dateString) {
         boolean check = false;
         int ampmStamp = dateString.indexOf("AM"); 
-        int hour00 = dateString.indexOf("00");
-        int hour03 = dateString.indexOf("03");
+        int hour00 = dateString.indexOf("0");
+        int hour03 = dateString.indexOf("3");
         if ((ampmStamp > -1) && ((hour00 > -1)) || (hour03 > -1)) {
             return false;
         }
