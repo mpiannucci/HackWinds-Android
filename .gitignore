@@ -7,7 +7,7 @@ keystore.properties
 *.class
 gradle/
 *.iml
-idea/
+.idea/
 gradlew
 gradlew.bat
 build/
