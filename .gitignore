@@ -5,3 +5,9 @@
 *.sublime-workspace
 keystore.properties
 *.class
+gradle/
+*.iml
+idea/
+gradlew
+gradlew.bat
+build/
