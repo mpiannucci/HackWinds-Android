@@ -10,26 +10,8 @@
         android:layout_marginRight="6dp"
         android:layout_marginTop="4dp"
         android:layout_marginBottom="4dp"
-        android:background="@drawable/card_background"
+        android:background="@color/Lback"
         android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/itemHeader"
-            android:layout_gravity="left|center_vertical"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            style="@style/HeaderText"
-            android:layout_weight="1"
-             />
-
-        <View android:id="@+id/separator" 
-            android:background="@color/ltgrey" 
-            android:layout_width="fill_parent"
-            android:layout_height="1dip"
-            android:layout_centerVertical="true"
-            android:layout_alignParentTop="true"
-            android:layout_weight="1"
-            android:layout_marginBottom="10dp" />
 
         <LinearLayout
             android:layout_weight="1"
@@ -37,13 +19,15 @@
             android:layout_width="fill_parent"
             android:orientation="horizontal"
             android:layout_marginBottom="15dp"  >
-
-            <ImageView
-                android:id="@+id/breakThumb"
+            
+            <TextView
+                android:id="@+id/timeData"
                 android:layout_gravity="left|center_vertical"
                 android:layout_width="fill_parent"
-                android:layout_height="33dp"
-                android:layout_weight="3" />
+                android:layout_height="wrap_content"
+                style="@style/DataText"
+                android:text="Data Here"
+                android:layout_weight="1" />  
 
             <TextView
                 android:id="@+id/breakData"
@@ -53,22 +37,6 @@
                 style="@style/DataText"
                 android:text="Data Here"
                 android:layout_weight="1" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_width="fill_parent"
-            android:orientation="horizontal"
-            android:layout_marginBottom="15dp" >
-
-            <TextView
-                android:id="@+id/windName"
-                android:layout_gravity="left|center_vertical"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                style="@style/DataHeaderText"
-                android:text="Wind"
-                android:layout_weight="3" />
 
             <TextView
                 android:id="@+id/windData"
@@ -78,21 +46,6 @@
                 style="@style/DataText"
                 android:text="Data Here"
                 android:layout_weight="1" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_width="fill_parent"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:id="@+id/swellName"
-                android:layout_gravity="left|center_vertical"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                style="@style/DataHeaderText"
-                android:text="Swell"
-                android:layout_weight="3" />
 
             <TextView
                 android:id="@+id/swellData"
