@@ -11,6 +11,50 @@
         android:layout_height="wrap_content"  
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="false" />
+    
+    <LinearLayout
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:orientation="horizontal"
+        android:layout_marginBottom="15dp"  >
+        
+        <TextView
+            android:id="@+id/timeHeader"
+            android:layout_gravity="left|center_vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            style="@style/DataText"
+            android:text="Hour"
+            android:layout_weight="1" />  
+            
+        <TextView
+            android:id="@+id/breakHeader"
+            android:layout_gravity="left|center_vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            style="@style/DataText"
+            android:text="break_holder"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/windHeader"
+            android:layout_gravity="left|center_vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            style="@style/wind_header"
+            android:text="Wind"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/swellHeader"
+            android:layout_gravity="left|center_vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            style="@style/DataText"
+            android:text="@swell_header"
+            android:layout_weight="1" />
+    </LinearLayout>
 
     <ListView
         android:id="@android:id/list"
