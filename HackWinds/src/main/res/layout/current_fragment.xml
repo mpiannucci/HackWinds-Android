@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/ltgrey">
+    android:background="@color/Lback">
 
     <VideoView  
         android:id="@+id/currentVideoStreamView"  
@@ -11,30 +11,54 @@
         android:layout_height="wrap_content"  
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="false" />
+
+    <TextView
+        android:id="@+id/dateHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left|center_vertical"
+        style="@style/HeaderText"
+        android:paddingLeft="6dp"
+        android:paddingRight="6dp"
+        android:padding="4dp"
+        android:paddingBottom="4dp"
+        android:textColor="@color/numixGrey"
+        android:background="@color/ltgrey"/>
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:orientation="vertical"
+        android:paddingLeft="6dp"
+        android:paddingRight="6dp"
+        android:padding="4dp"
+        android:paddingBottom="4dp"
+        android:background="@color/ltgrey" >
     
     <LinearLayout
-        android:layout_weight="1"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
         android:orientation="horizontal"
-        android:layout_marginBottom="15dp"  >
+        android:layout_marginBottom="5dp"
+        android:layout_weight="1"
+        android:background="@color/ltgrey" >
         
         <TextView
-            android:id="@+id/timeHeader"
+            android:id="@+id/timeData"
             android:layout_gravity="left|center_vertical"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            style="@style/DataText"
-            android:text="Hour"
-            android:layout_weight="1" />  
+            style="@style/DataHeaderText"
+            android:text="@string/time_header"
+            android:layout_weight="1" />
             
         <TextView
             android:id="@+id/breakHeader"
             android:layout_gravity="left|center_vertical"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            style="@style/DataText"
-            android:text="break_holder"
+            style="@style/DataHeaderText"
+            android:text="@string/break_header"
             android:layout_weight="1" />
 
         <TextView
@@ -42,8 +66,8 @@
             android:layout_gravity="left|center_vertical"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            style="@style/wind_header"
-            android:text="Wind"
+            style="@style/DataHeaderText"
+            android:text="@string/wind_header"
             android:layout_weight="1" />
 
         <TextView
@@ -51,19 +75,21 @@
             android:layout_gravity="left|center_vertical"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            style="@style/DataText"
-            android:text="@swell_header"
-            android:layout_weight="1" />
+            style="@style/DataHeaderText"
+            android:text="@string/swell_header"
+            android:layout_weight="0.8" />
+
+    </LinearLayout>
     </LinearLayout>
 
     <ListView
         android:id="@android:id/list"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:paddingLeft="6dp"
+        android:paddingRight="6dp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:divider="@null"
-        android:dividerHeight="0dp"
-        android:layout_weight="2" />
+        android:dividerHeight="1dp"
+        android:divider="@color/numixGrey"
+        android:background="@color/Lback"/>
 
 </LinearLayout>

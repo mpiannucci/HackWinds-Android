@@ -14,6 +14,7 @@ import android.support.v4.app.ListFragment;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.MediaController;
+import android.widget.TextView;
 import android.widget.VideoView;
 import android.net.Uri;
 import android.view.LayoutInflater;
@@ -38,7 +39,7 @@ public class currentFragment extends ListFragment {
 
     String streamURL = "http://162.243.101.197:1935/surfcam/live.stream/playlist.m3u8";
     public String mswURL = "http://magicseaweed.com/api/nFSL2f845QOAf1Tuv7Pf5Pd9PXa5sVTS/forecast/?spot_id=1103&fields=localTimestamp,swell.*,wind.*";
-    //String[] days = new String[] {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+    String[] days = new String[] {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
     //String wuURL = "http://api.wunderground.com/api/2e5424aab8c91757/tide/q/RI/Point_Judith.json";
 
     ArrayList<Condition> conditionValues;
@@ -62,6 +63,10 @@ public class currentFragment extends ListFragment {
         View V = inflater.inflate(R.layout.current_fragment, container, false);
         streamView = (VideoView) V.findViewById(R.id.currentVideoStreamView);
         new BackgroundVideoAsyncTask().execute(streamURL);
+        TextView date = (TextView) V.findViewById(R.id.dateHeader);
+        Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_WEEK);
+        date.setText(days[day-1]);
         return V;
     }
 
@@ -174,11 +179,11 @@ public class currentFragment extends ListFragment {
     // Return a pretty timestamp for headers
     public String formatDate(Long timestamp) {
         Date date = new Date(timestamp*1000);
-        DateFormat format = new SimpleDateFormat("EEEE K a");
+        DateFormat format = new SimpleDateFormat("K a");
         format.setTimeZone(TimeZone.getTimeZone("Etc/UTC"));
         String formatted = format.format(date);
         if (formatted.indexOf("0") > -1) {
-            format = new SimpleDateFormat("EEEE HH a");
+            format = new SimpleDateFormat("HH a");
             format.setTimeZone(TimeZone.getTimeZone("Etc/UTC"));
             formatted = format.format(date);
         }
@@ -187,7 +192,6 @@ public class currentFragment extends ListFragment {
 
     // Check the time. If its irrelevant, skip the JSon Objects
     public boolean checkDate(String dateString) {
-        boolean check = false;
         int ampmStamp = dateString.indexOf("AM"); 
         int hour00 = dateString.indexOf("0");
         int hour03 = dateString.indexOf("3");

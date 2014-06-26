@@ -27,7 +27,6 @@ public class ConditionArrayAdapter extends ArrayAdapter<Condition> {
     static class ViewHolder {
         public TextView dateTV;
         public TextView breakTV;
-        public ImageView breakIV;
         public TextView windTV;
         public TextView swellTV;
         public int position;
@@ -51,9 +50,8 @@ public class ConditionArrayAdapter extends ArrayAdapter<Condition> {
 
             // Set the view holder
             ViewHolder viewHolder = new ViewHolder();
-            viewHolder.dateTV = (TextView) rowView.findViewById(R.id.itemHeader);
+            viewHolder.dateTV = (TextView) rowView.findViewById(R.id.timeData);
             viewHolder.breakTV = (TextView) rowView.findViewById(R.id.breakData);
-            viewHolder.breakIV = (ImageView) rowView.findViewById(R.id.breakThumb);
             viewHolder.windTV = (TextView) rowView.findViewById(R.id.windData);
             viewHolder.swellTV = (TextView) rowView.findViewById(R.id.swellData);
             viewHolder.position = position;
@@ -64,13 +62,8 @@ public class ConditionArrayAdapter extends ArrayAdapter<Condition> {
         ViewHolder holder = (ViewHolder) rowView.getTag();
 
         holder.dateTV.setText(condition.date);
-        holder.breakTV.setText(condition.minBreak+" - "+condition.maxBreak+" feet");
-        if ((Double.valueOf(condition.minBreak) >= 2) || (Double.valueOf(condition.maxBreak) >= 3)) {
-            holder.breakIV.setImageResource(R.drawable.thumbs_up);
-        }else {
-            holder.breakIV.setImageResource(R.drawable.thumbs_down);
-        }
-        holder.windTV.setText(condition.windDir+" "+condition.windSpeed+" mph");
+        holder.breakTV.setText(condition.minBreak+" - "+condition.maxBreak);
+        holder.windTV.setText(condition.windDir+" "+condition.windSpeed);
         holder.swellTV.setText(condition.swellDeg+" "+condition.swellHeight+" ft @ "+condition.swellPeriod+" s");
         
         // Return the completed view to render on screen
