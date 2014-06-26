@@ -33,6 +33,5 @@
     <string name="pref_contact_email">rhodysurf13@gmail.com</string>
     <string name="pref_disclaimer_title">Disclaimer</string>
     <string name="pref_disclaimer_summary">Click to view</string>
-    <string name="pref_disclaimer_message">This app was created for non commercial purposes. I
-        do not own the images displayed or the forecast data, nor do I claim to.</string>
+    <string name="pref_disclaimer_message">I do not own the images displayed or the forecast data, nor do I claim to.</string>
 </resources>
