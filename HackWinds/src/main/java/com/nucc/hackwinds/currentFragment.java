@@ -63,10 +63,12 @@ public class currentFragment extends ListFragment {
         View V = inflater.inflate(R.layout.current_fragment, container, false);
         streamView = (VideoView) V.findViewById(R.id.currentVideoStreamView);
         new BackgroundVideoAsyncTask().execute(streamURL);
+
         TextView date = (TextView) V.findViewById(R.id.dateHeader);
         Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_WEEK);
         date.setText(days[day-1]);
+        
         return V;
     }
 
