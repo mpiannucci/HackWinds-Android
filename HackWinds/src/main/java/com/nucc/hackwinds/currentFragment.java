@@ -1,10 +1,5 @@
 package com.nucc.hackwinds;
 
-import com.nucc.hackwinds.R;
-import com.nucc.hackwinds.Condition;
-import com.nucc.hackwinds.ConditionArrayAdapter;
-import com.nucc.hackwinds.ServiceHandler;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,15 +8,11 @@ import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.VideoView;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.util.Log;
-import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import java.util.ArrayList;
 import android.os.AsyncTask;
 import android.app.ProgressDialog;
@@ -40,7 +31,6 @@ public class currentFragment extends ListFragment {
     String streamURL = "http://162.243.101.197:1935/surfcam/live.stream/playlist.m3u8";
     public String mswURL = "http://magicseaweed.com/api/nFSL2f845QOAf1Tuv7Pf5Pd9PXa5sVTS/forecast/?spot_id=1103&fields=localTimestamp,swell.*,wind.*";
     String[] days = new String[] {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
-    //String wuURL = "http://api.wunderground.com/api/2e5424aab8c91757/tide/q/RI/Point_Judith.json";
 
     ArrayList<Condition> conditionValues;
     ConditionArrayAdapter adapter;

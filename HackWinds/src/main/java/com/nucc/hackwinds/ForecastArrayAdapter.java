@@ -1,9 +1,5 @@
 package com.nucc.hackwinds;
 
-import com.nucc.hackwinds.R;
-import com.nucc.hackwinds.Forecast;
-
-import android.os.Bundle;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;

@@ -2,10 +2,6 @@ package com.nucc.hackwinds;
 
 import java.util.Locale;
 
-import com.nucc.hackwinds.R;
-import com.nucc.hackwinds.forecastFragment;
-import com.nucc.hackwinds.currentFragment;
-
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.content.Intent;

@@ -1,24 +1,12 @@
 package com.nucc.hackwinds;
 
-import com.nucc.hackwinds.R;
-import com.nucc.hackwinds.Condition;
-
-import android.os.Bundle;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.os.AsyncTask;
 import java.util.ArrayList;
-import android.graphics.Matrix;
-import android.graphics.drawable.Drawable;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.BitmapFactory;
-import java.lang.Double;
 
 public class ConditionArrayAdapter extends ArrayAdapter<Condition> {
     private final Context context;

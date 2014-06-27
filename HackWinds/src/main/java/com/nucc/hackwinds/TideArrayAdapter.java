@@ -1,9 +1,5 @@
 package com.nucc.hackwinds;
 
-import com.nucc.hackwinds.R;
-import com.nucc.hackwinds.Tide;
-
-import android.os.Bundle;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,5 +59,8 @@ public class TideArrayAdapter extends ArrayAdapter<Tide> {
         holder.hightide2TV.setText(tide.highTide2);
         holder.sunriseTV.setText(tide.sunrise);
         holder.sunsetTV.setText(tide.sunset);
+
+        // Return the completed view to render on screen
+        return rowView;
     }
 }
