@@ -13,25 +13,14 @@
                 android:id="@+id/forecastHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="10dp"
+                android:paddingTop="4dp"
                 android:paddingRight="6dp"
                 android:paddingLeft="6dp"
                 android:paddingBottom="4dp"
                 android:text="@string/loading_text"
-                android:background="@color/Lback"
+                android:background="@color/ltgrey"
                 android:textColor="@color/numixGrey"
                 style="@style/HeaderText" />
-
-            <View android:id="@+id/separator"
-                android:background="@color/ltgrey"
-                android:layout_width="fill_parent"
-                android:layout_height="1dip"
-                android:layout_centerVertical="true"
-                android:layout_alignParentTop="true"
-                android:paddingLeft="6dp"
-                android:paddingRight="6dp"
-                android:layout_weight="1"
-                android:layout_marginBottom="7dp" />
 
             <TextView
                 android:id="@+id/forecastOverview"
@@ -51,7 +40,7 @@
                 android:paddingTop="4dp"
                 android:paddingLeft="6dp"
                 android:paddingRight="6dp"
-                android:paddingBottom="5dp"
+                android:paddingBottom="7dp"
                 style="@style/DescripText" />
 
     </LinearLayout>
