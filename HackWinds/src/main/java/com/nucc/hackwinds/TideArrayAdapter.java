@@ -31,4 +31,37 @@ public class TideArrayAdapter extends ArrayAdapter<Tide> {
         this.context = context;
         this.values = values;
     }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        View rowView = convertView;
+        // Make the view reusable
+        if (rowView == null) {
+            LayoutInflater inflater = (LayoutInflater) context
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            rowView = inflater.inflate(R.layout.tide_item, parent, false);
+
+            // Set the view holder
+            ViewHolder viewHolder = new ViewHolder();
+            viewHolder.dayTV = (TextView) rowView.findViewById(R.id.tideHeader);
+            viewHolder.lowtide1TV = (TextView) rowView.findViewById(R.id.lowTide1);
+            viewHolder.lowtide2TV = (TextView) rowView.findViewById(R.id.lowTide2);
+            viewHolder.hightide1TV = (TextView) rowView.findViewById(R.id.highTide1);
+            viewHolder.hightide2TV = (TextView) rowView.findViewById(R.id.highsTide2);
+            viewHolder.sunriseTV = (TextView) rowView.findViewById(R.id.sunriseData);
+            viewHolder.sunsetTV = (TextView) rowView.findViewById(R.id.sunsetData);
+            rowView.setTag(viewHolder);
+        }
+        // fill the data
+        Tide tide = values.get(position);
+        ViewHolder holder = (ViewHolder) rowView.getTag();
+
+        holder.dayTV.setText(tide.day);
+        holder.lowtide1TV.setText(tide.lowTide1);
+        holder.lowtide2TV.setText(tide.lowTide2);
+        holder.hightide1TV.setText(tide.highTide1);
+        holder.hightide2TV.setText(tide.highTide2);
+        holder.sunriseTV.setText(tide.sunrise);
+        holder.sunsetTV.setText(tide.sunset);
+    }
 }
