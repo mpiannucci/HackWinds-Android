@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/Lback"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tideHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="4dp"
+            android:paddingRight="6dp"
+            android:paddingLeft="6dp"
+            android:paddingBottom="4dp"
+            android:text="@string/loading_text"
+            android:background="@color/ltgrey"
+            android:textColor="@color/numixGrey"
+            android:layout_gravity="left|center_vertical"
+            style="@style/HeaderText" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/Lback"
+            android:orientation="horizontal"
+            android:paddingTop="4dp"
+            android:paddingLeft="6dp"
+            android:paddingRight="6dp"
+            android:paddingBottom="7dp">
+
+            <TextView
+                android:id="@+id/lowTideheader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/low_tide"
+                style="@style/forcDataText"
+                android:layout_gravity="left|center_vertical"
+                android:layout_weight="0.8" />
+
+            <TextView
+                android:id="@+id/lowTide1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="check"
+                android:layout_weight="1"
+                android:layout_gravity="left|center_vertical"
+                style="@style/DescripText" />
+
+            <TextView
+                android:id="@+id/lowTide2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="check"
+                android:layout_weight="1"
+                android:layout_gravity="left|center_vertical"
+                style="@style/DescripText" />
+
+            </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/Lback"
+            android:orientation="horizontal"
+            android:paddingTop="4dp"
+            android:paddingLeft="6dp"
+            android:paddingRight="6dp"
+            android:paddingBottom="7dp">
+
+            <TextView
+                android:id="@+id/highTideHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/high_tide"
+                style="@style/forcDataText"
+                android:layout_gravity="left|center_vertical"
+                android:layout_weight="0.8" />
+
+            <TextView
+                android:id="@+id/highTide1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="check"
+                android:layout_weight="1"
+                android:layout_gravity="left|center_vertical"
+                style="@style/DescripText" />
+
+            <TextView
+                android:id="@+id/highsTide2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="check"
+                android:layout_weight="1"
+                android:layout_gravity="left|center_vertical"
+                style="@style/DescripText" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/Lback"
+            android:orientation="horizontal"
+            android:paddingTop="4dp"
+            android:paddingLeft="6dp"
+            android:paddingRight="6dp"
+            android:paddingBottom="7dp">
+
+            <TextView
+                android:id="@+id/sunriseheader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/sunrise"
+                style="@style/forcDataText"
+                android:layout_gravity="left|center_vertical"
+                android:layout_weight="0.8" />
+
+            <TextView
+                android:id="@+id/sunriseData"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="check"
+                android:layout_weight="1"
+                android:layout_gravity="left|center_vertical"
+                style="@style/DescripText" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/Lback"
+            android:orientation="horizontal"
+            android:paddingTop="4dp"
+            android:paddingLeft="6dp"
+            android:paddingRight="6dp"
+            android:paddingBottom="7dp">
+
+            <TextView
+                android:id="@+id/sunsetheader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/sunset"
+                style="@style/forcDataText"
+                android:layout_gravity="left|center_vertical"
+                android:layout_weight="0.8" />
+
+            <TextView
+                android:id="@+id/sunsetData"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="check"
+                android:layout_weight="1"
+                android:layout_gravity="left|center_vertical"
+                style="@style/DescripText" />
+
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

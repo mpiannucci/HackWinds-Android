@@ -68,7 +68,7 @@ public class currentFragment extends ListFragment {
         Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_WEEK);
         date.setText(days[day-1]);
-        
+
         return V;
     }
 
