@@ -1,9 +1,7 @@
 HackWinds
 =====================
 
-Displays the live HD feed and the live still images from the surf camera at [Narragansett Town Beach](http://www.warmwinds.com/surf-cam/) in Rhode Island. Also scrapes wave forecast information from [SwellInfo](http://www.swellinfo.com/surf-forecast/newport-rhode-island), [MagicSeaweed](http://magicseaweed.com/Narragansett-Beach-Surf-Report/1103/), and [Wunderground](http://www.wunderground.com/?apiref=b80661e4fc362f50)
-
-![alt tag](http://imgur.com/lNMeF3y) ![alt tag](http://imgur.com/yaTgmot)
+Displays the live HD feed and the live still images from the surf camera at [Narragansett Town Beach](http://www.warmwinds.com/surf-cam/) in Rhode Island. Also scrapes wave forecast information from [SwellInfo](http://www.swellinfo.com/surf-forecast/newport-rhode-island), [MagicSeaweed](http://magicseaweed.com/Narragansett-Beach-Surf-Report/1103/), and [Wunderground](http://www.wunderground.com/?apiref=b80661e4fc362f50).
 
 Disclaimer 
 ----------------
