@@ -12,6 +12,16 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="false" />
 
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:orientation="vertical"
+        android:paddingLeft="6dp"
+        android:paddingRight="6dp"
+        android:padding="4dp"
+        android:paddingBottom="4dp"
+        android:background="@color/ltgrey" >
+
     <TextView
         android:id="@+id/dateHeader"
         android:layout_width="match_parent"
@@ -91,5 +101,7 @@
         android:dividerHeight="1dp"
         android:divider="@color/numixGrey"
         android:background="@color/Lback"/>
+
+    </LinearLayout>
 
 </LinearLayout>
