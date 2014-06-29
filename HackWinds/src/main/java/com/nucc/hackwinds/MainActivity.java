@@ -132,32 +132,37 @@ public class MainActivity extends FragmentActivity implements
 			// Return a DummySectionFragment (defined as a static inner class
 			// below) with the page number as its lone argument.
 			switch (position) {
-			case 0: 
-				// Return the video stream 
-				return new currentFragment();
-			case 1:
-				// Return the second fragment view
-				return new forecastFragment();
-			}
+                case 0:
+                    // Return the video stream
+                    return new currentFragment();
+                case 1:
+                    // Return the forecast fragment view
+                    return new forecastFragment();
+                case 2:
+                    // Return the tide fragment view
+                    return  new tideFragment();
+            }
 			return null;
 		}
 
 		@Override
 		public int getCount() {
-			// Show 2 total pages.
-			return 2;
+			// Show 3 total pages.
+			return 3;
 		}
 
 		@Override
 		public CharSequence getPageTitle(int position) {
-			Locale l = Locale.getDefault();
-			switch (position) {
-			case 0:
-				return getString(R.string.action_live).toUpperCase(l);
-			case 1:
-				return getString(R.string.action_forecast).toUpperCase(l);
-			}
-			return null;
-		}
+            Locale l = Locale.getDefault();
+            switch (position) {
+                case 0:
+                    return getString(R.string.action_live).toUpperCase(l);
+                case 1:
+                    return getString(R.string.action_forecast).toUpperCase(l);
+                case 2:
+                    return getString(R.string.action_tide).toUpperCase(l);
+            }
+            return null;
+        }
 	}
 }
