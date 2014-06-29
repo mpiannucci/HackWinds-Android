@@ -30,6 +30,12 @@
         <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
+    <style name="tideDescripText">
+        <item name="android:textColor">@color/numixGrey</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">sans-serif-bold</item>
+    </style>
+
     <style name="DataHeaderText">
         <item name="android:textColor">@color/numixGrey</item>
         <item name="android:textSize">19sp</item>

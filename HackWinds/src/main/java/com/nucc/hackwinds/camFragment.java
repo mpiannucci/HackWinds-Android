@@ -11,7 +11,6 @@ import android.widget.ImageView.ScaleType;
 import android.support.v4.widget.SwipeRefreshLayout;
 
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
-import com.nucc.hackwinds.R;
 
 
 public class camFragment extends Fragment {

@@ -9,18 +9,12 @@ import android.support.v4.app.ListFragment;
 import android.text.format.Time;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.view.LayoutInflater;
 import android.util.Log;
 import java.util.ArrayList;
 import android.os.AsyncTask;
 import java.lang.Integer;
-import java.text.DateFormat;
-import java.util.Date;
-import java.text.SimpleDateFormat;
-import java.util.TimeZone;
-import java.lang.Long;
-import java.util.Calendar;
+
 
 public class tideFragment extends ListFragment {
 
@@ -94,11 +88,6 @@ public class tideFragment extends ListFragment {
                         String day = tideSummary.getJSONObject(k).getJSONObject("date").getString("mday");
                         String hour = tideSummary.getJSONObject(k).getJSONObject("date").getString("hour");
                         String min = tideSummary.getJSONObject(k).getJSONObject("date").getString("min");
-
-                        if (k == (tideSummary.length()-1)) {
-                            Log.e("hackwinds", type);
-                            Log.e("hackwinds", day);
-                        }
 
                         // Check the date
                         if (Integer.parseInt(day) != today) {
