@@ -2,8 +2,6 @@ package com.nucc.hackwinds;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 
@@ -16,7 +14,6 @@ public class SettingsActivity extends Activity {
         super.onCreate(savedInstanceState);
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#47A3FF")));
         /*
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 

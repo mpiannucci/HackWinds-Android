@@ -7,6 +7,7 @@
     <string name="action_forecast">Forecast</string>
     <string name="action_live">Live</string>
     <string name="action_tide">Tide</string>
+    <string name="action_pics">Still Camera</string>
 
     <!-- Overview Page -->
     <string name="break_header">Waves</string>

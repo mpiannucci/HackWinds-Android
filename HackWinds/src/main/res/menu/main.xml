@@ -1,7 +1,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <item android:id="@+id/action_settings"
-          android:icon="@drawable/action_settings"
-          android:title="@string/action_settings"
-          android:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_pics"
+        android:icon="@drawable/ic_content_picture"
+        android:title="@string/action_pics" />
+
+    <item
+        android:id="@+id/action_settings"
+        android:icon="@drawable/action_settings"
+        android:title="@string/action_settings" />
 </menu>

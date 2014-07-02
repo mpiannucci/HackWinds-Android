@@ -43,7 +43,6 @@ public class MainActivity extends FragmentActivity implements
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#47A3FF")));
 
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the app.
@@ -88,11 +87,16 @@ public class MainActivity extends FragmentActivity implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    // Handle item selection
 	    switch (item.getItemId()) {
-	    case R.id.action_settings:
-	    	// Show the settings
-            Log.d("hackWinds", "Settings Shown");
-            startActivity(new Intent(this, SettingsActivity.class));
-	        return true;
+	        case R.id.action_settings:
+	    	    // Show the settings
+                Log.d("hackWinds", "Settings Shown");
+                startActivity(new Intent(this, SettingsActivity.class));
+	            return true;
+            case R.id.action_pics:
+                // Show the still camera
+                Log.d("hackwinds", "Still Camera Shown");
+                startActivity(new Intent(this, StillActivity.class));
+                return true;
 	    default:
 	        return super.onOptionsItemSelected(item);
 	    }

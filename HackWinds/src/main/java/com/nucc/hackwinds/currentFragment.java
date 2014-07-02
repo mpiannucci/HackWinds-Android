@@ -8,9 +8,12 @@ import android.app.ActionBar;
 import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.text.Layout;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.VideoView;
 import android.net.Uri;
@@ -61,8 +64,6 @@ public class currentFragment extends ListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View V = inflater.inflate(R.layout.current_fragment, container, false);
-        //streamView = (VideoView) V.findViewById(R.id.currentVideoStreamView);
-        //new BackgroundVideoAsyncTask().execute(streamURL);
 
         TextView date = (TextView) V.findViewById(R.id.dateHeader);
         Calendar calendar = Calendar.getInstance();
@@ -75,11 +76,13 @@ public class currentFragment extends ListFragment {
         img.setScaleType(ImageView.ScaleType.FIT_XY);
         img.setAdjustViewBounds(true);
 
-        img.setOnClickListener(new View.OnClickListener() {
+        ImageView pb = (ImageView) V.findViewById(R.id.pbOverlay);
+
+        pb.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 v.setVisibility(View.GONE);
-                ImageView pb = (ImageView) getActivity().findViewById(R.id.pbOverlay);
-                pb.setVisibility(View.GONE);
+                ImageView pic = (ImageView) getActivity().findViewById(R.id.imageOverlay);
+                pic.setVisibility(View.GONE);
                 streamView = (VideoView) getActivity().findViewById(R.id.currentVideoStreamView);
                 streamView.setVisibility(View.VISIBLE);
                 new BackgroundVideoAsyncTask().execute(streamURL);
@@ -188,7 +191,6 @@ public class currentFragment extends ListFragment {
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            Log.e("hackwinds", String.valueOf(conditionValues.size()));
             adapter = new ConditionArrayAdapter(getActivity(), conditionValues);
             setListAdapter(adapter);
         }
