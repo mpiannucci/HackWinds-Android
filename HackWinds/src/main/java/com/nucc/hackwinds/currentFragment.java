@@ -4,10 +4,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.ActionBar;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.VideoView;
 import android.net.Uri;
@@ -17,6 +20,9 @@ import java.util.ArrayList;
 import android.os.AsyncTask;
 import android.app.ProgressDialog;
 import android.media.MediaPlayer;
+
+import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
+
 import java.lang.Integer;
 import java.text.DateFormat;
 import java.util.Date;
@@ -31,6 +37,10 @@ public class currentFragment extends ListFragment {
     String streamURL = "http://162.243.101.197:1935/surfcam/live.stream/playlist.m3u8";
     public String mswURL = "http://magicseaweed.com/api/nFSL2f845QOAf1Tuv7Pf5Pd9PXa5sVTS/forecast/?spot_id=1103&fields=localTimestamp,swell.*,wind.*";
     String[] days = new String[] {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+
+    int cacheDuration = 3000;
+    static String urlBase = "http://www.warmwinds.com/wp-content/uploads/surf-cam-stills/image0000";
+    static String urlExt = ".jpg";
 
     ArrayList<Condition> conditionValues;
     ConditionArrayAdapter adapter;
@@ -51,13 +61,30 @@ public class currentFragment extends ListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View V = inflater.inflate(R.layout.current_fragment, container, false);
-        streamView = (VideoView) V.findViewById(R.id.currentVideoStreamView);
-        new BackgroundVideoAsyncTask().execute(streamURL);
+        //streamView = (VideoView) V.findViewById(R.id.currentVideoStreamView);
+        //new BackgroundVideoAsyncTask().execute(streamURL);
 
         TextView date = (TextView) V.findViewById(R.id.dateHeader);
         Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_WEEK);
         date.setText(days[day-1]);
+
+        ImageView img = (ImageView) V.findViewById(R.id.imageOverlay);
+        UrlImageViewHelper.setUrlDrawable(img, urlBase + Integer.toString(1) + urlExt, null, cacheDuration);
+        img.getLayoutParams().width = ActionBar.LayoutParams.MATCH_PARENT;
+        img.setScaleType(ImageView.ScaleType.FIT_XY);
+        img.setAdjustViewBounds(true);
+
+        img.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                v.setVisibility(View.GONE);
+                ImageView pb = (ImageView) getActivity().findViewById(R.id.pbOverlay);
+                pb.setVisibility(View.GONE);
+                streamView = (VideoView) getActivity().findViewById(R.id.currentVideoStreamView);
+                streamView.setVisibility(View.VISIBLE);
+                new BackgroundVideoAsyncTask().execute(streamURL);
+            }
+        });
 
         return V;
     }

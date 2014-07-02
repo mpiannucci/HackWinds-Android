@@ -5,13 +5,35 @@
     android:orientation="vertical"
     android:background="@color/Lback">
 
-    <VideoView
-        android:id="@+id/currentVideoStreamView"
-        android:layout_width="fill_parent"
+    <FrameLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="false"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        android:background="@color/ltgrey">
+
+        <VideoView
+            android:id="@+id/currentVideoStreamView"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="false"
+            android:visibility="gone"/>
+
+        <ImageView
+            android:id="@+id/imageOverlay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+        <ImageView
+            android:id="@+id/pbOverlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_av_play_over_video"
+            android:layout_gravity="center_horizontal|center_vertical"
+            />
+
+    </FrameLayout>
 
     <LinearLayout
         android:layout_height="wrap_content"
