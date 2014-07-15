@@ -79,7 +79,6 @@ public class tideFragment extends ListFragment {
                     int lowcount = 0;
                     int highcount = 0;
                     int datacount = 0;
-                    int tideTotal = 0;
 
                     for (int k=0; k < tideSummary.length(); k++) {
 
@@ -94,11 +93,15 @@ public class tideFragment extends ListFragment {
                         if (Integer.parseInt(day) != today) {
                             // Increment the day indices
                             // Check if there was enough data, if not increment the array
-                            if (datacount < 2) {
-                                for (int l = 0; l<5; l++) {
-                                    // move each day up by one
-                                    tideValues.get(l).day = days[(todayWeek + l + 1) % days.length];
+                            if (datacount < 5) {
+                                if (datacount < 2) {
+                                    for (int l = 0; l < 5; l++) {
+                                        // move each day up by one
+                                        tideValues.get(l).day = days[(todayWeek + l + 1) % days.length];
+                                    }
                                 }
+                                highcount = 0;
+                                lowcount = 0;
                             }
                             else {
                                 daycount++;
@@ -114,9 +117,6 @@ public class tideFragment extends ListFragment {
                                 today++;
                             }
 
-                            // Its a new day so new tides
-                            tideTotal = 0;
-
                             // Check index
                             if (daycount > 4) {
                                 break;
@@ -126,36 +126,24 @@ public class tideFragment extends ListFragment {
                         // Check the tide type
                         if (type.equals(LOW_TIDE_TAG)) {
                             if (lowcount == 1) {
-                                if (tideTotal > 2) {
-                                    tideValues.get(daycount).lowTide2 = hour + ":" + min;
-                                }
-                                else {
-                                    tideValues.get(daycount).lowTide1 = hour + ":" +min;
-                                }
+                                tideValues.get(daycount).lowTide2 = hour + ":" +min;
                                 lowcount = 0;
                             }
                             else {
                                 tideValues.get(daycount).lowTide1 = hour + ":" +min;
                                 lowcount++;
                             }
-                            tideTotal++;
                             datacount++;
                         }
                         else if (type.equals(HIGH_TIDE_TAG)) {
                             if (highcount == 1) {
-                                if (tideTotal > 2) {
-                                    tideValues.get(daycount).highTide2 = hour + ":" + min;
-                                }
-                                else {
-                                    tideValues.get(daycount).highTide1 = hour + ":" +min;
-                                }
+                                tideValues.get(daycount).highTide2 = hour + ":" +min;
                                 highcount = 0;
                             }
                             else {
                                 tideValues.get(daycount).highTide1 = hour + ":" +min;
                                 highcount++;
                             }
-                            tideTotal++;
                             datacount++;
                         }
                         else if (type.equals(SUNRISE_TAG)) {
