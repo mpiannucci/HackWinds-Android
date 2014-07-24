@@ -6,20 +6,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
 import java.util.ArrayList;
 
 public class TideArrayAdapter extends ArrayAdapter<Tide> {
     private final Context context;
     private final ArrayList<Tide> values;
+    private int[] headerIDs = new int[] {R.id.tideHeader1, R.id.tideHeader2, R.id.tideHeader3,
+        R.id.tideHeader4, R.id.tideHeader5, R.id.tideHeader6};
+    private int[] dataIDs = new int[] {R.id.tideData1, R.id.tideData2, R.id.tideData3,
+            R.id.tideData4, R.id.tideData5, R.id.tideData6};
 
     static class ViewHolder {
         public TextView dayTV;
-        public TextView lowtide1TV;
-        public TextView lowtide2TV;
-        public TextView hightide1TV;
-        public TextView hightide2TV;
-        public TextView sunriseTV;
-        public TextView sunsetTV;
+        public TextView[] headers;
+        public TextView[] datas;
     }
 
     public TideArrayAdapter(Context context, ArrayList<Tide> values) {
@@ -39,13 +40,13 @@ public class TideArrayAdapter extends ArrayAdapter<Tide> {
 
             // Set the view holder
             ViewHolder viewHolder = new ViewHolder();
+            viewHolder.headers = new TextView[6];
+            viewHolder.datas = new TextView[6];
             viewHolder.dayTV = (TextView) rowView.findViewById(R.id.tideHeader);
-            viewHolder.lowtide1TV = (TextView) rowView.findViewById(R.id.lowTide1);
-            viewHolder.lowtide2TV = (TextView) rowView.findViewById(R.id.lowTide2);
-            viewHolder.hightide1TV = (TextView) rowView.findViewById(R.id.highTide1);
-            viewHolder.hightide2TV = (TextView) rowView.findViewById(R.id.highsTide2);
-            viewHolder.sunriseTV = (TextView) rowView.findViewById(R.id.sunriseData);
-            viewHolder.sunsetTV = (TextView) rowView.findViewById(R.id.sunsetData);
+            for (int i=0; i<6; i++) {
+                viewHolder.headers[i] = (TextView)rowView.findViewById(headerIDs[i]);
+                viewHolder.datas[i] = (TextView) rowView.findViewById(dataIDs[i]);
+            }
             rowView.setTag(viewHolder);
         }
         // fill the data
@@ -53,12 +54,16 @@ public class TideArrayAdapter extends ArrayAdapter<Tide> {
         ViewHolder holder = (ViewHolder) rowView.getTag();
 
         holder.dayTV.setText(tide.day);
-        holder.lowtide1TV.setText(tide.lowTide1);
-        holder.lowtide2TV.setText(tide.lowTide2);
-        holder.hightide1TV.setText(tide.highTide1);
-        holder.hightide2TV.setText(tide.highTide2);
-        holder.sunriseTV.setText(tide.sunrise);
-        holder.sunsetTV.setText(tide.sunset);
+        for (int i=0; i<6; i++) {
+            if ((tide.dType[i] == null) || (tide.dValue[i] == null)) {
+                holder.headers[i].setVisibility(View.GONE);
+                holder.datas[i].setVisibility(View.GONE);
+            }
+            else {
+                holder.headers[i].setText(tide.dType[i]);
+                holder.datas[i].setText(tide.dValue[i]);
+            }
+        }
 
         // Return the completed view to render on screen
         return rowView;

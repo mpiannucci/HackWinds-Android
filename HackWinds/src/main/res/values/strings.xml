@@ -33,6 +33,7 @@
     <string name="high_tide">High Tide</string>
     <string name="sunrise">Sunrise</string>
     <string name="sunset">Sunset</string>
+    <string name="tide_holder">Data Type</string>
 
     <!-- Settings Page -->
     <string name="pref_about_title">About</string>
