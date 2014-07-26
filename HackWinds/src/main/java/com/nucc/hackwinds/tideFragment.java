@@ -1,19 +1,19 @@
 package com.nucc.hackwinds;
 
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.v4.app.ListFragment;
+import android.text.format.Time;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.os.Bundle;
-import android.support.v4.app.ListFragment;
-import android.text.format.Time;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.LayoutInflater;
-import android.util.Log;
 import java.util.ArrayList;
-import android.os.AsyncTask;
-import java.lang.Integer;
 
 
 public class tideFragment extends ListFragment {
@@ -32,6 +32,9 @@ public class tideFragment extends ListFragment {
     String HIGH_TIDE_TAG = "High Tide";
     String SUNRISE_TAG = "Sunrise";
     String SUNSET_TAG = "Sunset";
+    String NEW_MOON_TAG = "New Moon";
+    String MOONSET_TAG = "Moonset";
+    String MOONRISE_TAG = "Moonrise";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,7 +61,7 @@ public class tideFragment extends ListFragment {
 
         // Set the header text to the date
         for (int i = 0; i<5; i++) {
-            tideValues.add(new Tide(days[(now.weekDay + i) % days.length], "", "", "", "", "", ""));
+            tideValues.add(new Tide(days[(now.weekDay + i) % days.length]));
         }
     }
 
@@ -76,8 +79,6 @@ public class tideFragment extends ListFragment {
                     JSONObject jsonObj = new JSONObject(jsonStr);
                     JSONArray tideSummary = jsonObj.getJSONObject("tide").getJSONArray("tideSummary");
                     int daycount = 0;
-                    int lowcount = 0;
-                    int highcount = 0;
                     int datacount = 0;
 
                     for (int k=0; k < tideSummary.length(); k++) {
@@ -100,8 +101,6 @@ public class tideFragment extends ListFragment {
                                         tideValues.get(l).day = days[(todayWeek + l + 1) % days.length];
                                     }
                                 }
-                                highcount = 0;
-                                lowcount = 0;
                             }
                             else {
                                 daycount++;
@@ -121,40 +120,19 @@ public class tideFragment extends ListFragment {
                             if (daycount > 4) {
                                 break;
                             }
+
+                            // Reset the data count
+                            datacount = 0;
                         }
 
-                        // Check the tide type
-                        if (type.equals(LOW_TIDE_TAG)) {
-                            if (lowcount == 1) {
-                                tideValues.get(daycount).lowTide2 = hour + ":" +min;
-                                lowcount = 0;
-                            }
-                            else {
-                                tideValues.get(daycount).lowTide1 = hour + ":" +min;
-                                lowcount++;
-                            }
+                        // Append the data to the current tide object
+                        if ((type.equals(MOONRISE_TAG)) || (type.equals(MOONSET_TAG)) || (type.equals(NEW_MOON_TAG))) {
+                            Log.e("hackwinds", type);
+                        }
+                        else {
+                            tideValues.get(daycount).addDataItem(type, hour + ":" +min, datacount);
                             datacount++;
                         }
-                        else if (type.equals(HIGH_TIDE_TAG)) {
-                            if (highcount == 1) {
-                                tideValues.get(daycount).highTide2 = hour + ":" +min;
-                                highcount = 0;
-                            }
-                            else {
-                                tideValues.get(daycount).highTide1 = hour + ":" +min;
-                                highcount++;
-                            }
-                            datacount++;
-                        }
-                        else if (type.equals(SUNRISE_TAG)) {
-                            tideValues.get(daycount).sunrise = hour + ":" +min;
-                            datacount++;
-                        }
-                        else if (type.equals(SUNSET_TAG)) {
-                            tideValues.get(daycount).sunset = hour + ":" +min;
-                            datacount++;
-                        }
-
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -169,10 +147,6 @@ public class tideFragment extends ListFragment {
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            if (tideValues.get(tideValues.size()-1).lowTide1.equals("") &
-                    (tideValues.get(tideValues.size()-1).highTide1.equals(""))) {
-                tideValues.remove(tideValues.size()-1);
-            }
             adapter = new TideArrayAdapter(getActivity(), tideValues);
             setListAdapter(adapter);
         }
