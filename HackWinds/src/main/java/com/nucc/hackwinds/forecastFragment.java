@@ -64,7 +64,7 @@ public class forecastFragment extends ListFragment {
         dialog.setTitle(days[(day-1+pos)%days.length]);
         forcDialogList =  (ListView) dialog.findViewById(R.id.forcDialogList);
         conditionValues = new ArrayList<Condition>();
-        new BackgroundMSWAsyncTask().execute(5, pos);
+        new BackgroundMSWAsyncTask().execute(6, pos);
         dialog.setCanceledOnTouchOutside(true);
         dialog.show();
     }

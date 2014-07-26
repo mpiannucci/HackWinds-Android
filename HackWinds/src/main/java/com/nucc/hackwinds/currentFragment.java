@@ -1,38 +1,32 @@
 package com.nucc.hackwinds;
 
+import android.app.ActionBar;
+import android.app.ProgressDialog;
+import android.media.MediaPlayer;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.v4.app.ListFragment;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.VideoView;
+
+import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.ActionBar;
-import android.media.Image;
-import android.os.Bundle;
-import android.support.v4.app.ListFragment;
-import android.text.Layout;
-import android.view.Gravity;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.VideoView;
-import android.net.Uri;
-import android.view.LayoutInflater;
-import android.util.Log;
-import java.util.ArrayList;
-import android.os.AsyncTask;
-import android.app.ProgressDialog;
-import android.media.MediaPlayer;
-
-import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
-
-import java.lang.Integer;
 import java.text.DateFormat;
-import java.util.Date;
 import java.text.SimpleDateFormat;
-import java.util.TimeZone;
-import java.lang.Long;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
 
 
 public class currentFragment extends ListFragment {
@@ -57,7 +51,7 @@ public class currentFragment extends ListFragment {
         //     String windSpeed, String windDeg, String windDir, String swellHeight,
         //     String swellPeriod, String swellDeg) 
         conditionValues = new ArrayList<Condition>();
-        new BackgroundMSWAsyncTask().execute(5);
+        new BackgroundMSWAsyncTask().execute(6);
     }
 
     @Override
@@ -216,7 +210,7 @@ public class currentFragment extends ListFragment {
         int ampmStamp = dateString.indexOf("AM"); 
         int hour00 = dateString.indexOf("0");
         int hour03 = dateString.indexOf("3");
-        if ((ampmStamp > -1) && ((hour00 > -1)) || (hour03 > -1)) {
+        if (((ampmStamp > -1) && (hour00 > -1)) || ((ampmStamp > -1) && (hour03 > -1))) {
             return false;
         }
         return true;
