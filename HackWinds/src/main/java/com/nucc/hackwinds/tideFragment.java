@@ -127,7 +127,7 @@ public class tideFragment extends ListFragment {
 
                         // Append the data to the current tide object
                         if ((type.equals(MOONRISE_TAG)) || (type.equals(MOONSET_TAG)) || (type.equals(NEW_MOON_TAG))) {
-                            Log.e("hackwinds", type);
+                            // Do nothing cuz these values suck
                         }
                         else {
                             tideValues.get(daycount).addDataItem(type, hour + ":" +min, datacount);

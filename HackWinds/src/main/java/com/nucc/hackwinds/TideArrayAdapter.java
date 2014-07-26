@@ -60,6 +60,8 @@ public class TideArrayAdapter extends ArrayAdapter<Tide> {
                 holder.datas[i].setVisibility(View.GONE);
             }
             else {
+                holder.headers[i].setVisibility(View.VISIBLE);
+                holder.datas[i].setVisibility(View.VISIBLE);
                 holder.headers[i].setText(tide.dType[i]);
                 holder.datas[i].setText(tide.dValue[i]);
             }
