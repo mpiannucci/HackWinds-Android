@@ -147,6 +147,9 @@ public class tideFragment extends ListFragment {
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
+            if (tideValues.get(tideValues.size()-1).dType[0] == null) {
+                tideValues.remove(tideValues.size()-1);
+            }
             adapter = new TideArrayAdapter(getActivity(), tideValues);
             setListAdapter(adapter);
         }
