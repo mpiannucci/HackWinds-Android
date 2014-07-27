@@ -16,10 +16,6 @@
     <string name="tide_header">Tide</string>
     <string name="data_header">Data</string>
     <string name="time_header">Time</string>
-    <string name="swell_holder">6.5 Ft @ 6 s</string>
-    <string name="wind_holder">W 50 mph</string>
-    <string name="break_holder">3 - 5 feet</string>
-
 
     <!-- Forecast Page -->
     <string name="header_forecast">Swell Forecast</string>
