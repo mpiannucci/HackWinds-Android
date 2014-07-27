@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
@@ -45,8 +46,10 @@ public class SettingsActivity extends Activity {
             // Load the preferences from an XML resource
             addPreferencesFromResource(R.xml.preferences);
 
-            Preference myPref = findPreference("pref_key_disclaimer");
-            myPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            Preference disclaimerPref = findPreference("pref_key_disclaimer");
+            Preference emailPref = findPreference("pref_key_contact");
+
+            disclaimerPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
                     final AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getActivity());
@@ -63,6 +66,23 @@ public class SettingsActivity extends Activity {
                     alertBuilder.setIcon(R.drawable.ic_launcher);
                     AlertDialog disclaimerAlert = alertBuilder.create();
                     disclaimerAlert.show();
+                    return true;
+                }
+            });
+
+            emailPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    /* Create the Intent */
+                    final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+
+                    /* Fill it with Data */
+                    emailIntent.setType("plain/text");
+                    emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"rhodysurf13@gmail.com"});
+                    emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "HackWinds for Android");
+
+                    /* Send it off to the Activity-Chooser */
+                    getActivity().startActivity(Intent.createChooser(emailIntent, "Send mail..."));
                     return true;
                 }
             });
