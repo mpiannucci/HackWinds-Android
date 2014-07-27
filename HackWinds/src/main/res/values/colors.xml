@@ -10,6 +10,7 @@
     <color name="medgrey">#696969</color>
     <color name="Lback">#FAFAFA</color>
     <color name="iconBlue">#0000FF</color>
+    <color name="dialogBack">#F7F7F7</color>
     <color name="swipe_color_1">#C2F9FF</color>
     <color name="swipe_color_2">#41D8FC</color>
     <color name="swipe_color_3">#007EFF</color>

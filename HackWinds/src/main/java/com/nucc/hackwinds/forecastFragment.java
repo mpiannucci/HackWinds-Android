@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 
 import org.json.JSONArray;
@@ -31,10 +32,12 @@ public class forecastFragment extends ListFragment {
     ArrayList<Forecast> forecastValues;
     ForecastArrayAdapter adapter;
     String[] days = new String[] {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
-    public String mswURL = "http://magicseaweed.com/api/nFSL2f845QOAf1Tuv7Pf5Pd9PXa5sVTS/forecast/?spot_id=1103&fields=localTimestamp,swell.*,wind.*";
+    String mswURL = "http://magicseaweed.com/api/nFSL2f845QOAf1Tuv7Pf5Pd9PXa5sVTS/forecast/?spot_id=1103&fields=localTimestamp,swell.*,wind.*";
+    String swinURL = "http://www.swellinfo.com/surf-forecast/newport-rhode-island";
     ArrayList<Condition> conditionValues;
     ConditionArrayAdapter conditionAdapter;
     ListView forcDialogList;
+    Boolean tomorrow = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,7 +67,24 @@ public class forecastFragment extends ListFragment {
         dialog.setTitle(days[(day-1+pos)%days.length]);
         forcDialogList =  (ListView) dialog.findViewById(R.id.forcDialogList);
         conditionValues = new ArrayList<Condition>();
-        new BackgroundMSWAsyncTask().execute(6, pos);
+        if (tomorrow) {
+            if (pos == 4) {
+                dialog.setContentView(R.layout.forecast_dialog_fail);
+                Button doneButton = (Button) dialog.findViewById(R.id.failConfirm);
+                doneButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+            }
+            else {
+                new BackgroundMSWAsyncTask().execute(6, pos + 1);
+            }
+        }
+        else {
+            new BackgroundMSWAsyncTask().execute(6, pos);
+        }
         dialog.setCanceledOnTouchOutside(true);
         dialog.show();
     }
@@ -75,8 +95,17 @@ public class forecastFragment extends ListFragment {
         now.setToNow();
 
         // Set the header text to the date
-        for (int i = 0; i<5; i++) {
-            forecastValues.add(new Forecast(days[(now.weekDay + i) % days.length], "",""));
+        if (now.hour < 18) {
+            for (int i = 0; i < 5; i++) {
+                forecastValues.add(new Forecast(days[(now.weekDay + i) % days.length], "", ""));
+            }
+            tomorrow = false;
+        }
+        else {
+            for (int i = 1; i < 6; i++) {
+                forecastValues.add(new Forecast(days[(now.weekDay + i) % days.length], "", ""));
+            }
+            tomorrow = true;
         }
     }
 
@@ -92,7 +121,7 @@ public class forecastFragment extends ListFragment {
         @Override
         protected Void doInBackground(Void... arg0) {
             try {
-                doc = Jsoup.connect("http://www.swellinfo.com/surf-forecast/newport-rhode-island").get();
+                doc = Jsoup.connect(swinURL).get();
                 Elements elements = doc.select("p");
                 int count = 0;
                 for (int i=0; i<10; i++) {

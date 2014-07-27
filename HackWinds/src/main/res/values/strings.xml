@@ -27,6 +27,7 @@
     <string name="tomorrow_header">Tomorrow</string>
     <string name="next_day_header">The Next Day</string>
     <string name="loading_text">Loading...</string>
+    <string name="forecast_tomorrow">Data is not yet available for this day. Please check back after midnight.</string>
 
     <!-- Tide Page -->
     <string name="low_tide">Low Tide</string>
@@ -43,4 +44,7 @@
     <string name="pref_disclaimer_title">Disclaimer</string>
     <string name="pref_disclaimer_summary">Click to view</string>
     <string name="pref_disclaimer_message">I do not own the images displayed or the forecast data, nor do I claim to.</string>
+
+    <!-- Utility strings -->
+    <string name="confirm">Okay</string>
 </resources>
