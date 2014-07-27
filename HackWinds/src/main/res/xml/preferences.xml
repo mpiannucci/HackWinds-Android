@@ -4,15 +4,26 @@
     <PreferenceCategory 
         android:title="@string/pref_about_title"
         android:key="pref_key_other">
-        
+
         <Preference
             android:key="pref_key_about_app"
             android:title="@string/app_name"
             android:summary="@string/pref_about_app_summary" />
-        
+
+        <Preference
+            android:key="pref_key_disclaimer"
+            android:title="@string/pref_disclaimer_title"
+            android:summary="@string/pref_disclaimer_summary" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_contact_title"
+        android:key="pref_key_other">
+
         <Preference 
             android:key="pref_key_contact"
-            android:title="@string/pref_contact_title"
+            android:title="@string/pref_email_title"
             android:summary="@string/pref_contact_email" />
         
     </PreferenceCategory>
