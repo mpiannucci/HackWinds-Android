@@ -35,6 +35,6 @@ repositories {
 
 dependencies {
     compile 'com.android.support:support-v4:20.+'
-    compile files('libs/urlimageviewhelper-1.0.4.jar')
+    compile 'com.koushikdutta.ion:ion:1.+'
     compile files('libs/jsoup-1.7.2.jar')
 }

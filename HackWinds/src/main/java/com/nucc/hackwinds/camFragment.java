@@ -3,14 +3,14 @@ package com.nucc.hackwinds;
 import android.app.ActionBar.LayoutParams;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
-import android.support.v4.widget.SwipeRefreshLayout;
 
-import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
+import com.koushikdutta.ion.Ion;
 
 
 public class camFragment extends Fragment {
@@ -44,7 +44,7 @@ public class camFragment extends Fragment {
             public void onRefresh() {
                 for (int i=0; i<resIds.length; i++) {
                 img = (ImageView) getActivity().findViewById(resIds[i]);
-                UrlImageViewHelper.setUrlDrawable(img, urlBase + Integer.toString(i) + urlExt, null, cacheDuration);
+                Ion.with(getActivity()).load(urlBase + Integer.toString(i+1) + urlExt).intoImageView(img);
                 img.getLayoutParams().width = LayoutParams.MATCH_PARENT;
                 img.setScaleType(ScaleType.FIT_XY);
                 img.setAdjustViewBounds(true);
@@ -55,7 +55,7 @@ public class camFragment extends Fragment {
         });
 
         // Set the color scheme of the SwipeRefreshLayout by providing 4 color resource ids
-        mSwipeRefreshLayout.setColorScheme(
+        mSwipeRefreshLayout.setColorSchemeResources(
                 R.color.jblue, R.color.swipe_color_4,
                 R.color.swipe_color_2, R.color.swipe_color_3);
 
@@ -67,7 +67,7 @@ public class camFragment extends Fragment {
     public void loadImages(View rootView) {
         for (int i=0; i<resIds.length; i++) {
             img = (ImageView) rootView.findViewById(resIds[i]);
-            UrlImageViewHelper.setUrlDrawable(img, urlBase + Integer.toString(i) + urlExt, null, cacheDuration);
+            Ion.with(getActivity()).load(urlBase + Integer.toString(i+1) + urlExt).intoImageView(img);
             img.getLayoutParams().width = LayoutParams.MATCH_PARENT;
             img.setScaleType(ScaleType.FIT_XY);
             img.setAdjustViewBounds(true);

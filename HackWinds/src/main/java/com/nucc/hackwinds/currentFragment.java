@@ -15,7 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.VideoView;
 
-import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
+import com.koushikdutta.ion.Ion;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,8 +36,7 @@ public class currentFragment extends ListFragment {
     String[] days = new String[] {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 
     int cacheDuration = 3000;
-    static String urlBase = "http://www.warmwinds.com/wp-content/uploads/surf-cam-stills/image0000";
-    static String urlExt = ".jpg";
+    static String imgUrl = "http://www.warmwinds.com/wp-content/uploads/surf-cam-stills/image00001.jpg";
 
     ArrayList<Condition> conditionValues;
     ConditionArrayAdapter adapter;
@@ -65,7 +64,7 @@ public class currentFragment extends ListFragment {
         date.setText(days[day-1]);
 
         ImageView img = (ImageView) V.findViewById(R.id.imageOverlay);
-        UrlImageViewHelper.setUrlDrawable(img, urlBase + Integer.toString(1) + urlExt, null, cacheDuration);
+        Ion.with(getActivity()).load(imgUrl).intoImageView(img);
         img.getLayoutParams().width = ActionBar.LayoutParams.MATCH_PARENT;
         img.setScaleType(ImageView.ScaleType.FIT_XY);
         img.setAdjustViewBounds(true);
