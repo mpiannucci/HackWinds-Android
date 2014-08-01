@@ -32,9 +32,6 @@ public class tideFragment extends ListFragment {
     String HIGH_TIDE_TAG = "High Tide";
     String SUNRISE_TAG = "Sunrise";
     String SUNSET_TAG = "Sunset";
-    String NEW_MOON_TAG = "New Moon";
-    String MOONSET_TAG = "Moonset";
-    String MOONRISE_TAG = "Moonrise";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -126,12 +123,13 @@ public class tideFragment extends ListFragment {
                         }
 
                         // Append the data to the current tide object
-                        if ((type.equals(MOONRISE_TAG)) || (type.equals(MOONSET_TAG)) || (type.equals(NEW_MOON_TAG))) {
-                            // Do nothing cuz these values suck
-                        }
-                        else {
+                        if ((type.equals(HIGH_TIDE_TAG)) || (type.equals(LOW_TIDE_TAG)) || (type.equals(SUNRISE_TAG)) || (type.equals(SUNSET_TAG))) {
+                            Log.e("hackwinds", String.valueOf(type));
                             tideValues.get(daycount).addDataItem(type, hour + ":" +min, datacount);
                             datacount++;
+                        }
+                        else {
+                            // Do nothing cuz these values suck
                         }
                     }
                 } catch (JSONException e) {
