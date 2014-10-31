@@ -5,8 +5,6 @@ import java.util.Locale;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -141,10 +139,10 @@ public class MainActivity extends FragmentActivity implements
                     return new currentFragment();
                 case 1:
                     // Return the forecast fragment view
-                    return new forecastFragment();
+                    return new ForecastFragment();
                 case 2:
                     // Return the tide fragment view
-                    return  new tideFragment();
+                    return  new TideFragment();
             }
 			return null;
 		}

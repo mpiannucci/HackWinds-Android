@@ -13,7 +13,7 @@ import android.widget.ImageView.ScaleType;
 import com.koushikdutta.ion.Ion;
 
 
-public class camFragment extends Fragment {
+public class CamFragment extends Fragment {
     ImageView img;
     int cacheDuration = 3000;
     static String urlBase = "http://www.warmwinds.com/wp-content/uploads/surf-cam-stills/image0000";

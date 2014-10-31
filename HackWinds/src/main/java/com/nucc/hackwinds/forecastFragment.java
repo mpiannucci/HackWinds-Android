@@ -27,7 +27,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
-public class forecastFragment extends ListFragment {
+public class ForecastFragment extends ListFragment {
 	Fetcher fetch;
     ArrayList<Forecast> forecastValues;
     ForecastArrayAdapter adapter;

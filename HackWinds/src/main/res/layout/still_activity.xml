@@ -5,7 +5,7 @@
     android:layout_height="fill_parent">
 
     <fragment
-        android:name="com.nucc.hackwinds.camFragment"
+        android:name="com.nucc.hackwinds.CamFragment"
         android:id="@+id/still_fragment"
         android:layout_weight="1"
         android:layout_height="match_parent"
