@@ -136,11 +136,14 @@ public class MainActivity extends FragmentActivity implements
 			switch (position) {
                 case 0:
                     // Return the video stream
-                    return new currentFragment();
+                    return new CurrentFragment();
                 case 1:
                     // Return the forecast fragment view
                     return new ForecastFragment();
                 case 2:
+                    // Return te buoy fragment view
+                    return new BuoyFragment();
+                case 3:
                     // Return the tide fragment view
                     return  new TideFragment();
             }
@@ -150,7 +153,7 @@ public class MainActivity extends FragmentActivity implements
 		@Override
 		public int getCount() {
 			// Show 3 total pages.
-			return 3;
+			return 4;
 		}
 
 		@Override
@@ -162,6 +165,8 @@ public class MainActivity extends FragmentActivity implements
                 case 1:
                     return getString(R.string.action_forecast).toUpperCase(l);
                 case 2:
+                    return getString(R.string.action_buoy).toUpperCase(l);
+                case 3:
                     return getString(R.string.action_tide).toUpperCase(l);
             }
             return null;

@@ -29,7 +29,7 @@ import java.util.Date;
 import java.util.TimeZone;
 
 
-public class currentFragment extends ListFragment {
+public class CurrentFragment extends ListFragment {
 
     String streamURL = "http://162.243.101.197:1935/surfcam/live.stream/playlist.m3u8";
     public String mswURL = "http://magicseaweed.com/api/nFSL2f845QOAf1Tuv7Pf5Pd9PXa5sVTS/forecast/?spot_id=1103&fields=localTimestamp,swell.*,wind.*";

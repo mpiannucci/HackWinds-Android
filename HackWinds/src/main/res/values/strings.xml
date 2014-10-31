@@ -6,6 +6,7 @@
     <string name="action_refresh">Refresh</string>
     <string name="action_forecast">Forecast</string>
     <string name="action_live">Live</string>
+    <string name="action_buoy">Buoys</string>
     <string name="action_tide">Tide</string>
     <string name="action_pics">Still Camera</string>
 
