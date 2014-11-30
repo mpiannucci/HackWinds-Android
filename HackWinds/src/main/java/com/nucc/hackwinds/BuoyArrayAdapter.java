@@ -1,6 +1,8 @@
 package com.nucc.hackwinds;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,15 +47,48 @@ public class BuoyArrayAdapter extends ArrayAdapter<Buoy> {
 
             rowView.setTag(viewHolder);
         }
-        // Get the buoy item for the list position
-        Buoy buoy = values.get(position);
         ViewHolder holder = (ViewHolder) rowView.getTag();
 
-        // Set the data into the text views
-        holder.timeTV.setText(buoy.time);
-        holder.wvhtTV.setText(buoy.wvht);
-        holder.periodTV.setText(buoy.dpd);
-        holder.directionTV.setText(buoy.dir);
+        if (position < 1) {
+            // If its the first row, set the text to the headers
+            holder.timeTV.setText("Time");
+            holder.wvhtTV.setText("Waves");
+            holder.periodTV.setText("Period");
+            holder.directionTV.setText("Direction");
+
+            // Since its a header make it bold
+            holder.timeTV.setTypeface(null, Typeface.BOLD);
+            holder.wvhtTV.setTypeface(null, Typeface.BOLD);
+            holder.periodTV.setTypeface(null, Typeface.BOLD);
+            holder.directionTV.setTypeface(null, Typeface.BOLD);
+
+            // And make it blue
+            holder.timeTV.setTextColor(context.getResources().getColor(R.color.jblue));
+            holder.wvhtTV.setTextColor(context.getResources().getColor(R.color.jblue));
+            holder.periodTV.setTextColor(context.getResources().getColor(R.color.jblue));
+            holder.directionTV.setTextColor(context.getResources().getColor(R.color.jblue));
+        } else {
+            // Get the buoy item for the list position
+            Buoy buoy = values.get(position-1);
+
+            // Set the data into the text views
+            holder.timeTV.setText(buoy.time);
+            holder.wvhtTV.setText(buoy.wvht);
+            holder.periodTV.setText(buoy.dpd);
+            holder.directionTV.setText(buoy.dir);
+
+            // Make sure the text isnt bold
+            holder.timeTV.setTypeface(null, Typeface.NORMAL);
+            holder.wvhtTV.setTypeface(null, Typeface.NORMAL);
+            holder.periodTV.setTypeface(null, Typeface.NORMAL);
+            holder.directionTV.setTypeface(null, Typeface.NORMAL);
+
+            // Make sure the text color is black
+            holder.timeTV.setTextColor(Color.BLACK);
+            holder.wvhtTV.setTextColor(Color.BLACK);
+            holder.periodTV.setTextColor(Color.BLACK);
+            holder.directionTV.setTextColor(Color.BLACK);
+        }
 
         // Return the row view
         return rowView;
