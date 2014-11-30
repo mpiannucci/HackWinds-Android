@@ -17,36 +17,36 @@
             android:layout_marginTop="5dp" >
 
             <TextView
-                android:id="@+id/timeData"
+                android:id="@+id/buoyTimeData"
                 android:layout_gravity="left|center_vertical"
-                android:layout_width="fill_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 style="@style/DataText"
                 android:text="Data Here"
                 android:layout_weight="1" />
 
             <TextView
-                android:id="@+id/breakData"
+                android:id="@+id/buoyWaveData"
                 android:layout_gravity="left|center_vertical"
-                android:layout_width="fill_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 style="@style/DataText"
                 android:text="Data Here"
                 android:layout_weight="1" />
 
             <TextView
-                android:id="@+id/windData"
+                android:id="@+id/buoyPeriodData"
                 android:layout_gravity="left|center_vertical"
-                android:layout_width="fill_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 style="@style/DataText"
                 android:text="Data Here"
                 android:layout_weight="1" />
 
             <TextView
-                android:id="@+id/swellData"
+                android:id="@+id/buoyDirData"
                 android:layout_gravity="left|center_vertical"
-                android:layout_width="fill_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 style="@style/DataText"
                 android:text="Data Here"

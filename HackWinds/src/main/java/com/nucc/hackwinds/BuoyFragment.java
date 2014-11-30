@@ -12,6 +12,7 @@ import android.widget.RadioGroup;
 import com.koushikdutta.ion.Ion;
 import com.koushikdutta.async.future.FutureCallback;
 
+import java.io.StringWriter;
 import java.util.ArrayList;
 
 import info.hoang8f.android.segmented.SegmentedGroup;
@@ -28,7 +29,7 @@ public class BuoyFragment extends ListFragment {
     // Data constants
     private int DATA_POINTS = 20;
     private int DATA_HEADER_LENGTH = 38;
-    private int DATA_LINE_LENGTH = 19;
+    private int DATA_LINE_LEN = 19;
     private int HOUR_OFFSET = 3;
     private int MINUTE_OFFSET = 4;
     private int WVHT_OFFSET = 8;
@@ -67,7 +68,7 @@ public class BuoyFragment extends ListFragment {
                     // Switch to block island view so get that data
                     getData(BI_LOCATION);
                 } else {
-                    // Switch to montauk view and get that data
+                    // Switch to Montauk view and get that data
                     getData(MTK_LOCATION);
                 }
             }
@@ -92,13 +93,39 @@ public class BuoyFragment extends ListFragment {
                 ArrayList<Buoy> buoys = parseData(result);
 
                 // Set the list adapter
+                BuoyArrayAdapter buoyAdapter = new BuoyArrayAdapter(getActivity(), buoys);
+                setListAdapter(buoyAdapter);
             }
         });
     }
 
     public ArrayList<Buoy> parseData(String rawData) {
+        // Split by the whitespace in the string
+        String[] datas = rawData.split("\\s+");
+
+        // Make an array for the buoy data
         ArrayList<Buoy> buoyDatas = new ArrayList<Buoy>();
-        buoyDatas.add(new Buoy());
+
+        // Loop through the data and make new buoy objects to add to the list
+        for(int i=DATA_HEADER_LENGTH; i<(DATA_HEADER_LENGTH+(DATA_LINE_LEN*DATA_POINTS)); i+=DATA_LINE_LEN) {
+            // Create a new buoy object
+            Buoy thisBuoy = new Buoy();
+
+            // Set the time
+            thisBuoy.time = String.format("%s:%s", datas[i + HOUR_OFFSET], datas[i + MINUTE_OFFSET]);
+
+            // Set the period and wind direction values
+            thisBuoy.dpd = datas[i+DPD_OFFSET];
+            thisBuoy.dir = datas[i+DIRECTION_OFFSET];
+
+            // Convert and set the wave height
+            String wv = datas[i+WVHT_OFFSET];
+            double h = Double.valueOf(wv) * 3.28;
+            thisBuoy.wvht = String.format("%4.2f", h);
+
+            // Save the buoy object to the list
+            buoyDatas.add(thisBuoy);
+        }
 
         // Return the list of buoy objects
         return buoyDatas;
