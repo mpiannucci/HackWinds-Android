@@ -8,11 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import java.util.concurrent.TimeUnit;
+import java.util.Calendar;
+import java.util.TimeZone;
+import java.util.GregorianCalendar;
 
 import com.koushikdutta.ion.Ion;
 import com.koushikdutta.async.future.FutureCallback;
 
-import java.io.StringWriter;
 import java.util.ArrayList;
 
 import info.hoang8f.android.segmented.SegmentedGroup;
@@ -38,6 +41,7 @@ public class BuoyFragment extends ListFragment {
     private int BI_LOCATION = 41;
     private int MTK_LOCATION = 42;
 
+    private double hour_offset;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,6 +63,12 @@ public class BuoyFragment extends ListFragment {
         // Set the tint of the segment control
         SegmentedGroup locationGroup = (SegmentedGroup) V.findViewById(R.id.segmentedBuoy);
         locationGroup.setTintColor(getResources().getColor(R.color.jblue));
+
+        // Set the time offset vaiable so the times are correct
+        Calendar mCalendar = new GregorianCalendar();
+        TimeZone mTimeZone = mCalendar.getTimeZone();
+        int mGMTOffset = mTimeZone.getRawOffset();
+        hour_offset = TimeUnit.HOURS.convert(mGMTOffset, TimeUnit.MILLISECONDS);
 
         // Set the listener for the segment group radio change
         locationGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -112,7 +122,7 @@ public class BuoyFragment extends ListFragment {
             Buoy thisBuoy = new Buoy();
 
             // Set the time
-            thisBuoy.time = String.format("%s:%s", datas[i + HOUR_OFFSET], datas[i + MINUTE_OFFSET]);
+            thisBuoy.time = String.format("%d:%s", (Integer.valueOf(datas[i + HOUR_OFFSET])+(int)hour_offset+12)%12, datas[i + MINUTE_OFFSET]);
 
             // Set the period and wind direction values
             thisBuoy.dpd = datas[i+DPD_OFFSET];
