@@ -1,6 +1,8 @@
 package com.nucc.hackwinds;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,14 +48,48 @@ public class ConditionArrayAdapter extends ArrayAdapter<Condition> {
             rowView.setTag(viewHolder);
         }
         // Fill the data
-        Condition condition = values.get(position);
         ViewHolder holder = (ViewHolder) rowView.getTag();
 
-        holder.dateTV.setText(condition.date);
-        holder.breakTV.setText(condition.minBreak+" - "+condition.maxBreak);
-        holder.windTV.setText(condition.windDir+" "+condition.windSpeed);
-        holder.swellTV.setText(condition.swellDeg+" "+condition.swellHeight+" ft @ "+condition.swellPeriod+" s");
-        
+        if (position < 1) {
+            // If its the first item, set the textviews to the headers
+            holder.dateTV.setText("Time");
+            holder.breakTV.setText("Waves");
+            holder.windTV.setText("Wind");
+            holder.swellTV.setText("Swell");
+
+            // Set the text to bold because its the header
+            holder.dateTV.setTypeface(null, Typeface.BOLD);
+            holder.breakTV.setTypeface(null, Typeface.BOLD);
+            holder.windTV.setTypeface(null, Typeface.BOLD);
+            holder.swellTV.setTypeface(null, Typeface.BOLD);
+
+            // And make it blue too
+            holder.dateTV.setTextColor(context.getResources().getColor(R.color.jblue));
+            holder.breakTV.setTextColor(context.getResources().getColor(R.color.jblue));
+            holder.windTV.setTextColor(context.getResources().getColor(R.color.jblue));
+            holder.swellTV.setTextColor(context.getResources().getColor(R.color.jblue));
+        } else {
+            // Get the data for the position in the list
+            Condition condition = values.get(position);
+
+            // Set the textview for all of the data
+            holder.dateTV.setText(condition.date);
+            holder.breakTV.setText(condition.minBreak + " - " + condition.maxBreak);
+            holder.windTV.setText(condition.windDir + " " + condition.windSpeed);
+            holder.swellTV.setText(condition.swellDeg + " " + condition.swellHeight + " ft @ " + condition.swellPeriod + " s");
+
+            // Make sure the text is normal and not bold
+            holder.dateTV.setTypeface(null, Typeface.NORMAL);
+            holder.breakTV.setTypeface(null, Typeface.NORMAL);
+            holder.windTV.setTypeface(null, Typeface.NORMAL);
+            holder.swellTV.setTypeface(null, Typeface.NORMAL);
+
+            // Make sure the text is black
+            holder.dateTV.setTextColor(Color.BLACK);
+            holder.breakTV.setTextColor(Color.BLACK);
+            holder.windTV.setTextColor(Color.BLACK);
+            holder.swellTV.setTextColor(Color.BLACK);
+        }
         // Return the completed view to render on screen
         return rowView;
     }
