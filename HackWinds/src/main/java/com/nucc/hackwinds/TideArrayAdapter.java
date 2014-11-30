@@ -66,12 +66,12 @@ public class TideArrayAdapter extends ArrayAdapter<Tide> {
                 holder.headers[i].setText(tide.dType[i]);
                 holder.datas[i].setText(tide.dValue[i]);
                 if ((tide.dType[i].equals("Sunrise")) || (tide.dType[i].equals("Sunset"))) {
-                    holder.headers[i].setTypeface(holder.headers[i].getTypeface(), Typeface.BOLD);
-                    holder.datas[i].setTypeface(holder.datas[i].getTypeface(), Typeface.BOLD);
+                    holder.headers[i].setTypeface(null, Typeface.BOLD);
+                    holder.datas[i].setTypeface(null, Typeface.BOLD);
                 }
                 else {
-                    holder.headers[i].setTypeface(holder.headers[i].getTypeface(), Typeface.NORMAL);
-                    holder.datas[i].setTypeface(holder.datas[i].getTypeface(), Typeface.NORMAL);
+                    holder.headers[i].setTypeface(null, Typeface.NORMAL);
+                    holder.datas[i].setTypeface(null, Typeface.NORMAL);
                 }
             }
         }
