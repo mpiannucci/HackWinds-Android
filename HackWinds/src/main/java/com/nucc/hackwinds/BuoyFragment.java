@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -69,6 +71,10 @@ public class BuoyFragment extends ListFragment {
         TimeZone mTimeZone = mCalendar.getTimeZone();
         int mGMTOffset = mTimeZone.getRawOffset();
         hour_offset = TimeUnit.HOURS.convert(mGMTOffset, TimeUnit.MILLISECONDS);
+        if (mTimeZone.inDaylightTime(new Date())) {
+            // If its daylight savings time make fix the gmt offset
+            hour_offset++;
+        }
 
         // Set the listener for the segment group radio change
         locationGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
