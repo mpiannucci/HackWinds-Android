@@ -37,4 +37,6 @@ dependencies {
     compile 'com.android.support:support-v4:21.+'
     compile 'com.koushikdutta.ion:ion:1.+'
     compile 'org.jsoup:jsoup:1.+'
+    compile 'info.hoang8f:android-segmented:1.0.2'
+    compile "com.androidplot:androidplot-core:0.6.1"
 }

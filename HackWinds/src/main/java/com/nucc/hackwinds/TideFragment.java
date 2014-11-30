@@ -124,7 +124,6 @@ public class TideFragment extends ListFragment {
 
                         // Append the data to the current tide object
                         if ((type.equals(HIGH_TIDE_TAG)) || (type.equals(LOW_TIDE_TAG)) || (type.equals(SUNRISE_TAG)) || (type.equals(SUNSET_TAG))) {
-                            Log.e("hackwinds", String.valueOf(type));
                             tideValues.get(daycount).addDataItem(type, hour + ":" +min, datacount);
                             datacount++;
                         }

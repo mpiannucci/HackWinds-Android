@@ -4,6 +4,31 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <info.hoang8f.android.segmented.SegmentedGroup
+        android:id="@+id/segmentedBuoy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="30dp"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/biButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/bi_buoy_segment"
+            android:layout_weight="1"
+            style="@style/RadioButton" />
+
+        <RadioButton
+            android:id="@+id/mtkButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/mtk_buoy_segment"
+            style="@style/RadioButton" />
+    </info.hoang8f.android.segmented.SegmentedGroup>
+
     <ListView
         android:id="@android:id/list"
         android:layout_width="fill_parent"

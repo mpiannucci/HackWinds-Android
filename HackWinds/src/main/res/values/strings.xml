@@ -26,6 +26,10 @@
     <string name="loading_text">Loading...</string>
     <string name="forecast_tomorrow">Data is not yet available for this day. Please check back after midnight.</string>
 
+    <!-- Buoy Page -->
+    <string name="bi_buoy_segment">Block Island</string>
+    <string name="mtk_buoy_segment">Montauk</string>
+
     <!-- Tide Page -->
     <string name="low_tide">Low Tide</string>
     <string name="high_tide">High Tide</string>
