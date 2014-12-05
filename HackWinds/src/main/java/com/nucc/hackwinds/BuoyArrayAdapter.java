@@ -45,6 +45,7 @@ public class BuoyArrayAdapter extends ArrayAdapter<Buoy> {
             viewHolder.periodTV = (TextView) rowView.findViewById(R.id.buoyPeriodData);
             viewHolder.directionTV = (TextView) rowView.findViewById(R.id.buoyDirData);
 
+            // Set the tag so the view can be recycled
             rowView.setTag(viewHolder);
         }
         ViewHolder holder = (ViewHolder) rowView.getTag();
@@ -90,7 +91,7 @@ public class BuoyArrayAdapter extends ArrayAdapter<Buoy> {
             holder.directionTV.setTextColor(Color.BLACK);
         }
 
-        // Return the row view
+        // Return the row view to be rendered
         return rowView;
     }
 }

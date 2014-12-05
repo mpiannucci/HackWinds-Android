@@ -14,6 +14,7 @@ public class ConditionArrayAdapter extends ArrayAdapter<Condition> {
     private final Context context;
     private final ArrayList<Condition> values;
 
+    // Class to hold view IDs so they can be recycled
     static class ViewHolder {
         public TextView dateTV;
         public TextView breakTV;
@@ -33,9 +34,9 @@ public class ConditionArrayAdapter extends ArrayAdapter<Condition> {
     public View getView(final int position, View convertView, ViewGroup parent) {
         View rowView = convertView;
         // Make the view reusable
-        if (rowView == null) { 
+        if (rowView == null) {
             LayoutInflater inflater = (LayoutInflater) context
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                                      .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             rowView = inflater.inflate(R.layout.current_item, parent, false);
 
             // Set the view holder
@@ -45,6 +46,8 @@ public class ConditionArrayAdapter extends ArrayAdapter<Condition> {
             viewHolder.windTV = (TextView) rowView.findViewById(R.id.windData);
             viewHolder.swellTV = (TextView) rowView.findViewById(R.id.swellData);
             viewHolder.position = position;
+
+            // Set the tag so the views can be recycled
             rowView.setTag(viewHolder);
         }
         // Fill the data

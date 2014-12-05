@@ -17,27 +17,32 @@ import java.util.ArrayList;
 
 
 public class TideFragment extends ListFragment {
+    // Set the constants for the data tags and urls
+    final String wuURL = "http://api.wunderground.com/api/2e5424aab8c91757/tide/q/RI/Point_Judith.json";
+    final String[] days = new String[] {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+    final String LOW_TIDE_TAG = "Low Tide";
+    final String HIGH_TIDE_TAG = "High Tide";
+    final String SUNRISE_TAG = "Sunrise";
+    final String SUNSET_TAG = "Sunset";
 
-    String wuURL = "http://api.wunderground.com/api/2e5424aab8c91757/tide/q/RI/Point_Judith.json";
-
-    String[] days = new String[] {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
-
+    // Initialize some vars
     ArrayList<Tide> tideValues;
     TideArrayAdapter adapter;
     int today;
     int todayMonth;
     int todayWeek;
 
-    String LOW_TIDE_TAG = "Low Tide";
-    String HIGH_TIDE_TAG = "High Tide";
-    String SUNRISE_TAG = "Sunrise";
-    String SUNSET_TAG = "Sunset";
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Create a new vector of tides
         tideValues = new ArrayList<Tide>();
+
+        // Get the current data for initialization
         getDate();
+
+        // deploy the wunderground async task
         new BackgroundWunderAsyncTask().execute();
     }
 
@@ -57,7 +62,7 @@ public class TideFragment extends ListFragment {
         todayWeek = now.weekDay;
 
         // Set the header text to the date
-        for (int i = 0; i<5; i++) {
+        for (int i = 0; i < 5; i++) {
             tideValues.add(new Tide(days[(now.weekDay + i) % days.length]));
         }
     }
@@ -73,12 +78,13 @@ public class TideFragment extends ListFragment {
             String jsonStr = sh.makeServiceCall(wuURL, ServiceHandler.GET);
             if (jsonStr != null) {
                 try {
+                    // Get the tide usmmary json object from the current json object
                     JSONObject jsonObj = new JSONObject(jsonStr);
                     JSONArray tideSummary = jsonObj.getJSONObject("tide").getJSONArray("tideSummary");
                     int daycount = 0;
                     int datacount = 0;
 
-                    for (int k=0; k < tideSummary.length(); k++) {
+                    for (int k = 0; k < tideSummary.length(); k++) {
 
                         // Get the day and time
                         String type = tideSummary.getJSONObject(k).getJSONObject("data").getString("type");
@@ -98,22 +104,22 @@ public class TideFragment extends ListFragment {
                                         tideValues.get(l).day = days[(todayWeek + l + 1) % days.length];
                                     }
                                 }
-                            }
-                            else {
+                            } else {
+                                // Increment the day count
                                 daycount++;
                             }
 
                             // Check if its a new month
-                            if (Integer.parseInt(month) != (todayMonth+1)) {
-                                // Check if its a new month
+                            if (Integer.parseInt(month) != (todayMonth + 1)) {
+                                // Its a new month so reset todays index and increment the month index
                                 today = 1;
                                 todayMonth++;
-                            }
-                            else {
+                            } else {
+                                // Its not so increment the day count
                                 today++;
                             }
 
-                            // Check index
+                            // If there are more than four days, break
                             if (daycount > 4) {
                                 break;
                             }
@@ -122,12 +128,12 @@ public class TideFragment extends ListFragment {
                             datacount = 0;
                         }
 
-                        // Append the data to the current tide object
-                        if ((type.equals(HIGH_TIDE_TAG)) || (type.equals(LOW_TIDE_TAG)) || (type.equals(SUNRISE_TAG)) || (type.equals(SUNSET_TAG))) {
-                            tideValues.get(daycount).addDataItem(type, hour + ":" +min, datacount);
+                        // Append the data to the current tide object adn increment the data count
+                        if ((type.equals(HIGH_TIDE_TAG)) || (type.equals(LOW_TIDE_TAG)) || (type.equals(SUNRISE_TAG))
+                                || (type.equals(SUNSET_TAG))) {
+                            tideValues.get(daycount).addDataItem(type, hour + ":" + min, datacount);
                             datacount++;
-                        }
-                        else {
+                        } else {
                             // Do nothing cuz these values suck
                         }
                     }
@@ -144,9 +150,13 @@ public class TideFragment extends ListFragment {
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            if (tideValues.get(tideValues.size()-1).dType[0] == null) {
-                tideValues.remove(tideValues.size()-1);
+
+            // If there arent enough values, remove it from the list
+            if (tideValues.get(tideValues.size() - 1).dType[0] == null) {
+                tideValues.remove(tideValues.size() - 1);
             }
+
+            // Set the tide adapter to the list
             adapter = new TideArrayAdapter(getActivity(), tideValues);
             setListAdapter(adapter);
         }

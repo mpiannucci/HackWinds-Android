@@ -12,6 +12,7 @@ public class ForecastArrayAdapter extends ArrayAdapter<Forecast> {
     private final Context context;
     private final ArrayList<Forecast> values;
 
+    // View holder class so views can be recycled
     static class ViewHolder {
         public TextView dayTV;
         public TextView overviewTV;
@@ -28,9 +29,9 @@ public class ForecastArrayAdapter extends ArrayAdapter<Forecast> {
     public View getView(int position, View convertView, ViewGroup parent) {
         View rowView = convertView;
         // Make the view reusable
-        if (rowView == null) { 
+        if (rowView == null) {
             LayoutInflater inflater = (LayoutInflater) context
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                                      .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             rowView = inflater.inflate(R.layout.forecast_item, parent, false);
 
             // Set the view holder
@@ -39,16 +40,18 @@ public class ForecastArrayAdapter extends ArrayAdapter<Forecast> {
             viewHolder.overviewTV = (TextView) rowView.findViewById(R.id.forecastOverview);
             viewHolder.detailTV = (TextView) rowView.findViewById(R.id.forecastDetail);
 
+            // Set the tag so the views can be recycled
             rowView.setTag(viewHolder);
         }
-        // Fill the data
+        // Get the ofrecast object and the viewholder
         Forecast forecast = values.get(position);
         ViewHolder holder = (ViewHolder) rowView.getTag();
 
+        // Set the day, brief, overview and detailed text views
         holder.dayTV.setText(forecast.day);
         holder.overviewTV.setText(forecast.overview);
         holder.detailTV.setText(forecast.detail);
-        
+
         // Return the completed view to render on screen
         return rowView;
     }
