@@ -1,13 +1,35 @@
-.gradle
-/local.properties
-/.idea/workspace.xml
-.DS_Store
-*.sublime-workspace
-keystore.properties
-*.class
-gradle/
+# IntelliJ project files
 *.iml
 .idea/
-gradlew
-gradlew.bat
+/.idea/workspace.xml
+
+# Gradle cache
+.gradle
+/local.properties
+.gradle/
+
+# Mac DS_Store
+.DS_Store
+
+# Sublime-Text
+*.sublime-workspace
+
+# Build Files
+*.class
 build/
+keystore.properties
+
+# Generated Files
+bin/
+gen/
+
+# Built Native Files
+*.o
+*.so
+
+# Built Application Files
+*.apk
+*.ap_
+
+# Files for the Dex VM
+*.dex
