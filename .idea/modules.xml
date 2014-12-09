@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/HackWinds.iml" filepath="$PROJECT_DIR$/HackWinds.iml" />
+      <module fileurl="file://$PROJECT_DIR$/HackWinds/HackWinds-HackWinds.iml" filepath="$PROJECT_DIR$/HackWinds/HackWinds-HackWinds.iml" />
+    </modules>
+  </component>
+</project>
+
