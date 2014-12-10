@@ -64,10 +64,10 @@ public class BuoyArrayAdapter extends ArrayAdapter<Buoy> {
             holder.directionTV.setTypeface(null, Typeface.BOLD);
 
             // And make it blue
-            holder.timeTV.setTextColor(context.getResources().getColor(R.color.jblue));
-            holder.wvhtTV.setTextColor(context.getResources().getColor(R.color.jblue));
-            holder.periodTV.setTextColor(context.getResources().getColor(R.color.jblue));
-            holder.directionTV.setTextColor(context.getResources().getColor(R.color.jblue));
+            holder.timeTV.setTextColor(context.getResources().getColor(R.color.hackwinds_blue));
+            holder.wvhtTV.setTextColor(context.getResources().getColor(R.color.hackwinds_blue));
+            holder.periodTV.setTextColor(context.getResources().getColor(R.color.hackwinds_blue));
+            holder.directionTV.setTextColor(context.getResources().getColor(R.color.hackwinds_blue));
         } else {
             // Get the buoy item for the list position
             Buoy buoy = values.get(position-1);

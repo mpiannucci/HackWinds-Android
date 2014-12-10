@@ -67,10 +67,10 @@ public class ConditionArrayAdapter extends ArrayAdapter<Condition> {
             holder.swellTV.setTypeface(null, Typeface.BOLD);
 
             // And make it blue too
-            holder.dateTV.setTextColor(context.getResources().getColor(R.color.jblue));
-            holder.breakTV.setTextColor(context.getResources().getColor(R.color.jblue));
-            holder.windTV.setTextColor(context.getResources().getColor(R.color.jblue));
-            holder.swellTV.setTextColor(context.getResources().getColor(R.color.jblue));
+            holder.dateTV.setTextColor(context.getResources().getColor(R.color.hackwinds_blue));
+            holder.breakTV.setTextColor(context.getResources().getColor(R.color.hackwinds_blue));
+            holder.windTV.setTextColor(context.getResources().getColor(R.color.hackwinds_blue));
+            holder.swellTV.setTextColor(context.getResources().getColor(R.color.hackwinds_blue));
         } else {
             // Get the data for the position in the list
             Condition condition = values.get(position);

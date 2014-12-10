@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.HackWindsMaterial" parent="Theme.AppCompat.Light">
+        <item name="windowActionBar">false</item>
+        <item name="colorPrimary">@color/hackwinds_blue</item>
+        <item name="colorPrimaryDark">@color/iconBlue</item>
+        <item name="android:textColorPrimary">@color/white</item>
+    </style>
+
+</resources>

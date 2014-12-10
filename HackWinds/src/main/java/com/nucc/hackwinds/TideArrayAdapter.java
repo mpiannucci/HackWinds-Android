@@ -85,8 +85,8 @@ public class TideArrayAdapter extends ArrayAdapter<Tide> {
                     holder.datas[i].setTypeface(null, Typeface.BOLD);
 
                     // Also make the text blue
-                    holder.headers[i].setTextColor(context.getResources().getColor(R.color.jblue));
-                    holder.datas[i].setTextColor(context.getResources().getColor(R.color.jblue));
+                    holder.headers[i].setTextColor(context.getResources().getColor(R.color.hackwinds_blue));
+                    holder.datas[i].setTextColor(context.getResources().getColor(R.color.hackwinds_blue));
                 }
                 else {
                     // Its not a sunrise or sunset so make sure the text is normal
