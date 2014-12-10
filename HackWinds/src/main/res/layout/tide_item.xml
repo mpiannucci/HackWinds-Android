@@ -3,185 +3,188 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <LinearLayout
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="6dp"
-        android:layout_marginRight="6dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="4dp"
-        android:background="@drawable/card_background"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/tideHeader"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/loading_text"
-            android:textColor="@color/numixGrey"
-            android:layout_gravity="left|center_vertical"
-            style="@style/HeaderText" />
-
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:background="@color/ltgrey"/>
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal" >
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tideHeader1"
+                android:id="@+id/tideHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/tide_holder"
-                style="@style/forcDataText"
-                android:gravity="center"
-                android:layout_gravity="center"
-                android:layout_weight="0.8" />
+                android:text="@string/loading_text"
+                android:textColor="@color/numixGrey"
+                android:layout_gravity="left|center_vertical"
+                style="@style/HeaderText" />
 
-            <TextView
-                android:id="@+id/tideData1"
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@color/ltgrey"/>
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="check"
-                android:layout_weight="1"
-                android:gravity="left"
-                android:layout_gravity="center"
-                style="@style/tideDescripText" />
+                android:layout_height="match_parent"
+                android:orientation="horizontal" >
 
+                <TextView
+                    android:id="@+id/tideHeader1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tide_holder"
+                    style="@style/forcDataText"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.8" />
+
+                <TextView
+                    android:id="@+id/tideData1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="check"
+                    android:layout_weight="1"
+                    android:gravity="left"
+                    android:layout_gravity="center"
+                    style="@style/tideDescripText" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/tideHeader2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tide_holder"
+                    style="@style/forcDataText"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.8" />
+
+                <TextView
+                    android:id="@+id/tideData2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="check"
+                    android:layout_weight="1"
+                    android:gravity="left"
+                    android:layout_gravity="center"
+                    style="@style/tideDescripText" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/tideHeader3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tide_holder"
+                    style="@style/forcDataText"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.8" />
+
+                <TextView
+                    android:id="@+id/tideData3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="check"
+                    android:layout_weight="1"
+                    android:gravity="left"
+                    android:layout_gravity="center"
+                    style="@style/tideDescripText" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/tideHeader4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tide_holder"
+                    style="@style/forcDataText"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.8" />
+
+                <TextView
+                    android:id="@+id/tideData4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="check"
+                    android:layout_weight="1"
+                    android:gravity="left"
+                    android:layout_gravity="center"
+                    style="@style/tideDescripText" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/tideHeader5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tide_holder"
+                    style="@style/forcDataText"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.8" />
+
+                <TextView
+                    android:id="@+id/tideData5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="check"
+                    android:layout_weight="1"
+                    android:gravity="left"
+                    android:layout_gravity="center"
+                    style="@style/tideDescripText" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/tideHeader6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tide_holder"
+                    style="@style/forcDataText"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.8" />
+
+                <TextView
+                    android:id="@+id/tideData6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="check"
+                    android:layout_weight="1"
+                    android:gravity="left"
+                    android:layout_gravity="center"
+                    style="@style/tideDescripText" />
+            </LinearLayout>
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:id="@+id/tideHeader2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/tide_holder"
-                style="@style/forcDataText"
-                android:gravity="center"
-                android:layout_gravity="center"
-                android:layout_weight="0.8" />
-
-            <TextView
-                android:id="@+id/tideData2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="check"
-                android:layout_weight="1"
-                android:gravity="left"
-                android:layout_gravity="center"
-                style="@style/tideDescripText" />
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:id="@+id/tideHeader3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/tide_holder"
-                style="@style/forcDataText"
-                android:gravity="center"
-                android:layout_gravity="center"
-                android:layout_weight="0.8" />
-
-            <TextView
-                android:id="@+id/tideData3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="check"
-                android:layout_weight="1"
-                android:gravity="left"
-                android:layout_gravity="center"
-                style="@style/tideDescripText" />
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:id="@+id/tideHeader4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/tide_holder"
-                style="@style/forcDataText"
-                android:gravity="center"
-                android:layout_gravity="center"
-                android:layout_weight="0.8" />
-
-            <TextView
-                android:id="@+id/tideData4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="check"
-                android:layout_weight="1"
-                android:gravity="left"
-                android:layout_gravity="center"
-                style="@style/tideDescripText" />
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:id="@+id/tideHeader5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/tide_holder"
-                style="@style/forcDataText"
-                android:gravity="center"
-                android:layout_gravity="center"
-                android:layout_weight="0.8" />
-
-            <TextView
-                android:id="@+id/tideData5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="check"
-                android:layout_weight="1"
-                android:gravity="left"
-                android:layout_gravity="center"
-                style="@style/tideDescripText" />
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:id="@+id/tideHeader6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/tide_holder"
-                style="@style/forcDataText"
-                android:gravity="center"
-                android:layout_gravity="center"
-                android:layout_weight="0.8" />
-
-            <TextView
-                android:id="@+id/tideData6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="check"
-                android:layout_weight="1"
-                android:gravity="left"
-                android:layout_gravity="center"
-                style="@style/tideDescripText" />
-
-        </LinearLayout>
-    </LinearLayout>
+    </android.support.v7.widget.CardView>
 </FrameLayout>

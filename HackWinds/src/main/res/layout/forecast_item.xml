@@ -3,42 +3,46 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:layout_height="wrap_content"
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_marginLeft="6dp"
-        android:layout_marginRight="6dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="4dp"
-        android:background="@drawable/card_background"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/forecastHeader"
+        <LinearLayout
+            android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/loading_text"
-            android:textColor="@color/numixGrey"
-            style="@style/HeaderText" />
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:orientation="vertical">
 
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:background="@color/ltgrey"/>
+            <TextView
+                android:id="@+id/forecastHeader"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/loading_text"
+                android:textColor="@color/numixGrey"
+                style="@style/HeaderText" />
 
-        <TextView
-            android:id="@+id/forecastOverview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/loading_text"
-            style="@style/forcDataText" />
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@color/ltgrey"/>
 
-        <TextView
-            android:id="@+id/forecastDetail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            style="@style/DescripText" />
+            <TextView
+                android:id="@+id/forecastOverview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/loading_text"
+                style="@style/forcDataText" />
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/forecastDetail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                style="@style/DescripText" />
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
 </FrameLayout>
