@@ -64,9 +64,9 @@ public class BuoyFragment extends ListFragment {
 
         // Set the tint of the segment control
         SegmentedGroup locationGroup = (SegmentedGroup) V.findViewById(R.id.segmentedBuoy);
-        locationGroup.setTintColor(getResources().getColor(R.color.jblue));
+        locationGroup.setTintColor(getResources().getColor(R.color.hackwinds_blue));
 
-        // Set the time offset vaiable so the times are correct
+        // Set the time offset variable so the times are correct
         Calendar mCalendar = new GregorianCalendar();
         TimeZone mTimeZone = mCalendar.getTimeZone();
         int mGMTOffset = mTimeZone.getRawOffset();

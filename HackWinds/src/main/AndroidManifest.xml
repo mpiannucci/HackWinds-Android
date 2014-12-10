@@ -19,14 +19,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.nucc.hackwinds.SettingsActivity"
-            android:parentActivityName="com.nucc.hackwinds.MainActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.nucc.hackwinds.StillActivity"
-            android:parentActivityName="com.nucc.hackwinds.MainActivity"
-            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
