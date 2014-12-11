@@ -18,7 +18,8 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        app:pstsPaddingMiddle="false" />
+        app:pstsPaddingMiddle="false"
+        app:pstsShouldExpand="true"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"

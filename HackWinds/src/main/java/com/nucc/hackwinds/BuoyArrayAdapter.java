@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.ArrayList;
 
 public class BuoyArrayAdapter extends ArrayAdapter<Buoy> {
+    final String[] DIRS = {"N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"};
+
     private final Context context;
     private final ArrayList<Buoy> values;
 
@@ -76,7 +78,7 @@ public class BuoyArrayAdapter extends ArrayAdapter<Buoy> {
             holder.timeTV.setText(buoy.time);
             holder.wvhtTV.setText(buoy.wvht);
             holder.periodTV.setText(buoy.dpd);
-            holder.directionTV.setText(buoy.dir);
+            holder.directionTV.setText(DIRS[Integer.valueOf(buoy.dir)/(360/DIRS.length)]);
 
             // Make sure the text isnt bold
             holder.timeTV.setTypeface(null, Typeface.NORMAL);
