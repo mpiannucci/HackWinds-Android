@@ -1,6 +1,5 @@
 package com.nucc.hackwinds;
 
-
 import android.text.format.Time;
 import android.util.Log;
 

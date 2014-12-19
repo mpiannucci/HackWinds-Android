@@ -1,6 +1,5 @@
 package com.nucc.hackwinds;
 
-
 import android.text.format.Time;
 import android.util.Log;
 
@@ -18,14 +17,18 @@ public class ForecastModel {
 
     // Member variables
     private static ForecastModel ourInstance = new ForecastModel();
-    private ArrayList<Forecast> forecasts;
+    public ArrayList<Forecast> forecasts;
 
     public static ForecastModel getInstance() {
         return ourInstance;
     }
 
     private ForecastModel() {
+        // Initialize the forecast array
         forecasts = new ArrayList<Forecast>();
+
+        // Get the date objects
+        getDate();
     }
 
     private void getDate() {
@@ -49,8 +52,7 @@ public class ForecastModel {
     }
 
     public ArrayList<Forecast> getForecasts () {
-        if (forecasts.isEmpty()) {
-            // Get the http response from swellinfo
+        if (forecasts.get(0).detail.isEmpty()) {
             parseForecastData();
         }
         return forecasts;
