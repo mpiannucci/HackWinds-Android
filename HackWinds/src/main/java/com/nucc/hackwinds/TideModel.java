@@ -52,7 +52,6 @@ public class TideModel {
     public ArrayList<Tide> getTideData() {
         // Check if there is already data read in
         if (tides.isEmpty()) {
-
             // Create the objects
             getDate();
 
@@ -77,7 +76,6 @@ public class TideModel {
                 int datacount = 0;
 
                 for (int k = 0; k < tideSummary.length(); k++) {
-
                     // Get the day and time
                     String type = tideSummary.getJSONObject(k).getJSONObject("data").getString("type");
                     String month = tideSummary.getJSONObject(k).getJSONObject("date").getString("mon");
