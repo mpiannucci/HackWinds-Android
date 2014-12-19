@@ -32,24 +32,23 @@ import java.util.TimeZone;
 public class CurrentFragment extends ListFragment {
 
     // Create constant variabes for all ofthe URLs and cache settings
-    final String streamURL = "http://162.243.101.197:1935/surfcam/live.stream/playlist.m3u8";
-    final public String mswURL =
+    final private String STREAM_URL = "http://162.243.101.197:1935/surfcam/live.stream/playlist.m3u8";
+    final private String MSW_URL =
         "http://magicseaweed.com/api/nFSL2f845QOAf1Tuv7Pf5Pd9PXa5sVTS/forecast/?spot_id=1103&fields=localTimestamp,swell.*,wind.*";
-    final String[] days = new String[] {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
-    final int cacheDuration = 3000;
-    final String imgUrl = "http://www.warmwinds.com/wp-content/uploads/surf-cam-stills/image00001.jpg";
+    final private String[] DAYS = new String[] {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+    final private String IMG_URL = "http://www.warmwinds.com/wp-content/uploads/surf-cam-stills/image00001.jpg";
 
     // Initialize the other variables
-    ArrayList<Condition> conditionValues;
-    ConditionArrayAdapter adapter;
-    public VideoView streamView;
+    private ArrayList<Condition> mConditionValues;
+    private ConditionArrayAdapter mArrayAdapter;
+    private VideoView mStreamView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // Create a new vector of condition objects
-        conditionValues = new ArrayList<Condition>();
+        mConditionValues = new ArrayList<Condition>();
 
         // Execute the MagicSeaweed async task
         new BackgroundMSWAsyncTask().execute(6);
@@ -64,12 +63,12 @@ public class CurrentFragment extends ListFragment {
         TextView date = (TextView) V.findViewById(R.id.dateHeader);
         Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_WEEK);
-        date.setText(days[day - 1]);
+        date.setText(DAYS[day - 1]);
 
         // Get the imageview to set as the holder before the user calls
         // to play the videoview
         ImageView img = (ImageView) V.findViewById(R.id.imageOverlay);
-        Ion.with(getActivity()).load(imgUrl).intoImageView(img);
+        Ion.with(getActivity()).load(IMG_URL).intoImageView(img);
 
         // Scale the image to fit the width of the screen
         img.getLayoutParams().width = ActionBar.LayoutParams.MATCH_PARENT;
@@ -88,13 +87,14 @@ public class CurrentFragment extends ListFragment {
                 pic.setVisibility(View.GONE);
 
                 // Show the videoview
-                streamView = (VideoView) getActivity().findViewById(R.id.currentVideoStreamView);
-                streamView.setVisibility(View.VISIBLE);
+                mStreamView = (VideoView) getActivity().findViewById(R.id.currentVideoStreamView);
+                mStreamView.setVisibility(View.VISIBLE);
 
                 // Execute the video loading asynctask
-                new BackgroundVideoAsyncTask().execute(streamURL);
+                new BackgroundVideoAsyncTask().execute(STREAM_URL);
             }
         });
+
         // return the view
         return V;
     }
@@ -114,14 +114,14 @@ public class CurrentFragment extends ListFragment {
 
             try {
                 // Set the video url to the stream
-                streamView.setVideoURI(uri[0]);
-                streamView.requestFocus();
-                streamView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                mStreamView.setVideoURI(uri[0]);
+                mStreamView.requestFocus();
+                mStreamView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
 
                     public void onPrepared(MediaPlayer arg0) {
                         // When the stream is ready start the videoview and
                         // hide the progress dialog
-                        streamView.start();
+                        mStreamView.start();
                         dialog.dismiss();
                     }
                 });
@@ -130,7 +130,6 @@ public class CurrentFragment extends ListFragment {
             } catch (IllegalStateException e) {
                 e.printStackTrace();
             } catch (SecurityException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
@@ -156,7 +155,7 @@ public class CurrentFragment extends ListFragment {
             ServiceHandler sh = new ServiceHandler();
 
             // Get the magicseaweed json response into a string
-            String jsonStr = sh.makeServiceCall(mswURL, ServiceHandler.GET);
+            String jsonStr = sh.makeServiceCall(MSW_URL, ServiceHandler.GET);
             if (jsonStr != null) {
                 try {
                     // Make a json array from the response string
@@ -196,7 +195,7 @@ public class CurrentFragment extends ListFragment {
                         String swellDir = swell.getJSONObject("components").getJSONObject("primary").getString("compassDirection");
 
                         // Add the new condition object to the vector and iterate the number of parsed objects
-                        conditionValues.add(new Condition(date, minBreak, maxBreak, windSpeed, windDeg,
+                        mConditionValues.add(new Condition(date, minBreak, maxBreak, windSpeed, windDeg,
                                                           windDir, swellHeight, swellPeriod, swellDir));
                         i++;
                     }
@@ -215,8 +214,8 @@ public class CurrentFragment extends ListFragment {
             super.onPostExecute(result);
 
             // Set the condition adapter for the list
-            adapter = new ConditionArrayAdapter(getActivity(), conditionValues);
-            setListAdapter(adapter);
+            mArrayAdapter = new ConditionArrayAdapter(getActivity(), mConditionValues);
+            setListAdapter(mArrayAdapter);
         }
 
     }

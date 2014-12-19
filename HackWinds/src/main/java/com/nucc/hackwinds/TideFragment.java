@@ -18,26 +18,26 @@ import java.util.ArrayList;
 
 public class TideFragment extends ListFragment {
     // Set the constants for the data tags and urls
-    final String wuURL = "http://api.wunderground.com/api/2e5424aab8c91757/tide/q/RI/Point_Judith.json";
-    final String[] days = new String[] {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
-    final String LOW_TIDE_TAG = "Low Tide";
-    final String HIGH_TIDE_TAG = "High Tide";
-    final String SUNRISE_TAG = "Sunrise";
-    final String SUNSET_TAG = "Sunset";
+    final private String WUNDER_URL = "http://api.wunderground.com/api/2e5424aab8c91757/tide/q/RI/Point_Judith.json";
+    final private String[] DAYS = new String[] {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+    final private String LOW_TIDE_TAG = "Low Tide";
+    final private String HIGH_TIDE_TAG = "High Tide";
+    final private String SUNRISE_TAG = "Sunrise";
+    final private String SUNSET_TAG = "Sunset";
 
     // Initialize some vars
-    ArrayList<Tide> tideValues;
-    TideArrayAdapter adapter;
-    int today;
-    int todayMonth;
-    int todayWeek;
+    private ArrayList<Tide> mTideValues;
+    private TideArrayAdapter mArrayAdapter;
+    private int today;
+    private int todayMonth;
+    private int todayWeek;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // Create a new vector of tides
-        tideValues = new ArrayList<Tide>();
+        mTideValues = new ArrayList<Tide>();
 
         // Get the current data for initialization
         getDate();
@@ -63,7 +63,7 @@ public class TideFragment extends ListFragment {
 
         // Set the header text to the date
         for (int i = 0; i < 5; i++) {
-            tideValues.add(new Tide(days[(now.weekDay + i) % days.length]));
+            mTideValues.add(new Tide(DAYS[(now.weekDay + i) % DAYS.length]));
         }
     }
 
@@ -75,7 +75,7 @@ public class TideFragment extends ListFragment {
             ServiceHandler sh = new ServiceHandler();
 
             // Making a request to url and getting response
-            String jsonStr = sh.makeServiceCall(wuURL, ServiceHandler.GET);
+            String jsonStr = sh.makeServiceCall(WUNDER_URL, ServiceHandler.GET);
             if (jsonStr != null) {
                 try {
                     // Get the tide usmmary json object from the current json object
@@ -101,7 +101,7 @@ public class TideFragment extends ListFragment {
                                 if (datacount < 2) {
                                     for (int l = 0; l < 5; l++) {
                                         // move each day up by one
-                                        tideValues.get(l).day = days[(todayWeek + l + 1) % days.length];
+                                        mTideValues.get(l).day = DAYS[(todayWeek + l + 1) % DAYS.length];
                                     }
                                 }
                             } else {
@@ -131,7 +131,7 @@ public class TideFragment extends ListFragment {
                         // Append the data to the current tide object adn increment the data count
                         if ((type.equals(HIGH_TIDE_TAG)) || (type.equals(LOW_TIDE_TAG)) || (type.equals(SUNRISE_TAG))
                                 || (type.equals(SUNSET_TAG))) {
-                            tideValues.get(daycount).addDataItem(type, hour + ":" + min, datacount);
+                            mTideValues.get(daycount).addDataItem(type, hour + ":" + min, datacount);
                             datacount++;
                         } else {
                             // Do nothing cuz these values suck
@@ -152,13 +152,13 @@ public class TideFragment extends ListFragment {
             super.onPostExecute(result);
 
             // If there arent enough values, remove it from the list
-            if (tideValues.get(tideValues.size() - 1).dType[0] == null) {
-                tideValues.remove(tideValues.size() - 1);
+            if (mTideValues.get(mTideValues.size() - 1).dType[0] == null) {
+                mTideValues.remove(mTideValues.size() - 1);
             }
 
             // Set the tide adapter to the list
-            adapter = new TideArrayAdapter(getActivity(), tideValues);
-            setListAdapter(adapter);
+            mArrayAdapter = new TideArrayAdapter(getActivity(), mTideValues);
+            setListAdapter(mArrayAdapter);
         }
 
     }

@@ -22,26 +22,24 @@ import java.util.ArrayList;
 
 import info.hoang8f.android.segmented.SegmentedGroup;
 
-/**
- * Created by matthew on 10/30/14.
- */
+
 public class BuoyFragment extends ListFragment {
 
     // URLs
-    private String BI_URL = "http://www.ndbc.noaa.gov/data/realtime2/44097.txt";
-    private String MTK_URL = "http://www.ndbc.noaa.gov/data/realtime2/44017.txt";
+    final private String BI_URL = "http://www.ndbc.noaa.gov/data/realtime2/44097.txt";
+    final private String MTK_URL = "http://www.ndbc.noaa.gov/data/realtime2/44017.txt";
 
     // Data constants
-    private int DATA_POINTS = 20;
-    private int DATA_HEADER_LENGTH = 38;
-    private int DATA_LINE_LEN = 19;
-    private int HOUR_OFFSET = 3;
-    private int MINUTE_OFFSET = 4;
-    private int WVHT_OFFSET = 8;
-    private int DPD_OFFSET = 9;
-    private int DIRECTION_OFFSET = 11;
-    private int BI_LOCATION = 41;
-    private int MTK_LOCATION = 42;
+    final private int DATA_POINTS = 20;
+    final private int DATA_HEADER_LENGTH = 38;
+    final private int DATA_LINE_LEN = 19;
+    final private int HOUR_OFFSET = 3;
+    final private int MINUTE_OFFSET = 4;
+    final private int WVHT_OFFSET = 8;
+    final private int DPD_OFFSET = 9;
+    final private int DIRECTION_OFFSET = 11;
+    final private int BI_LOCATION = 41;
+    final private int MTK_LOCATION = 42;
 
     private double hour_offset;
 
@@ -56,7 +54,7 @@ public class BuoyFragment extends ListFragment {
         View V = inflater.inflate(R.layout.buoy_fragment, container, false);
 
         // Initialize it to Block Island
-        getData(BI_LOCATION);
+        getBuoyData(BI_LOCATION);
 
         // Set the segment control to block island
         RadioButton biButton = (RadioButton) V.findViewById(R.id.biButton);
@@ -82,10 +80,10 @@ public class BuoyFragment extends ListFragment {
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 if (i == R.id.biButton) {
                     // Switch to block island view so get that data
-                    getData(BI_LOCATION);
+                    getBuoyData(BI_LOCATION);
                 } else {
                     // Switch to Montauk view and get that data
-                    getData(MTK_LOCATION);
+                    getBuoyData(MTK_LOCATION);
                 }
             }
         });
@@ -93,7 +91,7 @@ public class BuoyFragment extends ListFragment {
         return V;
     }
 
-    public void getData(int location) {
+    public void getBuoyData(int location) {
         String URL;
         if (location == BI_LOCATION) {
             URL = BI_URL;
