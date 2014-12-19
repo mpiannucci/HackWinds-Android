@@ -32,6 +32,8 @@ public class TideModel {
     }
 
     private TideModel() {
+        // Initialize tide array
+        tides = new ArrayList<Tide>();
     }
 
     private void getDate() {
@@ -51,8 +53,6 @@ public class TideModel {
     public ArrayList<Tide> getTideData() {
         // Check if there is already data read in
         if (tides.isEmpty()) {
-            // Make a new list
-            tides = new ArrayList<Tide>();
 
             // Create the objects
             getDate();
