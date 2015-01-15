@@ -78,7 +78,14 @@ public class BuoyArrayAdapter extends ArrayAdapter<Buoy> {
             holder.timeTV.setText(buoy.time);
             holder.wvhtTV.setText(buoy.wvht);
             holder.periodTV.setText(buoy.dpd);
-            holder.directionTV.setText(DIRS[Integer.valueOf(buoy.dir)/(360/DIRS.length)]);
+
+            // Hack to make sure that buoy direction is wont crash
+            int windIndex = Integer.valueOf(buoy.dir)/(360/DIRS.length);
+            if (windIndex >= DIRS.length) {
+                // If its past NNW, force it to be north
+                windIndex = 0;
+            }
+            holder.directionTV.setText(DIRS[windIndex]);
 
             // Make sure the text isnt bold
             holder.timeTV.setTypeface(null, Typeface.NORMAL);
