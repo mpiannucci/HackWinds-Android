@@ -2,7 +2,10 @@ package com.nucc.hackwinds;
 
 import android.app.ActionBar;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.media.MediaPlayer;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -13,6 +16,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.VideoView;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 
 import com.koushikdutta.ion.Ion;
 
@@ -34,10 +39,24 @@ public class CurrentFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Get the magic seaweed model instance
-        mConditionModel = ConditionModel.getInstance();
-
-        new BackgroundMSWAsyncTask().execute();
+        if (isOnline()) {
+            // Get the magic seaweed model instance
+            mConditionModel = ConditionModel.getInstance();
+            new BackgroundMSWAsyncTask().execute();
+        } else {
+            // Alert the user they need the network and close the app on completion
+            new AlertDialog.Builder(getActivity())
+                    .setTitle("Network Error")
+                    .setMessage("No network detected! Make sure to connect to the internet and reopen the app")
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // continue
+                            getActivity().finish();
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        }
     }
 
     @Override
@@ -54,7 +73,12 @@ public class CurrentFragment extends ListFragment {
         // Get the imageview to set as the holder before the user calls
         // to play the videoview
         ImageView img = (ImageView) V.findViewById(R.id.imageOverlay);
-        Ion.with(getActivity()).load(IMG_URL).intoImageView(img);
+        if (isOnline()) {
+            Ion.with(getActivity()).load(IMG_URL).intoImageView(img);
+        } else {
+            // TODO: put a placeholder
+
+        }
 
         // Scale the image to fit the width of the screen
         img.getLayoutParams().width = ActionBar.LayoutParams.MATCH_PARENT;
@@ -68,16 +92,20 @@ public class CurrentFragment extends ListFragment {
         pb.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Hide the playbutton and the holder image
-                v.setVisibility(View.GONE);
-                ImageView pic = (ImageView) getActivity().findViewById(R.id.imageOverlay);
-                pic.setVisibility(View.GONE);
+                if (isOnline()) {
+                    v.setVisibility(View.GONE);
+                    ImageView pic = (ImageView) getActivity().findViewById(R.id.imageOverlay);
+                    pic.setVisibility(View.GONE);
 
-                // Show the videoview
-                mStreamView = (VideoView) getActivity().findViewById(R.id.currentVideoStreamView);
-                mStreamView.setVisibility(View.VISIBLE);
+                    // Show the videoview
+                    mStreamView = (VideoView) getActivity().findViewById(R.id.currentVideoStreamView);
+                    mStreamView.setVisibility(View.VISIBLE);
 
-                // Execute the video loading asynctask
-                new BackgroundVideoAsyncTask().execute(STREAM_URL);
+                    // Execute the video loading asynctask
+                    new BackgroundVideoAsyncTask().execute(STREAM_URL);
+                } else {
+                    // TODO: Show a message saying there is no internet
+                }
             }
         });
 
@@ -153,6 +181,12 @@ public class CurrentFragment extends ListFragment {
             mConditionArrayAdapter = new ConditionArrayAdapter(getActivity(), mConditionModel.conditions);
             setListAdapter(mConditionArrayAdapter);
         }
+    }
 
+    public boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 }

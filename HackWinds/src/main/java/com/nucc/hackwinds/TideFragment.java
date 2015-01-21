@@ -1,5 +1,8 @@
 package com.nucc.hackwinds;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -16,10 +19,12 @@ public class TideFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mTideModel = TideModel.getInstance();
+        if (isOnline()) {
+            mTideModel = TideModel.getInstance();
 
-        // deploy the wunderground async task
-        new BackgroundWunderAsyncTask().execute();
+            // deploy the wunderground async task
+            new BackgroundWunderAsyncTask().execute();
+        }
     }
 
     @Override
@@ -53,6 +58,12 @@ public class TideFragment extends ListFragment {
             mTideArrayAdapter = new TideArrayAdapter(getActivity(), mTideModel.tides);
             setListAdapter(mTideArrayAdapter);
         }
+    }
 
+    public boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 }

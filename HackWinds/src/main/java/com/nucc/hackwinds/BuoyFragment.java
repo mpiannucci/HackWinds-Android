@@ -3,24 +3,14 @@ package com.nucc.hackwinds;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-
-import java.util.Date;
-import java.util.concurrent.BlockingDeque;
-import java.util.concurrent.TimeUnit;
-import java.util.Calendar;
-import java.util.TimeZone;
-import java.util.GregorianCalendar;
-
-import com.koushikdutta.ion.Ion;
-import com.koushikdutta.async.future.FutureCallback;
-
-import java.util.ArrayList;
+import android.net.ConnectivityManager;
+import android.content.Context;
+import android.net.NetworkInfo;
 
 import info.hoang8f.android.segmented.SegmentedGroup;
 
@@ -40,11 +30,13 @@ public class BuoyFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Get the buoy model
-        mBuoyModel = BuoyModel.getInstance();
+        if (isOnline()) {
+            // Get the buoy model
+            mBuoyModel = BuoyModel.getInstance();
 
-        // Get the BI location to initialize
-        new BackgroundBuoyAsyncTask().execute();
+            // Get the BI location to initialize
+            new BackgroundBuoyAsyncTask().execute();
+        }
     }
 
     @Override
@@ -71,7 +63,9 @@ public class BuoyFragment extends ListFragment {
                     // Switch to Montauk buoy view
                     mLocation = MTK_LOCATION;
                 }
-                new BackgroundBuoyAsyncTask().execute();
+                if (isOnline()) {
+                    new BackgroundBuoyAsyncTask().execute();
+                }
             }
         });
         return V;
@@ -101,5 +95,12 @@ public class BuoyFragment extends ListFragment {
             setListAdapter(mBuoyArrayAdapter);
         }
 
+    }
+
+    public boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 }
