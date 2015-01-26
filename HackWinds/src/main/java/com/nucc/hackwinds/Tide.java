@@ -2,20 +2,15 @@ package com.nucc.hackwinds;
 
 public class Tide {
 
+    static final String LOW_TIDE_TAG = "Low Tide";
+    static final String HIGH_TIDE_TAG = "High Tide";
+    static final String SUNRISE_TAG = "Sunrise";
+    static final String SUNSET_TAG = "Sunset";
+
     public Tide() {
-        super();
-        this.Time = new String[6];
-        this.EventType = new String[6];
     }
 
-    public void addDataItem(String eventType, String time, int pos) {
-        if (this.EventType != null) {
-            this.EventType[pos] = eventType;
-            this.Time[pos] = time;
-        }
-    }
-
-    String Day;
-    String[] Time;
-    String[] EventType;
+    String Time;
+    String EventType;
+    String Height;
 }

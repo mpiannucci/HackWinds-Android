@@ -18,19 +18,19 @@
         <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
-    <style name="forcDataText">
+    <style name="ForecastDataText">
         <item name="android:textColor">@color/numixGrey</item>
         <item name="android:textSize">25sp</item>
         <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
-    <style name="DescripText">
+    <style name="DescriptionText">
         <item name="android:textColor">@color/numixGrey</item>
         <item name="android:textSize">18sp</item>
         <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
-    <style name="tideDescripText">
+    <style name="TideDescriptionText">
         <item name="android:textColor">@color/numixGrey</item>
         <item name="android:textSize">18sp</item>
         <item name="android:fontFamily">sans-serif-bold</item>

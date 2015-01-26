@@ -73,6 +73,9 @@ public class ConditionModel {
                     // Its false, make a new condition object
                     Condition thisCondition = new Condition();
 
+                    // Set the date for the conditions
+                    thisCondition.Date = date;
+
                     // Get the values from the json object to fill the condition object
                     JSONObject swell = jsonObj.getJSONObject("swell");
                     JSONObject wind = jsonObj.getJSONObject("wind");

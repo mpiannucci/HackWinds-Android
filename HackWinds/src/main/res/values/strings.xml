@@ -35,7 +35,11 @@
     <string name="high_tide">High Tide</string>
     <string name="sunrise">Sunrise</string>
     <string name="sunset">Sunset</string>
-    <string name="tide_holder">Data Type</string>
+    <string name="tide_event_holder">Tide Event</string>
+    <string name="current_tide_header">Right Now</string>
+    <string name="upcoming_tide_header">Upcoming</string>
+    <string name="sun_tide_header">Sunrise and Sunset</string>
+    <string name="tide_time_holder">00:00</string>
 
     <!-- Settings Page -->
     <string name="pref_about_title">About</string>

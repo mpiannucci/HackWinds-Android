@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/currentTideCard"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -10,8 +11,8 @@
         app:cardUseCompatPadding="true">
 
         <LinearLayout
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginLeft="6dp"
             android:layout_marginRight="6dp"
             android:layout_marginTop="4dp"
@@ -19,12 +20,13 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/forecastHeader"
+                android:id="@+id/currentTideHeader"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@string/loading_text"
+                android:layout_height="wrap_content"
+                android:text="@string/current_tide_header"
                 android:textColor="@color/numixGrey"
-                style="@style/HeaderText" />
+                android:layout_gravity="start|center_vertical"
+                style="@style/DataHeaderText" />
 
             <View
                 android:layout_width="fill_parent"
@@ -32,19 +34,13 @@
                 android:background="@color/ltgrey"/>
 
             <TextView
-                android:id="@+id/forecastOverview"
-                android:layout_width="wrap_content"
+                android:id="@+id/currentTideStatus"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/loading_text"
-                style="@style/ForecastDataText" />
-
-            <TextView
-                android:id="@+id/forecastDetail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=""
-                style="@style/DescriptionText" />
-
+                android:text="@string/current_tide_header"
+                android:textColor="@color/numixGrey"
+                android:layout_gravity="start|center_vertical"
+                style="@style/HeaderText" />
         </LinearLayout>
     </android.support.v7.widget.CardView>
 </FrameLayout>

@@ -53,7 +53,7 @@
                 android:id="@+id/dateHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="left|center_vertical"
+                android:layout_gravity="start|center_vertical"
                 style="@style/HeaderText"
                 android:textColor="@color/numixGrey" />
 
