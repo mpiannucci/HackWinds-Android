@@ -14,16 +14,16 @@ public class TideArrayAdapter extends ArrayAdapter<Tide> {
     private final Context context;
     private final ArrayList<Tide> values;
 
-    // Array of all of the possible textviews that could be set for the data field
+    // Array of all of the possible TextViews that could be set for the data field
     private int[] headerIDs = new int[] {R.id.tideHeader1, R.id.tideHeader2, R.id.tideHeader3,
         R.id.tideHeader4, R.id.tideHeader5, R.id.tideHeader6};
 
-    // Array of all of the possible textviews that could be set for the data fields
+    // Array of all of the possible TextViews that could be set for the data fields
     private int[] dataIDs = new int[] {R.id.tideData1, R.id.tideData2, R.id.tideData3,
             R.id.tideData4, R.id.tideData5, R.id.tideData6};
 
     static class ViewHolder {
-        // View holder to save the views for recylcling
+        // View holder to save the views for recycling
         public TextView dayTV;
         public TextView[] headers;
         public TextView[] datas;
@@ -42,7 +42,7 @@ public class TideArrayAdapter extends ArrayAdapter<Tide> {
         if (rowView == null) {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            // Get the tide item layout into a new rowview
+            // Get the tide item layout into a new row view
             rowView = inflater.inflate(R.layout.tide_item, parent, false);
 
             // Set the view holder
@@ -62,11 +62,11 @@ public class TideArrayAdapter extends ArrayAdapter<Tide> {
         ViewHolder holder = (ViewHolder) rowView.getTag();
 
         // Set the day header
-        holder.dayTV.setText(tide.day);
+        holder.dayTV.setText(tide.Day);
 
         // Loop through all of the possible days
         for (int i=0; i<6; i++) {
-            if ((tide.dType[i] == null) || (tide.dValue[i] == null)) {
+            if ((tide.EventType[i] == null) || (tide.Time[i] == null)) {
                 // If there was not enough data to fill all of the views, hide them
                 holder.headers[i].setVisibility(View.GONE);
                 holder.datas[i].setVisibility(View.GONE);
@@ -77,9 +77,9 @@ public class TideArrayAdapter extends ArrayAdapter<Tide> {
                 holder.datas[i].setVisibility(View.VISIBLE);
 
                 // Set the data and header value for the iteration
-                holder.headers[i].setText(tide.dType[i]);
-                holder.datas[i].setText(tide.dValue[i]);
-                if ((tide.dType[i].equals("Sunrise")) || (tide.dType[i].equals("Sunset"))) {
+                holder.headers[i].setText(tide.EventType[i]);
+                holder.datas[i].setText(tide.Time[i]);
+                if ((tide.EventType[i].equals("Sunrise")) || (tide.EventType[i].equals("Sunset"))) {
                     // If its a sunrise or sunset, make the text bold
                     holder.headers[i].setTypeface(null, Typeface.BOLD);
                     holder.datas[i].setTypeface(null, Typeface.BOLD);

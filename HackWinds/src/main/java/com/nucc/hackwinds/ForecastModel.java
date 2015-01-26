@@ -1,5 +1,6 @@
 package com.nucc.hackwinds;
 
+import android.content.Loader;
 import android.text.format.Time;
 import android.util.Log;
 
@@ -25,7 +26,7 @@ public class ForecastModel {
 
     private ForecastModel() {
         // Initialize the forecast array
-        forecasts = new ArrayList<Forecast>();
+        forecasts = new ArrayList<>();
 
         // Get the date objects
         getDate();
@@ -37,29 +38,32 @@ public class ForecastModel {
         now.setToNow();
 
         // Set the header text to the date.
-        // Handle if it is after 6 oclock when swell info changes the current day.
+        // Handle if it is after 6 o'clock when swell info changes the current day.
+        int dayIndexStart;
         if (now.hour < 18) {
             // Here the day is the same so start the index at zero
-            for (int i = 0; i < 5; i++) {
-                forecasts.add(new Forecast(DAYS[(now.weekDay + i) % DAYS.length], "", ""));
-            }
+            dayIndexStart = 0;
         } else {
             // Here the day is actually tomorrow, so start the index at one
-            for (int i = 1; i < 6; i++) {
-                forecasts.add(new Forecast(DAYS[(now.weekDay + i) % DAYS.length], "", ""));
-            }
+            dayIndexStart = 1;
+        }
+        // Loop over days and make new forecast objects for each day in the range
+        for (int i = dayIndexStart; i < dayIndexStart + 5; i++) {
+            Forecast thisForecast = new Forecast();
+            thisForecast.Day = DAYS[(now.weekDay + i) % DAYS.length];
+            forecasts.add(thisForecast);
         }
     }
 
     public ArrayList<Forecast> getForecasts () {
-        if (forecasts.get(0).detail.isEmpty()) {
+        if (forecasts.get(0).Detailed == null) {
             parseForecastData();
         }
         return forecasts;
     }
 
     private boolean parseForecastData () {
-        // Get the http response from swellinfo
+        // Get the http response from SwellInfo
         try {
             Document doc = Jsoup.connect(SWELL_INFO_URL).get();
 
@@ -71,10 +75,10 @@ public class ForecastModel {
             for (int i = 0; i < 10; i++) {
                 if ((i % 2) == 0) {
                     // Its an overview data object
-                    forecasts.get(count).overview = elements.get(i + 1).text();
+                    forecasts.get(count).Overview = elements.get(i + 1).text();
                 } else {
                     // Its a detail data object
-                    forecasts.get(count).detail = elements.get(i + 1).text();
+                    forecasts.get(count).Detailed = elements.get(i + 1).text();
 
                     // Only increment after the detail is done
                     count++;

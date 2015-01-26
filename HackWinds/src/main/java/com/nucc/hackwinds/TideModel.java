@@ -32,7 +32,7 @@ public class TideModel {
 
     private TideModel() {
         // Initialize tide array
-        tides = new ArrayList<Tide>();
+        tides = new ArrayList<>();
     }
 
     private void getDate() {
@@ -45,7 +45,9 @@ public class TideModel {
 
         // Set the header text to the date
         for (int i = 0; i < 5; i++) {
-            tides.add(new Tide(DAYS[(now.weekDay + i) % DAYS.length]));
+            Tide thisTide = new Tide();
+            thisTide.Day = DAYS[(now.weekDay + i) % DAYS.length];
+            tides.add(thisTide);
         }
     }
 
@@ -55,7 +57,7 @@ public class TideModel {
             // Create the objects
             getDate();
 
-            // Get new data from wunderground
+            // Get new data from Wunderground
             ServiceHandler sh = new ServiceHandler();
             String rawData = sh.makeServiceCall(WUNDER_URL, ServiceHandler.GET);
 
@@ -91,7 +93,7 @@ public class TideModel {
                             if (datacount < 2) {
                                 for (int l = 0; l < 5; l++) {
                                     // move each day up by one
-                                    tides.get(l).day = DAYS[(todayWeek + l + 1) % DAYS.length];
+                                    tides.get(l).Day = DAYS[(todayWeek + l + 1) % DAYS.length];
                                 }
                             }
                         } else {
@@ -101,7 +103,7 @@ public class TideModel {
 
                         // Check if its a new month
                         if (Integer.parseInt(month) != (todayMonth + 1)) {
-                            // Its a new month so reset todays index and increment the month index
+                            // Its a new month so reset today's index and increment the month index
                             today = 1;
                             todayMonth++;
                         } else {
@@ -132,7 +134,7 @@ public class TideModel {
             }
             return true;
         } else {
-            Log.e("HackWinds", "Couldn't get any data from the wunderground url");
+            Log.e("HackWinds", "Couldn't get any data from the Wunderground url");
             return false;
         }
     }

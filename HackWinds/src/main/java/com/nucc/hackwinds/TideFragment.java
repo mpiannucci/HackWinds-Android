@@ -49,8 +49,8 @@ public class TideFragment extends ListFragment {
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
 
-            // If there arent enough values, remove it from the list
-            if (mTideModel.tides.get(mTideModel.tides.size() - 1).dType[0] == null) {
+            // If there aren't enough values, remove it from the list
+            if (mTideModel.tides.get(mTideModel.tides.size() - 1).EventType[0] == null) {
                 mTideModel.tides.remove(mTideModel.tides.size() - 1);
             }
 

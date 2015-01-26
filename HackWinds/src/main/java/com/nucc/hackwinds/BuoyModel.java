@@ -37,8 +37,8 @@ public class BuoyModel {
 
     private BuoyModel() {
         // Initialize the data arrays
-        blockIslandBuoyData = new ArrayList<Buoy>();
-        montaukBuoyData = new ArrayList<Buoy>();
+        blockIslandBuoyData = new ArrayList<>();
+        montaukBuoyData = new ArrayList<>();
 
         // Set the time offset variable so the times are correct
         Calendar mCalendar = new GregorianCalendar();
@@ -85,16 +85,16 @@ public class BuoyModel {
             Buoy thisBuoy = new Buoy();
 
             // Set the time
-            thisBuoy.time = String.format("%d:%s", (Integer.valueOf(datas[i + HOUR_OFFSET])+(int)hour_offset+12)%12, datas[i + MINUTE_OFFSET]);
+            thisBuoy.Time = String.format("%d:%s", (Integer.valueOf(datas[i + HOUR_OFFSET])+(int)hour_offset+12)%12, datas[i + MINUTE_OFFSET]);
 
             // Set the period and wind direction values
-            thisBuoy.dpd = datas[i+DPD_OFFSET];
-            thisBuoy.dir = datas[i+DIRECTION_OFFSET];
+            thisBuoy.DominantPeriod = datas[i+DPD_OFFSET];
+            thisBuoy.Direction = datas[i+DIRECTION_OFFSET];
 
             // Convert and set the wave height
             String wv = datas[i+WVHT_OFFSET];
             double h = Double.valueOf(wv) * 3.28;
-            thisBuoy.wvht = String.format("%4.2f", h);
+            thisBuoy.WaveHeight = String.format("%4.2f", h);
 
             // Save the buoy object to the list
             if (location == BI_LOCATION) {

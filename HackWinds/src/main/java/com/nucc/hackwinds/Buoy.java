@@ -9,8 +9,8 @@ public class Buoy {
 
     }
 
-    public String time;
-    public String wvht;
-    public String dpd;
-    public String dir;
+    public String Time;
+    public String WaveHeight;
+    public String DominantPeriod;
+    public String Direction;
 }

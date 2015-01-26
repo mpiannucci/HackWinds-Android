@@ -75,16 +75,16 @@ public class BuoyArrayAdapter extends ArrayAdapter<Buoy> {
             Buoy buoy = values.get(position-1);
 
             // Set the data into the text views
-            holder.timeTV.setText(buoy.time);
-            holder.wvhtTV.setText(buoy.wvht);
-            holder.periodTV.setText(buoy.dpd);
+            holder.timeTV.setText(buoy.Time);
+            holder.wvhtTV.setText(buoy.WaveHeight);
+            holder.periodTV.setText(buoy.DominantPeriod);
 
             // Hack to make sure that buoy direction is wont crash
-            if (buoy.dir.equals("MM")) {
-                // If its null make sure we dont attempt to cast to an integer
+            if (buoy.Direction.equals("MM")) {
+                // If its null make sure we don't attempt to cast to an integer
                 holder.directionTV.setText("NULL");
             } else {
-                int windIndex = Integer.valueOf(buoy.dir) / (360 / DIRS.length);
+                int windIndex = Integer.valueOf(buoy.Direction) / (360 / DIRS.length);
                 if (windIndex >= DIRS.length) {
                     // If its past NNW, force it to be north
                     windIndex = 0;
@@ -92,7 +92,7 @@ public class BuoyArrayAdapter extends ArrayAdapter<Buoy> {
                 holder.directionTV.setText(DIRS[windIndex]);
             }
 
-            // Make sure the text isnt bold
+            // Make sure the text isn't bold
             holder.timeTV.setTypeface(null, Typeface.NORMAL);
             holder.wvhtTV.setTypeface(null, Typeface.NORMAL);
             holder.periodTV.setTypeface(null, Typeface.NORMAL);

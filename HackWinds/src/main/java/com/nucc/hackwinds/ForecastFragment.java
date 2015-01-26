@@ -50,7 +50,7 @@ public class ForecastFragment extends ListFragment {
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
 
-            // Set the forecast adapter to the listview
+            // Set the forecast adapter to the ListView
             mForecastArrayAdapter = new ForecastArrayAdapter(getActivity(), mForecastModel.forecasts);
             setListAdapter(mForecastArrayAdapter);
         }

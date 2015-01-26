@@ -43,14 +43,14 @@ public class ForecastArrayAdapter extends ArrayAdapter<Forecast> {
             // Set the tag so the views can be recycled
             rowView.setTag(viewHolder);
         }
-        // Get the ofrecast object and the viewholder
+        // Get the forecast object and the view holder
         Forecast forecast = values.get(position);
         ViewHolder holder = (ViewHolder) rowView.getTag();
 
         // Set the day, brief, overview and detailed text views
-        holder.dayTV.setText(forecast.day);
-        holder.overviewTV.setText(forecast.overview);
-        holder.detailTV.setText(forecast.detail);
+        holder.dayTV.setText(forecast.Day);
+        holder.overviewTV.setText(forecast.Overview);
+        holder.detailTV.setText(forecast.Detailed);
 
         // Return the completed view to render on screen
         return rowView;

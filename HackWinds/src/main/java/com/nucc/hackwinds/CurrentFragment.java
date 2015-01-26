@@ -70,8 +70,8 @@ public class CurrentFragment extends ListFragment {
         int day = calendar.get(Calendar.DAY_OF_WEEK);
         date.setText(DAYS[day - 1]);
 
-        // Get the imageview to set as the holder before the user calls
-        // to play the videoview
+        // Get the ImageView to set as the holder before the user calls
+        // to play the VideoView
         ImageView img = (ImageView) V.findViewById(R.id.imageOverlay);
         if (isOnline()) {
             Ion.with(getActivity()).load(IMG_URL).intoImageView(img);
@@ -91,17 +91,17 @@ public class CurrentFragment extends ListFragment {
         // Set the onClick callback for the play button to start the VideoView
         pb.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Hide the playbutton and the holder image
+                // Hide the play button and the holder image
                 if (isOnline()) {
                     v.setVisibility(View.GONE);
                     ImageView pic = (ImageView) getActivity().findViewById(R.id.imageOverlay);
                     pic.setVisibility(View.GONE);
 
-                    // Show the videoview
+                    // Show the VideoView
                     mStreamView = (VideoView) getActivity().findViewById(R.id.currentVideoStreamView);
                     mStreamView.setVisibility(View.VISIBLE);
 
-                    // Execute the video loading asynctask
+                    // Execute the video loading AsyncTask
                     new BackgroundVideoAsyncTask().execute(STREAM_URL);
                 } else {
                     // TODO: Show a message saying there is no internet

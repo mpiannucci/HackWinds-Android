@@ -76,10 +76,10 @@ public class ConditionArrayAdapter extends ArrayAdapter<Condition> {
             Condition condition = values.get(position);
 
             // Set the textview for all of the data
-            holder.dateTV.setText(condition.date);
-            holder.breakTV.setText(condition.minBreak + " - " + condition.maxBreak);
-            holder.windTV.setText(condition.windDir + " " + condition.windSpeed);
-            holder.swellTV.setText(condition.swellDeg + " " + condition.swellHeight + " ft @ " + condition.swellPeriod + " s");
+            holder.dateTV.setText(condition.Date);
+            holder.breakTV.setText(condition.MinBreakHeight + " - " + condition.MaxBreakHeight);
+            holder.windTV.setText(condition.WindDirection + " " + condition.WindSpeed);
+            holder.swellTV.setText(condition.SwellDirection + " " + condition.SwellHeight + " ft @ " + condition.SwellPeriod + " s");
 
             // Make sure the text is normal and not bold
             holder.dateTV.setTypeface(null, Typeface.NORMAL);

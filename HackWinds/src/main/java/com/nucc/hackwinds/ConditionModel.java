@@ -27,7 +27,7 @@ public class ConditionModel {
 
     private ConditionModel() {
         // Initialize the list of conditions
-        conditions = new ArrayList<Condition>();
+        conditions = new ArrayList<>();
     }
 
     public ArrayList<Condition> getConditions(int numberOfConditions) {
@@ -66,25 +66,27 @@ public class ConditionModel {
                     // Check the date to see if it is valid
                     String date = formatDate(jsonObj.getLong("localTimestamp"));
                     if (checkDate(date) == false) {
-                        // Its in a timerange we dont care about so continue
+                        // Its in a time range we don't care about so continue
                         continue;
                     }
 
-                    // Get the vlaues from the json object to fill the condition object
+                    // Its false, make a new condition object
+                    Condition thisCondition = new Condition();
+
+                    // Get the values from the json object to fill the condition object
                     JSONObject swell = jsonObj.getJSONObject("swell");
                     JSONObject wind = jsonObj.getJSONObject("wind");
-                    String minBreak = swell.getString("minBreakingHeight");
-                    String maxBreak = swell.getString("maxBreakingHeight");
-                    String windSpeed = wind.getString("speed");
-                    String windDeg = wind.getString("direction");
-                    String windDir = wind.getString("compassDirection");
-                    String swellHeight = swell.getJSONObject("components").getJSONObject("primary").getString("height");
-                    String swellPeriod = swell.getJSONObject("components").getJSONObject("primary").getString("period");
-                    String swellDir = swell.getJSONObject("components").getJSONObject("primary").getString("compassDirection");
+                    thisCondition.MinBreakHeight = swell.getString("minBreakingHeight");
+                    thisCondition.MaxBreakHeight = swell.getString("maxBreakingHeight");
+                    thisCondition.WindSpeed = wind.getString("speed");
+                    thisCondition.WindDeg = wind.getString("direction");
+                    thisCondition.WindDirection = wind.getString("compassDirection");
+                    thisCondition.SwellHeight = swell.getJSONObject("components").getJSONObject("primary").getString("height");
+                    thisCondition.SwellPeriod = swell.getJSONObject("components").getJSONObject("primary").getString("period");
+                    thisCondition.SwellDirection = swell.getJSONObject("components").getJSONObject("primary").getString("compassDirection");
 
                     // Add the new condition object to the vector and iterate the number of parsed objects
-                    conditions.add(new Condition(date, minBreak, maxBreak, windSpeed, windDeg,
-                            windDir, swellHeight, swellPeriod, swellDir));
+                    conditions.add(thisCondition);
                     i++;
                 }
             } catch (JSONException e) {
@@ -117,7 +119,7 @@ public class ConditionModel {
         int ampmStamp = dateString.indexOf("AM");
         int hour00 = dateString.indexOf("0");
         int hour03 = dateString.indexOf("3");
-        // If its midnight or 3 am we dont care about it. otherwise its fine
+        // If its midnight or 3 am we don't care about it. otherwise its fine
         if (((ampmStamp > -1) && (hour00 > -1)) || ((ampmStamp > -1) && (hour03 > -1))) {
             return false;
         }

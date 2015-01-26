@@ -2,20 +2,20 @@ package com.nucc.hackwinds;
 
 public class Tide {
 
-    public Tide(String day) {
-        // Call the constructor
+    public Tide() {
         super();
-        this.day = day;
-        this.dType = new String[6];
-        this.dValue = new String[6];
+        this.Time = new String[6];
+        this.EventType = new String[6];
     }
 
-    public void addDataItem(String dataType, String dataValue, int pos) {
-        this.dType[pos] = dataType;
-        this.dValue[pos] = dataValue;
+    public void addDataItem(String eventType, String time, int pos) {
+        if (this.EventType != null) {
+            this.EventType[pos] = eventType;
+            this.Time[pos] = time;
+        }
     }
 
-    String[] dValue;
-    String[] dType;
-    String day;
+    String Day;
+    String[] Time;
+    String[] EventType;
 }

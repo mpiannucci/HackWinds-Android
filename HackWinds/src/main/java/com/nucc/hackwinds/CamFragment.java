@@ -27,7 +27,7 @@ public class CamFragment extends Fragment {
     // Initialize the swipe refresh layout
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
-    // An array holding the imageviews so they can be kept in a scrollview
+    // An array holding the ImageViews so they can be kept in a ScrollView
     int[] resIds = {
         R.id.imageView1,
         R.id.imageView2,
@@ -50,9 +50,9 @@ public class CamFragment extends Fragment {
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                // When the refresh is triggered, get the images and set them to the imageviews
+                // When the refresh is triggered, get the images and set them to the ImageViews
                 for (int i = 0; i < resIds.length; i++) {
-                    // Get the imageview
+                    // Get the ImageView
                     img = (ImageView) getActivity().findViewById(resIds[i]);
 
                     // Get the image and scale it to fill the whole screen width
