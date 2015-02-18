@@ -1,8 +1,11 @@
 package com.nucc.hackwinds;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -16,8 +19,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.VideoView;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 
 import com.koushikdutta.ion.Ion;
 
@@ -34,6 +35,7 @@ public class CurrentFragment extends ListFragment {
     private ConditionArrayAdapter mConditionArrayAdapter;
     private ConditionModel mConditionModel;
     private VideoView mStreamView;
+    private FullMediaController mFullMediaController;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -85,6 +87,9 @@ public class CurrentFragment extends ListFragment {
         // Set the play button image over the holder camera image
         ImageView pb = (ImageView) V.findViewById(R.id.pbOverlay);
 
+        // Media controls
+        mFullMediaController = new FullMediaController(getActivity());
+
         // Set the onClick callback for the play button to start the VideoView
         pb.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -93,6 +98,10 @@ public class CurrentFragment extends ListFragment {
                     v.setVisibility(View.GONE);
                     ImageView pic = (ImageView) getActivity().findViewById(R.id.imageOverlay);
                     pic.setVisibility(View.GONE);
+
+//                    Intent intent = new Intent(Intent.ACTION_VIEW);
+//                    intent.setDataAndType(Uri.parse(STREAM_URL), "video/*");
+//                    startActivity(intent);
 
                     // Show the VideoView
                     mStreamView = (VideoView) getActivity().findViewById(R.id.currentVideoStreamView);
@@ -123,6 +132,7 @@ public class CurrentFragment extends ListFragment {
 
             try {
                 // Set the video url to the stream
+                mStreamView.setMediaController(mFullMediaController);
                 mStreamView.setVideoURI(uri[0]);
                 mStreamView.requestFocus();
                 mStreamView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
