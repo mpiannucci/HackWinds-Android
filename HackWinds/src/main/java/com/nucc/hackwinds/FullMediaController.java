@@ -31,8 +31,7 @@ public class FullMediaController extends MediaController {
 
         FrameLayout.LayoutParams frameParams = new FrameLayout.LayoutParams(
                 LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-        frameParams.gravity = Gravity.RIGHT|Gravity.TOP;
-        frameParams.topMargin = 23;
+        frameParams.gravity = Gravity.RIGHT;
 
         View v = makeFullScreenButtonView();
         addView(v, frameParams);
@@ -41,7 +40,7 @@ public class FullMediaController extends MediaController {
 
     private View makeFullScreenButtonView() {
         mFullScreenButton = new ImageButton(mContext);
-        mFullScreenButton.setImageResource(R.drawable.ic_media_fullscreen_stretch);
+        mFullScreenButton.setImageResource(R.drawable.ic_media_fullscreen);
         mFullScreenButton.setBackgroundColor(Color.TRANSPARENT);
 
         mFullScreenButton.setOnClickListener(new OnClickListener() {
