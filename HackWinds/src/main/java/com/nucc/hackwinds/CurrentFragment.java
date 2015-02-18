@@ -75,9 +75,6 @@ public class CurrentFragment extends ListFragment {
         ImageView img = (ImageView) V.findViewById(R.id.imageOverlay);
         if (isOnline()) {
             Ion.with(getActivity()).load(IMG_URL).intoImageView(img);
-        } else {
-            // TODO: put a placeholder
-
         }
 
         // Scale the image to fit the width of the screen
@@ -103,8 +100,6 @@ public class CurrentFragment extends ListFragment {
 
                     // Execute the video loading AsyncTask
                     new BackgroundVideoAsyncTask().execute(STREAM_URL);
-                } else {
-                    // TODO: Show a message saying there is no internet
                 }
             }
         });
@@ -139,6 +134,9 @@ public class CurrentFragment extends ListFragment {
                         dialog.dismiss();
                     }
                 });
+
+                // TODO: Allow video to launch full screen
+
             } catch (IllegalArgumentException e) {
                 e.printStackTrace();
             } catch (IllegalStateException e) {
