@@ -27,15 +27,14 @@ import java.util.Calendar;
 
 public class CurrentFragment extends ListFragment {
     // Create constant variables for all of the URLs and cache settings
-    final private String STREAM_URL = "http://162.243.101.197:1935/surfcam/live.stream/playlist.m3u8";
+    final static public String STREAM_URL = "http://162.243.101.197:1935/surfcam/live.stream/playlist.m3u8";
     final private String[] DAYS = new String[] {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
     final private String IMG_URL = "http://www.warmwinds.com/wp-content/uploads/surf-cam-stills/image00001.jpg";
 
     // Initialize the other variables
     private ConditionArrayAdapter mConditionArrayAdapter;
     private ConditionModel mConditionModel;
-    private VideoView mStreamView;
-    private FullMediaController mFullMediaController;
+    public VideoView mStreamView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -85,23 +84,16 @@ public class CurrentFragment extends ListFragment {
         img.setAdjustViewBounds(true);
 
         // Set the play button image over the holder camera image
-        ImageView pb = (ImageView) V.findViewById(R.id.pbOverlay);
-
-        // Media controls
-        mFullMediaController = new FullMediaController(getActivity());
+        ImageView playButton = (ImageView) V.findViewById(R.id.pbOverlay);
 
         // Set the onClick callback for the play button to start the VideoView
-        pb.setOnClickListener(new View.OnClickListener() {
+        playButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Hide the play button and the holder image
                 if (isOnline()) {
                     v.setVisibility(View.GONE);
                     ImageView pic = (ImageView) getActivity().findViewById(R.id.imageOverlay);
                     pic.setVisibility(View.GONE);
-
-//                    Intent intent = new Intent(Intent.ACTION_VIEW);
-//                    intent.setDataAndType(Uri.parse(STREAM_URL), "video/*");
-//                    startActivity(intent);
 
                     // Show the VideoView
                     mStreamView = (VideoView) getActivity().findViewById(R.id.currentVideoStreamView);
@@ -110,6 +102,23 @@ public class CurrentFragment extends ListFragment {
                     // Execute the video loading AsyncTask
                     new BackgroundVideoAsyncTask().execute(STREAM_URL);
                 }
+            }
+        });
+
+        // Set long click listener to launch in the full screen intent
+        playButton.setLongClickable(true);
+        playButton.setOnLongClickListener(new View.OnLongClickListener() {
+            public boolean onLongClick(View v) {
+                // Launch the built in video intent instead of the default embedded video player
+                if (isOnline()) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setDataAndType(Uri.parse(STREAM_URL), "video/*");
+                    startActivity(intent);
+                    return true;
+                } else {
+                    return false;
+                }
+
             }
         });
 
@@ -132,7 +141,6 @@ public class CurrentFragment extends ListFragment {
 
             try {
                 // Set the video url to the stream
-                mStreamView.setMediaController(mFullMediaController);
                 mStreamView.setVideoURI(uri[0]);
                 mStreamView.requestFocus();
                 mStreamView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -144,8 +152,6 @@ public class CurrentFragment extends ListFragment {
                         dialog.dismiss();
                     }
                 });
-
-                // TODO: Allow video to launch full screen
 
             } catch (IllegalArgumentException e) {
                 e.printStackTrace();
