@@ -126,6 +126,27 @@ public class CurrentFragment extends ListFragment {
         return V;
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        // Make sure the videoview stops
+        if (mStreamView.isPlaying()) {
+            mStreamView.stopPlayback();
+
+            // And make sure to hide it again
+            mStreamView.setVisibility(View.GONE);
+        }
+
+        // Show the play button again
+        ImageView playButton = (ImageView) getActivity().findViewById(R.id.pbOverlay);
+        playButton.setVisibility(View.VISIBLE);
+
+        // Show the holder image again
+        ImageView holderPic = (ImageView) getActivity().findViewById(R.id.imageOverlay);
+        holderPic.setVisibility(View.VISIBLE);
+    }
+
     public class BackgroundVideoAsyncTask extends AsyncTask<String, Uri, Void> {
         ProgressDialog dialog;
 
