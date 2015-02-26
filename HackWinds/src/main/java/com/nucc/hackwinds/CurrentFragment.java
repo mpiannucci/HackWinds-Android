@@ -130,6 +130,11 @@ public class CurrentFragment extends ListFragment {
     public void onPause() {
         super.onPause();
 
+        // Clean up the video playing
+        finishedWithVideo();
+    }
+
+    private void finishedWithVideo() {
         // Make sure the videoview stops
         if (mStreamView.isPlaying()) {
             mStreamView.stopPlayback();
@@ -164,13 +169,33 @@ public class CurrentFragment extends ListFragment {
                 // Set the video url to the stream
                 mStreamView.setVideoURI(uri[0]);
                 mStreamView.requestFocus();
+
+                // On Prepared Listener
                 mStreamView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
 
-                    public void onPrepared(MediaPlayer arg0) {
+                    public void onPrepared(MediaPlayer mp) {
                         // When the stream is ready start the videoview and
                         // hide the progress dialog
                         mStreamView.start();
                         dialog.dismiss();
+                    }
+                });
+
+                // On Completion Listener
+                mStreamView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    public void onCompletion(MediaPlayer mp) {
+                        // The video is done so show the original interface
+                        finishedWithVideo();
+                    }
+                });
+
+                // On Error Listener
+                mStreamView.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+                    public boolean onError(MediaPlayer mp, int what, int extra) {
+                        // This is expected because the video times out in a way that I can't catch.
+                        // Just show the original interface
+                        finishedWithVideo();
+                        return true;
                     }
                 });
 
