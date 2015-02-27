@@ -136,20 +136,22 @@ public class CurrentFragment extends ListFragment {
 
     private void finishedWithVideo() {
         // Make sure the videoview stops
-        if (mStreamView.isPlaying()) {
-            mStreamView.stopPlayback();
+        if (mStreamView != null) {
+            if (mStreamView.isPlaying()) {
+                mStreamView.stopPlayback();
 
-            // And make sure to hide it again
-            mStreamView.setVisibility(View.GONE);
+                // And make sure to hide it again
+                mStreamView.setVisibility(View.GONE);
+            }
+
+            // Show the play button again
+            ImageView playButton = (ImageView) getActivity().findViewById(R.id.pbOverlay);
+            playButton.setVisibility(View.VISIBLE);
+
+            // Show the holder image again
+            ImageView holderPic = (ImageView) getActivity().findViewById(R.id.imageOverlay);
+            holderPic.setVisibility(View.VISIBLE);
         }
-
-        // Show the play button again
-        ImageView playButton = (ImageView) getActivity().findViewById(R.id.pbOverlay);
-        playButton.setVisibility(View.VISIBLE);
-
-        // Show the holder image again
-        ImageView holderPic = (ImageView) getActivity().findViewById(R.id.imageOverlay);
-        holderPic.setVisibility(View.VISIBLE);
     }
 
     public class BackgroundVideoAsyncTask extends AsyncTask<String, Uri, Void> {
@@ -159,7 +161,7 @@ public class CurrentFragment extends ListFragment {
             // Show a progress dialog so the user knows the videoview is loading
             dialog = new ProgressDialog(getActivity());
             dialog.setMessage("Loading Live Stream...");
-            dialog.setCancelable(true);
+            dialog.setCancelable(false);
             dialog.show();
         }
 
