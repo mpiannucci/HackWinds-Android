@@ -36,7 +36,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ```
 
-#### [PagerSlidingTabStrip](https://github.com/astuetz/PagerSlidingTabStrip)
+#### [PagerSlidingTabStrip](https://github.com/jpardogo/PagerSlidingTabStrip)
 ```
 Copyright 2013 Andreas Stuetz
 
