@@ -50,9 +50,9 @@ ADDED from AndroidManifest.xml:18:17
 	android:name
 		ADDED from AndroidManifest.xml:18:25
 category#android.intent.category.LAUNCHER
-ADDED from AndroidManifest.xml:20:17
+ADDED from AndroidManifest.xml:19:17
 	android:name
-		ADDED from AndroidManifest.xml:20:27
+		ADDED from AndroidManifest.xml:19:27
 uses-sdk
 INJECTED from AndroidManifest.xml:0:0 reason: use-sdk injection requested
 MERGED from com.android.support:support-v4:21.0.2:15:5
