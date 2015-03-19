@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.AlertDialog" parent="Theme.AppCompat.Light.Dialog">
+
+        <!--app abar color in Activties Task manager -->
+        <item name="colorPrimary">@color/hackwinds_blue</item>
+
+        <!--copy/paste colors -->
+        <item name="colorAccent">@color/hackwinds_blue</item>
+
+        <!--status bar color -->
+        <item name="colorPrimaryDark">@color/iconBlue</item>
+    </style>
+
+    <style name="Theme.MyApp" parent="Theme.AppCompat.Light">
+        <item name="android:alertDialogTheme">@style/Theme.AlertDialog</item>
+    </style>
+</resources>

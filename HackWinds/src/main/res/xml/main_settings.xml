@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/pref_forecast_location_group_title" >
+        <ListPreference
+            android:title="Current Location"
+            android:summary="@string/pref_change_forecast_summary"
+            android:key="forecastLocation"
+            android:entries="@array/forecastLocations"
+            android:entryValues="@array/forecastLocations" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

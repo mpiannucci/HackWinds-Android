@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="forecastLocations">
+        <item name="narragansett">Narragansett Town Beach</item>
+        <item name="point_judith">Point Judith Lighthouse</item>
+        <item name="matunuck">Matunuck</item>
+        <item name="second_beach">Second Beach</item>
+    </string-array>
+</resources>
