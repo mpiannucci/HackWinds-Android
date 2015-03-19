@@ -10,4 +10,15 @@
             android:entryValues="@array/forecastLocations" />
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/pref_about_title">
+        <Preference
+            android:title="@string/pref_contact_title"
+            android:summary="@string/pref_contact_email"
+            android:key="contactDeveloper"/>
+        <Preference
+            android:title="@string/pref_disclaimer_title"
+            android:summary="@string/pref_disclaimer_summary"
+            android:key="aboutDisclaimer" />
+    </PreferenceCategory>
+
 </PreferenceScreen>
