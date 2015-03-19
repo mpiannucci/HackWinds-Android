@@ -3,20 +3,20 @@
     <style name="Theme.HackWindsMaterial" parent="Theme.AppCompat.Light">
         <item name="windowActionBar">false</item>
         <item name="colorPrimary">@color/hackwinds_blue</item>
-        <item name="colorPrimaryDark">@color/iconBlue</item>
+        <item name="colorPrimaryDark">@color/icon_blue</item>
         <item name="android:textColorPrimary">@color/white</item>
     </style>
 
     <style name="Theme.HackWindsMaterialSettings" parent="Theme.AppCompat.Light">
         <item name="windowActionBar">false</item>
         <item name="colorPrimary">@color/hackwinds_blue</item>
-        <item name="colorPrimaryDark">@color/iconBlue</item>
-        <item name="colorAccent">@color/iconBlue</item>
+        <item name="colorPrimaryDark">@color/icon_blue</item>
+        <item name="colorAccent">@color/icon_blue</item>
 
         <item name="android:textColorPrimary">@color/black</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:textColorSecondary">@color/hackwinds_blue</item>
-        <item name="android:textColorTertiary">@color/iconBlue</item>
+        <item name="android:textColorTertiary">@color/icon_blue</item>
         <item name="android:textColorPrimaryDisableOnly">#888888</item>
         <item name="android:textColorHint">#778899</item>
         <item name="android:alertDialogTheme">@style/Theme.AlertDialog</item>

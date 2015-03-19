@@ -20,7 +20,7 @@
     <View
         android:layout_width="fill_parent"
         android:layout_height="1dp"
-        android:background="@color/ltgrey"
+        android:background="@color/light_grey"
         android:layout_weight="1" />
 
     <Button
@@ -28,7 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/confirm"
-        android:background="@color/dialogBack"
+        android:background="@color/dialog_background"
         android:layout_weight="1"/>
 
 </LinearLayout>

@@ -23,13 +23,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="@string/loading_text"
-                android:textColor="@color/numixGrey"
+                android:textColor="@color/numix_grey"
                 style="@style/HeaderText" />
 
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
-                android:background="@color/ltgrey"/>
+                android:background="@color/light_grey"/>
 
             <TextView
                 android:id="@+id/forecastOverview"

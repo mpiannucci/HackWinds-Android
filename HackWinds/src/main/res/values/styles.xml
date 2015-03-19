@@ -7,37 +7,37 @@
 
     <!-- Styles for individual views go here -->
     <style name="HeaderText">
-        <item name="android:textColor">@color/numixGrey</item>
+        <item name="android:textColor">@color/numix_grey</item>
         <item name="android:textSize">40sp</item>
         <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
     <style name="DataText">
-        <item name="android:textColor">@color/numixGrey</item>
+        <item name="android:textColor">@color/numix_grey</item>
         <item name="android:textSize">15sp</item>
         <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
     <style name="ForecastDataText">
-        <item name="android:textColor">@color/numixGrey</item>
+        <item name="android:textColor">@color/numix_grey</item>
         <item name="android:textSize">25sp</item>
         <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
     <style name="DescriptionText">
-        <item name="android:textColor">@color/numixGrey</item>
+        <item name="android:textColor">@color/numix_grey</item>
         <item name="android:textSize">18sp</item>
         <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
     <style name="TideDescriptionText">
-        <item name="android:textColor">@color/numixGrey</item>
+        <item name="android:textColor">@color/numix_grey</item>
         <item name="android:textSize">18sp</item>
         <item name="android:fontFamily">sans-serif-bold</item>
     </style>
 
     <style name="DataHeaderText">
-        <item name="android:textColor">@color/numixGrey</item>
+        <item name="android:textColor">@color/numix_grey</item>
         <item name="android:textSize">19sp</item>
         <item name="android:fontFamily">sans-serif-bold</item>
     </style>
@@ -51,7 +51,7 @@
     </style>
 
     <style name="PreferenceListHeader" parent="Widget.TextView.ListSeparator">
-        <item name="android:textColor">@color/iconBlue</item>
+        <item name="android:textColor">@color/icon_blue</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">18sp</item>
         <item name="android:paddingTop">6dp</item>

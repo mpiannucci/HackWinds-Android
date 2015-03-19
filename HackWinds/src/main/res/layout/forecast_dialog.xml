@@ -12,7 +12,7 @@
         android:id="@+id/forcDialogList"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:divider="@color/ltgrey"
+        android:divider="@color/light_grey"
         android:dividerHeight="1dp" />
 
 </LinearLayout>

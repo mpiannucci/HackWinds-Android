@@ -2,17 +2,13 @@
 <resources>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
-    <color name="jblue">#33B5E5</color>
+    <color name="jelly_bean_blue">#33B5E5</color>
     <color name="hackwinds_blue">#47A3FF</color>
-    <color name="dkGrey">#222222</color>
-    <color name="numixGrey">#212121</color>
-    <color name="ltgrey">#e5e5e5</color>
-    <color name="medgrey">#696969</color>
-    <color name="Lback">#FAFAFA</color>
-    <color name="iconBlue">#0000FF</color>
-    <color name="dialogBack">#F7F7F7</color>
-    <color name="swipe_color_1">#C2F9FF</color>
-    <color name="swipe_color_2">#41D8FC</color>
-    <color name="swipe_color_3">#007EFF</color>
-    <color name="swipe_color_4">#0019FF</color>
+    <color name="dark_grey">#222222</color>
+    <color name="numix_grey">#212121</color>
+    <color name="light_grey">#e5e5e5</color>
+    <color name="med_grey">#696969</color>
+    <color name="lollipop_background">#FAFAFA</color>
+    <color name="icon_blue">#0000FF</color>
+    <color name="dialog_background">#F7F7F7</color>
 </resources>
