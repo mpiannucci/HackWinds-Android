@@ -65,9 +65,13 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.action_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
+                break;
             default:
                 return super.onOptionsItemSelected(item);
         }
+        return true;
     }
 
     public class MainPagerAdapter extends FragmentPagerAdapter {
