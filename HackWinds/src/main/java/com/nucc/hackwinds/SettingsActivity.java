@@ -33,9 +33,11 @@ public class SettingsActivity extends ActionBarActivity {
 
         setContentView(R.layout.activity_settings);
 
+        // Set up the toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // Load the preference fragment
         getFragmentManager().beginTransaction().replace(R.id.content_frame, new HackWindsPreferenceFragment()).commit();
     }
 
@@ -43,6 +45,8 @@ public class SettingsActivity extends ActionBarActivity {
         @Override
         public void onCreate(final Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+
+            // Initialize the settings view and set it to the default values on first launch
             addPreferencesFromResource(R.xml.main_settings);
             PreferenceManager.setDefaultValues(getActivity(), R.xml.main_settings, false);
         }
