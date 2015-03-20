@@ -7,7 +7,8 @@
             android:summary="@string/pref_change_forecast_summary"
             android:key="forecastLocation"
             android:entries="@array/forecastLocations"
-            android:entryValues="@array/forecastLocations" />
+            android:entryValues="@array/forecastLocations"
+            android:defaultValue="Narragansett Town Beach"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/pref_about_title">
