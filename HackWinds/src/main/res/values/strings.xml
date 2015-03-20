@@ -53,7 +53,7 @@
     <string name="pref_disclaimer_summary">Click to view</string>
     <string name="pref_disclaimer_message">I do not own the images displayed or the forecast data, nor do I claim to.</string>
     <string name="pref_forecast_location_group_title">Forecast Location</string>
-    <string name="pref_change_forecast_summary">Change Forecast Location</string>
+    <string name="pref_change_forecast_title">Change Forecast Location</string>
     <string name="pref_review_title">Review on Google Play</string>
     <string name="pref_review_summary">If you like the app, please give it a good review on Google Play</string>
     <string name="discalimer_message">I do not own or claim to own neither the wave camera images or

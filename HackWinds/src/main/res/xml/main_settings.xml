@@ -3,8 +3,8 @@
 
     <PreferenceCategory android:title="@string/pref_forecast_location_group_title" >
         <ListPreference
-            android:title="Current Location"
-            android:summary="@string/pref_change_forecast_summary"
+            android:title="@string/pref_change_forecast_title"
+            android:summary="Current Location"
             android:key="forecastLocation"
             android:entries="@array/forecastLocations"
             android:entryValues="@array/forecastLocations"
