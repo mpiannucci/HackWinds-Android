@@ -42,7 +42,7 @@ public class CurrentFragment extends ListFragment {
 
         if (isOnline()) {
             // Get the magic seaweed model instance
-            mConditionModel = ConditionModel.getInstance();
+            mConditionModel = ConditionModel.getInstance(getActivity());
             new BackgroundMSWAsyncTask().execute();
         } else {
             // Alert the user they need the network and close the app on completion

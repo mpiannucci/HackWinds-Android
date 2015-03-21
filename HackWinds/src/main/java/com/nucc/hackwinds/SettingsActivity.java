@@ -60,7 +60,7 @@ public class SettingsActivity extends ActionBarActivity {
 
             // Set the summary of the location preference to be the current location
             Preference forecastLocationPref = findPreference(FORECAST_LOCATION_KEY);
-            forecastLocationPref.setSummary(sharedPrefs.getString(FORECAST_LOCATION_KEY, getResources().getStringArray(R.array.forecastLocations)[0]));
+            forecastLocationPref.setSummary(sharedPrefs.getString(FORECAST_LOCATION_KEY, getResources().getStringArray(R.array.mswForecastLocations)[0]));
 
             // Callbacks to the preference clicks
             // First is the call to send the user Google Play to rate the app
@@ -137,7 +137,7 @@ public class SettingsActivity extends ActionBarActivity {
             if (key.equals(FORECAST_LOCATION_KEY)) {
                 // If the location was changed set the summary to the new location
                 Preference forecastLocationPref = findPreference(key);
-                forecastLocationPref.setSummary(sharedPreferences.getString(key, getResources().getStringArray(R.array.forecastLocations)[0]));
+                forecastLocationPref.setSummary(sharedPreferences.getString(key, getResources().getStringArray(R.array.mswForecastLocations)[0]));
             }
         }
     }

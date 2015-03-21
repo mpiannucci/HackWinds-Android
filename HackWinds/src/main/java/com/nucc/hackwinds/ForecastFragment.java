@@ -22,7 +22,7 @@ public class ForecastFragment extends ListFragment {
 
         if (isOnline()) {
             // Initialize forecast model
-            mForecastModel = ForecastModel.getInstance();
+            mForecastModel = ForecastModel.getInstance(getActivity());
 
             // Get the forecast data
             new BackgroundForecastAsyncTask().execute();

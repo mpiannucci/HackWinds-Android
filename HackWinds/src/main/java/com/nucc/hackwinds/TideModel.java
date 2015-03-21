@@ -1,6 +1,5 @@
 package com.nucc.hackwinds;
 
-import android.text.format.Time;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -14,10 +13,13 @@ public class TideModel {
     final private String WUNDER_URL = "http://api.wunderground.com/api/2e5424aab8c91757/tide/q/RI/Point_Judith.json";
 
     // Member variables
-    private static TideModel mInstance = new TideModel();
+    private static TideModel mInstance;
     public ArrayList<Tide> tides;
 
     public static TideModel getInstance() {
+        if (mInstance == null) {
+            mInstance = new TideModel();
+        }
         return mInstance;
     }
 

@@ -1,6 +1,7 @@
 package com.nucc.hackwinds;
 
 import android.util.Log;
+import android.content.Context;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -10,6 +11,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.TimeZone;
 
 public class ConditionModel {
@@ -18,14 +20,30 @@ public class ConditionModel {
             "http://magicseaweed.com/api/nFSL2f845QOAf1Tuv7Pf5Pd9PXa5sVTS/forecast/?spot_id=1103&fields=localTimestamp,swell.*,wind.*";
 
     // Member variables
-    private static ConditionModel ourInstance = new ConditionModel();
+    private Context mContext;
+    private static ConditionModel mInstance;
+    private HashMap<String, String> mLocationURLs;
     public ArrayList<Condition> conditions;
 
-    public static ConditionModel getInstance() {
-        return ourInstance;
+    public static ConditionModel getInstance(Context context) {
+        if (mInstance == null) {
+            mInstance = new ConditionModel(context);
+        }
+        return mInstance;
     }
 
-    private ConditionModel() {
+    private ConditionModel(Context context) {
+        // Initialize the context
+        mContext = context;
+
+        // Set up the url map
+        mLocationURLs = new HashMap<>();
+        String[] locations = mContext.getResources().getStringArray(R.array.mswForecastLocations);
+        String[] urls = mContext.getResources().getStringArray(R.array.mswForecastURLs);
+        for (int index = 0; index < locations.length; index++) {
+            mLocationURLs.put(locations[index], urls[index]);
+        }
+
         // Initialize the list of conditions
         conditions = new ArrayList<>();
     }

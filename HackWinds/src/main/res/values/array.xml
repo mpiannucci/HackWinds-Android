@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="forecastLocations">
+    <string-array name="mswForecastLocations">
         <item name="narragansett">Narragansett Town Beach</item>
         <item name="point_judith">Point Judith Lighthouse</item>
         <item name="matunuck">Matunuck</item>
         <item name="second_beach">Second Beach</item>
+    </string-array>
+    <string-array name="mswForecastURLs">
+        <item name="narragansett">http://magicseaweed.com/api/nFSL2f845QOAf1Tuv7Pf5Pd9PXa5sVTS/forecast/?spot_id=1103&amp;fields=localTimestamp,swell.*,wind.*</item>
+        <item name="point_judith">http://magicseaweed.com/api/nFSL2f845QOAf1Tuv7Pf5Pd9PXa5sVTS/forecast/?spot_id=376&amp;fields=localTimestamp,swell.*,wind.*</item>
+        <item name="matunuck">http://magicseaweed.com/api/nFSL2f845QOAf1Tuv7Pf5Pd9PXa5sVTS/forecast/?spot_id=377&amp;fields=localTimestamp,swell.*,wind.*</item>
+        <item name="second_beach">http://magicseaweed.com/api/nFSL2f845QOAf1Tuv7Pf5Pd9PXa5sVTS/forecast/?spot_id=846&amp;fields=localTimestamp,swell.*,wind.*</item>
     </string-array>
 </resources>

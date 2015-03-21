@@ -6,8 +6,8 @@
             android:title="@string/pref_change_forecast_title"
             android:summary="Current Location"
             android:key="forecastLocation"
-            android:entries="@array/forecastLocations"
-            android:entryValues="@array/forecastLocations"
+            android:entries="@array/mswForecastLocations"
+            android:entryValues="@array/mswForecastLocations"
             android:defaultValue="Narragansett Town Beach"/>
     </PreferenceCategory>
 

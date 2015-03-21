@@ -25,14 +25,17 @@ public class BuoyModel {
     final public int MTK_LOCATION = 42;
 
     // Member variables
-    private static BuoyModel ourInstance = new BuoyModel();
+    private static BuoyModel mInstance;
     public ArrayList<Buoy> blockIslandBuoyData;
     public ArrayList<Buoy> montaukBuoyData;
 
     private double hour_offset;
 
     public static BuoyModel getInstance() {
-        return ourInstance;
+        if (mInstance == null) {
+            mInstance = new BuoyModel();
+        }
+        return mInstance;
     }
 
     private BuoyModel() {

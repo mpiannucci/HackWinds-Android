@@ -1,7 +1,6 @@
 package com.nucc.hackwinds;
 
-import android.content.Loader;
-import android.content.SharedPreferences;
+import android.content.Context;
 import android.text.format.Time;
 import android.util.Log;
 
@@ -18,14 +17,21 @@ public class ForecastModel {
     final private String SWELL_INFO_URL = "http://www.swellinfo.com/surf-forecast/newport-rhode-island";
 
     // Member variables
-    private static ForecastModel ourInstance = new ForecastModel();
+    private Context mContext;
+    private static ForecastModel mInstance;
     public ArrayList<Forecast> forecasts;
 
-    public static ForecastModel getInstance() {
-        return ourInstance;
+    public static ForecastModel getInstance(Context context) {
+        if (mInstance == null) {
+            mInstance = new ForecastModel(context);
+        }
+        return mInstance;
     }
 
-    private ForecastModel() {
+    private ForecastModel(Context context) {
+        // Get the context
+        mContext = context;
+
         // Initialize the forecast array
         forecasts = new ArrayList<>();
 
