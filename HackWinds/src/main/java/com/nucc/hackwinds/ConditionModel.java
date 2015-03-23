@@ -1,5 +1,8 @@
 package com.nucc.hackwinds;
 
+import android.content.SharedPreferences;
+import android.media.audiofx.BassBoost;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.content.Context;
 
@@ -18,11 +21,14 @@ public class ConditionModel {
     // Constants
     final private String MSW_URL =
             "http://magicseaweed.com/api/nFSL2f845QOAf1Tuv7Pf5Pd9PXa5sVTS/forecast/?spot_id=1103&fields=localTimestamp,swell.*,wind.*";
+    private String mCurrentURL;
 
     // Member variables
     private Context mContext;
     private static ConditionModel mInstance;
     private HashMap<String, String> mLocationURLs;
+    private SharedPreferences.OnSharedPreferenceChangeListener mPrefsChangedListener;
+    private ForecastChangedListener mForecastChangedListener;
     public ArrayList<Condition> conditions;
 
     public static ConditionModel getInstance(Context context) {
@@ -44,8 +50,48 @@ public class ConditionModel {
             mLocationURLs.put(locations[index], urls[index]);
         }
 
+        // Initialize the location URL from the user location settings
+        changeLocation();
+
+        // Set up the settings changed listeners
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+
+        mPrefsChangedListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+            public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+                if (key != SettingsActivity.FORECAST_LOCATION_KEY) {
+                    return;
+                }
+
+                if (!conditions.isEmpty()) {
+                    conditions.clear();
+                }
+
+                changeLocation();
+
+                if (mForecastChangedListener != null) {
+                    mForecastChangedListener.forecastLocationChanged();
+                }
+            }
+        };
+
+        // Register the listener
+        sharedPrefs.registerOnSharedPreferenceChangeListener(mPrefsChangedListener);
+
         // Initialize the list of conditions
         conditions = new ArrayList<>();
+    }
+
+    public void setForecastChangedListener(ForecastChangedListener forecastListener) {
+        mForecastChangedListener = forecastListener;
+    }
+
+    private void changeLocation() {
+        // Get the current location value from the shared preferences
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+        String location = sharedPrefs.getString(SettingsActivity.FORECAST_LOCATION_KEY, "Narragansett Town Beach");
+
+        // Change the current location url
+        mCurrentURL = mLocationURLs.get(location);
     }
 
     public ArrayList<Condition> getConditions(int numberOfConditions) {
