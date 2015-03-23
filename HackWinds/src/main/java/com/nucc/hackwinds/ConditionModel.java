@@ -1,7 +1,6 @@
 package com.nucc.hackwinds;
 
 import android.content.SharedPreferences;
-import android.media.audiofx.BassBoost;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.content.Context;
