@@ -56,7 +56,6 @@ public class ConditionModel {
         mPrefsChangedListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
                 if (!key.equals(SettingsActivity.FORECAST_LOCATION_KEY)) {
-                    Log.d("hackwinds", key);
                     return;
                 }
 
