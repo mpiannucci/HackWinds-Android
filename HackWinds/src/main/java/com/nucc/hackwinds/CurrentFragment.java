@@ -35,16 +35,13 @@ public class CurrentFragment extends ListFragment {
     private ConditionArrayAdapter mConditionArrayAdapter;
     private ConditionModel mConditionModel;
     public VideoView mStreamView;
+    private ForecastChangedListener mForecastChangedListener;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (isOnline()) {
-            // Get the magic seaweed model instance
-            mConditionModel = ConditionModel.getInstance(getActivity());
-            new BackgroundMSWAsyncTask().execute();
-        } else {
+        if (!isOnline()) {
             // Alert the user they need the network and close the app on completion
             new AlertDialog.Builder(getActivity())
                     .setTitle("Network Error")
@@ -58,6 +55,21 @@ public class CurrentFragment extends ListFragment {
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
         }
+
+        // Get the magicseaweed model instance
+        mConditionModel = ConditionModel.getInstance(getActivity());
+
+        // Set the forecast location changed listener
+        mForecastChangedListener = new ForecastChangedListener() {
+            @Override
+            public void forecastLocationChanged() {
+                // When the forecast changes reload the condition data
+                new BackgroundMSWAsyncTask().execute();
+            }
+        };
+        mConditionModel.setForecastChangedListener(mForecastChangedListener);
+
+        new BackgroundMSWAsyncTask().execute();
     }
 
     @Override
@@ -124,6 +136,11 @@ public class CurrentFragment extends ListFragment {
 
         // return the view
         return V;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     @Override

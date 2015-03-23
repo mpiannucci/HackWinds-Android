@@ -18,10 +18,6 @@ import java.util.HashMap;
 import java.util.TimeZone;
 
 public class ConditionModel {
-    // Constants
-    final private String MSW_URL =
-            "http://magicseaweed.com/api/nFSL2f845QOAf1Tuv7Pf5Pd9PXa5sVTS/forecast/?spot_id=1103&fields=localTimestamp,swell.*,wind.*";
-    private String mCurrentURL;
 
     // Member variables
     private Context mContext;
@@ -29,6 +25,7 @@ public class ConditionModel {
     private HashMap<String, String> mLocationURLs;
     private SharedPreferences.OnSharedPreferenceChangeListener mPrefsChangedListener;
     private ForecastChangedListener mForecastChangedListener;
+    private String mCurrentURL;
     public ArrayList<Condition> conditions;
 
     public static ConditionModel getInstance(Context context) {
@@ -58,7 +55,8 @@ public class ConditionModel {
 
         mPrefsChangedListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-                if (key != SettingsActivity.FORECAST_LOCATION_KEY) {
+                if (!key.equals(SettingsActivity.FORECAST_LOCATION_KEY)) {
+                    Log.d("hackwinds", key);
                     return;
                 }
 
@@ -98,7 +96,7 @@ public class ConditionModel {
         if (conditions.isEmpty()) {
             // get the raw condition data
             ServiceHandler sh = new ServiceHandler();
-            String rawData = sh.makeServiceCall(MSW_URL, ServiceHandler.GET);
+            String rawData = sh.makeServiceCall(mCurrentURL, ServiceHandler.GET);
 
             // parse the raw condition data
             parseConditionData(numberOfConditions, rawData);
