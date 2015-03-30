@@ -8,29 +8,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.net.ConnectivityManager;
-import android.content.Context;
-import android.net.NetworkInfo;
 
 import info.hoang8f.android.segmented.SegmentedGroup;
 
 
 public class BuoyFragment extends ListFragment {
-    // Public constants
-    final public int BI_LOCATION = 41;
-    final public int MTK_LOCATION = 42;
 
     // Member variables
     BuoyModel mBuoyModel;
     BuoyArrayAdapter mBuoyArrayAdapter;
 
-    int mLocation = BI_LOCATION;
+    int mLocation = BuoyModel.BLOCK_ISLAND_LOCATION;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (isOnline()) {
+        if (ReachabilityHelper.deviceHasInternetAccess(getActivity())) {
             // Get the buoy model
             mBuoyModel = BuoyModel.getInstance();
 
@@ -58,12 +52,12 @@ public class BuoyFragment extends ListFragment {
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 if (i == R.id.biButton) {
                     // Switch to block island view so get that data
-                    mLocation = BI_LOCATION;
+                    mLocation = BuoyModel.BLOCK_ISLAND_LOCATION;
                 } else {
                     // Switch to Montauk buoy view
-                    mLocation = MTK_LOCATION;
+                    mLocation = BuoyModel.MONTAUK_LOCATION;
                 }
-                if (isOnline()) {
+                if (ReachabilityHelper.deviceHasInternetAccess(getActivity())) {
                     new BackgroundBuoyAsyncTask().execute();
                 }
             }
@@ -87,7 +81,7 @@ public class BuoyFragment extends ListFragment {
             super.onPostExecute(result);
 
             // Set the tide adapter to the list
-            if (mLocation == BI_LOCATION) {
+            if (mLocation == BuoyModel.BLOCK_ISLAND_LOCATION) {
                 mBuoyArrayAdapter = new BuoyArrayAdapter(getActivity(), mBuoyModel.blockIslandBuoyData);
             } else {
                 mBuoyArrayAdapter = new BuoyArrayAdapter(getActivity(), mBuoyModel.montaukBuoyData);
@@ -95,12 +89,5 @@ public class BuoyFragment extends ListFragment {
             setListAdapter(mBuoyArrayAdapter);
         }
 
-    }
-
-    public boolean isOnline() {
-        ConnectivityManager cm =
-                (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 }

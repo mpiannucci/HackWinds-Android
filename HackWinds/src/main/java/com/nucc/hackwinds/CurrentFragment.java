@@ -3,12 +3,9 @@ package com.nucc.hackwinds;
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -41,7 +38,7 @@ public class CurrentFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (!isOnline()) {
+        if (!ReachabilityHelper.deviceHasInternetAccess(getActivity())) {
             // Alert the user they need the network and close the app on completion
             new AlertDialog.Builder(getActivity())
                     .setTitle("Network Error")
@@ -86,7 +83,7 @@ public class CurrentFragment extends ListFragment {
         // Get the ImageView to set as the holder before the user calls
         // to play the VideoView
         ImageView img = (ImageView) V.findViewById(R.id.imageOverlay);
-        if (isOnline()) {
+        if (ReachabilityHelper.deviceHasInternetAccess(getActivity())) {
             Ion.with(getActivity()).load(IMG_URL).intoImageView(img);
         }
 
@@ -102,7 +99,7 @@ public class CurrentFragment extends ListFragment {
         playButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Hide the play button and the holder image
-                if (isOnline()) {
+                if (ReachabilityHelper.deviceHasInternetAccess(getActivity())) {
                     v.setVisibility(View.GONE);
                     ImageView pic = (ImageView) getActivity().findViewById(R.id.imageOverlay);
                     pic.setVisibility(View.GONE);
@@ -122,7 +119,7 @@ public class CurrentFragment extends ListFragment {
         playButton.setOnLongClickListener(new View.OnLongClickListener() {
             public boolean onLongClick(View v) {
                 // Launch the built in video intent instead of the default embedded video player
-                if (isOnline()) {
+                if (ReachabilityHelper.deviceHasInternetAccess(getActivity())) {
                     Intent intent = new Intent(Intent.ACTION_VIEW);
                     intent.setDataAndType(Uri.parse(STREAM_URL), "video/*");
                     startActivity(intent);
@@ -260,12 +257,5 @@ public class CurrentFragment extends ListFragment {
             mConditionArrayAdapter = new ConditionArrayAdapter(getActivity(), mConditionModel.conditions);
             setListAdapter(mConditionArrayAdapter);
         }
-    }
-
-    public boolean isOnline() {
-        ConnectivityManager cm =
-                (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 }

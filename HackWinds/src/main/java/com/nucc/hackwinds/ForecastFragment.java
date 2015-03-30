@@ -1,8 +1,5 @@
 package com.nucc.hackwinds;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -12,6 +9,7 @@ import android.view.ViewGroup;
 
 
 public class ForecastFragment extends ListFragment {
+
     // Declare member variables
     private ForecastModel mForecastModel;
     private ForecastArrayAdapter mForecastArrayAdapter;
@@ -20,7 +18,7 @@ public class ForecastFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (isOnline()) {
+        if (ReachabilityHelper.deviceHasInternetAccess(getActivity())) {
             // Initialize forecast model
             mForecastModel = ForecastModel.getInstance(getActivity());
 
@@ -54,12 +52,5 @@ public class ForecastFragment extends ListFragment {
             mForecastArrayAdapter = new ForecastArrayAdapter(getActivity(), mForecastModel.forecasts);
             setListAdapter(mForecastArrayAdapter);
         }
-    }
-
-    public boolean isOnline() {
-        ConnectivityManager cm =
-                (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 }

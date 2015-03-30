@@ -1,9 +1,6 @@
 package com.nucc.hackwinds;
 
-import android.content.Context;
 import android.graphics.Color;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -30,7 +27,7 @@ public class TideFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (isOnline()) {
+        if (ReachabilityHelper.deviceHasInternetAccess(getActivity())) {
             mTideModel = TideModel.getInstance();
             mBuoyModel = BuoyModel.getInstance();
 
@@ -114,12 +111,5 @@ public class TideFragment extends Fragment {
             // Set the tide adapter to the list
             updateView();
         }
-    }
-
-    public boolean isOnline() {
-        ConnectivityManager cm =
-                (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 }
