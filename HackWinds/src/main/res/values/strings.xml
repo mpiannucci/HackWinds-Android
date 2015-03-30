@@ -41,6 +41,8 @@
     <string name="upcoming_tide_header">Upcoming</string>
     <string name="sun_tide_header">Sunrise and Sunset</string>
     <string name="tide_time_holder">00:00</string>
+    <string name="water_temp_header">Water Temperature</string>
+    <string name="water_temp_holder">&#xb0;F</string>
 
     <!-- Settings Page -->
     <string name="title_activity_settings">Settings</string>

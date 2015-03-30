@@ -13,4 +13,5 @@ public class Buoy {
     public String WaveHeight;
     public String DominantPeriod;
     public String Direction;
+    public String WaterTemperature;
 }

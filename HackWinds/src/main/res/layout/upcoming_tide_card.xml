@@ -42,7 +42,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/tide_event_holder"
-                    android:layout_weight="1.5"
+                    android:layout_weight="1.3"
                     android:gravity="start"
                     android:layout_gravity="start|center_vertical"
                     style="@style/ForecastDataText" />
@@ -68,7 +68,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/tide_event_holder"
-                    android:layout_weight="1.5"
+                    android:layout_weight="1.3"
                     android:gravity="start"
                     android:layout_gravity="start|center_vertical"
                     style="@style/ForecastDataText" />
@@ -94,7 +94,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/tide_event_holder"
-                    android:layout_weight="1.5"
+                    android:layout_weight="1.3"
                     android:gravity="start"
                     android:layout_gravity="start|center_vertical"
                     style="@style/ForecastDataText" />
@@ -120,7 +120,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/tide_event_holder"
-                    android:layout_weight="1.5"
+                    android:layout_weight="1.3"
                     android:gravity="start"
                     android:layout_gravity="start|center_vertical"
                     style="@style/ForecastDataText" />

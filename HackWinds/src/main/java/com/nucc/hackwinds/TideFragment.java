@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 public class TideFragment extends Fragment {
     private TideModel mTideModel;
+    private BuoyModel mBuoyModel;
 
     final private int[] mTideTypeViews = new int[]{R.id.upcomingTideType1,
                                                    R.id.upcomingTideType2,
@@ -31,6 +32,7 @@ public class TideFragment extends Fragment {
 
         if (isOnline()) {
             mTideModel = TideModel.getInstance();
+            mBuoyModel = BuoyModel.getInstance();
 
             // deploy the Wunderground async task
             new BackgroundWunderAsyncTask().execute();
@@ -47,8 +49,6 @@ public class TideFragment extends Fragment {
     // Set the view to reflect the current values received
     public void updateView() {
         int tideCount = 0;
-
-        // Set the current tide status
 
         // Set the upcoming and sunrise/sunset values
         for (Tide thisTide : mTideModel.tides ) {
@@ -87,6 +87,12 @@ public class TideFragment extends Fragment {
                 // Its not relevant and shouldn't have slipped by
             }
         }
+        // Update the water temperature from the latest buoy reading
+        TextView biWaterTemp = (TextView) getActivity().findViewById(R.id.waterTempValue);
+        if (mBuoyModel.blockIslandBuoyData.size() > 0) {
+            String waterTempValue = mBuoyModel.blockIslandBuoyData.get(0).WaterTemperature + " " + getResources().getString(R.string.water_temp_holder);
+            biWaterTemp.setText(waterTempValue);
+        }
     }
 
     public class BackgroundWunderAsyncTask extends AsyncTask<Void, Void, Void> {
@@ -95,6 +101,7 @@ public class TideFragment extends Fragment {
         protected Void doInBackground(Void... arg0) {
             // Get the values using the model and parse the data
             mTideModel.getTideData();
+            mBuoyModel.getBuoyDataForLocation(BuoyModel.BLOCK_ISLAND_LOCATION);
 
             // Return
             return null;
