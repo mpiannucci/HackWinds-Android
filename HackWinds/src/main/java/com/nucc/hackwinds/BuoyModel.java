@@ -105,8 +105,8 @@ public class BuoyModel {
             if (location == BLOCK_ISLAND_LOCATION) {
                 // The montauk buoy doesn't report this so only expect it for the BI buoy
                 double rawTemp = Double.valueOf(waterTemp);
-                double fahrenheitTemp = Math.floor(((rawTemp * (9 / 5) + 32) / 0.05) * 0.05);
-                waterTemp = String.valueOf(fahrenheitTemp);
+                double fahrenheitTemp = ((rawTemp * (9.0 / 5.0) + 32.0) / 0.05) * 0.05;
+                waterTemp = String.format("%4.2f", fahrenheitTemp);
             }
             thisBuoy.WaterTemperature = waterTemp;
 
