@@ -34,6 +34,7 @@ public class BuoyArrayAdapter extends ArrayAdapter<Buoy> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View rowView = convertView;
+
         // Make the view reusable
         if (rowView == null) {
             LayoutInflater inflater = (LayoutInflater) context

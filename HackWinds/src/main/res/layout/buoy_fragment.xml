@@ -10,11 +10,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_margin="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
         android:orientation="horizontal">
 
         <RadioButton
-            android:id="@+id/biButton"
+            android:id="@+id/biSegmentButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/bi_buoy_segment"
@@ -22,7 +25,7 @@
             style="@style/RadioButton" />
 
         <RadioButton
-            android:id="@+id/mtkButton"
+            android:id="@+id/mtkSegmentButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

@@ -65,5 +65,9 @@
 
     <!-- Detailed Forecast Page -->
     <string name="title_activity_detailed_forecast">DetailedForecastActivity</string>
+    <string name="detailed_forecast_toolbar_title_holder">Weekday</string>
+    <string name="swell_chart_segment">Swell</string>
+    <string name="wind_chart_segment">Wind</string>
+    <string name="period_chart_segment">Period</string>
 
 </resources>

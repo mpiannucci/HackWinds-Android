@@ -39,7 +39,7 @@ public class BuoyFragment extends ListFragment {
         View V = inflater.inflate(R.layout.buoy_fragment, container, false);
 
         // Set the segment control to block island
-        RadioButton biButton = (RadioButton) V.findViewById(R.id.biButton);
+        RadioButton biButton = (RadioButton) V.findViewById(R.id.biSegmentButton);
         biButton.setChecked(true);
 
         // Set the tint of the segment control
@@ -50,7 +50,7 @@ public class BuoyFragment extends ListFragment {
         locationGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                if (i == R.id.biButton) {
+                if (i == R.id.biSegmentButton) {
                     // Switch to block island view so get that data
                     mLocation = BuoyModel.BLOCK_ISLAND_LOCATION;
                 } else {
