@@ -82,7 +82,7 @@ public class CurrentFragment extends ListFragment {
 
         // Get the ImageView to set as the holder before the user calls
         // to play the VideoView
-        ImageView img = (ImageView) V.findViewById(R.id.imageOverlay);
+        ImageView img = (ImageView) V.findViewById(R.id.camHolderImage);
         if (ReachabilityHelper.deviceHasInternetAccess(getActivity())) {
             Ion.with(getActivity()).load(IMG_URL).intoImageView(img);
         }
@@ -93,7 +93,7 @@ public class CurrentFragment extends ListFragment {
         img.setAdjustViewBounds(true);
 
         // Set the play button image over the holder camera image
-        ImageView playButton = (ImageView) V.findViewById(R.id.pbOverlay);
+        ImageView playButton = (ImageView) V.findViewById(R.id.camPlayButton);
 
         // Set the onClick callback for the play button to start the VideoView
         playButton.setOnClickListener(new View.OnClickListener() {
@@ -101,7 +101,7 @@ public class CurrentFragment extends ListFragment {
                 // Hide the play button and the holder image
                 if (ReachabilityHelper.deviceHasInternetAccess(getActivity())) {
                     v.setVisibility(View.GONE);
-                    ImageView pic = (ImageView) getActivity().findViewById(R.id.imageOverlay);
+                    ImageView pic = (ImageView) getActivity().findViewById(R.id.camHolderImage);
                     pic.setVisibility(View.GONE);
 
                     // Show the VideoView
@@ -159,11 +159,11 @@ public class CurrentFragment extends ListFragment {
             }
 
             // Show the play button again
-            ImageView playButton = (ImageView) getActivity().findViewById(R.id.pbOverlay);
+            ImageView playButton = (ImageView) getActivity().findViewById(R.id.camPlayButton);
             playButton.setVisibility(View.VISIBLE);
 
             // Show the holder image again
-            ImageView holderPic = (ImageView) getActivity().findViewById(R.id.imageOverlay);
+            ImageView holderPic = (ImageView) getActivity().findViewById(R.id.camHolderImage);
             holderPic.setVisibility(View.VISIBLE);
         }
     }

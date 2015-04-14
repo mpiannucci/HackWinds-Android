@@ -21,12 +21,12 @@
             android:visibility="gone"/>
 
         <ImageView
-            android:id="@+id/imageOverlay"
+            android:id="@+id/camHolderImage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <ImageView
-            android:id="@+id/pbOverlay"
+            android:id="@+id/camPlayButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_av_play_over_video_big"

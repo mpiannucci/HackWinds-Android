@@ -39,5 +39,25 @@
             style="@style/RadioButton" />
     </info.hoang8f.android.segmented.SegmentedGroup>
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@color/light_grey">
+
+        <ImageView
+            android:id="@+id/chartPreviewImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:id="@+id/animatePlayButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_av_play_over_video_big"
+            android:layout_gravity="center_horizontal|center_vertical" />
+
+    </FrameLayout>
+
 
 </FrameLayout>

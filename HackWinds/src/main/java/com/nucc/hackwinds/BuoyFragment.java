@@ -43,7 +43,7 @@ public class BuoyFragment extends ListFragment {
         biButton.setChecked(true);
 
         // Set the tint of the segment control
-        SegmentedGroup locationGroup = (SegmentedGroup) V.findViewById(R.id.segmentedBuoy);
+        SegmentedGroup locationGroup = (SegmentedGroup) V.findViewById(R.id.segmentedBuoyGroup);
         locationGroup.setTintColor(getResources().getColor(R.color.hackwinds_blue));
 
         // Set the listener for the segment group radio change

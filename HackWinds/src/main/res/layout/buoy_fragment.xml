@@ -6,7 +6,7 @@
     android:background="@color/white">
 
     <info.hoang8f.android.segmented.SegmentedGroup
-        android:id="@+id/segmentedBuoy"
+        android:id="@+id/segmentedBuoyGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
