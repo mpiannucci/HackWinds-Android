@@ -88,9 +88,9 @@ public class CurrentFragment extends ListFragment {
         }
 
         // Scale the image to fit the width of the screen
-        img.getLayoutParams().width = ActionBar.LayoutParams.MATCH_PARENT;
-        img.setScaleType(ImageView.ScaleType.FIT_XY);
-        img.setAdjustViewBounds(true);
+//        img.getLayoutParams().width = ActionBar.LayoutParams.MATCH_PARENT;
+//        img.setScaleType(ImageView.ScaleType.FIT_XY);
+//        img.setAdjustViewBounds(true);
 
         // Set the play button image over the holder camera image
         ImageView playButton = (ImageView) V.findViewById(R.id.camPlayButton);

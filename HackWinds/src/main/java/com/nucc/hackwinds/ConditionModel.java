@@ -159,7 +159,7 @@ public class ConditionModel {
                     // Get the chart URLs
                     thisCondition.SwellChartURL = chart.getString("swell");
                     thisCondition.WindChartURL = chart.getString("wind");
-                    thisCondition.PeriodChartURl = chart.getString("period");
+                    thisCondition.PeriodChartURL = chart.getString("period");
 
                     // Add the new condition object to the vector and iterate the number of parsed objects
                     conditions.add(thisCondition);

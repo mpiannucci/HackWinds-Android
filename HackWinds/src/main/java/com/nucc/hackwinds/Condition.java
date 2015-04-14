@@ -16,5 +16,5 @@ public class Condition {
     public String SwellDirection;
     public String SwellChartURL;
     public String WindChartURL;
-    public String PeriodChartURl;
+    public String PeriodChartURL;
 }
