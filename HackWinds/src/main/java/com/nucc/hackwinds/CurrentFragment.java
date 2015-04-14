@@ -25,7 +25,6 @@ import java.util.Calendar;
 public class CurrentFragment extends ListFragment {
     // Create constant variables for all of the URLs and cache settings
     final static public String STREAM_URL = "http://162.243.101.197:1935/surfcam/live.stream/playlist.m3u8";
-    final private String[] DAYS = new String[] {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
     final private String IMG_URL = "http://www.warmwinds.com/wp-content/uploads/surf-cam-stills/image00001.jpg";
 
     // Initialize the other variables
@@ -78,7 +77,8 @@ public class CurrentFragment extends ListFragment {
         TextView date = (TextView) V.findViewById(R.id.dateHeader);
         Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_WEEK);
-        date.setText(DAYS[day - 1]);
+        String dayName = getResources().getStringArray(R.array.daysOfTheWeek)[day-1];
+        date.setText(dayName);
 
         // Get the ImageView to set as the holder before the user calls
         // to play the VideoView

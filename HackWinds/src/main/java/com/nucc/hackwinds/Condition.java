@@ -14,4 +14,7 @@ public class Condition {
     public String SwellHeight;
     public String SwellPeriod;
     public String SwellDirection;
+    public String SwellChartURL;
+    public String WindChartURL;
+    public String PeriodChartURl;
 }

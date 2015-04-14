@@ -63,12 +63,7 @@
         the waves easier for surfers when using a phone. I am specifically operating within the user licensing
         for the MagicSeaweed and Wunderground API\'s.</string>
 
-    <!-- Utility strings -->
-    <string name="confirm">Okay</string>
+    <!-- Detailed Forecast Page -->
     <string name="title_activity_detailed_forecast">DetailedForecastActivity</string>
 
-    <string name="hello_world">Hello world!</string>
-
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

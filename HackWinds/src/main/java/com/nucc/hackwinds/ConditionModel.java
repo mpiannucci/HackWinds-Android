@@ -109,19 +109,19 @@ public class ConditionModel {
                 // Make a json array from the response string
                 JSONArray jsonArr = new JSONArray(rawData);
 
-                // i is the number of data points parsed
-                int i = 0;
+                // The number of data points collected
+                int conditionCount = 0;
 
-                // j is the number of total points iterated
-                int j = 0;
+                // The number of total points iterated
+                int dataIndex = 0;
 
                 // Iterate while the number of parsed is less than what the
                 // user asked for
-                while (i < numberOfConditions) {
+                while (conditionCount < numberOfConditions) {
 
                     // Get the current json object
-                    JSONObject jsonObj = jsonArr.getJSONObject(j);
-                    j++;
+                    JSONObject jsonObj = jsonArr.getJSONObject(dataIndex);
+                    dataIndex++;
 
                     // Check the date to see if it is valid
                     String date = formatDate(jsonObj.getLong("localTimestamp"));
@@ -136,21 +136,34 @@ public class ConditionModel {
                     // Set the date for the conditions
                     thisCondition.Date = date;
 
-                    // Get the values from the json object to fill the condition object
+                    // Get the swell wind and chart dictionaries
                     JSONObject swell = jsonObj.getJSONObject("swell");
                     JSONObject wind = jsonObj.getJSONObject("wind");
+                    JSONObject chart = jsonObj.getJSONObject("charts");
+
+                    // Get the relevant values from the dicts into the models
+                    // Start with the breaking wave sizes
                     thisCondition.MinBreakHeight = swell.getString("minBreakingHeight");
                     thisCondition.MaxBreakHeight = swell.getString("maxBreakingHeight");
+
+                    // Get wind information
                     thisCondition.WindSpeed = wind.getString("speed");
                     thisCondition.WindDeg = wind.getString("direction");
                     thisCondition.WindDirection = wind.getString("compassDirection");
+
+                    // Get swell information
                     thisCondition.SwellHeight = swell.getJSONObject("components").getJSONObject("primary").getString("height");
                     thisCondition.SwellPeriod = swell.getJSONObject("components").getJSONObject("primary").getString("period");
                     thisCondition.SwellDirection = swell.getJSONObject("components").getJSONObject("primary").getString("compassDirection");
 
+                    // Get the chart URLs
+                    thisCondition.SwellChartURL = chart.getString("swell");
+                    thisCondition.WindChartURL = chart.getString("wind");
+                    thisCondition.PeriodChartURl = chart.getString("period");
+
                     // Add the new condition object to the vector and iterate the number of parsed objects
                     conditions.add(thisCondition);
-                    i++;
+                    conditionCount++;
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
