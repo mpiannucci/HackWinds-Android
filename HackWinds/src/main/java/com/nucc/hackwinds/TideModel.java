@@ -12,6 +12,11 @@ public class TideModel {
     // Set the constants for the data tags and urls
     final private String WUNDER_URL = "http://api.wunderground.com/api/2e5424aab8c91757/tide/q/RI/Point_Judith.json";
 
+    public static final String LOW_TIDE_TAG = "Low Tide";
+    public static final String HIGH_TIDE_TAG = "High Tide";
+    public static final String SUNRISE_TAG = "Sunrise";
+    public static final String SUNSET_TAG = "Sunset";
+
     // Member variables
     private static TideModel mInstance;
     public ArrayList<Tide> tides;
@@ -60,10 +65,10 @@ public class TideModel {
                     String height = tideJSONObject.getJSONObject("data").getString("height");
 
                     // Append the data to the current tide object adn increment the data count
-                    if ((type.equals(Tide.HIGH_TIDE_TAG)) ||
-                        (type.equals(Tide.LOW_TIDE_TAG))  ||
-                        (type.equals(Tide.SUNRISE_TAG))   ||
-                        (type.equals(Tide.SUNSET_TAG))) {
+                    if ((type.equals(HIGH_TIDE_TAG)) ||
+                        (type.equals(LOW_TIDE_TAG))  ||
+                        (type.equals(SUNRISE_TAG))   ||
+                        (type.equals(SUNSET_TAG))) {
 
                         // Create a new tide object
                         Tide thisTide = new Tide();

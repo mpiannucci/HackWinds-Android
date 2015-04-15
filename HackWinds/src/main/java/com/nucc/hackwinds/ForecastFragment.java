@@ -7,7 +7,6 @@ import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 
@@ -26,7 +25,7 @@ public class ForecastFragment extends ListFragment {
             mForecastModel = ForecastModel.getInstance(getActivity());
 
             // Get the forecast data
-            new BackgroundForecastAsyncTask().execute();
+            new FetchForecastTask().execute();
         }
     }
 
@@ -45,7 +44,7 @@ public class ForecastFragment extends ListFragment {
         startActivity(intent);
     }
 
-    class BackgroundForecastAsyncTask extends AsyncTask<Void, Void, Void> {
+    class FetchForecastTask extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... arg0) {
 

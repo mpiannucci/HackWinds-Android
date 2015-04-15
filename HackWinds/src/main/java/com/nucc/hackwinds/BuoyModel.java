@@ -21,9 +21,11 @@ public class BuoyModel {
     final private int DIRECTION_OFFSET = 11;
     final private int TEMPERATURE_OFFSET = 14;
 
-    // Public constants
-    final static public int BLOCK_ISLAND_LOCATION = 41;
-    final static public int MONTAUK_LOCATION = 42;
+    // Public location types
+    public enum Location {
+        BLOCK_ISLAND,
+        MONTAUK
+    }
 
     // Member variables
     private static BuoyModel mInstance;
@@ -55,15 +57,15 @@ public class BuoyModel {
         }
     }
 
-    public ArrayList<Buoy> getBuoyDataForLocation(int location) {
-        if (location == BLOCK_ISLAND_LOCATION) {
+    public ArrayList<Buoy> getBuoyDataForLocation(Location location) {
+        if (location == Location.BLOCK_ISLAND) {
             if (blockIslandBuoyData.isEmpty()) {
                 // Get the data
                 ServiceHandler sh = new ServiceHandler();
                 String rawData = sh.makeServiceCall(BLOCK_ISLAND_URL, ServiceHandler.GET);
 
                 // Parse the received data
-                parseBuoyData(BLOCK_ISLAND_LOCATION, rawData);
+                parseBuoyData(Location.BLOCK_ISLAND, rawData);
             }
             return blockIslandBuoyData;
         } else {
@@ -73,13 +75,13 @@ public class BuoyModel {
                 String rawData = sh.makeServiceCall(MONTAUK_URL, ServiceHandler.GET);
 
                 // Parse the received data
-                parseBuoyData(MONTAUK_LOCATION, rawData);
+                parseBuoyData(Location.MONTAUK, rawData);
             }
             return montaukBuoyData;
         }
     }
 
-    private boolean parseBuoyData(int location, String rawData) {
+    private boolean parseBuoyData(Location location, String rawData) {
         // Split by the whitespace in the string
         String[] datas = rawData.split("\\s+");
 
@@ -102,7 +104,7 @@ public class BuoyModel {
 
             // Convert the water temperature to fahrenheit and set it
             String waterTemp = datas[i + TEMPERATURE_OFFSET];
-            if (location == BLOCK_ISLAND_LOCATION) {
+            if (location == Location.BLOCK_ISLAND) {
                 // The montauk buoy doesn't report this so only expect it for the BI buoy
                 double rawTemp = Double.valueOf(waterTemp);
                 double fahrenheitTemp = ((rawTemp * (9.0 / 5.0) + 32.0) / 0.05) * 0.05;
@@ -111,7 +113,7 @@ public class BuoyModel {
             thisBuoy.WaterTemperature = waterTemp;
 
             // Save the buoy object to the list
-            if (location == BLOCK_ISLAND_LOCATION) {
+            if (location == Location.BLOCK_ISLAND) {
                 blockIslandBuoyData.add(thisBuoy);
             } else {
                 montaukBuoyData.add(thisBuoy);

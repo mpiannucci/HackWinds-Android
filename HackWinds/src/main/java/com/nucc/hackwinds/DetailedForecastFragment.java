@@ -2,6 +2,10 @@ package com.nucc.hackwinds;
 
 
 import android.app.ActionBar;
+import android.app.ProgressDialog;
+import android.media.MediaPlayer;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
@@ -11,12 +15,18 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 
 import info.hoang8f.android.segmented.SegmentedGroup;
 
 
 public class DetailedForecastFragment extends Fragment implements SegmentedGroup.OnCheckedChangeListener{
+    private enum ChartType {
+        SWELL,
+        WIND,
+        PERIOD
+    }
 
     // TODO: Rename and change types of parameters
     private int mDayIndex;
@@ -24,15 +34,11 @@ public class DetailedForecastFragment extends Fragment implements SegmentedGroup
 
     private ConditionModel mConditionModel;
 
-    public DetailedForecastFragment() {
-        // Required empty public constructor
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Get the conditon model
+        // Get the condition model
         if (ReachabilityHelper.deviceHasInternetAccess(getActivity())) {
             // Get the buoy model
             mConditionModel = ConditionModel.getInstance(getActivity());
@@ -93,10 +99,21 @@ public class DetailedForecastFragment extends Fragment implements SegmentedGroup
             return;
         }
 
-        // Scale the image to fit the width of the screen
-//        chartImage.getLayoutParams().width = ActionBar.LayoutParams.MATCH_PARENT;
-//        chartImage.setScaleType(ImageView.ScaleType.FIT_XY);
-//        chartImage.setAdjustViewBounds(true);
     }
 
+    public class LoadAnimationImagesTask extends AsyncTask<ChartType, Void, Void> {
+
+        @Override
+        protected Void doInBackground(ChartType... arg0) {
+
+            // Return
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+
+        }
+    }
 }

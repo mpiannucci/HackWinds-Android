@@ -32,7 +32,7 @@ public class TideFragment extends Fragment {
             mBuoyModel = BuoyModel.getInstance();
 
             // deploy the Wunderground async task
-            new BackgroundWunderAsyncTask().execute();
+            new FetchTideDataTask().execute();
         }
     }
 
@@ -49,8 +49,8 @@ public class TideFragment extends Fragment {
 
         // Set the upcoming and sunrise/sunset values
         for (Tide thisTide : mTideModel.tides ) {
-            if (thisTide.EventType.equals(Tide.HIGH_TIDE_TAG) ||
-                thisTide.EventType.equals(Tide.LOW_TIDE_TAG)) {
+            if (thisTide.EventType.equals(TideModel.HIGH_TIDE_TAG) ||
+                thisTide.EventType.equals(TideModel.LOW_TIDE_TAG)) {
                 // Yay we found a tide, now set the type (high or low) and the values
                 TextView typeView = (TextView)getActivity().findViewById(mTideTypeViews[tideCount]);
                 TextView timeView = (TextView)getActivity().findViewById(mTideTimeViews[tideCount]);
@@ -60,7 +60,7 @@ public class TideFragment extends Fragment {
                 // Also set the current status
                 if (tideCount == 0) {
                     TextView currentTextView = (TextView) getActivity().findViewById(R.id.currentTideStatus);
-                    if (thisTide.EventType.equals(Tide.HIGH_TIDE_TAG)) {
+                    if (thisTide.EventType.equals(TideModel.HIGH_TIDE_TAG)) {
                         // Tide is incoming
                         currentTextView.setText("Incoming");
                         currentTextView.setTextColor(Color.GREEN);
@@ -72,11 +72,11 @@ public class TideFragment extends Fragment {
                 }
 
                 tideCount++;
-            } else if (thisTide.EventType.equals(Tide.SUNRISE_TAG)) {
+            } else if (thisTide.EventType.equals(TideModel.SUNRISE_TAG)) {
                 // Set the sunrise time that was found
                 TextView sunriseTime = (TextView)getActivity().findViewById(R.id.sunriseTime);
                 sunriseTime.setText(thisTide.Time);
-            } else if (thisTide.EventType.equals(Tide.SUNSET_TAG)) {
+            } else if (thisTide.EventType.equals(TideModel.SUNSET_TAG)) {
                 // Set the sunset time that was read
                 TextView sunsetTime = (TextView)getActivity().findViewById(R.id.sunsetTime);
                 sunsetTime.setText(thisTide.Time);
@@ -92,13 +92,13 @@ public class TideFragment extends Fragment {
         }
     }
 
-    public class BackgroundWunderAsyncTask extends AsyncTask<Void, Void, Void> {
+    public class FetchTideDataTask extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected Void doInBackground(Void... arg0) {
             // Get the values using the model and parse the data
             mTideModel.getTideData();
-            mBuoyModel.getBuoyDataForLocation(BuoyModel.BLOCK_ISLAND_LOCATION);
+            mBuoyModel.getBuoyDataForLocation(BuoyModel.Location.BLOCK_ISLAND);
 
             // Return
             return null;

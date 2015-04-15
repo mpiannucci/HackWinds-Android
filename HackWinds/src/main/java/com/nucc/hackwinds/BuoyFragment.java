@@ -18,7 +18,7 @@ public class BuoyFragment extends ListFragment {
     BuoyModel mBuoyModel;
     BuoyArrayAdapter mBuoyArrayAdapter;
 
-    int mLocation = BuoyModel.BLOCK_ISLAND_LOCATION;
+    BuoyModel.Location mLocation = BuoyModel.Location.BLOCK_ISLAND;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -29,7 +29,7 @@ public class BuoyFragment extends ListFragment {
             mBuoyModel = BuoyModel.getInstance();
 
             // Get the BI location to initialize
-            new BackgroundBuoyAsyncTask().execute();
+            new FetchBuoyDataTask().execute();
         }
     }
 
@@ -52,20 +52,20 @@ public class BuoyFragment extends ListFragment {
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 if (i == R.id.biSegmentButton) {
                     // Switch to block island view so get that data
-                    mLocation = BuoyModel.BLOCK_ISLAND_LOCATION;
+                    mLocation = BuoyModel.Location.BLOCK_ISLAND;
                 } else {
                     // Switch to Montauk buoy view
-                    mLocation = BuoyModel.MONTAUK_LOCATION;
+                    mLocation = BuoyModel.Location.MONTAUK;
                 }
                 if (ReachabilityHelper.deviceHasInternetAccess(getActivity())) {
-                    new BackgroundBuoyAsyncTask().execute();
+                    new FetchBuoyDataTask().execute();
                 }
             }
         });
         return V;
     }
 
-    public class BackgroundBuoyAsyncTask extends AsyncTask<Void, Void, Void> {
+    public class FetchBuoyDataTask extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected Void doInBackground(Void... arg0) {
@@ -81,7 +81,7 @@ public class BuoyFragment extends ListFragment {
             super.onPostExecute(result);
 
             // Set the tide adapter to the list
-            if (mLocation == BuoyModel.BLOCK_ISLAND_LOCATION) {
+            if (mLocation == BuoyModel.Location.BLOCK_ISLAND) {
                 mBuoyArrayAdapter = new BuoyArrayAdapter(getActivity(), mBuoyModel.blockIslandBuoyData);
             } else {
                 mBuoyArrayAdapter = new BuoyArrayAdapter(getActivity(), mBuoyModel.montaukBuoyData);

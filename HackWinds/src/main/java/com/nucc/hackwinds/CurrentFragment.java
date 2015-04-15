@@ -1,6 +1,5 @@
 package com.nucc.hackwinds;
 
-import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -60,12 +59,12 @@ public class CurrentFragment extends ListFragment {
             @Override
             public void forecastLocationChanged() {
                 // When the forecast changes reload the condition data
-                new BackgroundMSWAsyncTask().execute();
+                new FetchConditionDataTask().execute();
             }
         };
         mConditionModel.setForecastChangedListener(mForecastChangedListener);
 
-        new BackgroundMSWAsyncTask().execute();
+        new FetchConditionDataTask().execute();
     }
 
     @Override
@@ -109,7 +108,7 @@ public class CurrentFragment extends ListFragment {
                     mStreamView.setVisibility(View.VISIBLE);
 
                     // Execute the video loading AsyncTask
-                    new BackgroundVideoAsyncTask().execute(STREAM_URL);
+                    new LoadLiveStreamTask().execute(STREAM_URL);
                 }
             }
         });
@@ -168,7 +167,7 @@ public class CurrentFragment extends ListFragment {
         }
     }
 
-    public class BackgroundVideoAsyncTask extends AsyncTask<String, Uri, Void> {
+    public class LoadLiveStreamTask extends AsyncTask<String, Uri, Void> {
         ProgressDialog dialog;
 
         protected void onPreExecute() {
@@ -237,7 +236,7 @@ public class CurrentFragment extends ListFragment {
         }
     }
 
-    public class BackgroundMSWAsyncTask extends AsyncTask<Void, Void, Void> {
+    public class FetchConditionDataTask extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected Void doInBackground(Void... arg0) {
