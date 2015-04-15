@@ -11,4 +11,7 @@
     <color name="lollipop_background">#FAFAFA</color>
     <color name="icon_blue">#0000FF</color>
     <color name="dialog_background">#F7F7F7</color>
+    <color name="forecast_green">#00C500</color>
+    <color name="forecast_yellow">#A8A80D</color>
+    <color name="forecast_red">#D60000</color>
 </resources>

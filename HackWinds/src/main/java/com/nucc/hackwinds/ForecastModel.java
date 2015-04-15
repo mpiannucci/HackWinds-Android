@@ -144,7 +144,7 @@ public class ForecastModel {
 
             // Iterate while the number of parsed is less than what the
             // user asked for
-            while (conditionCount < 30) {
+            while ((conditionCount < 30) || (forecastCount < 10)) {
 
                 // Get the current json object
                 JSONObject jsonObj = jsonArr.getJSONObject(dataIndex);

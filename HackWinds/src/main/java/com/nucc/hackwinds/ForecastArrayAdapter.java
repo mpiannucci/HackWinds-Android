@@ -42,6 +42,11 @@ public class ForecastArrayAdapter extends ArrayAdapter<Forecast> {
     }
 
     @Override
+    public int getCount() {
+        return values.size();
+    }
+
+    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View rowView = convertView;
         // Make the view reusable
@@ -77,36 +82,36 @@ public class ForecastArrayAdapter extends ArrayAdapter<Forecast> {
                 thisDay.second.MaxBreakHeight, thisDay.second.WindSpeed, thisDay.second.WindDirection));
 
         // Set the color of the time of day header based on the swell
-        if (Double.valueOf(thisDay.first.MinBreakHeight) > 0.9) {
+        if (Double.valueOf(thisDay.first.MinBreakHeight) > 1.9) {
             if (thisDay.first.WindDirection.equals("WSW") ||
                     thisDay.first.WindDirection.equals("W") ||
                     thisDay.first.WindDirection.equals("WNW") ||
                     thisDay.first.WindDirection.equals("NW") ||
                     thisDay.first.WindDirection.equals("N")) {
-                holder.morningHeaderTV.setTextColor(Color.GREEN);
+                holder.morningHeaderTV.setTextColor(getContext().getResources().getColor(R.color.forecast_green));
             } else if (Double.valueOf(thisDay.first.WindSpeed) < 8.0) {
-                holder.morningHeaderTV.setTextColor(Color.GREEN);
+                holder.morningHeaderTV.setTextColor(getContext().getResources().getColor(R.color.forecast_green));
             } else {
-                holder.morningHeaderTV.setTextColor(Color.YELLOW);
+                holder.morningHeaderTV.setTextColor(getContext().getResources().getColor(R.color.forecast_yellow));
             }
         } else {
-            holder.morningHeaderTV.setTextColor(Color.RED);
+            holder.morningHeaderTV.setTextColor(getContext().getResources().getColor(R.color.forecast_red));
         }
 
-        if (Double.valueOf(thisDay.second.MinBreakHeight) > 0.9) {
+        if (Double.valueOf(thisDay.second.MinBreakHeight) > 1.9) {
             if (thisDay.second.WindDirection.equals("WSW") ||
                     thisDay.second.WindDirection.equals("W") ||
                     thisDay.second.WindDirection.equals("WNW") ||
                     thisDay.second.WindDirection.equals("NW") ||
                     thisDay.second.WindDirection.equals("N")) {
-                holder.afternoonHeaderTV.setTextColor(Color.GREEN);
+                holder.afternoonHeaderTV.setTextColor(getContext().getResources().getColor(R.color.forecast_green));
             } else if (Double.valueOf(thisDay.second.WindSpeed) < 8.0) {
-                holder.afternoonHeaderTV.setTextColor(Color.GREEN);
+                holder.afternoonHeaderTV.setTextColor(getContext().getResources().getColor(R.color.forecast_green));
             } else {
-                holder.afternoonHeaderTV.setTextColor(Color.YELLOW);
+                holder.afternoonHeaderTV.setTextColor(getContext().getResources().getColor(R.color.forecast_yellow));
             }
         } else {
-            holder.afternoonHeaderTV.setTextColor(Color.RED);
+            holder.afternoonHeaderTV.setTextColor(getContext().getResources().getColor(R.color.forecast_red));
         }
 
         // Return the completed view to render on screen

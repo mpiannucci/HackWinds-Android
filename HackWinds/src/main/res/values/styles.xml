@@ -20,8 +20,8 @@
 
     <style name="ForecastTimeOfDay">
         <item name="android:textColor">@color/numix_grey</item>
-        <item name="android:textSize">10sp</item>
-        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">sans-serif-bold</item>
     </style>
 
     <style name="ForecastDataText">

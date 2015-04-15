@@ -31,6 +31,11 @@ public class ConditionArrayAdapter extends ArrayAdapter<Condition> {
     }
 
     @Override
+    public int getCount() {
+        return values.size() + 1;
+    }
+
+    @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         View rowView = convertView;
         // Make the view reusable
@@ -73,7 +78,7 @@ public class ConditionArrayAdapter extends ArrayAdapter<Condition> {
             holder.swellTV.setTextColor(context.getResources().getColor(R.color.hackwinds_blue));
         } else {
             // Get the data for the position in the list
-            Condition condition = values.get(position);
+            Condition condition = values.get(position - 1);
 
             // Set the textview for all of the data
             holder.dateTV.setText(condition.Date);
