@@ -28,7 +28,7 @@ public class CurrentFragment extends ListFragment {
 
     // Initialize the other variables
     private ConditionArrayAdapter mConditionArrayAdapter;
-    private ConditionModel mConditionModel;
+    private ForecastModel mForecastModel;
     public VideoView mStreamView;
     private ForecastChangedListener mForecastChangedListener;
 
@@ -52,7 +52,7 @@ public class CurrentFragment extends ListFragment {
         }
 
         // Get the magicseaweed model instance
-        mConditionModel = ConditionModel.getInstance(getActivity());
+        mForecastModel = ForecastModel.getInstance(getActivity());
 
         // Set the forecast location changed listener
         mForecastChangedListener = new ForecastChangedListener() {
@@ -62,7 +62,7 @@ public class CurrentFragment extends ListFragment {
                 new FetchConditionDataTask().execute();
             }
         };
-        mConditionModel.setForecastChangedListener(mForecastChangedListener);
+        mForecastModel.setForecastChangedListener(mForecastChangedListener);
 
         new FetchConditionDataTask().execute();
     }
@@ -85,11 +85,6 @@ public class CurrentFragment extends ListFragment {
         if (ReachabilityHelper.deviceHasInternetAccess(getActivity())) {
             Ion.with(getActivity()).load(IMG_URL).intoImageView(img);
         }
-
-        // Scale the image to fit the width of the screen
-//        img.getLayoutParams().width = ActionBar.LayoutParams.MATCH_PARENT;
-//        img.setScaleType(ImageView.ScaleType.FIT_XY);
-//        img.setAdjustViewBounds(true);
 
         // Set the play button image over the holder camera image
         ImageView playButton = (ImageView) V.findViewById(R.id.camPlayButton);
@@ -242,7 +237,7 @@ public class CurrentFragment extends ListFragment {
         protected Void doInBackground(Void... arg0) {
             // Get the conditions from the model
             // We need 6 conditions for this view
-            mConditionModel.getConditions(6);
+            mForecastModel.getConditionsForIndex(0);
 
             // Return
             return null;
@@ -253,7 +248,7 @@ public class CurrentFragment extends ListFragment {
             super.onPostExecute(result);
 
             // Set the condition adapter for the list
-            mConditionArrayAdapter = new ConditionArrayAdapter(getActivity(), mConditionModel.conditions);
+            mConditionArrayAdapter = new ConditionArrayAdapter(getActivity(), mForecastModel.getConditionsForIndex(0));
             setListAdapter(mConditionArrayAdapter);
         }
     }

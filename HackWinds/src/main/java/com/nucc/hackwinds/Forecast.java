@@ -6,7 +6,9 @@ public class Forecast {
 
     }
 
-    public String Day;
-    public String Overview;
-    public String Detailed;
+    public String Date;
+    public String MinBreakHeight;
+    public String MaxBreakHeight;
+    public String WindSpeed;
+    public String WindDirection;
 }

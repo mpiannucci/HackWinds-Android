@@ -18,9 +18,15 @@
         <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
+    <style name="ForecastTimeOfDay">
+        <item name="android:textColor">@color/numix_grey</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+
     <style name="ForecastDataText">
         <item name="android:textColor">@color/numix_grey</item>
-        <item name="android:textSize">25sp</item>
+        <item name="android:textSize">20sp</item>
         <item name="android:fontFamily">sans-serif-light</item>
     </style>
 

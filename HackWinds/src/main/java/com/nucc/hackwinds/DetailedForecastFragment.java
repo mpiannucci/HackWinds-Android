@@ -1,10 +1,6 @@
 package com.nucc.hackwinds;
 
 
-import android.app.ActionBar;
-import android.app.ProgressDialog;
-import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -15,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
-import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 
 import info.hoang8f.android.segmented.SegmentedGroup;
@@ -32,7 +27,7 @@ public class DetailedForecastFragment extends Fragment implements SegmentedGroup
     private int mDayIndex;
     private String mDayName;
 
-    private ConditionModel mConditionModel;
+    private ForecastModel mForecastModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,7 +36,7 @@ public class DetailedForecastFragment extends Fragment implements SegmentedGroup
         // Get the condition model
         if (ReachabilityHelper.deviceHasInternetAccess(getActivity())) {
             // Get the buoy model
-            mConditionModel = ConditionModel.getInstance(getActivity());
+            mForecastModel = ForecastModel.getInstance(getActivity());
         }
     }
 
@@ -79,13 +74,13 @@ public class DetailedForecastFragment extends Fragment implements SegmentedGroup
         String chartURL = "";
         switch (index) {
             case R.id.swellSegmentButton:
-                chartURL = mConditionModel.getConditions(1).get(0).SwellChartURL;
+                chartURL = mForecastModel.getConditionsForIndex(0).get(0).SwellChartURL;
                 break;
             case R.id.windSegmentButton:
-                chartURL = mConditionModel.getConditions(1).get(0).WindChartURL;
+                chartURL = mForecastModel.getConditionsForIndex(0).get(0).WindChartURL;
                 break;
             case R.id.periodSegmentButton:
-                chartURL = mConditionModel.getConditions(1).get(0).PeriodChartURL;
+                chartURL = mForecastModel.getConditionsForIndex(0).get(0).PeriodChartURL;
                 break;
             default:
                 // Do nothing
@@ -104,7 +99,8 @@ public class DetailedForecastFragment extends Fragment implements SegmentedGroup
     public class LoadAnimationImagesTask extends AsyncTask<ChartType, Void, Void> {
 
         @Override
-        protected Void doInBackground(ChartType... arg0) {
+        protected Void doInBackground(ChartType... chartType) {
+
 
             // Return
             return null;

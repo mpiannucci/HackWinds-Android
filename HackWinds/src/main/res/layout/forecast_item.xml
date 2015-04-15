@@ -15,7 +15,7 @@
             android:layout_marginLeft="6dp"
             android:layout_marginRight="6dp"
             android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
+            android:layout_marginBottom="10dp"
             android:orientation="vertical">
 
             <TextView
@@ -29,21 +29,38 @@
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
                 android:background="@color/light_grey"/>
 
             <TextView
-                android:id="@+id/forecastOverview"
+                android:id="@+id/forecastMorningHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/morning_header"
+                style="@style/ForecastTimeOfDay" />
+
+            <TextView
+                android:id="@+id/forecastMorningData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/loading_text"
+                android:layout_marginBottom="15dp"
+                style="@style/ForecastDataText" />
+
+            <TextView
+                android:id="@+id/forecastAfternoonHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/afternoon_header"
+                style="@style/ForecastTimeOfDay" />
+
+            <TextView
+                android:id="@+id/forecastAfternoonData"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/loading_text"
                 style="@style/ForecastDataText" />
-
-            <TextView
-                android:id="@+id/forecastDetail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=""
-                style="@style/DescriptionText" />
 
         </LinearLayout>
     </android.support.v7.widget.CardView>

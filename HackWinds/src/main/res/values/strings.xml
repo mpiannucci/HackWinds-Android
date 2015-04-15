@@ -24,8 +24,9 @@
     <string name="today_header">Today</string>
     <string name="tomorrow_header">Tomorrow</string>
     <string name="next_day_header">The Next Day</string>
+    <string name="morning_header">Morning</string>
+    <string name="afternoon_header">Afternoon</string>
     <string name="loading_text">Loading...</string>
-    <string name="forecast_tomorrow">Data is not yet available for this day. Please check back after midnight.</string>
 
     <!-- Buoy Page -->
     <string name="bi_buoy_segment">Block Island</string>

@@ -14,8 +14,12 @@ public class DetailedForecastActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailed_forecast);
 
+        // Get the day name to set the toolbar title
+        String dayName = getIntent().getExtras().getString("dayName");
+
         // Set up the toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(dayName);
         setSupportActionBar(toolbar);
 
         // Load the preference fragment

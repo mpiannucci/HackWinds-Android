@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 
 public class ForecastFragment extends ListFragment {
@@ -41,6 +42,15 @@ public class ForecastFragment extends ListFragment {
     public void onListItemClick(ListView l, View v, int position, long id) {
         // Responding to clicks
         Intent intent = new Intent(getActivity(), DetailedForecastActivity.class);
+
+        // Pass the index of the day
+        intent.putExtra("dayIndex", position);
+
+        // Pass the name of the day so we can set the toolbar
+        TextView dayView = (TextView) v.findViewById(R.id.forecastHeader);
+        intent.putExtra("dayName", (String)dayView.getText());
+
+        // Start the detailed forecast intent
         startActivity(intent);
     }
 
