@@ -144,6 +144,16 @@ public class DetailedForecastFragment extends ListFragment implements SegmentedG
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+
+        if (mChartAnimation.isRunning()) {
+            // Stop the animation if it is still runnning
+            mChartAnimation.stop();
+        }
+    }
+
+    @Override
     public void onCheckedChanged(RadioGroup radioGroup, int index) {
         if (mChartAnimation.isRunning()) {
             mChartAnimation.stop();

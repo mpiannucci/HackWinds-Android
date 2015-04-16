@@ -84,14 +84,6 @@
             android:layout_marginTop="4dp"
             android:layout_marginBottom="4dp">
 
-            <TextView
-                android:id="@+id/dateHeader"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start|center_vertical"
-                style="@style/HeaderText"
-                android:textColor="@color/numix_grey" />
-
             <ListView
                 android:id="@android:id/list"
                 android:layout_width="fill_parent"
