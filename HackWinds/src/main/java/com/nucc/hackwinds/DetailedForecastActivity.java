@@ -29,7 +29,7 @@ public class DetailedForecastActivity extends ActionBarActivity {
         detailedFragment.setArguments(bundle);
 
         // Load the preference fragment
-        getFragmentManager().beginTransaction().replace(R.id.content_frame, detailedFragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, detailedFragment).commit();
     }
 
     @Override

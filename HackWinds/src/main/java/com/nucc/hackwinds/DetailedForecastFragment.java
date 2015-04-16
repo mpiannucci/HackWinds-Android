@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import info.hoang8f.android.segmented.SegmentedGroup;
 
 
-public class DetailedForecastFragment extends Fragment implements SegmentedGroup.OnCheckedChangeListener{
+public class DetailedForecastFragment extends ListFragment implements SegmentedGroup.OnCheckedChangeListener{
     private final int ANIMATION_DURATION = 500;
 
     private enum ChartType {
@@ -34,9 +34,9 @@ public class DetailedForecastFragment extends Fragment implements SegmentedGroup
     private ChartType mCurrentChartType;
     private AnimationDrawable mChartAnimation;
     private FutureCallback<Bitmap> mChartLoadCallback;
-
     private ForecastModel mForecastModel;
     private ArrayList<Condition> mDayConditions;
+    private ConditionArrayAdapter mConditionArrayAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,6 +58,8 @@ public class DetailedForecastFragment extends Fragment implements SegmentedGroup
         // Get the condition model for the given day
         mDayIndex = getArguments().getInt("dayIndex");
         mDayConditions = mForecastModel.getConditionsForIndex(mDayIndex);
+        mConditionArrayAdapter = new ConditionArrayAdapter(getActivity(), mDayConditions);
+        setListAdapter(mConditionArrayAdapter);
 
         // Get the Segmented widget
         SegmentedGroup chartTypeGroup = (SegmentedGroup) V.findViewById(R.id.segmentedChart);
