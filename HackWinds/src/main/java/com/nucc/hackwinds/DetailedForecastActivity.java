@@ -22,8 +22,14 @@ public class DetailedForecastActivity extends ActionBarActivity {
         toolbar.setTitle(dayName);
         setSupportActionBar(toolbar);
 
+        // Create a new DetailedForecast Widget with the day index as a bundle
+        Bundle bundle = new Bundle();
+        bundle.putInt("dayIndex", getIntent().getExtras().getInt("dayIndex"));
+        DetailedForecastFragment detailedFragment = new DetailedForecastFragment();
+        detailedFragment.setArguments(bundle);
+
         // Load the preference fragment
-        getFragmentManager().beginTransaction().replace(R.id.content_frame, new DetailedForecastFragment()).commit();
+        getFragmentManager().beginTransaction().replace(R.id.content_frame, detailedFragment).commit();
     }
 
     @Override

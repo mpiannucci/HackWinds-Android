@@ -22,7 +22,7 @@ import info.hoang8f.android.segmented.SegmentedGroup;
 
 
 public class DetailedForecastFragment extends Fragment implements SegmentedGroup.OnCheckedChangeListener{
-    private final int ANIMATION_DURATION = 5;
+    private final int ANIMATION_DURATION = 500;
 
     private enum ChartType {
         SWELL,
@@ -46,7 +46,6 @@ public class DetailedForecastFragment extends Fragment implements SegmentedGroup
         if (ReachabilityHelper.deviceHasInternetAccess(getActivity())) {
             // Get the buoy model
             mForecastModel = ForecastModel.getInstance(getActivity());
-            mDayConditions = mForecastModel.getConditionsForIndex(mDayIndex);
         }
     }
 
@@ -55,6 +54,10 @@ public class DetailedForecastFragment extends Fragment implements SegmentedGroup
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View V = inflater.inflate(R.layout.detailed_forecast_fragment, container, false);
+
+        // Get the condition model for the given day
+        mDayIndex = getArguments().getInt("dayIndex");
+        mDayConditions = mForecastModel.getConditionsForIndex(mDayIndex);
 
         // Get the Segmented widget
         SegmentedGroup chartTypeGroup = (SegmentedGroup) V.findViewById(R.id.segmentedChart);
@@ -73,7 +76,7 @@ public class DetailedForecastFragment extends Fragment implements SegmentedGroup
                 view.setVisibility(View.GONE);
 
                 // Start the animation
-                mChartAnimation.run();
+                mChartAnimation.start();
             }
         });
 
@@ -85,6 +88,10 @@ public class DetailedForecastFragment extends Fragment implements SegmentedGroup
                 if (mChartAnimation.isRunning()) {
                     // Only call to stop the animation if it is currently running
                     mChartAnimation.stop();
+
+                    // Show the play button
+                    ImageView playButton = (ImageView) getActivity().findViewById(R.id.animatePlayButton);
+                    playButton.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -103,7 +110,8 @@ public class DetailedForecastFragment extends Fragment implements SegmentedGroup
                 if (nFrames == 1) {
                     // Set the chart preview image as bitmap that was just received
                     ImageView chartImage = (ImageView) getActivity().findViewById(R.id.chartImage);
-                    chartImage.setImageBitmap(result);
+                    chartImage.setBackground(chartFrame);
+
                 } else if (nFrames == 6) {
                     // Set the animation drawable as the imageview background
                     ImageView chartImage = (ImageView) getActivity().findViewById(R.id.chartImage);
@@ -144,6 +152,7 @@ public class DetailedForecastFragment extends Fragment implements SegmentedGroup
 
         // Reset the chart animation object
         mChartAnimation = new AnimationDrawable();
+        mChartAnimation.setOneShot(false);
 
         // Start loading the new images.
         if (index == R.id.swellSegmentButton ) {
