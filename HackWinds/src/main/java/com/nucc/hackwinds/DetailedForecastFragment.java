@@ -1,7 +1,9 @@
 package com.nucc.hackwinds;
 
 
-import android.os.AsyncTask;
+import android.graphics.Bitmap;
+import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
@@ -11,23 +13,30 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
+
+import java.util.ArrayList;
 
 import info.hoang8f.android.segmented.SegmentedGroup;
 
 
 public class DetailedForecastFragment extends Fragment implements SegmentedGroup.OnCheckedChangeListener{
+    private final int ANIMATION_DURATION = 5;
+
     private enum ChartType {
         SWELL,
         WIND,
         PERIOD
     }
 
-    // TODO: Rename and change types of parameters
     private int mDayIndex;
-    private String mDayName;
+    private ChartType mCurrentChartType;
+    private AnimationDrawable mChartAnimation;
+    private FutureCallback<Bitmap> mChartLoadCallback;
 
     private ForecastModel mForecastModel;
+    private ArrayList<Condition> mDayConditions;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,6 +46,7 @@ public class DetailedForecastFragment extends Fragment implements SegmentedGroup
         if (ReachabilityHelper.deviceHasInternetAccess(getActivity())) {
             // Get the buoy model
             mForecastModel = ForecastModel.getInstance(getActivity());
+            mDayConditions = mForecastModel.getConditionsForIndex(mDayIndex);
         }
     }
 
@@ -53,6 +63,64 @@ public class DetailedForecastFragment extends Fragment implements SegmentedGroup
         // Set the tint color of the segmented group
         chartTypeGroup.setTintColor(getResources().getColor(R.color.hackwinds_blue));
 
+        // Hide the play button
+        ImageView chartPlayButton = (ImageView) V.findViewById(R.id.animatePlayButton);
+        chartPlayButton.setVisibility(View.GONE);
+        chartPlayButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Hide the play button
+                view.setVisibility(View.GONE);
+
+                // Start the animation
+                mChartAnimation.run();
+            }
+        });
+
+        // Set clicking the imageview to act as a pause button
+        ImageView chartImage = (ImageView) V.findViewById(R.id.chartImage);
+        chartImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mChartAnimation.isRunning()) {
+                    // Only call to stop the animation if it is currently running
+                    mChartAnimation.stop();
+                }
+            }
+        });
+
+        // Create the chart animation instance
+        mChartAnimation = new AnimationDrawable();
+
+        // Create chart loading callback
+        mChartLoadCallback = new FutureCallback<Bitmap>() {
+            @Override
+            public void onCompleted(Exception e, Bitmap result) {
+                BitmapDrawable chartFrame = new BitmapDrawable(getResources(), result);
+                mChartAnimation.addFrame(chartFrame, ANIMATION_DURATION);
+
+                int nFrames = mChartAnimation.getNumberOfFrames();
+                if (nFrames == 1) {
+                    // Set the chart preview image as bitmap that was just received
+                    ImageView chartImage = (ImageView) getActivity().findViewById(R.id.chartImage);
+                    chartImage.setImageBitmap(result);
+                } else if (nFrames == 6) {
+                    // Set the animation drawable as the imageview background
+                    ImageView chartImage = (ImageView) getActivity().findViewById(R.id.chartImage);
+                    chartImage.setBackground(mChartAnimation);
+
+                    // Show the play button
+                    ImageView playButton = (ImageView) getActivity().findViewById(R.id.animatePlayButton);
+                    playButton.setVisibility(View.VISIBLE);
+                }
+
+                if (nFrames < 6) {
+                    // Load the next image
+                    getChartImageForIndex(mCurrentChartType, nFrames);
+                }
+            }
+        };
+
         return V;
     }
 
@@ -67,49 +135,42 @@ public class DetailedForecastFragment extends Fragment implements SegmentedGroup
 
     @Override
     public void onCheckedChanged(RadioGroup radioGroup, int index) {
-        setChartImageForIndex(index);
+        if (mChartAnimation.isRunning()) {
+            mChartAnimation.stop();
+        }
+
+        // Remove the animation from the imageview
+        getActivity().findViewById(R.id.chartImage).setBackground(null);
+
+        // Reset the chart animation object
+        mChartAnimation = new AnimationDrawable();
+
+        // Start loading the new images.
+        if (index == R.id.swellSegmentButton ) {
+            mCurrentChartType = ChartType.SWELL;
+        } else if (index == R.id.windSegmentButton) {
+            mCurrentChartType = ChartType.WIND;
+        } else {
+            // Assume period chart
+            mCurrentChartType = ChartType.PERIOD;
+        }
+        getChartImageForIndex(mCurrentChartType, 0);
     }
 
-    public void setChartImageForIndex(int index) {
-        String chartURL = "";
-        switch (index) {
-            case R.id.swellSegmentButton:
-                chartURL = mForecastModel.getConditionsForIndex(0).get(0).SwellChartURL;
+    public void getChartImageForIndex(ChartType chartType, int index) {
+        switch(chartType) {
+            case SWELL:
+                Ion.with(getActivity()).load(mDayConditions.get(index).SwellChartURL).asBitmap().setCallback(mChartLoadCallback);
                 break;
-            case R.id.windSegmentButton:
-                chartURL = mForecastModel.getConditionsForIndex(0).get(0).WindChartURL;
+            case WIND:
+                Ion.with(getActivity()).load(mDayConditions.get(index).WindChartURL).asBitmap().setCallback(mChartLoadCallback);
                 break;
-            case R.id.periodSegmentButton:
-                chartURL = mForecastModel.getConditionsForIndex(0).get(0).PeriodChartURL;
+            case PERIOD:
+                Ion.with(getActivity()).load(mDayConditions.get(index).PeriodChartURL).asBitmap().setCallback(mChartLoadCallback);
                 break;
             default:
-                // Do nothing
-                return;
-        }
-        // Initialize the chart view to be the first swell image from the condition model
-        ImageView chartImage = (ImageView) getActivity().findViewById(R.id.chartPreviewImage);
-        if (chartURL.length() > 0) {
-            Ion.with(chartImage).load(chartURL);
-        } else {
-            return;
-        }
-
-    }
-
-    public class LoadAnimationImagesTask extends AsyncTask<ChartType, Void, Void> {
-
-        @Override
-        protected Void doInBackground(ChartType... chartType) {
-
-
-            // Return
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-
+                break;
         }
     }
+
 }
