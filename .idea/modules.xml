@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/HackWinds.iml" filepath="$PROJECT_DIR$/HackWinds.iml" />
-      <module fileurl="file://$PROJECT_DIR$/HackWinds/HackWinds-HackWinds.iml" filepath="$PROJECT_DIR$/HackWinds/HackWinds-HackWinds.iml" />
+      <module fileurl="file://$PROJECT_DIR$/HackWinds/HackWinds.iml" filepath="$PROJECT_DIR$/HackWinds/HackWinds.iml" />
+      <module fileurl="file://$PROJECT_DIR$/HackWinds-Android.iml" filepath="$PROJECT_DIR$/HackWinds-Android.iml" />
     </modules>
   </component>
 </project>
-
