@@ -23,7 +23,7 @@ public class ForecastModel {
     private String mRawData;
     private HashMap<String, String> mLocationURLs;
     private SharedPreferences.OnSharedPreferenceChangeListener mPrefsChangedListener;
-    private ForecastChangedListener mForecastChangedListener;
+    private ArrayList<ForecastChangedListener> mForecastChangedListeners;
     private String mCurrentURL;
 
     public ArrayList<Condition> conditions;
@@ -38,7 +38,13 @@ public class ForecastModel {
 
     private ForecastModel(Context context) {
         // Initialize the context
-        mContext = context;
+        mContext = context.getApplicationContext();
+
+        // Initialize the forecast changed listener
+        mForecastChangedListeners = new ArrayList<>();
+
+        // Get the reference to the shared preferences
+
 
         // Set up the url map
         mLocationURLs = new HashMap<>();
@@ -65,10 +71,16 @@ public class ForecastModel {
                     forecasts.clear();
                 }
 
+                if (!mRawData.isEmpty()) {
+                    mRawData = "";
+                }
+
                 changeLocation();
 
-                if (mForecastChangedListener != null) {
-                    mForecastChangedListener.forecastLocationChanged();
+                for (ForecastChangedListener listener : mForecastChangedListeners) {
+                    if (listener != null) {
+                        listener.forecastLocationChanged();
+                    }
                 }
             }
         };
@@ -81,8 +93,8 @@ public class ForecastModel {
         forecasts = new ArrayList<>();
     }
 
-    public void setForecastChangedListener(ForecastChangedListener forecastListener) {
-        mForecastChangedListener = forecastListener;
+    public void addForecastChangedListener(ForecastChangedListener forecastListener) {
+        mForecastChangedListeners.add(forecastListener);
     }
 
     private void changeLocation() {

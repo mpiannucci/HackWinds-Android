@@ -62,7 +62,7 @@ public class CurrentFragment extends ListFragment {
                 new FetchConditionDataTask().execute();
             }
         };
-        mForecastModel.setForecastChangedListener(mForecastChangedListener);
+        mForecastModel.addForecastChangedListener(mForecastChangedListener);
 
         new FetchConditionDataTask().execute();
     }
@@ -248,8 +248,10 @@ public class CurrentFragment extends ListFragment {
             super.onPostExecute(result);
 
             // Set the condition adapter for the list
-            mConditionArrayAdapter = new ConditionArrayAdapter(getActivity(), mForecastModel.getConditionsForIndex(0));
-            setListAdapter(mConditionArrayAdapter);
+            if (mConditionArrayAdapter == null) {
+                mConditionArrayAdapter = new ConditionArrayAdapter(getActivity(), mForecastModel.getConditionsForIndex(0));
+                setListAdapter(mConditionArrayAdapter);
+            }
         }
     }
 }

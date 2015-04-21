@@ -16,6 +16,7 @@ public class ForecastFragment extends ListFragment {
     // Declare member variables
     private ForecastModel mForecastModel;
     private ForecastArrayAdapter mForecastArrayAdapter;
+    private ForecastChangedListener mForecastChangedListener;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -24,6 +25,16 @@ public class ForecastFragment extends ListFragment {
         if (ReachabilityHelper.deviceHasInternetAccess(getActivity())) {
             // Initialize forecast model
             mForecastModel = ForecastModel.getInstance(getActivity());
+
+            // Set the forecast location changed listener
+            mForecastChangedListener = new ForecastChangedListener() {
+                @Override
+                public void forecastLocationChanged() {
+                    // When the forecast changes reload the condition data
+                    new FetchForecastTask().execute();
+                }
+            };
+            mForecastModel.addForecastChangedListener(mForecastChangedListener);
 
             // Get the forecast data
             new FetchForecastTask().execute();

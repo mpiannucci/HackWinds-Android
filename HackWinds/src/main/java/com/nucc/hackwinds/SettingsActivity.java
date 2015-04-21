@@ -56,7 +56,7 @@ public class SettingsActivity extends ActionBarActivity {
             LinearLayout view = (LinearLayout) super.onCreateView(inflater, container, savedInstanceState);
 
             // Get the shared preferences
-            SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
 
             // Set the summary of the location preference to be the current location
             Preference forecastLocationPref = findPreference(FORECAST_LOCATION_KEY);

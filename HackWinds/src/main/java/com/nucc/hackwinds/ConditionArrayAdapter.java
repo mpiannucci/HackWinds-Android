@@ -9,10 +9,11 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class ConditionArrayAdapter extends ArrayAdapter<Condition> {
     private final Context context;
-    private final ArrayList<Condition> values;
+    public ArrayList<Condition> values;
 
     // Class to hold view IDs so they can be recycled
     static class ViewHolder {
@@ -22,7 +23,6 @@ public class ConditionArrayAdapter extends ArrayAdapter<Condition> {
         public TextView swellTV;
         public int position;
     }
-
 
     public ConditionArrayAdapter(Context context, ArrayList<Condition> values) {
         super(context, R.layout.current_item, values);
