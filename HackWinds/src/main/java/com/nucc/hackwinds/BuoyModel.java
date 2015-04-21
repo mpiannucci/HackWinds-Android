@@ -32,7 +32,7 @@ public class BuoyModel {
     public ArrayList<Buoy> blockIslandBuoyData;
     public ArrayList<Buoy> montaukBuoyData;
 
-    private double hour_offset;
+    private double time_offset;
 
     public static BuoyModel getInstance() {
         if (mInstance == null) {
@@ -50,10 +50,10 @@ public class BuoyModel {
         Calendar mCalendar = new GregorianCalendar();
         TimeZone mTimeZone = mCalendar.getTimeZone();
         int mGMTOffset = mTimeZone.getRawOffset();
-        hour_offset = TimeUnit.HOURS.convert(mGMTOffset, TimeUnit.MILLISECONDS);
+        time_offset = TimeUnit.HOURS.convert(mGMTOffset, TimeUnit.MILLISECONDS);
         if (mTimeZone.inDaylightTime(new Date())) {
             // If its daylight savings time make fix the gmt offset
-            hour_offset++;
+            time_offset++;
         }
     }
 
@@ -91,7 +91,7 @@ public class BuoyModel {
             Buoy thisBuoy = new Buoy();
 
             // Set the time
-            thisBuoy.Time = String.format("%d:%s", (Integer.valueOf(datas[i + HOUR_OFFSET])+(int)hour_offset+12)%12, datas[i + MINUTE_OFFSET]);
+            thisBuoy.Time = String.format("%d:%s", (int)(Integer.valueOf(datas[i + HOUR_OFFSET])+time_offset+12)%12, datas[i + MINUTE_OFFSET]);
 
             // Set the period and wind direction values
             thisBuoy.DominantPeriod = datas[i+DPD_OFFSET];
