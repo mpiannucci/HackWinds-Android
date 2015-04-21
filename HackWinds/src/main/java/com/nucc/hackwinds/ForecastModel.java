@@ -43,9 +43,6 @@ public class ForecastModel {
         // Initialize the forecast changed listener
         mForecastChangedListeners = new ArrayList<>();
 
-        // Get the reference to the shared preferences
-
-
         // Set up the url map
         mLocationURLs = new HashMap<>();
         String[] locations = mContext.getResources().getStringArray(R.array.mswForecastLocations);
@@ -75,6 +72,7 @@ public class ForecastModel {
                     mRawData = "";
                 }
 
+                // Change the location URL
                 changeLocation();
 
                 for (ForecastChangedListener listener : mForecastChangedListeners) {
@@ -109,6 +107,8 @@ public class ForecastModel {
     public ArrayList<Condition> getConditionsForIndex(int index) {
         if (mRawData == null) {
             loadRawData();
+        } else if (mRawData.isEmpty()) {
+            loadRawData();
         }
 
         if (conditions.isEmpty()) {
@@ -122,6 +122,8 @@ public class ForecastModel {
 
     public ArrayList<Forecast> getForecasts() {
         if (mRawData == null) {
+            loadRawData();
+        } else if (mRawData.isEmpty()) {
             loadRawData();
         }
 

@@ -14,7 +14,7 @@ import java.util.Calendar;
 
 public class ForecastArrayAdapter extends ArrayAdapter<Forecast> {
     private final Context context;
-    private final ArrayList<Pair<Forecast, Forecast>> values;
+    public ArrayList<Pair<Forecast, Forecast>> values;
     private final int currentDay;
 
     // View holder class so views can be recycled
@@ -39,6 +39,15 @@ public class ForecastArrayAdapter extends ArrayAdapter<Forecast> {
 
         Calendar calendar = Calendar.getInstance();
         this.currentDay = calendar.get(Calendar.DAY_OF_WEEK);
+    }
+
+    public void setForecastData(ArrayList<Forecast> newValues) {
+        ArrayList<Pair<Forecast, Forecast>> forecasts = new ArrayList<>();
+        for (int i = 0; i < 10; i += 2) {
+            Pair<Forecast, Forecast> thisDay = new Pair <> (newValues.get(i), newValues.get(i+1));
+            forecasts.add(thisDay);
+        }
+        this.values = forecasts;
     }
 
     @Override

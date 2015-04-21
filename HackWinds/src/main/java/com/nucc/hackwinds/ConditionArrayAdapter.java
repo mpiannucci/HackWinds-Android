@@ -30,6 +30,10 @@ public class ConditionArrayAdapter extends ArrayAdapter<Condition> {
         this.values = values;
     }
 
+    public void setConditonData(ArrayList<Condition> newValues) {
+        this.values = newValues;
+    }
+
     @Override
     public int getCount() {
         return values.size() + 1;
