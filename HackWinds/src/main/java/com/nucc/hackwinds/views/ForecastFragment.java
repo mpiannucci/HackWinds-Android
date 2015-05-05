@@ -1,4 +1,4 @@
-package com.nucc.hackwinds;
+package com.nucc.hackwinds.views;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -9,6 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.nucc.hackwinds.R;
+import com.nucc.hackwinds.adapters.ForecastArrayAdapter;
+import com.nucc.hackwinds.listeners.ForecastChangedListener;
+import com.nucc.hackwinds.models.ForecastModel;
+import com.nucc.hackwinds.utilities.ReachabilityHelper;
 
 
 public class ForecastFragment extends ListFragment {

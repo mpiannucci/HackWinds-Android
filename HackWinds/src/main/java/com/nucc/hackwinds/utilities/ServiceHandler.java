@@ -1,4 +1,4 @@
-package com.nucc.hackwinds;
+package com.nucc.hackwinds.utilities;
  
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;

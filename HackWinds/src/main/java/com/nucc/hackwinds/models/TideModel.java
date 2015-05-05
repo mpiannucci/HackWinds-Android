@@ -1,6 +1,9 @@
-package com.nucc.hackwinds;
+package com.nucc.hackwinds.models;
 
 import android.util.Log;
+
+import com.nucc.hackwinds.utilities.ServiceHandler;
+import com.nucc.hackwinds.types.Tide;
 
 import org.json.JSONArray;
 import org.json.JSONException;

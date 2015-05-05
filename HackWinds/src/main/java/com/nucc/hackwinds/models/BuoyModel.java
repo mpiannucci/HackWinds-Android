@@ -1,4 +1,7 @@
-package com.nucc.hackwinds;
+package com.nucc.hackwinds.models;
+
+import com.nucc.hackwinds.types.Buoy;
+import com.nucc.hackwinds.utilities.ServiceHandler;
 
 import java.util.ArrayList;
 import java.util.Calendar;

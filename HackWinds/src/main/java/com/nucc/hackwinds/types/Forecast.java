@@ -1,4 +1,4 @@
-package com.nucc.hackwinds;
+package com.nucc.hackwinds.types;
 
 public class Forecast {
 

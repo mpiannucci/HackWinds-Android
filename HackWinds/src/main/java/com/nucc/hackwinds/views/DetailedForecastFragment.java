@@ -1,4 +1,4 @@
-package com.nucc.hackwinds;
+package com.nucc.hackwinds.views;
 
 
 import android.graphics.Bitmap;
@@ -15,6 +15,11 @@ import android.widget.RadioGroup;
 
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
+import com.nucc.hackwinds.types.Condition;
+import com.nucc.hackwinds.R;
+import com.nucc.hackwinds.adapters.ConditionArrayAdapter;
+import com.nucc.hackwinds.models.ForecastModel;
+import com.nucc.hackwinds.utilities.ReachabilityHelper;
 
 import java.util.ArrayList;
 

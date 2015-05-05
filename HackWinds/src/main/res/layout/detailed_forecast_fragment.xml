@@ -4,7 +4,7 @@
         android:orientation="vertical" android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
-        tools:context="com.nucc.hackwinds.DetailedForecastFragment">
+        tools:context="com.nucc.hackwinds.views.DetailedForecastFragment">
 
     <info.hoang8f.android.segmented.SegmentedGroup
         android:id="@+id/segmentedChart"

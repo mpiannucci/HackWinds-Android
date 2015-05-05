@@ -1,8 +1,15 @@
-package com.nucc.hackwinds;
+package com.nucc.hackwinds.models;
 
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.content.Context;
+
+import com.nucc.hackwinds.types.Condition;
+import com.nucc.hackwinds.types.Forecast;
+import com.nucc.hackwinds.listeners.ForecastChangedListener;
+import com.nucc.hackwinds.R;
+import com.nucc.hackwinds.utilities.ServiceHandler;
+import com.nucc.hackwinds.views.SettingsActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -1,4 +1,4 @@
-package com.nucc.hackwinds;
+package com.nucc.hackwinds.types;
 
 /**
  * Created by matthew on 10/30/14.

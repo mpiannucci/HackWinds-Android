@@ -1,4 +1,4 @@
-package com.nucc.hackwinds;
+package com.nucc.hackwinds.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -8,8 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import com.nucc.hackwinds.types.Condition;
+import com.nucc.hackwinds.R;
+
 import java.util.ArrayList;
-import java.util.Collection;
 
 public class ConditionArrayAdapter extends ArrayAdapter<Condition> {
     private final Context context;

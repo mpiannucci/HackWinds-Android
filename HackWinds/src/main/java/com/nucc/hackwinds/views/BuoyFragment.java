@@ -1,4 +1,4 @@
-package com.nucc.hackwinds;
+package com.nucc.hackwinds.views;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -8,6 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+
+import com.nucc.hackwinds.R;
+import com.nucc.hackwinds.adapters.BuoyArrayAdapter;
+import com.nucc.hackwinds.models.BuoyModel;
+import com.nucc.hackwinds.utilities.ReachabilityHelper;
 
 import info.hoang8f.android.segmented.SegmentedGroup;
 

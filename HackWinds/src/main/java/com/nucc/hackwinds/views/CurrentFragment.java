@@ -1,4 +1,4 @@
-package com.nucc.hackwinds;
+package com.nucc.hackwinds.views;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -17,6 +17,11 @@ import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.koushikdutta.ion.Ion;
+import com.nucc.hackwinds.R;
+import com.nucc.hackwinds.adapters.ConditionArrayAdapter;
+import com.nucc.hackwinds.listeners.ForecastChangedListener;
+import com.nucc.hackwinds.models.ForecastModel;
+import com.nucc.hackwinds.utilities.ReachabilityHelper;
 
 import java.util.Calendar;
 

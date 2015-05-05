@@ -1,4 +1,4 @@
-package com.nucc.hackwinds;
+package com.nucc.hackwinds.views;
 
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
@@ -18,6 +18,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+
+import com.nucc.hackwinds.R;
 
 
 public class SettingsActivity extends ActionBarActivity {

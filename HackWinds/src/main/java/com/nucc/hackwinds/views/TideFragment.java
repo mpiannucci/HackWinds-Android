@@ -1,4 +1,4 @@
-package com.nucc.hackwinds;
+package com.nucc.hackwinds.views;
 
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -8,6 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.nucc.hackwinds.R;
+import com.nucc.hackwinds.types.Tide;
+import com.nucc.hackwinds.models.BuoyModel;
+import com.nucc.hackwinds.models.TideModel;
+import com.nucc.hackwinds.utilities.ReachabilityHelper;
 
 
 public class TideFragment extends Fragment {
