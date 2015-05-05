@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import info.hoang8f.android.segmented.SegmentedGroup;
 
 
-public class DetailedForecastFragment extends ListFragment implements SegmentedGroup.OnCheckedChangeListener{
+public class DetailedForecastFragment extends ListFragment implements SegmentedGroup.OnCheckedChangeListener {
     private final int ANIMATION_DURATION = 500;
 
     private enum ChartType {
