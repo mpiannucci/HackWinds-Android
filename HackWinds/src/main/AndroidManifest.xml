@@ -39,6 +39,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".views.MainActivity" />
         </activity>
+        <activity
+            android:name=".views.AlternateCameraActivity"
+            android:label="@string/title_activity_alternate_cameras"
+            android:parentActivityName=".views.MainActivity"
+            android:theme="@style/Theme.HackWindsMaterial">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".views.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

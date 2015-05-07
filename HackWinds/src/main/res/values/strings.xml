@@ -10,6 +10,7 @@
     <string name="action_buoy">Buoys</string>
     <string name="action_tide">Tide</string>
     <string name="action_pics">Still Camera</string>
+    <string name="action_alt_cameras">Alternate Cameras</string>
 
     <!-- Overview Page -->
     <string name="break_header">Waves</string>
@@ -70,5 +71,8 @@
     <string name="swell_chart_segment">Swell</string>
     <string name="wind_chart_segment">Wind</string>
     <string name="period_chart_segment">Period</string>
+
+    <!-- Alternate cameras activity -->
+    <string name="title_activity_alternate_cameras">AlternateCamerasActivity</string>
 
 </resources>
