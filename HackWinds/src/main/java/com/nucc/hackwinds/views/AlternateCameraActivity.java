@@ -20,6 +20,9 @@ public class AlternateCameraActivity extends ActionBarActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Alternate Cameras");
         setSupportActionBar(toolbar);
+
+        // Load the preference fragment
+        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new AlternateCameraListFragment()).commit();
     }
 
 }

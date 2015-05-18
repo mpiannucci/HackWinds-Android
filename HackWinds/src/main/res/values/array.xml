@@ -21,4 +21,22 @@
         <item name="matunuck">http://magicseaweed.com/api/nFSL2f845QOAf1Tuv7Pf5Pd9PXa5sVTS/forecast/?spot_id=377&amp;fields=localTimestamp,swell.*,wind.*,charts.*</item>
         <item name="second_beach">http://magicseaweed.com/api/nFSL2f845QOAf1Tuv7Pf5Pd9PXa5sVTS/forecast/?spot_id=846&amp;fields=localTimestamp,swell.*,wind.*,charts.*</item>
     </string-array>
+    <string-array name="cameraLocations">
+        <item name="warm_winds_still">Warm Winds Still</item>
+        <item name="warm_winds_live">Warm Winds Live</item>
+        <item name="town_beach_south">Town Beach South</item>
+        <item name="east_beach_east">Easton Beach East</item>
+        <item name="east_beach_west">Easton Beach West</item>
+        <item name="nantasket_north">Nantasket North</item>
+        <item name="nantasket_south">Nantasket South</item>
+    </string-array>
+    <string-array name="cameraURLs">
+        <item name="warm_winds_still">http://www.warmwinds.com/wp-content/uploads/surf-cam-stills/image00001.jpg</item>
+        <item name="warm_winds_live">http://162.243.101.197:1935/surfcam/live.stream/playlist.m3u8</item>
+        <item name="town_beach_south">http://www.northeastsurfing.com/cams/narragansett/image00001.jpg</item>
+        <item name="east_beach_east">http://70.184.11.182/axis-cgi/jpg/image.cgi?resolution=640x480</item>
+        <item name="east_beach_west">http://70.184.13.116/axis-cgi/jpg/image.cgi?resolution=640x480</item>
+        <item name="nantasket_north">http://173.166.108.66/axis-cgi/jpg/image.cgi?resolution=640x480</item>
+        <item name="nantasket_south">http://96.237.61.93/axis-cgi/jpg/image.cgi?resolution=640x480</item>
+    </string-array>
 </resources>
