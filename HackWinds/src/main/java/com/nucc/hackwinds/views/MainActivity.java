@@ -15,6 +15,8 @@ import android.content.Intent;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.nucc.hackwinds.R;
+import com.nucc.hackwinds.models.CameraModel;
+import com.nucc.hackwinds.utilities.ReachabilityHelper;
 import com.nucc.hackwinds.views.BuoyFragment;
 import com.nucc.hackwinds.views.CurrentFragment;
 import com.nucc.hackwinds.views.ForecastFragment;
@@ -59,6 +61,16 @@ public class MainActivity extends ActionBarActivity {
 
         // Set the toolbar Icon
         toolbar.setNavigationIcon(R.drawable.ic_launcher);
+
+        // Get the camera urls
+        if (ReachabilityHelper.deviceHasInternetAccess(this)) {
+            new Thread() {
+                @Override
+                public void run() {
+                    CameraModel.getInstance(getBaseContext()).fetchCameraURLs();
+                }
+            }.start();
+        }
     }
 
     @Override
