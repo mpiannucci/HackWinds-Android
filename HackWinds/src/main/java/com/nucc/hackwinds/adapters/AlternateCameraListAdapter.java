@@ -34,6 +34,7 @@ public class AlternateCameraListAdapter extends BaseAdapter implements ListAdapt
 
     public AlternateCameraListAdapter(Context context, JSONObject jsonObject) {
         mContext = context;
+        mCameraLocations = new ArrayList<>();
 
         // Parse the json object into the CameraLocation object
         Iterator<String> locations = jsonObject.keys();
@@ -63,6 +64,7 @@ public class AlternateCameraListAdapter extends BaseAdapter implements ListAdapt
                 CameraLocation childLocation = new CameraLocation();
                 childLocation.Location = camera;
                 childLocation.isSection = false;
+                mCameraLocations.add(childLocation);
             }
         }
     }

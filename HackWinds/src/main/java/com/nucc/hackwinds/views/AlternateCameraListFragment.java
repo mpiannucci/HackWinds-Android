@@ -8,14 +8,19 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.nucc.hackwinds.R;
+import com.nucc.hackwinds.adapters.AlternateCameraListAdapter;
+import com.nucc.hackwinds.models.CameraModel;
 
 public class AlternateCameraListFragment extends ListFragment {
+
+    private AlternateCameraListAdapter mAlternateCameraListAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
+        mAlternateCameraListAdapter = new AlternateCameraListAdapter(getActivity(), CameraModel.getCameraLocations());
+        setListAdapter(mAlternateCameraListAdapter);
     }
 
     @Override
