@@ -102,6 +102,8 @@ public class AlternateCameraListAdapter extends BaseAdapter implements ListAdapt
             if (isSection(position)) {
                 rowView = inflater.inflate(R.layout.alternate_camera_list_section, parent, false);
                 viewHolder.locationTV = (TextView) rowView.findViewById(R.id.alternateCameraSectionText);
+                rowView.setEnabled(false);
+                rowView.setOnClickListener(null);
             } else {
                 rowView = inflater.inflate(R.layout.alternate_camera_list_item, parent, false);
                 viewHolder.locationTV = (TextView) rowView.findViewById(R.id.alternateCameraItemText);

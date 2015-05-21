@@ -6,6 +6,7 @@ import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import com.nucc.hackwinds.R;
 import com.nucc.hackwinds.adapters.AlternateCameraListAdapter;
@@ -30,5 +31,10 @@ public class AlternateCameraListFragment extends ListFragment {
         View V = inflater.inflate(R.layout.alternate_camera_list_fragment, container, false);
 
         return V;
+    }
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+
     }
 }
