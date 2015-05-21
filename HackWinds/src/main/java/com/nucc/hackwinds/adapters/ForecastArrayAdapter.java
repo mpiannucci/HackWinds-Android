@@ -15,9 +15,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class ForecastArrayAdapter extends ArrayAdapter<Forecast> {
-    private final Context context;
+    private final Context mContext;
+    private final int mCurrentDay;
+
     public ArrayList<Pair<Forecast, Forecast>> values;
-    private final int currentDay;
 
     // View holder class so views can be recycled
     static class ViewHolder {
@@ -30,7 +31,7 @@ public class ForecastArrayAdapter extends ArrayAdapter<Forecast> {
 
     public ForecastArrayAdapter(Context context, ArrayList<Forecast> values) {
         super(context, R.layout.forecast_item, values);
-        this.context = context;
+        this.mContext = context;
 
         ArrayList<Pair<Forecast, Forecast>> forecasts = new ArrayList<>();
         for (int i = 0; i < 10; i += 2) {
@@ -40,7 +41,7 @@ public class ForecastArrayAdapter extends ArrayAdapter<Forecast> {
         this.values = forecasts;
 
         Calendar calendar = Calendar.getInstance();
-        this.currentDay = calendar.get(Calendar.DAY_OF_WEEK);
+        this.mCurrentDay = calendar.get(Calendar.DAY_OF_WEEK);
     }
 
     public void setForecastData(ArrayList<Forecast> newValues) {
@@ -62,7 +63,7 @@ public class ForecastArrayAdapter extends ArrayAdapter<Forecast> {
         View rowView = convertView;
         // Make the view reusable
         if (rowView == null) {
-            LayoutInflater inflater = (LayoutInflater) context
+            LayoutInflater inflater = (LayoutInflater) mContext
                                       .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             rowView = inflater.inflate(R.layout.forecast_item, parent, false);
 
@@ -83,7 +84,7 @@ public class ForecastArrayAdapter extends ArrayAdapter<Forecast> {
         ViewHolder holder = (ViewHolder) rowView.getTag();
 
         // Set the day text view
-        String day = getContext().getResources().getStringArray(R.array.daysOfTheWeek)[(((currentDay-1) + position)%7)];
+        String day = getContext().getResources().getStringArray(R.array.daysOfTheWeek)[(((mCurrentDay-1) + position)%7)];
         holder.dayTV.setText(day);
 
         // Set the morning and afternoon data

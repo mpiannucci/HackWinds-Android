@@ -15,7 +15,7 @@ import com.nucc.hackwinds.R;
 import java.util.ArrayList;
 
 public class ConditionArrayAdapter extends ArrayAdapter<Condition> {
-    private final Context context;
+    private final Context mContext;
     public ArrayList<Condition> values;
 
     // Class to hold view IDs so they can be recycled
@@ -29,7 +29,7 @@ public class ConditionArrayAdapter extends ArrayAdapter<Condition> {
 
     public ConditionArrayAdapter(Context context, ArrayList<Condition> values) {
         super(context, R.layout.current_item, values);
-        this.context = context;
+        this.mContext = context;
         this.values = values;
     }
 
@@ -47,7 +47,7 @@ public class ConditionArrayAdapter extends ArrayAdapter<Condition> {
         View rowView = convertView;
         // Make the view reusable
         if (rowView == null) {
-            LayoutInflater inflater = (LayoutInflater) context
+            LayoutInflater inflater = (LayoutInflater) mContext
                                       .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             rowView = inflater.inflate(R.layout.current_item, parent, false);
 
@@ -79,10 +79,10 @@ public class ConditionArrayAdapter extends ArrayAdapter<Condition> {
             holder.swellTV.setTypeface(null, Typeface.BOLD);
 
             // And make it blue too
-            holder.dateTV.setTextColor(context.getResources().getColor(R.color.hackwinds_blue));
-            holder.breakTV.setTextColor(context.getResources().getColor(R.color.hackwinds_blue));
-            holder.windTV.setTextColor(context.getResources().getColor(R.color.hackwinds_blue));
-            holder.swellTV.setTextColor(context.getResources().getColor(R.color.hackwinds_blue));
+            holder.dateTV.setTextColor(mContext.getResources().getColor(R.color.hackwinds_blue));
+            holder.breakTV.setTextColor(mContext.getResources().getColor(R.color.hackwinds_blue));
+            holder.windTV.setTextColor(mContext.getResources().getColor(R.color.hackwinds_blue));
+            holder.swellTV.setTextColor(mContext.getResources().getColor(R.color.hackwinds_blue));
         } else {
             // Get the data for the position in the list
             Condition condition = values.get(position - 1);

@@ -17,8 +17,8 @@ import java.util.ArrayList;
 public class BuoyArrayAdapter extends ArrayAdapter<Buoy> {
     final String[] DIRS = {"N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"};
 
-    private final Context context;
-    private final ArrayList<Buoy> values;
+    private final Context mContext;
+    private final ArrayList<Buoy> mValues;
 
     static class ViewHolder {
         public TextView timeTV;
@@ -29,8 +29,8 @@ public class BuoyArrayAdapter extends ArrayAdapter<Buoy> {
 
     public BuoyArrayAdapter(Context context, ArrayList<Buoy> values) {
         super(context, R.layout.buoy_item, values);
-        this.context = context;
-        this.values = values;
+        this.mContext = context;
+        this.mValues = values;
     }
 
     @Override
@@ -39,7 +39,7 @@ public class BuoyArrayAdapter extends ArrayAdapter<Buoy> {
 
         // Make the view reusable
         if (rowView == null) {
-            LayoutInflater inflater = (LayoutInflater) context
+            LayoutInflater inflater = (LayoutInflater) mContext
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             rowView = inflater.inflate(R.layout.buoy_item, parent, false);
 
@@ -69,13 +69,13 @@ public class BuoyArrayAdapter extends ArrayAdapter<Buoy> {
             holder.directionTV.setTypeface(null, Typeface.BOLD);
 
             // And make it blue
-            holder.timeTV.setTextColor(context.getResources().getColor(R.color.hackwinds_blue));
-            holder.wvhtTV.setTextColor(context.getResources().getColor(R.color.hackwinds_blue));
-            holder.periodTV.setTextColor(context.getResources().getColor(R.color.hackwinds_blue));
-            holder.directionTV.setTextColor(context.getResources().getColor(R.color.hackwinds_blue));
+            holder.timeTV.setTextColor(mContext.getResources().getColor(R.color.hackwinds_blue));
+            holder.wvhtTV.setTextColor(mContext.getResources().getColor(R.color.hackwinds_blue));
+            holder.periodTV.setTextColor(mContext.getResources().getColor(R.color.hackwinds_blue));
+            holder.directionTV.setTextColor(mContext.getResources().getColor(R.color.hackwinds_blue));
         } else {
             // Get the buoy item for the list position
-            Buoy buoy = values.get(position-1);
+            Buoy buoy = mValues.get(position-1);
 
             // Set the data into the text views
             holder.timeTV.setText(buoy.Time);
