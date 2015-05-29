@@ -81,6 +81,16 @@ ADDED from AndroidManifest.xml:33:9
 		ADDED from AndroidManifest.xml:37:13
 	android:name
 		ADDED from AndroidManifest.xml:34:13
+activity#com.nucc.hackwinds.views.AlternateCameraActivity
+ADDED from AndroidManifest.xml:42:9
+	android:label
+		ADDED from AndroidManifest.xml:44:13
+	android:parentActivityName
+		ADDED from AndroidManifest.xml:45:13
+	android:theme
+		ADDED from AndroidManifest.xml:46:13
+	android:name
+		ADDED from AndroidManifest.xml:43:13
 uses-sdk
 INJECTED from AndroidManifest.xml:0:0 reason: use-sdk injection requested
 MERGED from com.android.support:support-v4:22.0.0:20:5
