@@ -61,6 +61,15 @@ public class AlternateCameraListAdapter extends BaseAdapter implements ListAdapt
             while(cameras.hasNext()) {
                 // Add each camera for every location to the list.
                 String camera = cameras.next();
+
+                // Filter out warm winds cameras
+                if (location.equals("Narragansett")) {
+                    if (camera.equals("Warm Winds Still") || camera.equals("Warm Winds Live")) {
+                        continue;
+                    }
+                }
+
+                // If its valid, add to the list
                 CameraLocation childLocation = new CameraLocation();
                 childLocation.Location = camera;
                 childLocation.isSection = false;
@@ -86,6 +95,25 @@ public class AlternateCameraListAdapter extends BaseAdapter implements ListAdapt
 
     public boolean isSection(int position) {
         return mCameraLocations.get(position).isSection;
+    }
+
+    public String getSectionForPosition(int position) {
+        if (isSection(position)) {
+            // It has no parent section
+            return "";
+        }
+
+        int prevPosition = position;
+        while (prevPosition >= 0) {
+            if (isSection(prevPosition)) {
+                // Yayy we found the section
+                return getItem(prevPosition);
+            }
+            prevPosition--;
+        }
+
+        // We somehow didnt find a section
+        return "";
     }
 
     @Override

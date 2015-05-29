@@ -1,6 +1,7 @@
 package com.nucc.hackwinds.views;
 
 
+import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
@@ -34,7 +35,24 @@ public class AlternateCameraListFragment extends ListFragment {
     }
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
+    public void onResume() {
+        super.onResume();
 
+        AlternateCameraActivity alternateCameraActivity = (AlternateCameraActivity) getActivity();
+        alternateCameraActivity.resetToolbarTitle();
+    }
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        String camera = mAlternateCameraListAdapter.getItem(position);
+        String location = mAlternateCameraListAdapter.getSectionForPosition(position);
+
+        IsoCameraFragment cameraFragment = new IsoCameraFragment();
+        cameraFragment.setCamera(location, camera);
+
+        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.content_frame, cameraFragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 }
