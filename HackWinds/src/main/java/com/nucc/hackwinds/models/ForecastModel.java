@@ -123,7 +123,7 @@ public class ForecastModel {
         }
 
         // Return the array of conditions
-        ArrayList<Condition> dayConditions = new ArrayList(conditions.subList(index * 6, 6));
+        ArrayList<Condition> dayConditions = new ArrayList(conditions.subList(index * 6, (index * 6) + 6));
         return dayConditions;
     }
 
