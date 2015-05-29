@@ -1,5 +1,6 @@
 package com.nucc.hackwinds.views;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.os.Handler;
+import android.widget.TextView;
 
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
@@ -17,6 +19,9 @@ import com.nucc.hackwinds.models.CameraModel;
 import org.json.JSONException;
 
 public class IsoCameraFragment extends Fragment {
+    private final int NORMAL_REFRESH_DURATION = 3000;
+    private final int NARRAGANSETT_REFRESH_DURATION = 35000;
+
     private String mCameraURL;
     private boolean mAutoRefresh;
     private int mAutoRefreshDuration;
@@ -52,7 +57,13 @@ public class IsoCameraFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 mAutoRefresh = ((Switch) view).isChecked();
-                loadCameraImage();
+                if (mAutoRefresh) {
+                    // Trigger a camera refresh
+                    loadCameraImage();
+                }
+
+                // Update the auto refresh label
+                updateAutoRefreshDurationLabel();
             }
         });
 
@@ -66,6 +77,16 @@ public class IsoCameraFragment extends Fragment {
         if (mCameraURL != null) {
             loadCameraImage();
         }
+
+        // Update the auto refresh label
+        updateAutoRefreshDurationLabel();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        mHandler.removeCallbacks(mRunnable);
     }
 
     public void setCamera(String location, String camera) {
@@ -76,22 +97,33 @@ public class IsoCameraFragment extends Fragment {
         }
 
         if (location.equals("Narragansett") && camera.equals("Town Beach South")) {
-            mAutoRefreshDuration = 35000;
+            mAutoRefreshDuration = NARRAGANSETT_REFRESH_DURATION;
         } else {
-            mAutoRefreshDuration = 3000;
+            mAutoRefreshDuration = NORMAL_REFRESH_DURATION;
         }
     }
 
     public void loadCameraImage() {
         final ImageView cameraImage = (ImageView) getActivity().findViewById(R.id.latestCameraImage);
-        Ion.with(getActivity()).load(mCameraURL).noCache().intoImageView(cameraImage).setCallback(new FutureCallback<ImageView>() {
+        Ion.with(getActivity()).load(mCameraURL).noCache().asBitmap().setCallback(new FutureCallback<Bitmap>() {
             @Override
-            public void onCompleted(Exception e, ImageView result) {
+            public void onCompleted(Exception e, Bitmap result) {
                 if (mAutoRefresh) {
+                    cameraImage.setImageBitmap(result);
                     mHandler.postDelayed(mRunnable, mAutoRefreshDuration);
                 }
             }
         });
+    }
+
+    private void updateAutoRefreshDurationLabel() {
+        TextView autoRefreshDurationLabel = (TextView) getActivity().findViewById(R.id.auto_refresh_duration);
+        if (mAutoRefresh) {
+            autoRefreshDurationLabel.setText("Refresh interval is " + String.valueOf(mAutoRefreshDuration / 1000) + " seconds");
+            autoRefreshDurationLabel.setVisibility(View.VISIBLE);
+        } else {
+            autoRefreshDurationLabel.setVisibility(View.GONE);
+        }
     }
 
 }
