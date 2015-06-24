@@ -165,7 +165,7 @@ public class ForecastModel {
 
             // Iterate while the number of parsed is less than what the
             // user asked for
-            while ((conditionCount < 30) || (forecastCount < 10)) {
+            while (((conditionCount < 30) || (forecastCount < 10)) && (dataIndex < jsonArr.length())) {
 
                 // Get the current json object
                 JSONObject jsonObj = jsonArr.getJSONObject(dataIndex);
@@ -266,6 +266,7 @@ public class ForecastModel {
         int amStamp = dateString.indexOf("AM");
         int hour0 = dateString.indexOf("0");
         int hour3 = dateString.indexOf("3");
+
         // If its midnight or 3 am we don't care about it. otherwise its fine
         if (((amStamp > -1) && (hour0 > -1)) || ((amStamp > -1) && (hour3 > -1))) {
             return false;
@@ -277,20 +278,13 @@ public class ForecastModel {
     private boolean checkForecastDate(String dateString) {
         int amStamp = dateString.indexOf("AM");
         int pmStamp = dateString.indexOf("PM");
-        int hour0 = dateString.indexOf("0");
         int hour3 = dateString.indexOf("3");
-        int hour6 = dateString.indexOf("6");
         int hour9 = dateString.indexOf("9");
-        int hour12 = dateString.indexOf("12");
-        // If its midnight or 3 am we don't care about it. otherwise its fine
-        if (((amStamp > -1) && (hour0 > -1)) ||
-                ((amStamp > -1) && (hour3 > -1)) ||
-                ((amStamp > -1) && (hour6 > -1)) ||
-                ((pmStamp > -1) && (hour12 > -1)) ||
-                ((pmStamp > -1) && (hour6 > -1)) ||
-                ((pmStamp > -1) && (hour9 > -1))) {
-            return false;
+
+        // We only care about 9 am and 3 pm
+        if (((amStamp > -1) && (hour9 > -1)) || ((pmStamp > -1) && (hour3 > -1))) {
+            return true;
         }
-        return true;
+        return false;
     }
 }
