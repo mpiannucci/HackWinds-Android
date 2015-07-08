@@ -50,14 +50,30 @@ public class CameraModel {
 
         ServiceHandler sh = new ServiceHandler();
         String rawData = sh.makeServiceCall(HACKWINDS_API_URL, ServiceHandler.GET);
+        JSONObject narragansettCams;
 
         try {
             JSONObject jsonResp = new JSONObject(rawData);
             cameraLocations = jsonResp.getJSONObject("camera_locations");
+            narragansettCams = cameraLocations.getJSONObject("Narragansett");
         } catch (JSONException e) {
             e.printStackTrace();
             return false;
         }
+
+        if (narragansettCams.length() > 3) {
+            try {
+                String pjURL = narragansettCams.getString("Point Judith");
+                String rawPJData = sh.makeServiceCall(pjURL, ServiceHandler.GET);
+                JSONObject pjResp = new JSONObject(rawPJData);
+                JSONObject pjStreamData = (JSONObject)pjResp.getJSONObject("streamInfo").getJSONArray("stream").get(0);
+                narragansettCams.put("Point Judith", pjStreamData);
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return true;
+            }
+        }
+
         return true;
     }
 
