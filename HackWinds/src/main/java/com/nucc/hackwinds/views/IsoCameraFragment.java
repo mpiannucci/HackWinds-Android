@@ -117,7 +117,7 @@ public class IsoCameraFragment extends Fragment {
     public void loadCameraImage() {
         if (mCamera.equals("Point Judith")) {
             getActivity().findViewById(R.id.auto_refresh_label).setVisibility(View.GONE);
-            Switch autoRefreshToggle = (Switch) getActivity().findViewById(R.id.autoRefreshToggle);
+            Switch autoRefreshToggle = (Switch)getActivity().findViewById(R.id.auto_refresh_toggle);
             autoRefreshToggle.performClick();
             autoRefreshToggle.setVisibility(View.GONE);
         }
