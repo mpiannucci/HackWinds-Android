@@ -21,8 +21,12 @@ import org.json.JSONException;
 public class IsoCameraFragment extends Fragment {
     private final int NORMAL_REFRESH_DURATION = 3000;
     private final int NARRAGANSETT_REFRESH_DURATION = 35000;
+    private final String POINT_JUDITH_STATIC_IMAGE = "http://www.asergeev.com/pictures/archives/2004/372/jpeg/20.jpg";
 
     private String mCameraURL;
+    private String mVideoURL;
+    private String mLocation;
+    private String mCamera;
     private boolean mAutoRefresh;
     private int mAutoRefreshDuration;
 
@@ -91,7 +95,11 @@ public class IsoCameraFragment extends Fragment {
 
     public void setCamera(String location, String camera) {
         try {
-            mCameraURL = CameraModel.getCameraLocations().getJSONObject(location).getString(camera);
+            if (location.equals("Narragansett") && camera.equals("Point Judith")) {
+                mCameraURL = POINT_JUDITH_STATIC_IMAGE;
+            } else {
+                mCameraURL = CameraModel.getCameraLocations().getJSONObject(location).getString(camera);
+            }
         } catch (JSONException e) {
             return;
         }
@@ -101,15 +109,25 @@ public class IsoCameraFragment extends Fragment {
         } else {
             mAutoRefreshDuration = NORMAL_REFRESH_DURATION;
         }
+
+        mLocation = location;
+        mCamera = camera;
     }
 
     public void loadCameraImage() {
+        if (mCamera.equals("Point Judith")) {
+            getActivity().findViewById(R.id.auto_refresh_label).setVisibility(View.GONE);
+            Switch autoRefreshToggle = (Switch) getActivity().findViewById(R.id.autoRefreshToggle);
+            autoRefreshToggle.performClick();
+            autoRefreshToggle.setVisibility(View.GONE);
+        }
+
         final ImageView cameraImage = (ImageView) getActivity().findViewById(R.id.latestCameraImage);
         Ion.with(getActivity()).load(mCameraURL).noCache().asBitmap().setCallback(new FutureCallback<Bitmap>() {
             @Override
             public void onCompleted(Exception e, Bitmap result) {
+                cameraImage.setImageBitmap(result);
                 if (mAutoRefresh) {
-                    cameraImage.setImageBitmap(result);
                     mHandler.postDelayed(mRunnable, mAutoRefreshDuration);
                 }
             }
