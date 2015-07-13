@@ -8,6 +8,7 @@
         android:id="@+id/latestCameraImage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:src="@drawable/photo_loading_holder"
         android:scaleType="fitXY"
         android:adjustViewBounds="true"/>
 
