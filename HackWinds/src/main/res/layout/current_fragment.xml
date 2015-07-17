@@ -35,6 +35,7 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_av_play_over_video_big"
                 android:layout_gravity="center_horizontal|center_vertical" />
+
         </FrameLayout>
 
     </LinearLayout>

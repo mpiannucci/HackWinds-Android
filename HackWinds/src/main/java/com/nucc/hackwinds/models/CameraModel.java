@@ -13,7 +13,7 @@ import org.json.JSONObject;
 public class CameraModel {
 
     // Constants
-    private final String HACKWINDS_API_URL = "http://blog.mpiannucci.com/static/hackwinds_camera_locations.json";
+    private final String HACKWINDS_API_URL = "http://blog.mpiannucci.com/static/API/hackwinds_camera_locations_v2.json";
     private final String NEEDS_RELOAD_KEY = "NeedCameraLocationFetch";
 
     // Member variables

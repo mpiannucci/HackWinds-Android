@@ -12,6 +12,7 @@ import android.widget.Switch;
 import android.os.Handler;
 import android.widget.TextView;
 import android.content.Context;
+import android.widget.VideoView;
 
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
@@ -91,6 +92,14 @@ public class IsoCameraFragment extends Fragment {
         if (mCameraURL != null) {
             // Only trigger an image load if there is a url
             loadCameraImage();
+
+            // Set the video play button to the correct visibility for the location
+            ImageView playButtonView = (ImageView) getActivity().findViewById(R.id.isoVideoPlayButton);
+            if (mLocation.equals("Narragansett") && mCamera.equals("Point Judith")) {
+                playButtonView.setVisibility(View.VISIBLE);
+            } else {
+                playButtonView.setVisibility(View.GONE);
+            }
         }
 
         // Update the auto refresh label
@@ -108,6 +117,7 @@ public class IsoCameraFragment extends Fragment {
         try {
             if (location.equals("Narragansett") && camera.equals("Point Judith")) {
                 mCameraURL = POINT_JUDITH_STATIC_IMAGE;
+
             } else {
                 mCameraURL = CameraModel.getCameraLocations().getJSONObject(location).getString(camera);
             }
