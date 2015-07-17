@@ -93,6 +93,7 @@ public class CurrentFragment extends ListFragment {
 
         // Set the play button image over the holder camera image
         ImageView playButton = (ImageView) V.findViewById(R.id.camPlayButton);
+        mStreamView = (VideoView) V.findViewById(R.id.currentVideoStreamView);
 
         // Set the onClick callback for the play button to start the VideoView
         playButton.setOnClickListener(new View.OnClickListener() {
@@ -104,7 +105,6 @@ public class CurrentFragment extends ListFragment {
                     pic.setVisibility(View.GONE);
 
                     // Show the VideoView
-                    mStreamView = (VideoView) getActivity().findViewById(R.id.currentVideoStreamView);
                     mStreamView.setVisibility(View.VISIBLE);
 
                     // Execute the video loading AsyncTask

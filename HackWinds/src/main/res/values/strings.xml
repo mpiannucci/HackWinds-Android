@@ -76,5 +76,6 @@
     <string name="title_activity_alternate_cameras">AlternateCamerasActivity</string>
     <string name="auto_refresh_label">Auto Refresh</string>
     <string name="auto_refresh_frequency">Refresh interval is 3 seconds</string>
+    <string name="video_info_holder">Video info loading...</string>
 
 </resources>
