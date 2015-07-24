@@ -15,11 +15,6 @@ public class TideModel {
     // Set the constants for the data tags and urls
     final private String WUNDER_URL = "http://api.wunderground.com/api/2e5424aab8c91757/tide/q/RI/Point_Judith.json";
 
-    public static final String LOW_TIDE_TAG = "Low Tide";
-    public static final String HIGH_TIDE_TAG = "High Tide";
-    public static final String SUNRISE_TAG = "Sunrise";
-    public static final String SUNSET_TAG = "Sunset";
-
     // Member variables
     private static TideModel mInstance;
     public ArrayList<Tide> tides;
@@ -56,22 +51,19 @@ public class TideModel {
                 // Get the tide summary json object from the current json object
                 JSONObject jsonObj = new JSONObject(rawData);
                 JSONArray tideSummary = jsonObj.getJSONObject("tide").getJSONArray("tideSummary");
-                int datacount = 0;
-                int objectcount = 0;
-                while (datacount < 6) {
+                int dataCount = 0;
+                int objectCount = 0;
+                while (dataCount < 6) {
 
                     // Get the day and time
-                    JSONObject tideJSONObject = tideSummary.getJSONObject(objectcount);
+                    JSONObject tideJSONObject = tideSummary.getJSONObject(objectCount);
                     String hour = tideJSONObject.getJSONObject("date").getString("hour");
                     String min = tideJSONObject.getJSONObject("date").getString("min");
                     String type = tideJSONObject.getJSONObject("data").getString("type");
                     String height = tideJSONObject.getJSONObject("data").getString("height");
 
                     // Append the data to the current tide object adn increment the data count
-                    if ((type.equals(HIGH_TIDE_TAG)) ||
-                        (type.equals(LOW_TIDE_TAG))  ||
-                        (type.equals(SUNRISE_TAG))   ||
-                        (type.equals(SUNSET_TAG))) {
+                    if (Tide.isValidEvent(type)) {
 
                         // Create a new tide object
                         Tide thisTide = new Tide();
@@ -83,12 +75,10 @@ public class TideModel {
                         tides.add(thisTide);
 
                         // Increment the data count
-                        datacount++;
-                    } else {
-                        // Do nothing cuz these values aren't relevant
+                        dataCount++;
                     }
                     // Increase the object count
-                    objectcount++;
+                    objectCount++;
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

@@ -55,8 +55,15 @@ public class TideFragment extends Fragment {
 
         // Set the upcoming and sunrise/sunset values
         for (Tide thisTide : mTideModel.tides ) {
-            if (thisTide.EventType.equals(TideModel.HIGH_TIDE_TAG) ||
-                thisTide.EventType.equals(TideModel.LOW_TIDE_TAG)) {
+            if (thisTide.isSunrise()) {
+                // Set the sunrise time that was found
+                TextView sunriseTime = (TextView)getActivity().findViewById(R.id.sunriseTime);
+                sunriseTime.setText(thisTide.Time);
+            } else if (thisTide.isSunset()) {
+                // Set the sunset time that was read
+                TextView sunsetTime = (TextView)getActivity().findViewById(R.id.sunsetTime);
+                sunsetTime.setText(thisTide.Time);
+            } else if (thisTide.isTidalEvent()) {
                 // Yay we found a tide, now set the type (high or low) and the values
                 TextView typeView = (TextView)getActivity().findViewById(mTideTypeViews[tideCount]);
                 TextView timeView = (TextView)getActivity().findViewById(mTideTimeViews[tideCount]);
@@ -66,7 +73,7 @@ public class TideFragment extends Fragment {
                 // Also set the current status
                 if (tideCount == 0) {
                     TextView currentTextView = (TextView) getActivity().findViewById(R.id.currentTideStatus);
-                    if (thisTide.EventType.equals(TideModel.HIGH_TIDE_TAG)) {
+                    if (thisTide.isHighTide()) {
                         // Tide is incoming
                         currentTextView.setText("Incoming");
                         currentTextView.setTextColor(Color.GREEN);
@@ -78,16 +85,6 @@ public class TideFragment extends Fragment {
                 }
 
                 tideCount++;
-            } else if (thisTide.EventType.equals(TideModel.SUNRISE_TAG)) {
-                // Set the sunrise time that was found
-                TextView sunriseTime = (TextView)getActivity().findViewById(R.id.sunriseTime);
-                sunriseTime.setText(thisTide.Time);
-            } else if (thisTide.EventType.equals(TideModel.SUNSET_TAG)) {
-                // Set the sunset time that was read
-                TextView sunsetTime = (TextView)getActivity().findViewById(R.id.sunsetTime);
-                sunsetTime.setText(thisTide.Time);
-            } else {
-                // Its not relevant and shouldn't have slipped by
             }
         }
         // Update the water temperature from the latest buoy reading
