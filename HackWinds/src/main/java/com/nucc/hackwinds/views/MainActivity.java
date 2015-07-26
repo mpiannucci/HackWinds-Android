@@ -68,7 +68,7 @@ public class MainActivity extends ActionBarActivity {
             new Thread() {
                 @Override
                 public void run() {
-                    CameraModel.getInstance(getBaseContext()).fetchCameraURLs();
+                    CameraModel.getInstance().fetchCameraURLs();
                 }
             }.start();
         }

@@ -17,9 +17,12 @@ import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.koushikdutta.ion.Ion;
+
 import com.nucc.hackwinds.R;
 import com.nucc.hackwinds.adapters.ConditionArrayAdapter;
 import com.nucc.hackwinds.listeners.ForecastChangedListener;
+import com.nucc.hackwinds.types.Camera;
+import com.nucc.hackwinds.models.CameraModel;
 import com.nucc.hackwinds.models.ForecastModel;
 import com.nucc.hackwinds.utilities.ReachabilityHelper;
 
@@ -27,12 +30,9 @@ import java.util.Calendar;
 
 
 public class CurrentFragment extends ListFragment {
-    // Create constant variables for all of the URLs and cache settings
-    final static public String STREAM_URL = "http://162.243.101.197:1935/surfcam/live.stream/playlist.m3u8";
-    final private String IMG_URL = "http://www.warmwinds.com/wp-content/uploads/surf-cam-stills/image00001.jpg";
-
     // Initialize the other variables
     private ConditionArrayAdapter mConditionArrayAdapter;
+    private Camera mCamera;
     private ForecastModel mForecastModel;
     public VideoView mStreamView;
     private ForecastChangedListener mForecastChangedListener;
@@ -70,6 +70,7 @@ public class CurrentFragment extends ListFragment {
         mForecastModel.addForecastChangedListener(mForecastChangedListener);
 
         new FetchConditionDataTask().execute();
+        new FetchCameraLocationsTask().execute();
     }
 
     @Override
@@ -83,13 +84,6 @@ public class CurrentFragment extends ListFragment {
         int day = calendar.get(Calendar.DAY_OF_WEEK);
         String dayName = getResources().getStringArray(R.array.daysOfTheWeek)[day-1];
         date.setText(dayName);
-
-        // Get the ImageView to set as the holder before the user calls
-        // to play the VideoView
-        ImageView img = (ImageView) V.findViewById(R.id.camHolderImage);
-        if (ReachabilityHelper.deviceHasInternetAccess(getActivity())) {
-            Ion.with(getActivity()).load(IMG_URL).intoImageView(img);
-        }
 
         // Set the play button image over the holder camera image
         ImageView playButton = (ImageView) V.findViewById(R.id.camPlayButton);
@@ -108,7 +102,7 @@ public class CurrentFragment extends ListFragment {
                     mStreamView.setVisibility(View.VISIBLE);
 
                     // Execute the video loading AsyncTask
-                    new LoadLiveStreamTask().execute(STREAM_URL);
+                    new LoadLiveStreamTask().execute(mCamera.VideoURL);
                 }
             }
         });
@@ -120,7 +114,7 @@ public class CurrentFragment extends ListFragment {
                 // Launch the built in video intent instead of the default embedded video player
                 if (ReachabilityHelper.deviceHasInternetAccess(getActivity())) {
                     Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setDataAndType(Uri.parse(STREAM_URL), "video/*");
+                    intent.setDataAndType(Uri.parse(mCamera.VideoURL), "video/*");
                     startActivity(intent);
                     return true;
                 } else {
@@ -129,6 +123,9 @@ public class CurrentFragment extends ListFragment {
 
             }
         });
+
+        // Hide the play button until the camera urls are finished
+        playButton.setVisibility(View.GONE);
 
         // return the view
         return V;
@@ -164,6 +161,35 @@ public class CurrentFragment extends ListFragment {
             // Show the holder image again
             ImageView holderPic = (ImageView) getActivity().findViewById(R.id.camHolderImage);
             holderPic.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public class FetchCameraLocationsTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... arg0) {
+            // Get the conditions from the model
+            CameraModel cameraModel = CameraModel.getInstance();
+            cameraModel.fetchCameraURLs();
+            mCamera = cameraModel.CameraLocations.get("Narragansett").get("Warm Winds");
+
+            // Return
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+
+            // Set the holder image to the loaded image
+            // Get the ImageView to set as the holder before the user calls
+            // to play the VideoView
+            ImageView img = (ImageView) getActivity().findViewById(R.id.camHolderImage);
+            Ion.with(getActivity()).load(mCamera.ImageURL).intoImageView(img);
+
+            // Set the play button to show again
+            ImageView playButton = (ImageView) getActivity().findViewById(R.id.camPlayButton);
+            playButton.setVisibility(View.VISIBLE);
         }
     }
 

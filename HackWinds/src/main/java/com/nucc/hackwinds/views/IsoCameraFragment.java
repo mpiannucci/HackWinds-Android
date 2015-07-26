@@ -22,24 +22,21 @@ import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.nucc.hackwinds.R;
 import com.nucc.hackwinds.models.CameraModel;
+import com.nucc.hackwinds.types.Camera;
 import com.nucc.hackwinds.utilities.ReachabilityHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class IsoCameraFragment extends Fragment {
-    private final int NORMAL_REFRESH_DURATION = 3000;
-    private final int NARRAGANSETT_REFRESH_DURATION = 35000;
-    private final String POINT_JUDITH_STATIC_IMAGE = "http://www.asergeev.com/pictures/archives/2004/372/jpeg/20.jpg";
 
-    private ImageView mCameraImage;
-    private Context mContext;
-    private String mCameraURL;
-    private String mVideoURL;
-    private String mLocation;
-    private String mCamera;
+    private Camera mCamera;
+    private String mLocationName;
+    private String mCameraName;
     private boolean mAutoRefresh;
-    private int mAutoRefreshDuration;
+
+    private Context mContext;
+    private ImageView mCameraImage;
     private ImageView mPlayButton;
     public VideoView mVideoView;
 
@@ -89,7 +86,7 @@ public class IsoCameraFragment extends Fragment {
                     mVideoView.setVisibility(View.VISIBLE);
 
                     // Execute the video loading AsyncTask
-                    new LoadVideoStreamTask().execute(mVideoURL);
+                    new LoadVideoStreamTask().execute(mCamera.VideoURL);
                 }
             }
         });
@@ -101,7 +98,7 @@ public class IsoCameraFragment extends Fragment {
                 // Launch the built in video intent instead of the default embedded video player
                 if (ReachabilityHelper.deviceHasInternetAccess(getActivity())) {
                     Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setDataAndType(Uri.parse(mVideoURL), "video/*");
+                    intent.setDataAndType(Uri.parse(mCamera.VideoURL), "video/*");
                     startActivity(intent);
                     return true;
                 } else {
@@ -134,7 +131,7 @@ public class IsoCameraFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        if (mCameraURL != null) {
+        if (mCamera != null) {
             // Only trigger an image load if there is a url
             loadCameraImage();
         }
@@ -152,45 +149,30 @@ public class IsoCameraFragment extends Fragment {
     }
 
     public void setCamera(String location, String camera) {
-        try {
-            if (location.equals("Narragansett") && camera.equals("Point Judith")) {
-                // Point Judith has a static image and a video stream
-                mCameraURL = POINT_JUDITH_STATIC_IMAGE;
-                mVideoURL = CameraModel.getCameraLocations().getJSONObject(location)
-                        .getJSONObject(camera).getString("file");
-            } else {
-                mCameraURL = CameraModel.getCameraLocations().getJSONObject(location).getString(camera);
-            }
-        } catch (JSONException e) {
-            return;
-        }
+        mLocationName = location;
+        mCameraName = camera;
 
-        // The town beach camra only updates every half minute or so
-        if (location.equals("Narragansett") && camera.equals("Town Beach South")) {
-            mAutoRefreshDuration = NARRAGANSETT_REFRESH_DURATION;
-        } else {
-            mAutoRefreshDuration = NORMAL_REFRESH_DURATION;
-        }
-
-        mLocation = location;
-        mCamera = camera;
+        mCamera = CameraModel.getInstance().CameraLocations.get(mLocationName).get(mCameraName);
+        mAutoRefresh = mCamera.Refreshable;
     }
 
     public void loadCameraImage() {
-        if (mCamera.equals("Point Judith")) {
+        if (!mCamera.VideoURL.equals("")) {
             // If it is the point judith camera, we want to hide the auto refresh info and show
             // the hidden video status info view
             Switch autoRefreshToggle = (Switch)getActivity().findViewById(R.id.auto_refresh_toggle);
             autoRefreshToggle.performClick();
             getActivity().findViewById(R.id.image_refresh_info_view).setVisibility(View.GONE);
 
-            ((TextView) getActivity().findViewById(R.id.video_info_text)).setText(getVideoStatusInfo());
-            getActivity().findViewById(R.id.video_info_view).setVisibility(View.VISIBLE);
+            if (mCamera.Info != null) {
+                ((TextView) getActivity().findViewById(R.id.video_info_text)).setText(mCamera.Info);
+                getActivity().findViewById(R.id.video_info_view).setVisibility(View.VISIBLE);
+            }
         }
 
         if (mContext != null) {
             // If there is a context, then load the next image and create the callback to set it as the current image
-            Ion.with(getActivity()).load(mCameraURL).noCache().asBitmap().setCallback(new FutureCallback<Bitmap>() {
+            Ion.with(mContext).load(mCamera.ImageURL).noCache().asBitmap().setCallback(new FutureCallback<Bitmap>() {
                 @Override
                 public void onCompleted(Exception e, Bitmap result) {
                     if (e != null) {
@@ -201,13 +183,13 @@ public class IsoCameraFragment extends Fragment {
                         mCameraImage.setImageBitmap(result);
 
                         // If its the point judith view, show the play button
-                        if (mCamera.equals("Point Judith")) {
+                        if (!mCamera.VideoURL.equals("")) {
                             mPlayButton.setVisibility(View.VISIBLE);
                         }
 
                         // If enabled, start the countdown to loading the next view
                         if (mAutoRefresh) {
-                            mHandler.postDelayed(mRunnable, mAutoRefreshDuration);
+                            mHandler.postDelayed(mRunnable, mCamera.RefreshInterval * 1000);
                         }
                     }
                 }
@@ -221,30 +203,11 @@ public class IsoCameraFragment extends Fragment {
     private void updateAutoRefreshDurationLabel() {
         TextView autoRefreshDurationLabel = (TextView) getActivity().findViewById(R.id.auto_refresh_duration);
         if (mAutoRefresh) {
-            autoRefreshDurationLabel.setText("Refresh interval is " + String.valueOf(mAutoRefreshDuration / 1000) + " seconds");
+            autoRefreshDurationLabel.setText("Refresh interval is " + String.valueOf(mCamera.RefreshInterval) + " seconds");
             autoRefreshDurationLabel.setVisibility(View.VISIBLE);
         } else {
             autoRefreshDurationLabel.setVisibility(View.GONE);
         }
-    }
-
-    private String getVideoStatusInfo() {
-        String videoStatus = "";
-        if (mCamera.equals("Point Judith")) {
-            try {
-                JSONObject pjData = CameraModel.getCameraLocations().
-                        getJSONObject(mLocation).getJSONObject(mCamera);
-
-                videoStatus += "Camera Status: " + pjData.getString("camStatus") + "\n";
-                videoStatus += "Date: " + pjData.getString("reportDate") + "\n";
-                videoStatus += "Time: " + pjData.getString("reportTime") + "\n\n";
-                videoStatus += "If the video does not play, it may be down. It is a " +
-                        "daily upload during the summer and it becomes unavailable each evening.";
-            } catch (JSONException e) {
-                videoStatus = "Failed to get info for the video stream";
-            }
-        }
-        return videoStatus;
     }
 
     private void finishedWithVideo() {

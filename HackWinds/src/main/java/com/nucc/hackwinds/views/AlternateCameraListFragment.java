@@ -21,7 +21,9 @@ public class AlternateCameraListFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mAlternateCameraListAdapter = new AlternateCameraListAdapter(getActivity(), CameraModel.getCameraLocations());
+        CameraModel cameraModel = CameraModel.getInstance();
+
+        mAlternateCameraListAdapter = new AlternateCameraListAdapter(getActivity(), cameraModel);
         setListAdapter(mAlternateCameraListAdapter);
     }
 

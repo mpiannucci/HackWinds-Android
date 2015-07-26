@@ -10,12 +10,9 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.nucc.hackwinds.R;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.nucc.hackwinds.models.CameraModel;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class AlternateCameraListAdapter extends BaseAdapter implements ListAdapter {
 
@@ -32,49 +29,35 @@ public class AlternateCameraListAdapter extends BaseAdapter implements ListAdapt
     private final Context mContext;
     private ArrayList<CameraLocation> mCameraLocations;
 
-    public AlternateCameraListAdapter(Context context, JSONObject jsonObject) {
+    public AlternateCameraListAdapter(Context context, CameraModel cameraModel) {
         mContext = context;
         mCameraLocations = new ArrayList<>();
 
-        // Parse the json object into the CameraLocation object
-        Iterator<String> locations = jsonObject.keys();
-        while(locations.hasNext()) {
-            // Get the location and its children
-            String location = locations.next();
-            JSONObject locationParent;
-            try {
-                // Grab the child so we can get its children
-               locationParent = jsonObject.getJSONObject(location);
-            } catch (JSONException e) {
-                continue;
-            }
+        // Start the location index at 0
+        int locationIndex = 0;
 
-            // Add the location
+        // Rip the cameras from the model into the CameraLocation object list
+        for (String location : cameraModel.LocationKeys) {
+            // Add a camera object to initialize the section
             CameraLocation thisLocation = new CameraLocation();
             thisLocation.Location = location;
             thisLocation.isSection = true;
 
-            // Add the camera location to the list
+            // Add the location to the list
             mCameraLocations.add(thisLocation);
 
-            Iterator<String> cameras = locationParent.keys();
-            while(cameras.hasNext()) {
-                // Add each camera for every location to the list.
-                String camera = cameras.next();
+            for (String cameraName : cameraModel.CameraKeys.get(locationIndex)) {
+                // Add a camera location for the next camera
+                CameraLocation thisCamera = new CameraLocation();
+                thisCamera.Location = cameraName;
+                thisCamera.isSection = false;
 
-                // Filter out warm winds cameras
-                if (location.equals("Narragansett")) {
-                    if (camera.equals("Warm Winds Still") || camera.equals("Warm Winds Live")) {
-                        continue;
-                    }
-                }
-
-                // If its valid, add to the list
-                CameraLocation childLocation = new CameraLocation();
-                childLocation.Location = camera;
-                childLocation.isSection = false;
-                mCameraLocations.add(childLocation);
+                // Add the camera to the location list
+                mCameraLocations.add(thisCamera);
             }
+
+            // Move to the next location
+            locationIndex++;
         }
     }
 
