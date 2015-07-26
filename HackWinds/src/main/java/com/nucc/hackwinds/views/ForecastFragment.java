@@ -76,7 +76,7 @@ public class ForecastFragment extends ListFragment {
         protected Void doInBackground(Void... arg0) {
 
             // Forecast data
-            mForecastModel.getForecasts();
+            mForecastModel.fetchForecastData();
 
             return null;
         }

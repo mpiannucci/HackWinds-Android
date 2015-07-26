@@ -25,9 +25,6 @@ import com.nucc.hackwinds.models.CameraModel;
 import com.nucc.hackwinds.types.Camera;
 import com.nucc.hackwinds.utilities.ReachabilityHelper;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 public class IsoCameraFragment extends Fragment {
 
     private Camera mCamera;
@@ -152,7 +149,7 @@ public class IsoCameraFragment extends Fragment {
         mLocationName = location;
         mCameraName = camera;
 
-        mCamera = CameraModel.getInstance().CameraLocations.get(mLocationName).get(mCameraName);
+        mCamera = CameraModel.getInstance().cameraLocations.get(mLocationName).get(mCameraName);
         mAutoRefresh = mCamera.Refreshable;
     }
 

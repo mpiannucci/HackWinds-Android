@@ -31,7 +31,7 @@ public class TideModel {
         tides = new ArrayList<>();
     }
 
-    public ArrayList<Tide> getTideData() {
+    public boolean fetchTideData() {
         // Check if there is already data read in
         if (tides.isEmpty()) {
             // Get new data from Wunderground
@@ -39,8 +39,13 @@ public class TideModel {
             String rawData = sh.makeServiceCall(WUNDER_URL, ServiceHandler.GET);
 
             // Parse the tide data
-            parseTideData(rawData);
+            return parseTideData(rawData);
+        } else {
+            return true;
         }
+    }
+
+    public ArrayList<Tide> getTideData() {
         // Return the vector of tides
         return tides;
     }

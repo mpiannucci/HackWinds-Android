@@ -37,7 +37,7 @@ public class AlternateCameraListAdapter extends BaseAdapter implements ListAdapt
         int locationIndex = 0;
 
         // Rip the cameras from the model into the CameraLocation object list
-        for (String location : cameraModel.LocationKeys) {
+        for (String location : cameraModel.locationKeys) {
             // Add a camera object to initialize the section
             CameraLocation thisLocation = new CameraLocation();
             thisLocation.Location = location;
@@ -46,7 +46,7 @@ public class AlternateCameraListAdapter extends BaseAdapter implements ListAdapt
             // Add the location to the list
             mCameraLocations.add(thisLocation);
 
-            for (String cameraName : cameraModel.CameraKeys.get(locationIndex)) {
+            for (String cameraName : cameraModel.cameraKeys.get(locationIndex)) {
                 // Add a camera location for the next camera
                 CameraLocation thisCamera = new CameraLocation();
                 thisCamera.Location = cameraName;

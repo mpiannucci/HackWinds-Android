@@ -16,10 +16,10 @@ public class CameraModel {
     private final String HACKWINDS_API_URL = "http://blog.mpiannucci.com/static/API/hackwinds_camera_locations_v3.json";
 
     // Member variables
-    public HashMap<String, HashMap<String, Camera> > CameraLocations;
-    public ArrayList<String> LocationKeys;
-    public ArrayList<ArrayList<String> > CameraKeys;
-    public int CameraCount;
+    public HashMap<String, HashMap<String, Camera> > cameraLocations;
+    public ArrayList<String> locationKeys;
+    public ArrayList<ArrayList<String> > cameraKeys;
+    public int cameraCount;
 
     private static CameraModel mInstance;
     private boolean mForceReload;
@@ -34,10 +34,10 @@ public class CameraModel {
     private CameraModel() {
         // Initialize the context
         mForceReload = true;
-        CameraLocations = new HashMap<>();
-        LocationKeys = new ArrayList<>();
-        CameraKeys = new ArrayList<>();
-        CameraCount = 0;
+        cameraLocations = new HashMap<>();
+        locationKeys = new ArrayList<>();
+        cameraKeys = new ArrayList<>();
+        cameraCount = 0;
     }
 
     public boolean fetchCameraURLs() {
@@ -58,9 +58,9 @@ public class CameraModel {
                 JSONObject locationObject = cameraObject.getJSONObject(locationName);
 
                 // Initialize the camera map and set the location key
-                CameraLocations.put(locationName, new HashMap<String, Camera>());
-                LocationKeys.add(locationName);
-                CameraKeys.add(new ArrayList<String>());
+                cameraLocations.put(locationName, new HashMap<String, Camera>());
+                locationKeys.add(locationName);
+                cameraKeys.add(new ArrayList<String>());
 
                 for (int cameraIterator = 0; cameraIterator < locationObject.names().length(); cameraIterator++) {
                     // Get the current camera name and json object
@@ -82,9 +82,9 @@ public class CameraModel {
                     thisCamera.Refreshable = thisCameraObject.getBoolean("Refreshable");
                     thisCamera.RefreshInterval = Integer.valueOf(thisCameraObject.getString("RefreshInterval"));
 
-                    CameraLocations.get(locationName).put(cameraName, thisCamera);
-                    CameraKeys.get(locationIterator).add(cameraName);
-                    CameraCount++;
+                    cameraLocations.get(locationName).put(cameraName, thisCamera);
+                    cameraKeys.get(locationIterator).add(cameraName);
+                    cameraCount++;
                 }
             }
 

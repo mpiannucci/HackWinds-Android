@@ -134,6 +134,8 @@ public class CurrentFragment extends ListFragment {
     @Override
     public void onResume() {
         super.onResume();
+
+        new FetchCameraLocationsTask().execute();
     }
 
     @Override
@@ -169,9 +171,11 @@ public class CurrentFragment extends ListFragment {
         @Override
         protected Void doInBackground(Void... arg0) {
             // Get the conditions from the model
-            CameraModel cameraModel = CameraModel.getInstance();
-            cameraModel.fetchCameraURLs();
-            mCamera = cameraModel.CameraLocations.get("Narragansett").get("Warm Winds");
+            if (mCamera == null) {
+                CameraModel cameraModel = CameraModel.getInstance();
+                cameraModel.fetchCameraURLs();
+                mCamera = cameraModel.cameraLocations.get("Narragansett").get("Warm Winds");
+            }
 
             // Return
             return null;
@@ -181,7 +185,6 @@ public class CurrentFragment extends ListFragment {
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
 
-            // Set the holder image to the loaded image
             // Get the ImageView to set as the holder before the user calls
             // to play the VideoView
             ImageView img = (ImageView) getActivity().findViewById(R.id.camHolderImage);
@@ -268,7 +271,7 @@ public class CurrentFragment extends ListFragment {
         protected Void doInBackground(Void... arg0) {
             // Get the conditions from the model
             // We need 6 conditions for this view
-            mForecastModel.getConditionsForIndex(0);
+            mForecastModel.fetchForecastData();
 
             // Return
             return null;

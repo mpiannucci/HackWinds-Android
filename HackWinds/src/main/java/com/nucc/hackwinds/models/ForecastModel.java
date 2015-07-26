@@ -111,7 +111,7 @@ public class ForecastModel {
         mCurrentURL = mLocationURLs.get(location);
     }
 
-    public ArrayList<Condition> getConditionsForIndex(int index) {
+    public boolean fetchForecastData() {
         if (mRawData == null) {
             loadRawData();
         } else if (mRawData.isEmpty()) {
@@ -119,25 +119,19 @@ public class ForecastModel {
         }
 
         if (conditions.isEmpty()) {
-            parseForecasts();
+            return parseForecasts();
+        } else {
+            return true;
         }
+    }
 
+    public ArrayList<Condition> getConditionsForIndex(int index) {
         // Return the array of conditions
         ArrayList<Condition> dayConditions = new ArrayList(conditions.subList(index * 6, (index * 6) + 6));
         return dayConditions;
     }
 
     public ArrayList<Forecast> getForecasts() {
-        if (mRawData == null) {
-            loadRawData();
-        } else if (mRawData.isEmpty()) {
-            loadRawData();
-        }
-
-        if (forecasts.isEmpty()) {
-            parseForecasts();
-        }
-
         // Return the list of forecasts
         return forecasts;
     }

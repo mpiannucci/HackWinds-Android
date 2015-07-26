@@ -75,7 +75,7 @@ public class BuoyFragment extends ListFragment {
         @Override
         protected Void doInBackground(Void... arg0) {
             // Get the values using the model and parse the data
-            mBuoyModel.getBuoyDataForLocation(mLocation);
+            mBuoyModel.fetchBuoyDataForLocation(mLocation);
 
             // Return
             return null;

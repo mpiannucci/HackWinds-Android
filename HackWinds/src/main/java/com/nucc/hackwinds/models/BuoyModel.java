@@ -60,7 +60,7 @@ public class BuoyModel {
         }
     }
 
-    public ArrayList<Buoy> getBuoyDataForLocation(Location location) {
+    public boolean fetchBuoyDataForLocation(Location location) {
         if (location == Location.BLOCK_ISLAND) {
             if (blockIslandBuoyData.isEmpty()) {
                 // Get the data
@@ -68,9 +68,10 @@ public class BuoyModel {
                 String rawData = sh.makeServiceCall(BLOCK_ISLAND_URL, ServiceHandler.GET);
 
                 // Parse the received data
-                parseBuoyData(Location.BLOCK_ISLAND, rawData);
+                return parseBuoyData(Location.BLOCK_ISLAND, rawData);
+            } else {
+                return true;
             }
-            return blockIslandBuoyData;
         } else {
             if (montaukBuoyData.isEmpty()) {
                 // Get the data
@@ -78,8 +79,17 @@ public class BuoyModel {
                 String rawData = sh.makeServiceCall(MONTAUK_URL, ServiceHandler.GET);
 
                 // Parse the received data
-                parseBuoyData(Location.MONTAUK, rawData);
+                return parseBuoyData(Location.MONTAUK, rawData);
+            } else {
+                return true;
             }
+        }
+    }
+
+    public ArrayList<Buoy> getBuoyDataForLocation(Location location) {
+        if (location == Location.BLOCK_ISLAND) {
+            return blockIslandBuoyData;
+        } else {
             return montaukBuoyData;
         }
     }

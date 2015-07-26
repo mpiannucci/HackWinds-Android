@@ -100,8 +100,8 @@ public class TideFragment extends Fragment {
         @Override
         protected Void doInBackground(Void... arg0) {
             // Get the values using the model and parse the data
-            mTideModel.getTideData();
-            mBuoyModel.getBuoyDataForLocation(BuoyModel.Location.BLOCK_ISLAND);
+            mTideModel.fetchTideData();
+            mBuoyModel.fetchBuoyDataForLocation(BuoyModel.Location.BLOCK_ISLAND);
 
             // Return
             return null;
