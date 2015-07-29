@@ -15,7 +15,6 @@ import com.nucc.hackwinds.R;
 import java.util.ArrayList;
 
 public class BuoyArrayAdapter extends ArrayAdapter<Buoy> {
-    final String[] DIRS = {"N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"};
 
     private final Context mContext;
     private final ArrayList<Buoy> mValues;
@@ -81,19 +80,7 @@ public class BuoyArrayAdapter extends ArrayAdapter<Buoy> {
             holder.timeTV.setText(buoy.Time);
             holder.wvhtTV.setText(buoy.WaveHeight);
             holder.periodTV.setText(buoy.DominantPeriod);
-
-            // Hack to make sure that buoy direction is wont crash
-            if (buoy.Direction.equals("MM")) {
-                // If its null make sure we don't attempt to cast to an integer
-                holder.directionTV.setText("NULL");
-            } else {
-                int windIndex = Integer.valueOf(buoy.Direction) / (360 / DIRS.length);
-                if (windIndex >= DIRS.length) {
-                    // If its past NNW, force it to be north
-                    windIndex = 0;
-                }
-                holder.directionTV.setText(DIRS[windIndex]);
-            }
+            holder.directionTV.setText(Buoy.getCompassDirection(buoy.Direction));
 
             // Make sure the text isn't bold
             holder.timeTV.setTypeface(null, Typeface.NORMAL);
