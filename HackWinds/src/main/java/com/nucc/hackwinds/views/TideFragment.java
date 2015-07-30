@@ -34,7 +34,7 @@ public class TideFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (ReachabilityHelper.deviceHasInternetAccess(getActivity())) {
-            mTideModel = TideModel.getInstance();
+            mTideModel = TideModel.getInstance(getActivity());
             mBuoyModel = BuoyModel.getInstance();
 
             // deploy the Wunderground async task
