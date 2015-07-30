@@ -130,6 +130,8 @@ public class IsoCameraFragment extends Fragment {
 
         if (mCamera != null) {
             // Only trigger an image load if there is a url
+            AlternateCameraActivity alternateCameraActivity = (AlternateCameraActivity) getActivity();
+            alternateCameraActivity.setToolbarTitle(mCameraName);
             loadCameraImage();
         }
 
