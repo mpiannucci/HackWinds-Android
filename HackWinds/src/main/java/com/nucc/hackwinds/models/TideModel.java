@@ -94,6 +94,7 @@ public class TideModel {
                             hour = String.valueOf(convertedHour);
                         }
 
+                        // Set all of the tidal members
                         thisTide.Time = hour + ":" + min + " " + ampm;
                         thisTide.EventType = type;
                         thisTide.Height = height;

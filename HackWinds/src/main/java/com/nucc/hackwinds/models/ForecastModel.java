@@ -252,32 +252,67 @@ public class ForecastModel {
             format.setTimeZone(TimeZone.getTimeZone("Etc/UTC"));
             formatted = format.format(date);
         }
+
+        // Format the time for 24 hour clocks
+        if (android.text.format.DateFormat.is24HourFormat(mContext)) {
+            int hour = 0;
+            int pmIndex = formatted.indexOf("PM");
+            int amIndex = formatted.indexOf("AM");
+            if (pmIndex > -1) {
+                hour = Integer.parseInt(formatted.substring(0, pmIndex - 1));
+                if (hour != 12) {
+                    hour += 12;
+                }
+            } else {
+                hour = Integer.parseInt(formatted.substring(0, amIndex - 1));
+                if (hour == 12) {
+                    hour = 0;
+                }
+            }
+            formatted = String.valueOf(hour) + ":00";
+        }
         return formatted;
     }
 
-    // Check the time. If its not in the condittion range, return false to ignore it
+    // Check the time. If its not in the condition range, return false to ignore it
     private boolean checkConditionDate(String dateString) {
         int amStamp = dateString.indexOf("AM");
         int hour0 = dateString.indexOf("0");
+        int hour00 = dateString.indexOf("00:00");
         int hour3 = dateString.indexOf("3");
 
-        // If its midnight or 3 am we don't care about it. otherwise its fine
-        if (((amStamp > -1) && (hour0 > -1)) || ((amStamp > -1) && (hour3 > -1))) {
-            return false;
+        if (android.text.format.DateFormat.is24HourFormat(mContext)) {
+            // If its midnight or 3 am we don't care about it. otherwise its fine
+            if ((hour00 > -1) || (hour3 > -1)) {
+                return false;
+            }
+        } else {
+            // If its midnight or 3 am we don't care about it. otherwise its fine
+            if (((amStamp > -1) && (hour0 > -1)) || ((amStamp > -1) && (hour3 > -1))) {
+                return false;
+            }
         }
         return true;
     }
 
     // Check the time. If its not in the forecast range return false to ignore it
     private boolean checkForecastDate(String dateString) {
-        int amStamp = dateString.indexOf("AM");
-        int pmStamp = dateString.indexOf("PM");
-        int hour3 = dateString.indexOf("3");
-        int hour9 = dateString.indexOf("9");
+        if (android.text.format.DateFormat.is24HourFormat(mContext)) {
+            int hour3 = dateString.indexOf("15");
+            int hour9 = dateString.indexOf("9");
+            if ((hour9 > -1) || (hour3 > -1)) {
+                return true;
+            }
+        } else {
+            int amStamp = dateString.indexOf("AM");
+            int pmStamp = dateString.indexOf("PM");
+            int hour3 = dateString.indexOf("3");
+            int hour9 = dateString.indexOf("9");
 
-        // We only care about 9 am and 3 pm
-        if (((amStamp > -1) && (hour9 > -1)) || ((pmStamp > -1) && (hour3 > -1))) {
-            return true;
+            // We only care about 9 am and 3 pm
+            if (((amStamp > -1) && (hour9 > -1)) || ((pmStamp > -1) && (hour3 > -1))) {
+                return true;
+            }
         }
         return false;
     }

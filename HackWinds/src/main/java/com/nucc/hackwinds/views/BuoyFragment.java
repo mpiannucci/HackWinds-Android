@@ -31,7 +31,7 @@ public class BuoyFragment extends ListFragment {
 
         if (ReachabilityHelper.deviceHasInternetAccess(getActivity())) {
             // Get the buoy model
-            mBuoyModel = BuoyModel.getInstance();
+            mBuoyModel = BuoyModel.getInstance(getActivity());
 
             // Get the BI location to initialize
             new FetchBuoyDataTask().execute();

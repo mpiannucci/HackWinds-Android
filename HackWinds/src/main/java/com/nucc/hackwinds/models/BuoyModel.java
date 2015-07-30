@@ -1,5 +1,8 @@
 package com.nucc.hackwinds.models;
 
+import android.content.Context;
+import android.text.format.DateFormat;
+
 import com.nucc.hackwinds.types.Buoy;
 import com.nucc.hackwinds.utilities.ServiceHandler;
 
@@ -35,17 +38,19 @@ public class BuoyModel {
     public ArrayList<Buoy> blockIslandBuoyData;
     public ArrayList<Buoy> montaukBuoyData;
 
-    private double time_offset;
+    private double mTimeOffset;
+    private Context mContext;
 
-    public static BuoyModel getInstance() {
+    public static BuoyModel getInstance(Context context) {
         if (mInstance == null) {
-            mInstance = new BuoyModel();
+            mInstance = new BuoyModel(context);
         }
         return mInstance;
     }
 
-    private BuoyModel() {
+    private BuoyModel(Context context) {
         // Initialize the data arrays
+        mContext = context;
         blockIslandBuoyData = new ArrayList<>();
         montaukBuoyData = new ArrayList<>();
 
@@ -53,10 +58,10 @@ public class BuoyModel {
         Calendar mCalendar = new GregorianCalendar();
         TimeZone mTimeZone = mCalendar.getTimeZone();
         int mGMTOffset = mTimeZone.getRawOffset();
-        time_offset = TimeUnit.HOURS.convert(mGMTOffset, TimeUnit.MILLISECONDS);
+        mTimeOffset = TimeUnit.HOURS.convert(mGMTOffset, TimeUnit.MILLISECONDS);
         if (mTimeZone.inDaylightTime(new Date())) {
             // If its daylight savings time make fix the gmt offset
-            time_offset++;
+            mTimeOffset++;
         }
     }
 
@@ -103,8 +108,28 @@ public class BuoyModel {
             // Create a new buoy object
             Buoy thisBuoy = new Buoy();
 
-            // Set the time
-            thisBuoy.Time = String.format("%d:%s", (int)(Integer.valueOf(datas[i + HOUR_OFFSET])+time_offset+12)%12, datas[i + MINUTE_OFFSET]);
+            // Get the original hor timestamp from the buoy report
+            int originalHour = (int) (Integer.valueOf(datas[i + HOUR_OFFSET]) + mTimeOffset);
+            int convertedHour = 0;
+
+            // Get the daylight adjusted hour for the east coast and adjust for system 24 hours
+            if (DateFormat.is24HourFormat(mContext)) {
+                convertedHour = (originalHour + 24) % 24;
+                if (convertedHour == 0) {
+                    if ((originalHour + mTimeOffset) > 0) {
+                        convertedHour = 12;
+                    }
+                }
+            } else {
+                convertedHour = (originalHour + 12) % 12;
+                if (convertedHour == 0) {
+                    convertedHour = 12;
+                }
+            }
+
+            // Set the time member
+            String min = datas[i + MINUTE_OFFSET];
+            thisBuoy.Time = String.format("%d:%s", convertedHour, min);
 
             // Set the period and wind direction values
             thisBuoy.DominantPeriod = datas[i+DPD_OFFSET];
