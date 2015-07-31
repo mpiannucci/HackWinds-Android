@@ -51,6 +51,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".views.MainActivity" />
         </activity>
+        <activity
+            android:name="com.nucc.hackwinds.views.VideoPlayerActivity"
+            android:label="@string/title_activity_video_player"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:configChanges="orientation|screenSize">
+        </activity>
     </application>
 
 </manifest>

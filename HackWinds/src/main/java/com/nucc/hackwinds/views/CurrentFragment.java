@@ -113,14 +113,15 @@ public class CurrentFragment extends ListFragment {
             public boolean onLongClick(View v) {
                 // Launch the built in video intent instead of the default embedded video player
                 if (ReachabilityHelper.deviceHasInternetAccess(getActivity())) {
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setDataAndType(Uri.parse(mCamera.VideoURL), "video/*");
-                    startActivity(intent);
+//                    Intent intent = new Intent(Intent.ACTION_VIEW);
+//                    intent.setDataAndType(Uri.parse(mCamera.VideoURL), "video/*");
+//                    startActivity(intent);
+//                    return true;
+                    VideoPlayerActivity.showRemoteVideo(getActivity(), mCamera.VideoURL);
                     return true;
                 } else {
                     return false;
                 }
-
             }
         });
 
