@@ -1,6 +1,8 @@
 package com.nucc.hackwinds.models;
 
 
+import android.util.Log;
+
 import com.nucc.hackwinds.types.Camera;
 import com.nucc.hackwinds.utilities.ServiceHandler;
 
@@ -9,6 +11,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 public class CameraModel {
 
@@ -20,6 +23,7 @@ public class CameraModel {
     public ArrayList<String> locationKeys;
     public ArrayList<ArrayList<String> > cameraKeys;
     public int cameraCount;
+    public int locationCount;
 
     private static CameraModel mInstance;
     private boolean mForceReload;
@@ -38,6 +42,7 @@ public class CameraModel {
         locationKeys = new ArrayList<>();
         cameraKeys = new ArrayList<>();
         cameraCount = 0;
+        locationCount = 0;
     }
 
     public boolean fetchCameraURLs() {
@@ -52,19 +57,17 @@ public class CameraModel {
             JSONObject jsonResp = new JSONObject(rawData);
             JSONObject cameraObject = jsonResp.getJSONObject("camera_locations");
 
-            for (int locationIterator = 0; locationIterator < cameraObject.names().length(); locationIterator++) {
-                // Get the json object for the current camera location
-                String locationName = cameraObject.names().getString(locationIterator);
-                JSONObject locationObject = cameraObject.getJSONObject(locationName);
-
-                // Initialize the camera map and set the location key
+            Iterator<String> locationIterator = cameraObject.keys();
+            while (locationIterator.hasNext()) {
+                String locationName = locationIterator.next();
                 cameraLocations.put(locationName, new HashMap<String, Camera>());
                 locationKeys.add(locationName);
                 cameraKeys.add(new ArrayList<String>());
 
-                for (int cameraIterator = 0; cameraIterator < locationObject.names().length(); cameraIterator++) {
-                    // Get the current camera name and json object
-                    String cameraName = locationObject.names().getString(cameraIterator);
+                JSONObject locationObject = cameraObject.getJSONObject(locationName);
+                Iterator<String> cameraIterator = locationObject.keys();
+                while(cameraIterator.hasNext()) {
+                    String cameraName = cameraIterator.next();
                     JSONObject thisCameraObject = locationObject.getJSONObject(cameraName);
 
                     // Create the new camera object for the camera
@@ -83,11 +86,11 @@ public class CameraModel {
                     thisCamera.RefreshInterval = Integer.valueOf(thisCameraObject.getString("RefreshInterval"));
 
                     cameraLocations.get(locationName).put(cameraName, thisCamera);
-                    cameraKeys.get(locationIterator).add(cameraName);
+                    cameraKeys.get(locationCount).add(cameraName);
                     cameraCount++;
                 }
+                locationCount++;
             }
-
         } catch (JSONException e) {
             e.printStackTrace();
             return false;
