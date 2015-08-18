@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.MediaController;
 import android.widget.VideoView;
+import android.view.WindowManager;
 
 import com.nucc.hackwinds.R;
 
@@ -22,8 +23,11 @@ public class VideoPlayerActivity extends Activity implements MediaPlayer.OnCompl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_video_player);
+        // Hide the status bar
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        // Get the view from the layout
+        setContentView(R.layout.activity_video_player);
         videoView = (VideoView) findViewById(R.id.videoView);
 
         String url = null;

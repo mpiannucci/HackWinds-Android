@@ -54,7 +54,7 @@
         <activity
             android:name="com.nucc.hackwinds.views.VideoPlayerActivity"
             android:label="@string/title_activity_video_player"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:theme="@style/Theme.HackWindsMaterial"
             android:configChanges="orientation|screenSize">
         </activity>
     </application>

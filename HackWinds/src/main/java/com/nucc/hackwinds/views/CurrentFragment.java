@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.VideoView;
 
@@ -213,6 +214,9 @@ public class CurrentFragment extends ListFragment {
                 // Set the video url to the stream
                 mStreamView.setVideoURI(uri[0]);
                 mStreamView.requestFocus();
+
+                // Set the media controls
+                mStreamView.setMediaController(new MediaController(getActivity()));
 
                 // On Prepared Listener
                 mStreamView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
