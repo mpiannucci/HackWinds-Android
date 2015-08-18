@@ -62,16 +62,6 @@ public class MainActivity extends ActionBarActivity {
 
         // Set the toolbar Icon
         toolbar.setNavigationIcon(R.drawable.ic_launcher);
-
-        // Get the camera urls
-        if (ReachabilityHelper.deviceHasInternetAccess(this)) {
-            new Thread() {
-                @Override
-                public void run() {
-                    CameraModel.getInstance().fetchCameraURLs();
-                }
-            }.start();
-        }
     }
 
     @Override
