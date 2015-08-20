@@ -111,12 +111,8 @@ public class CurrentFragment extends ListFragment {
         playButton.setLongClickable(true);
         playButton.setOnLongClickListener(new View.OnLongClickListener() {
             public boolean onLongClick(View v) {
-                // Launch the built in video intent instead of the default embedded video player
                 if (ReachabilityHelper.deviceHasInternetAccess(getActivity())) {
-//                    Intent intent = new Intent(Intent.ACTION_VIEW);
-//                    intent.setDataAndType(Uri.parse(mCamera.VideoURL), "video/*");
-//                    startActivity(intent);
-//                    return true;
+                    // Launch the full screen video activity
                     VideoPlayerActivity.showRemoteVideo(getActivity(), mCamera.VideoURL);
                     return true;
                 } else {

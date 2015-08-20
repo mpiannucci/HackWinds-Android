@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.Switch;
 import android.os.Handler;
 import android.widget.TextView;
@@ -35,7 +36,7 @@ public class IsoCameraFragment extends Fragment {
     private Context mContext;
     private ImageView mCameraImage;
     private ImageView mPlayButton;
-    public VideoView mVideoView;
+    private VideoView mVideoView;
 
     Handler mHandler;
     Runnable mRunnable;
@@ -92,16 +93,13 @@ public class IsoCameraFragment extends Fragment {
         mPlayButton.setLongClickable(true);
         mPlayButton.setOnLongClickListener(new View.OnLongClickListener() {
             public boolean onLongClick(View v) {
-                // Launch the built in video intent instead of the default embedded video player
                 if (ReachabilityHelper.deviceHasInternetAccess(getActivity())) {
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setDataAndType(Uri.parse(mCamera.VideoURL), "video/*");
-                    startActivity(intent);
+                    // Launch the full screen video activity
+                    VideoPlayerActivity.showRemoteVideo(getActivity(), mCamera.VideoURL);
                     return true;
                 } else {
                     return false;
                 }
-
             }
         });
 
@@ -244,6 +242,9 @@ public class IsoCameraFragment extends Fragment {
                 // Set the video url to the stream
                 mVideoView.setVideoURI(uri[0]);
                 mVideoView.requestFocus();
+
+                // Set the media controls
+                mVideoView.setMediaController(new MediaController(getActivity()));
 
                 // On Prepared Listener
                 mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
