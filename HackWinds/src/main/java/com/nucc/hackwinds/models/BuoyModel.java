@@ -4,12 +4,14 @@ import android.content.Context;
 import android.text.format.DateFormat;
 
 import com.nucc.hackwinds.types.Buoy;
+import com.nucc.hackwinds.types.BuoyDataContainer;
 import com.nucc.hackwinds.utilities.ServiceHandler;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
@@ -17,7 +19,7 @@ public class BuoyModel {
     // Constants
     final private String BLOCK_ISLAND_URL = "http://www.ndbc.noaa.gov/data/realtime2/44097.txt";
     final private String MONTAUK_URL = "http://www.ndbc.noaa.gov/data/realtime2/44017.txt";
-    final private int DATA_POINTS = 20;
+    final private String NANTUCKET_URL = "http://www.ndbc.noaa.gov/data/realtime2/44008.txt";
     final private int DATA_HEADER_LENGTH = 38;
     final private int DATA_LINE_LEN = 19;
     final private int HOUR_OFFSET = 3;
@@ -30,13 +32,13 @@ public class BuoyModel {
     // Public location types
     public enum Location {
         BLOCK_ISLAND,
-        MONTAUK
+        MONTAUK,
+        NANTUCKET
     }
 
     // Member variables
     private static BuoyModel mInstance;
-    public ArrayList<Buoy> blockIslandBuoyData;
-    public ArrayList<Buoy> montaukBuoyData;
+    public HashMap<Location, BuoyDataContainer> buoyDataContainers;
 
     private double mTimeOffset;
     private Context mContext;
@@ -51,8 +53,9 @@ public class BuoyModel {
     private BuoyModel(Context context) {
         // Initialize the data arrays
         mContext = context;
-        blockIslandBuoyData = new ArrayList<>();
-        montaukBuoyData = new ArrayList<>();
+
+        // Initialize buoy containers
+        initBuoyContainers();
 
         // Set the time offset variable so the times are correct
         Calendar mCalendar = new GregorianCalendar();
@@ -65,99 +68,116 @@ public class BuoyModel {
         }
     }
 
+    private void initBuoyContainers() {
+        // Initialize the buoy dictionary
+        buoyDataContainers = new HashMap<>();
+
+        // Block Island
+        BuoyDataContainer biContainer = new BuoyDataContainer();
+        biContainer.url = BLOCK_ISLAND_URL;
+        buoyDataContainers.put(Location.BLOCK_ISLAND, biContainer);
+
+        // Montauk
+        BuoyDataContainer mtkContainer = new BuoyDataContainer();
+        mtkContainer.url = MONTAUK_URL;
+        buoyDataContainers.put(Location.MONTAUK, mtkContainer);
+
+        // Nantucket
+        BuoyDataContainer ackContainer = new BuoyDataContainer();
+        ackContainer.url = NANTUCKET_URL;
+        buoyDataContainers.put(Location.NANTUCKET, ackContainer);
+    }
+
     public boolean fetchBuoyDataForLocation(Location location) {
-        if (location == Location.BLOCK_ISLAND) {
-            if (blockIslandBuoyData.isEmpty()) {
-                // Get the data
-                ServiceHandler sh = new ServiceHandler();
-                String rawData = sh.makeServiceCall(BLOCK_ISLAND_URL, ServiceHandler.GET);
+        BuoyDataContainer dataContainer = buoyDataContainers.get(location);
+        if (dataContainer.buoyData.isEmpty()) {
+            // Get the data
+            String[] rawData = retrieveBuoyData(dataContainer.url);
 
-                // Parse the received data
-                return parseBuoyData(Location.BLOCK_ISLAND, rawData);
-            } else {
-                return true;
-            }
+            // Parse the received data
+            return parseBuoyData(location, rawData);
         } else {
-            if (montaukBuoyData.isEmpty()) {
-                // Get the data
-                ServiceHandler sh = new ServiceHandler();
-                String rawData = sh.makeServiceCall(MONTAUK_URL, ServiceHandler.GET);
-
-                // Parse the received data
-                return parseBuoyData(Location.MONTAUK, rawData);
-            } else {
-                return true;
-            }
+            return true;
         }
     }
 
     public ArrayList<Buoy> getBuoyDataForLocation(Location location) {
-        if (location == Location.BLOCK_ISLAND) {
-            return blockIslandBuoyData;
-        } else {
-            return montaukBuoyData;
-        }
+        return buoyDataContainers.get(location).buoyData;
     }
 
-    private boolean parseBuoyData(Location location, String rawData) {
-        // Split by the whitespace in the string
-        String[] datas = rawData.split("\\s+");
+    public ArrayList<String> getWaveHeightsForLocation(Location location) {
+        return buoyDataContainers.get(location).waveHeights;
+    }
 
+    private String[] retrieveBuoyData(String url) {
+        ServiceHandler sh = new ServiceHandler();
+        String rawData = sh.makeServiceCall(url, ServiceHandler.GET);
+        return rawData.split("\\s+");
+    }
+
+    private boolean parseBuoyData(Location location, String[] rawData) {
         // Loop through the data and make new buoy objects to add to the list
-        for(int i=DATA_HEADER_LENGTH; i<(DATA_HEADER_LENGTH+(DATA_LINE_LEN*DATA_POINTS)); i+=DATA_LINE_LEN) {
-            // Create a new buoy object
-            Buoy thisBuoy = new Buoy();
-
-            // Get the original hor timestamp from the buoy report
-            int originalHour = (int) (Integer.valueOf(datas[i + HOUR_OFFSET]) + mTimeOffset);
-            int convertedHour = 0;
-
-            // Get the daylight adjusted hour for the east coast and adjust for system 24 hours
-            if (DateFormat.is24HourFormat(mContext)) {
-                convertedHour = (originalHour + 24) % 24;
-                if (convertedHour == 0) {
-                    if ((originalHour + mTimeOffset) > 0) {
-                        convertedHour = 12;
-                    }
-                }
-            } else {
-                convertedHour = (originalHour + 12) % 12;
-                if (convertedHour == 0) {
-                    convertedHour = 12;
-                }
-            }
-
-            // Set the time member
-            String min = datas[i + MINUTE_OFFSET];
-            thisBuoy.Time = String.format("%d:%s", convertedHour, min);
-
-            // Set the period and wind direction values
-            thisBuoy.DominantPeriod = datas[i+DPD_OFFSET];
-            thisBuoy.Direction = datas[i+DIRECTION_OFFSET];
-
-            // Convert and set the wave height
-            String wv = datas[i+WVHT_OFFSET];
-            double h = Double.valueOf(wv) * 3.28;
-            thisBuoy.WaveHeight = String.format("%4.2f", h);
-
-            // Convert the water temperature to fahrenheit and set it
-            String waterTemp = datas[i + TEMPERATURE_OFFSET];
-            if (location == Location.BLOCK_ISLAND) {
-                // The montauk buoy doesn't report this so only expect it for the BI buoy
-                double rawTemp = Double.valueOf(waterTemp);
-                double fahrenheitTemp = ((rawTemp * (9.0 / 5.0) + 32.0) / 0.05) * 0.05;
-                waterTemp = String.format("%4.2f", fahrenheitTemp);
-            }
-            thisBuoy.WaterTemperature = waterTemp;
+        int dataCount = 0;
+        while (dataCount < BuoyDataContainer.BUOY_DATA_POINTS) {
+            Buoy thisBuoy = getBuoyDataForIndexOfArray(dataCount, rawData);
+            dataCount++;
 
             // Save the buoy object to the list
-            if (location == Location.BLOCK_ISLAND) {
-                blockIslandBuoyData.add(thisBuoy);
-            } else {
-                montaukBuoyData.add(thisBuoy);
-            }
+            buoyDataContainers.get(location).buoyData.add(thisBuoy);
+            buoyDataContainers.get(location).waveHeights.add(thisBuoy.WaveHeight);
         }
         // Return that it was successful
         return true;
+    }
+
+    Buoy getBuoyDataForIndexOfArray(int index, String[] data) {
+        int baseOffset = DATA_HEADER_LENGTH + (DATA_LINE_LEN * index);
+        if (baseOffset >= (DATA_HEADER_LENGTH+(DATA_LINE_LEN*BuoyDataContainer.BUOY_DATA_POINTS))) {
+            return null;
+        }
+
+        // Create a new buoy object
+        Buoy thisBuoy = new Buoy();
+
+        // Get the original hor timestamp from the buoy report
+        int originalHour = (int) (Integer.valueOf(data[baseOffset + HOUR_OFFSET]) + mTimeOffset);
+        int convertedHour = 0;
+
+        // Get the daylight adjusted hour for the east coast and adjust for system 24 hours
+        if (DateFormat.is24HourFormat(mContext)) {
+            convertedHour = (originalHour + 24) % 24;
+            if (convertedHour == 0) {
+                if ((originalHour + mTimeOffset) > 0) {
+                    convertedHour = 12;
+                }
+            }
+        } else {
+            convertedHour = (originalHour + 12) % 12;
+            if (convertedHour == 0) {
+                convertedHour = 12;
+            }
+        }
+
+        // Set the time member
+        String min = data[baseOffset + MINUTE_OFFSET];
+        thisBuoy.Time = String.format("%d:%s", convertedHour, min);
+
+        // Set the period and wind direction values
+        thisBuoy.DominantPeriod = data[baseOffset+DPD_OFFSET];
+        thisBuoy.Direction = data[baseOffset+DIRECTION_OFFSET];
+
+        // Convert and set the wave height
+        String wv = data[baseOffset+WVHT_OFFSET];
+        double h = Double.valueOf(wv) * 3.28;
+        thisBuoy.WaveHeight = String.format("%4.2f", h);
+
+        // Convert the water temperature to fahrenheit and set it
+        String waterTemp = data[baseOffset + TEMPERATURE_OFFSET];
+        double rawTemp = Double.valueOf(waterTemp);
+        double fahrenheitTemp = ((rawTemp * (9.0 / 5.0) + 32.0) / 0.05) * 0.05;
+        waterTemp = String.format("%4.2f", fahrenheitTemp);
+        thisBuoy.WaterTemperature = waterTemp;
+
+        return thisBuoy;
     }
 }

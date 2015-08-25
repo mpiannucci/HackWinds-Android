@@ -58,10 +58,14 @@ public class BuoyFragment extends ListFragment {
                 if (i == R.id.biSegmentButton) {
                     // Switch to block island view so get that data
                     mLocation = BuoyModel.Location.BLOCK_ISLAND;
-                } else {
+                } else if (i == R.id.mtkSegmentButton) {
                     // Switch to Montauk buoy view
                     mLocation = BuoyModel.Location.MONTAUK;
+                } else if (i == R.id.ackSegmentButton) {
+                    // Show nantucket data
+                    mLocation = BuoyModel.Location.NANTUCKET;
                 }
+
                 if (ReachabilityHelper.deviceHasInternetAccess(getActivity())) {
                     new FetchBuoyDataTask().execute();
                 }
@@ -86,11 +90,7 @@ public class BuoyFragment extends ListFragment {
             super.onPostExecute(result);
 
             // Set the tide adapter to the list
-            if (mLocation == BuoyModel.Location.BLOCK_ISLAND) {
-                mBuoyArrayAdapter = new BuoyArrayAdapter(getActivity(), mBuoyModel.blockIslandBuoyData);
-            } else {
-                mBuoyArrayAdapter = new BuoyArrayAdapter(getActivity(), mBuoyModel.montaukBuoyData);
-            }
+            mBuoyArrayAdapter = new BuoyArrayAdapter(getActivity(), mBuoyModel.getBuoyDataForLocation(mLocation));
             setListAdapter(mBuoyArrayAdapter);
         }
 

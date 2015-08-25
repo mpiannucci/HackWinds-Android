@@ -29,6 +29,15 @@
             android:layout_weight="1"
             android:text="@string/mtk_buoy_segment"
             style="@style/RadioButton" />
+
+        <RadioButton
+            android:id="@+id/ackSegmentButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/ack_buoy_segment"
+            style="@style/RadioButton"/>
+
     </info.hoang8f.android.segmented.SegmentedGroup>
 
     <ListView
