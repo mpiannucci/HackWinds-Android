@@ -11,7 +11,14 @@
         android:id="@+id/toolbar"
         app:theme="@style/Theme.HackWindsMaterial"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content">
+
+        <Spinner
+            android:id="@+id/nagivation_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </android.support.v7.widget.Toolbar>
 
     <com.astuetz.PagerSlidingTabStrip
         android:id="@+id/tabs"

@@ -29,7 +29,7 @@ public class CameraModel {
     private boolean mForceReload;
 
     public static CameraModel getInstance() {
-        if (mInstance == null) {
+        if ( mInstance == null ) {
             mInstance = new CameraModel();
         }
         return mInstance;
@@ -46,52 +46,52 @@ public class CameraModel {
     }
 
     public boolean fetchCameraURLs() {
-        if (!mForceReload) {
+        if ( !mForceReload ) {
             return true;
         }
 
         ServiceHandler sh = new ServiceHandler();
-        String rawData = sh.makeServiceCall(HACKWINDS_API_URL, ServiceHandler.GET);
+        String rawData = sh.makeServiceCall( HACKWINDS_API_URL, ServiceHandler.GET );
 
         try {
-            JSONObject jsonResp = new JSONObject(rawData);
-            JSONObject cameraObject = jsonResp.getJSONObject("camera_locations");
+            JSONObject jsonResp = new JSONObject( rawData );
+            JSONObject cameraObject = jsonResp.getJSONObject( "camera_locations" );
 
             Iterator<String> locationIterator = cameraObject.keys();
-            while (locationIterator.hasNext()) {
+            while ( locationIterator.hasNext() ) {
                 String locationName = locationIterator.next();
-                cameraLocations.put(locationName, new HashMap<String, Camera>());
-                locationKeys.add(locationName);
-                cameraKeys.add(new ArrayList<String>());
+                cameraLocations.put( locationName, new HashMap<String, Camera>() );
+                locationKeys.add( locationName );
+                cameraKeys.add( new ArrayList<String>() );
 
-                JSONObject locationObject = cameraObject.getJSONObject(locationName);
+                JSONObject locationObject = cameraObject.getJSONObject( locationName );
                 Iterator<String> cameraIterator = locationObject.keys();
-                while(cameraIterator.hasNext()) {
+                while ( cameraIterator.hasNext() ) {
                     String cameraName = cameraIterator.next();
-                    JSONObject thisCameraObject = locationObject.getJSONObject(cameraName);
+                    JSONObject thisCameraObject = locationObject.getJSONObject( cameraName );
 
                     // Create the new camera object for the camera
                     Camera thisCamera = new Camera();
 
                     // If its point judith then do some magic
-                    if (cameraName.equals("Point Judith")) {
-                        thisCamera = fetchPointJudithURLS(thisCameraObject.getString("Info"));
+                    if ( cameraName.equals( "Point Judith" ) ) {
+                        thisCamera = fetchPointJudithURLS( thisCameraObject.getString( "Info" ) );
                     } else {
-                        thisCamera.VideoURL = thisCameraObject.getString("Video");
+                        thisCamera.VideoURL = thisCameraObject.getString( "Video" );
                     }
 
                     // For now everything else is common
-                    thisCamera.ImageURL = thisCameraObject.getString("Image");
-                    thisCamera.Refreshable = thisCameraObject.getBoolean("Refreshable");
-                    thisCamera.RefreshInterval = Integer.valueOf(thisCameraObject.getString("RefreshInterval"));
+                    thisCamera.ImageURL = thisCameraObject.getString( "Image" );
+                    thisCamera.Refreshable = thisCameraObject.getBoolean( "Refreshable" );
+                    thisCamera.RefreshInterval = Integer.valueOf( thisCameraObject.getString( "RefreshInterval" ) );
 
-                    cameraLocations.get(locationName).put(cameraName, thisCamera);
-                    cameraKeys.get(locationCount).add(cameraName);
+                    cameraLocations.get( locationName ).put( cameraName, thisCamera );
+                    cameraKeys.get( locationCount ).add( cameraName );
                     cameraCount++;
                 }
                 locationCount++;
             }
-        } catch (JSONException e) {
+        } catch ( JSONException e ) {
             e.printStackTrace();
             return false;
         }
@@ -105,24 +105,25 @@ public class CameraModel {
         return fetchCameraURLs();
     }
 
-    private Camera fetchPointJudithURLS(String pjURL) {
+    private Camera fetchPointJudithURLS( String pjURL ) {
         Camera pjCamera = new Camera();
 
         try {
-            // Get teh point judith camera data from Surfline
+            // Get the point judith camera data from Surfline
             ServiceHandler sh = new ServiceHandler();
-            String rawPJData = sh.makeServiceCall(pjURL, ServiceHandler.GET);
-            JSONObject pjResp = new JSONObject(rawPJData);
-            JSONObject pjStreamData = (JSONObject)pjResp.getJSONObject("streamInfo").getJSONArray("stream").get(0);
+            String rawPJData = sh.makeServiceCall( pjURL, ServiceHandler.GET );
+            JSONObject pjResp = new JSONObject( rawPJData );
+            JSONObject pjStreamData = ( JSONObject )pjResp.getJSONObject( "streamInfo" ).getJSONArray( "stream" ).get( 0 );
 
             // Rip the json data into the camera object
-            pjCamera.VideoURL = pjStreamData.getString("file");
-            pjCamera.Info = String.format("Camera Status: %s\nDate: %s\nTime: %s\n If the video does not play, the camrea may be down. It is a daily upload during the summer and it becomes unavailable each evening.",
-                    pjStreamData.getString("camStatus"),
-                    pjStreamData.getString("reportDate"),
-                    pjStreamData.getString("reportTime"));
+            pjCamera.VideoURL = pjStreamData.getString( "file" );
+            pjCamera.Info =
+                String.format( "Camera Status: %s\nDate: %s\nTime: %s\n If the video does not play, the camrea may be down. It is a daily upload during the summer and it becomes unavailable each evening.",
+                               pjStreamData.getString( "camStatus" ),
+                               pjStreamData.getString( "reportDate" ),
+                               pjStreamData.getString( "reportTime" ) );
 
-        } catch (JSONException e) {
+        } catch ( JSONException e ) {
             e.printStackTrace();
         }
 

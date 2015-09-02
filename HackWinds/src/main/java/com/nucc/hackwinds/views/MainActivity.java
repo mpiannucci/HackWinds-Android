@@ -1,5 +1,6 @@
 package com.nucc.hackwinds.views;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 import android.os.Bundle;
@@ -13,9 +14,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v7.widget.Toolbar;
 import android.content.Intent;
+import android.widget.Spinner;
+import android.widget.ArrayAdapter;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.nucc.hackwinds.R;
+import com.nucc.hackwinds.adapters.LocationArrayAdapter;
 import com.nucc.hackwinds.models.CameraModel;
 import com.nucc.hackwinds.utilities.ReachabilityHelper;
 import com.nucc.hackwinds.views.BuoyFragment;
@@ -41,6 +45,17 @@ public class MainActivity extends ActionBarActivity {
         // Get the toolbar and set it as the actionbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(false);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        // Get the location spinner
+        Spinner locationSpinner = (Spinner) findViewById(R.id.nagivation_spinner);
+        ArrayList<String> locations = new ArrayList<>();
+        locations.add("Narragansett Town Beach");
+        locations.add("Point Judith");
+        locations.add("Block Island");
+        LocationArrayAdapter locationAdapter = new LocationArrayAdapter(this, locations);
+        locationSpinner.setAdapter(locationAdapter);
 
         // Create the system tint manager with this context
         mTintManager = new SystemBarTintManager(this);
