@@ -9,24 +9,15 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v7.widget.Toolbar;
 import android.content.Intent;
 import android.widget.Spinner;
-import android.widget.ArrayAdapter;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.nucc.hackwinds.R;
 import com.nucc.hackwinds.adapters.LocationArrayAdapter;
-import com.nucc.hackwinds.models.CameraModel;
-import com.nucc.hackwinds.utilities.ReachabilityHelper;
-import com.nucc.hackwinds.views.BuoyFragment;
-import com.nucc.hackwinds.views.CurrentFragment;
-import com.nucc.hackwinds.views.ForecastFragment;
-import com.nucc.hackwinds.views.SettingsActivity;
-import com.nucc.hackwinds.views.TideFragment;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 public class MainActivity extends ActionBarActivity {
@@ -49,7 +40,7 @@ public class MainActivity extends ActionBarActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         // Get the location spinner
-        Spinner locationSpinner = (Spinner) findViewById(R.id.nagivation_spinner);
+        Spinner locationSpinner = (Spinner) findViewById(R.id.navigation_spinner);
         ArrayList<String> locations = new ArrayList<>();
         locations.add("Narragansett Town Beach");
         locations.add("Point Judith");

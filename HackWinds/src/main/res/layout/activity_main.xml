@@ -14,9 +14,11 @@
         android:layout_height="wrap_content">
 
         <Spinner
-            android:id="@+id/nagivation_spinner"
+            android:id="@+id/navigation_spinner"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:spinnerMode="dropdown"
+            android:background="@android:color/transparent"/>
 
     </android.support.v7.widget.Toolbar>
 
