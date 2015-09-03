@@ -25,6 +25,8 @@ import com.nucc.hackwinds.R;
 public class SettingsActivity extends ActionBarActivity {
 
     public static final String FORECAST_LOCATION_KEY = "forecastLocation";
+    public static final String BUOY_LOCATION_KEY = "buoyLocation";
+    public static final String TIDE_LOCATION_KEY = "tideLocation";
     public static final String RATE_APP_KEY = "rateApp";
     public static final String CONTACT_DEV_KEY = "contactDeveloper";
     public static final String SHOW_DISCLAIMER_KEY = "aboutDisclaimer";

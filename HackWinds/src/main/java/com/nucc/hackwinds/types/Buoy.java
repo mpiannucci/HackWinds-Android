@@ -6,9 +6,22 @@ public class Buoy {
     static final String[] COMPASS_DIRS = {"N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"};
 
     public String Time;
-    public String WaveHeight;
+
+    // Wave Heights
+    public String SignificantWaveHeight;
+    public String SwellWaveHeight;
+    public String WindWaveHeight;
+
+    // Periods
     public String DominantPeriod;
-    public String Direction;
+    public String SwellPeriod;
+    public String WindWavePeriod;
+
+    // Directions
+    public String MeanDirection;
+    public String SwellDirection;
+    public String WindWaveDirection;
+
     public String WaterTemperature;
 
     public Buoy() {

@@ -61,10 +61,18 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String prefKey;
-                if (mAdapter.getPageTitle(pager.getCurrentItem()).equals("FORECAST")) {
-                    SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                    sharedPrefs.edit().putString("forecastLocation", mLocationAdapter.getItem(position)).apply();
+                final String currentPageTitle = String.valueOf(mAdapter.getPageTitle(pager.getCurrentItem()));
+                if (currentPageTitle.equals("FORECAST")) {
+                    prefKey = SettingsActivity.FORECAST_LOCATION_KEY;
+                } else if (currentPageTitle.equals("BUOYS")) {
+                    prefKey = SettingsActivity.BUOY_LOCATION_KEY;
+                } else if (currentPageTitle.equals("TIDE")) {
+                    prefKey = SettingsActivity.TIDE_LOCATION_KEY;
+                } else {
+                    return;
                 }
+                SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                sharedPrefs.edit().putString(prefKey, mLocationAdapter.getItem(position)).apply();
             }
 
             @Override

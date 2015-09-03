@@ -29,8 +29,8 @@ public class ForecastModel {
     private static ForecastModel mInstance;
     private String mRawData;
     private HashMap<String, String> mLocationURLs;
-    private SharedPreferences.OnSharedPreferenceChangeListener mPrefsChangedListener;
     private ArrayList<ForecastChangedListener> mForecastChangedListeners;
+    private SharedPreferences.OnSharedPreferenceChangeListener mPrefsChangedListener;
     private String mCurrentURL;
 
     public ArrayList<Condition> conditions;
@@ -63,7 +63,6 @@ public class ForecastModel {
 
         // Set up the settings changed listeners
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences( mContext );
-
         mPrefsChangedListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             public void onSharedPreferenceChanged( SharedPreferences prefs, String key ) {
                 if ( !key.equals( SettingsActivity.FORECAST_LOCATION_KEY ) ) {

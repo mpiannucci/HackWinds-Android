@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class BuoyArrayAdapter extends ArrayAdapter<Buoy> {
 
     private final Context mContext;
-    private final ArrayList<Buoy> mValues;
+    private ArrayList<Buoy> mValues;
 
     static class ViewHolder {
         public TextView timeTV;
@@ -29,6 +29,10 @@ public class BuoyArrayAdapter extends ArrayAdapter<Buoy> {
     public BuoyArrayAdapter(Context context, ArrayList<Buoy> values) {
         super(context, R.layout.buoy_item, values);
         this.mContext = context;
+        this.mValues = values;
+    }
+
+    public void setBuoyData(ArrayList<Buoy> values) {
         this.mValues = values;
     }
 
@@ -78,9 +82,9 @@ public class BuoyArrayAdapter extends ArrayAdapter<Buoy> {
 
             // Set the data into the text views
             holder.timeTV.setText(buoy.Time);
-            holder.wvhtTV.setText(buoy.WaveHeight);
+            holder.wvhtTV.setText(buoy.SignificantWaveHeight);
             holder.periodTV.setText(buoy.DominantPeriod);
-            holder.directionTV.setText(Buoy.getCompassDirection(buoy.Direction));
+            holder.directionTV.setText(Buoy.getCompassDirection(buoy.MeanDirection));
 
             // Make sure the text isn't bold
             holder.timeTV.setTypeface(null, Typeface.NORMAL);

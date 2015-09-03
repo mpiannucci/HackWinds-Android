@@ -11,6 +11,7 @@ import android.widget.RadioGroup;
 
 import com.nucc.hackwinds.R;
 import com.nucc.hackwinds.adapters.BuoyArrayAdapter;
+import com.nucc.hackwinds.listeners.BuoyChangedListener;
 import com.nucc.hackwinds.models.BuoyModel;
 import com.nucc.hackwinds.utilities.ReachabilityHelper;
 
@@ -20,10 +21,10 @@ import info.hoang8f.android.segmented.SegmentedGroup;
 public class BuoyFragment extends ListFragment {
 
     // Member variables
-    BuoyModel mBuoyModel;
-    BuoyArrayAdapter mBuoyArrayAdapter;
-
-    BuoyModel.Location mLocation = BuoyModel.Location.BLOCK_ISLAND;
+    private BuoyModel mBuoyModel;
+    private BuoyArrayAdapter mBuoyArrayAdapter;
+    private String mLocation = BuoyModel.BLOCK_ISLAND_LOCATION;
+    private BuoyChangedListener mBuoyChangedListener;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -32,6 +33,15 @@ public class BuoyFragment extends ListFragment {
         if (ReachabilityHelper.deviceHasInternetAccess(getActivity())) {
             // Get the buoy model
             mBuoyModel = BuoyModel.getInstance(getActivity());
+
+            // Set up the buoy listener
+            mBuoyChangedListener = new BuoyChangedListener() {
+                @Override
+                public void buoyLocationChanged() {
+                    new FetchBuoyDataTask().execute();
+                }
+            };
+            mBuoyModel.addBuoyChangedListener(mBuoyChangedListener);
 
             // Get the BI location to initialize
             new FetchBuoyDataTask().execute();
@@ -55,15 +65,19 @@ public class BuoyFragment extends ListFragment {
         locationGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                // TODO: Update this to change the mode of reporting
+
                 if (i == R.id.biSegmentButton) {
                     // Switch to block island view so get that data
-                    mLocation = BuoyModel.Location.BLOCK_ISLAND;
+                    mLocation = BuoyModel.BLOCK_ISLAND_LOCATION;
                 } else if (i == R.id.mtkSegmentButton) {
                     // Switch to Montauk buoy view
-                    mLocation = BuoyModel.Location.MONTAUK;
+                    mLocation = BuoyModel.MONTAUK_LOCATION;
                 } else if (i == R.id.ackSegmentButton) {
                     // Show nantucket data
-                    mLocation = BuoyModel.Location.NANTUCKET;
+                    mLocation = BuoyModel.NANTUCKET_LOCATION;
+                } else {
+                    return;
                 }
 
                 if (ReachabilityHelper.deviceHasInternetAccess(getActivity())) {
@@ -79,7 +93,7 @@ public class BuoyFragment extends ListFragment {
         @Override
         protected Void doInBackground(Void... arg0) {
             // Get the values using the model and parse the data
-            mBuoyModel.fetchBuoyDataForLocation(mLocation);
+            mBuoyModel.fetchBuoyData();
 
             // Return
             return null;
@@ -89,9 +103,13 @@ public class BuoyFragment extends ListFragment {
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
 
-            // Set the tide adapter to the list
-            mBuoyArrayAdapter = new BuoyArrayAdapter(getActivity(), mBuoyModel.getBuoyDataForLocation(mLocation));
-            setListAdapter(mBuoyArrayAdapter);
+            if (mBuoyArrayAdapter == null) {
+                mBuoyArrayAdapter = new BuoyArrayAdapter(getActivity(), mBuoyModel.getBuoyData());
+                setListAdapter(mBuoyArrayAdapter);
+            } else {
+                mBuoyArrayAdapter.setBuoyData(mBuoyModel.getBuoyData());
+                mBuoyArrayAdapter.notifyDataSetChanged();
+            }
         }
 
     }
