@@ -25,6 +25,10 @@ public class LocationArrayAdapter extends ArrayAdapter<String> {
         this.values = vals;
     }
 
+    public void changeLocations(ArrayList<String> vals) {
+        this.values = vals;
+    }
+
     @Override
     public int getCount() {
         return values.size();

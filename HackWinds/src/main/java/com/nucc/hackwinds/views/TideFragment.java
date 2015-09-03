@@ -64,7 +64,7 @@ public class TideFragment extends Fragment {
                 TextView sunsetTime = (TextView)getActivity().findViewById(R.id.sunsetTime);
                 sunsetTime.setText(thisTide.Time);
             } else if (thisTide.isTidalEvent()) {
-                // Yay we found a tide, now set the type (high or low) and the values
+                // TODO: THERES A BUG HERE.. Yay we found a tide, now set the type (high or low) and the values
                 TextView typeView = (TextView)getActivity().findViewById(mTideTypeViews[tideCount]);
                 TextView timeView = (TextView)getActivity().findViewById(mTideTimeViews[tideCount]);
                 typeView.setText(thisTide.EventType);

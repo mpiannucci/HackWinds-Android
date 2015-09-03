@@ -1,18 +1,25 @@
 package com.nucc.hackwinds.views;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v7.widget.Toolbar;
 import android.content.Intent;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Spinner;
 
 import com.astuetz.PagerSlidingTabStrip;
@@ -28,6 +35,12 @@ public class MainActivity extends ActionBarActivity {
     private MainPagerAdapter mAdapter;
     private SystemBarTintManager mTintManager;
 
+    private Spinner mLocationSpinner;
+    private LocationArrayAdapter mLocationAdapter;
+    private ArrayList<String> mForecastLocations;
+    private ArrayList<String> mBuoyLocations;
+    private ArrayList<String> mTideLocation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,14 +52,26 @@ public class MainActivity extends ActionBarActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(false);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        // Get the location spinner
-        Spinner locationSpinner = (Spinner) findViewById(R.id.navigation_spinner);
-        ArrayList<String> locations = new ArrayList<>();
-        locations.add("Narragansett Town Beach");
-        locations.add("Point Judith");
-        locations.add("Block Island");
-        LocationArrayAdapter locationAdapter = new LocationArrayAdapter(this, locations);
-        locationSpinner.setAdapter(locationAdapter);
+        // Set up the spinner locations
+        initLocationArrays();
+        mLocationAdapter = new LocationArrayAdapter(this, mForecastLocations);
+        mLocationSpinner = (Spinner) findViewById(R.id.navigation_spinner);
+        mLocationSpinner.setAdapter(mLocationAdapter);
+        mLocationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String prefKey;
+                if (mAdapter.getPageTitle(pager.getCurrentItem()).equals("FORECAST")) {
+                    SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                    sharedPrefs.edit().putString("forecastLocation", mLocationAdapter.getItem(position)).apply();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Do nothing
+            }
+        });
 
         // Create the system tint manager with this context
         mTintManager = new SystemBarTintManager(this);
@@ -60,6 +85,35 @@ public class MainActivity extends ActionBarActivity {
         mAdapter = new MainPagerAdapter(getSupportFragmentManager());
         pager.setAdapter(mAdapter);
         tabs.setViewPager(pager);
+
+        tabs.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                // Do nothing
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                String title = String.valueOf(mAdapter.getPageTitle(position));
+
+                if (title.equals("LIVE") || title.equals("FORECAST")) {
+                    mLocationAdapter.changeLocations(mForecastLocations);
+                    mLocationAdapter.notifyDataSetChanged();
+                } else if (title.equals("BUOYS")) {
+                    mLocationAdapter.changeLocations(mBuoyLocations);
+                    mLocationAdapter.notifyDataSetChanged();
+                } else if (title.equals("TIDE")) {
+                    mLocationAdapter.changeLocations(mTideLocation);
+                    mLocationAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                // Do Nothing
+            }
+        });
 
         // Set the background color of the tab strip, status bar, and action bar
         tabs.setBackgroundColor(getResources().getColor(R.color.hackwinds_blue));
@@ -89,6 +143,22 @@ public class MainActivity extends ActionBarActivity {
                 return super.onOptionsItemSelected(item);
         }
         return true;
+    }
+
+    public void initLocationArrays() {
+        mForecastLocations = new ArrayList<>();
+        mForecastLocations.add("Narragansett Town Beach");
+        mForecastLocations.add("Point Judith Lighthouse");
+        mForecastLocations.add("Matunuck");
+        mForecastLocations.add("Second Beach");
+
+        mBuoyLocations = new ArrayList<>();
+        mBuoyLocations.add("Block Island");
+        mBuoyLocations.add("Montauk");
+        mBuoyLocations.add("Nantucket");
+
+        mTideLocation = new ArrayList<>();
+        mTideLocation.add("Point Judith Harbor");
     }
 
     public class MainPagerAdapter extends FragmentPagerAdapter {
