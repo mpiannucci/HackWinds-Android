@@ -287,7 +287,6 @@ public class CurrentFragment extends ListFragment {
                 setListAdapter(mConditionArrayAdapter);
             } else {
                 mConditionArrayAdapter.setConditonData(mForecastModel.getConditionsForIndex(0));
-                mConditionArrayAdapter.notifyDataSetChanged();
             }
         }
     }

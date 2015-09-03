@@ -25,6 +25,11 @@ public class BuoyModel {
     final public static String MONTAUK_LOCATION = "Montauk";
     final public static String NANTUCKET_LOCATION = "Nantucket";
 
+    // Public data modes
+    final public static String SUMMARY_DATA_MODE = "Summary";
+    final public static String SWELL_DATA_MODE = "Swell";
+    final public static String WIND_DATA_MODE = "Wind Wave";
+
     // Member variables
     private static BuoyModel mInstance;
     private BuoyDataContainer mCurrentContainer;

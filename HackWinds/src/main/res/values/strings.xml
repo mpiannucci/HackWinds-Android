@@ -30,9 +30,9 @@
     <string name="loading_text">Loading...</string>
 
     <!-- Buoy Page -->
-    <string name="bi_buoy_segment">Block Island</string>
-    <string name="mtk_buoy_segment">Montauk</string>
-    <string name="ack_buoy_segment">Nantucket</string>
+    <string name="summary_mode_segment_title">Summary</string>
+    <string name="swell_mode_segment_title">Swell</string>
+    <string name="wind_mode_segment_title">Wind Wave</string>
 
     <!-- Tide Page -->
     <string name="low_tide">Low Tide</string>
@@ -45,6 +45,7 @@
     <string name="sun_tide_header">Sunrise and Sunset</string>
     <string name="tide_time_holder">00:00</string>
     <string name="water_temp_header">Water Temperature</string>
+    <string name="bi_water_temp_location">Block Island</string>
     <string name="water_temp_holder">&#xb0;F</string>
 
     <!-- Settings Page -->

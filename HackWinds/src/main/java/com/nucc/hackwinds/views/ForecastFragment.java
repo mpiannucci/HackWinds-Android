@@ -91,7 +91,6 @@ public class ForecastFragment extends ListFragment {
                 setListAdapter(mForecastArrayAdapter);
             } else {
                 mForecastArrayAdapter.setForecastData(mForecastModel.forecasts);
-                mForecastArrayAdapter.notifyDataSetChanged();
             }
         }
     }

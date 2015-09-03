@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.nucc.hackwinds.models.BuoyModel;
 import com.nucc.hackwinds.types.Buoy;
 import com.nucc.hackwinds.R;
 
@@ -16,8 +17,9 @@ import java.util.ArrayList;
 
 public class BuoyArrayAdapter extends ArrayAdapter<Buoy> {
 
-    private final Context mContext;
-    private ArrayList<Buoy> mValues;
+    private final Context context;
+    private ArrayList<Buoy> values;
+    private String dataMode;
 
     static class ViewHolder {
         public TextView timeTV;
@@ -26,14 +28,21 @@ public class BuoyArrayAdapter extends ArrayAdapter<Buoy> {
         public TextView directionTV;
     }
 
-    public BuoyArrayAdapter(Context context, ArrayList<Buoy> values) {
-        super(context, R.layout.buoy_item, values);
-        this.mContext = context;
-        this.mValues = values;
+    public BuoyArrayAdapter(Context ctx, ArrayList<Buoy> vals, String mode) {
+        super(ctx, R.layout.buoy_item, vals);
+        this.context = ctx;
+        this.values = vals;
+        this.dataMode = mode;
     }
 
     public void setBuoyData(ArrayList<Buoy> values) {
-        this.mValues = values;
+        this.values = values;
+        this.notifyDataSetChanged();
+    }
+
+    public void setDataMode(String mode) {
+        this.dataMode = mode;
+        this.notifyDataSetChanged();
     }
 
     @Override
@@ -42,7 +51,7 @@ public class BuoyArrayAdapter extends ArrayAdapter<Buoy> {
 
         // Make the view reusable
         if (rowView == null) {
-            LayoutInflater inflater = (LayoutInflater) mContext
+            LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             rowView = inflater.inflate(R.layout.buoy_item, parent, false);
 
@@ -72,19 +81,30 @@ public class BuoyArrayAdapter extends ArrayAdapter<Buoy> {
             holder.directionTV.setTypeface(null, Typeface.BOLD);
 
             // And make it blue
-            holder.timeTV.setTextColor(mContext.getResources().getColor(R.color.hackwinds_blue));
-            holder.wvhtTV.setTextColor(mContext.getResources().getColor(R.color.hackwinds_blue));
-            holder.periodTV.setTextColor(mContext.getResources().getColor(R.color.hackwinds_blue));
-            holder.directionTV.setTextColor(mContext.getResources().getColor(R.color.hackwinds_blue));
+            holder.timeTV.setTextColor(context.getResources().getColor(R.color.hackwinds_blue));
+            holder.wvhtTV.setTextColor(context.getResources().getColor(R.color.hackwinds_blue));
+            holder.periodTV.setTextColor(context.getResources().getColor(R.color.hackwinds_blue));
+            holder.directionTV.setTextColor(context.getResources().getColor(R.color.hackwinds_blue));
         } else {
             // Get the buoy item for the list position
-            Buoy buoy = mValues.get(position-1);
+            Buoy buoy = values.get(position-1);
 
             // Set the data into the text views
             holder.timeTV.setText(buoy.Time);
-            holder.wvhtTV.setText(buoy.SignificantWaveHeight);
-            holder.periodTV.setText(buoy.DominantPeriod);
-            holder.directionTV.setText(Buoy.getCompassDirection(buoy.MeanDirection));
+
+            if (dataMode.equals(BuoyModel.SUMMARY_DATA_MODE)) {
+                holder.wvhtTV.setText(buoy.SignificantWaveHeight);
+                holder.periodTV.setText(buoy.DominantPeriod);
+                holder.directionTV.setText(Buoy.getCompassDirection(buoy.MeanDirection));
+            } else if (dataMode.equals(BuoyModel.SWELL_DATA_MODE)) {
+                holder.wvhtTV.setText(buoy.SwellWaveHeight);
+                holder.periodTV.setText(buoy.SwellPeriod);
+                holder.directionTV.setText(buoy.SwellDirection);
+            } else if (dataMode.equals(BuoyModel.WIND_DATA_MODE)) {
+                holder.wvhtTV.setText(buoy.WindWaveHeight);
+                holder.periodTV.setText(buoy.WindWavePeriod);
+                holder.directionTV.setText(buoy.WindWaveDirection);
+            }
 
             // Make sure the text isn't bold
             holder.timeTV.setTypeface(null, Typeface.NORMAL);

@@ -17,27 +17,27 @@
         android:orientation="horizontal">
 
         <RadioButton
-            android:id="@+id/biSegmentButton"
+            android:id="@+id/buoy_summary_mode_segment_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/bi_buoy_segment"
+            android:text="@string/summary_mode_segment_title"
             android:layout_weight="1"
             style="@style/RadioButton" />
 
         <RadioButton
-            android:id="@+id/mtkSegmentButton"
+            android:id="@+id/buoy_swell_mode_segment_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/mtk_buoy_segment"
+            android:text="@string/swell_mode_segment_title"
             style="@style/RadioButton" />
 
         <RadioButton
-            android:id="@+id/ackSegmentButton"
+            android:id="@+id/buoy_wind_mode_segment"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/ack_buoy_segment"
+            android:text="@string/wind_mode_segment_title"
             style="@style/RadioButton"/>
 
     </info.hoang8f.android.segmented.SegmentedGroup>

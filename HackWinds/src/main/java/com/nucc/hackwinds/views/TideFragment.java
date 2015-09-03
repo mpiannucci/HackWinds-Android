@@ -88,7 +88,7 @@ public class TideFragment extends Fragment {
             }
         }
         // Update the water temperature from the latest buoy reading
-        TextView biWaterTemp = (TextView) getActivity().findViewById(R.id.waterTempValue);
+        TextView biWaterTemp = (TextView) getActivity().findViewById(R.id.water_temp_value);
         if (mBuoyModel.getBuoyData().size() > 0) {
             String waterTempValue = mBuoyModel.getBuoyData().get(0).WaterTemperature + " " + getResources().getString(R.string.water_temp_holder);
             biWaterTemp.setText(waterTempValue);

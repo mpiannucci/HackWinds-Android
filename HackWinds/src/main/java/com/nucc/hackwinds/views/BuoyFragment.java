@@ -54,7 +54,7 @@ public class BuoyFragment extends ListFragment {
         View V = inflater.inflate(R.layout.buoy_fragment, container, false);
 
         // Set the segment control to block island
-        RadioButton biButton = (RadioButton) V.findViewById(R.id.biSegmentButton);
+        RadioButton biButton = (RadioButton) V.findViewById(R.id.buoy_summary_mode_segment_button);
         biButton.setChecked(true);
 
         // Set the tint of the segment control
@@ -65,24 +65,8 @@ public class BuoyFragment extends ListFragment {
         locationGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                // TODO: Update this to change the mode of reporting
-
-                if (i == R.id.biSegmentButton) {
-                    // Switch to block island view so get that data
-                    mLocation = BuoyModel.BLOCK_ISLAND_LOCATION;
-                } else if (i == R.id.mtkSegmentButton) {
-                    // Switch to Montauk buoy view
-                    mLocation = BuoyModel.MONTAUK_LOCATION;
-                } else if (i == R.id.ackSegmentButton) {
-                    // Show nantucket data
-                    mLocation = BuoyModel.NANTUCKET_LOCATION;
-                } else {
-                    return;
-                }
-
-                if (ReachabilityHelper.deviceHasInternetAccess(getActivity())) {
-                    new FetchBuoyDataTask().execute();
-                }
+                RadioButton clickedButton = (RadioButton) getActivity().findViewById(radioGroup.getCheckedRadioButtonId());
+                mBuoyArrayAdapter.setDataMode(String.valueOf(clickedButton.getText()));
             }
         });
         return V;
@@ -104,11 +88,10 @@ public class BuoyFragment extends ListFragment {
             super.onPostExecute(result);
 
             if (mBuoyArrayAdapter == null) {
-                mBuoyArrayAdapter = new BuoyArrayAdapter(getActivity(), mBuoyModel.getBuoyData());
+                mBuoyArrayAdapter = new BuoyArrayAdapter(getActivity(), mBuoyModel.getBuoyData(), BuoyModel.SUMMARY_DATA_MODE);
                 setListAdapter(mBuoyArrayAdapter);
             } else {
                 mBuoyArrayAdapter.setBuoyData(mBuoyModel.getBuoyData());
-                mBuoyArrayAdapter.notifyDataSetChanged();
             }
         }
 

@@ -26,12 +26,12 @@ public class AlternateCameraListAdapter extends BaseAdapter implements ListAdapt
         public int position;
     }
 
-    private final Context mContext;
-    private ArrayList<CameraLocation> mCameraLocations;
+    private final Context context;
+    private ArrayList<CameraLocation> cameraLocations;
 
-    public AlternateCameraListAdapter(Context context, CameraModel cameraModel) {
-        mContext = context;
-        mCameraLocations = new ArrayList<>();
+    public AlternateCameraListAdapter(Context ctx, CameraModel cameraModel) {
+        this.context = ctx;
+        cameraLocations = new ArrayList<>();
 
         // Start the location index at 0
         int locationIndex = 0;
@@ -44,7 +44,7 @@ public class AlternateCameraListAdapter extends BaseAdapter implements ListAdapt
             thisLocation.isSection = true;
 
             // Add the location to the list
-            mCameraLocations.add(thisLocation);
+            cameraLocations.add(thisLocation);
 
             for (String cameraName : cameraModel.cameraKeys.get(locationIndex)) {
                 // Add a camera location for the next camera
@@ -53,7 +53,7 @@ public class AlternateCameraListAdapter extends BaseAdapter implements ListAdapt
                 thisCamera.isSection = false;
 
                 // Add the camera to the location list
-                mCameraLocations.add(thisCamera);
+                cameraLocations.add(thisCamera);
             }
 
             // Move to the next location
@@ -63,12 +63,12 @@ public class AlternateCameraListAdapter extends BaseAdapter implements ListAdapt
 
     @Override
     public int getCount() {
-        return mCameraLocations.size();
+        return cameraLocations.size();
     }
 
     @Override
     public String getItem(int position) {
-        return mCameraLocations.get(position).Location;
+        return cameraLocations.get(position).Location;
     }
 
     @Override
@@ -77,7 +77,7 @@ public class AlternateCameraListAdapter extends BaseAdapter implements ListAdapt
     }
 
     public boolean isSection(int position) {
-        return mCameraLocations.get(position).isSection;
+        return cameraLocations.get(position).isSection;
     }
 
     public String getSectionForPosition(int position) {
@@ -105,7 +105,7 @@ public class AlternateCameraListAdapter extends BaseAdapter implements ListAdapt
 
         // Make the view reusable
         if (rowView == null) {
-            LayoutInflater inflater = (LayoutInflater) mContext
+            LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             ViewHolder viewHolder = new ViewHolder();

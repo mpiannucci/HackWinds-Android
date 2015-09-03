@@ -15,8 +15,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class ForecastArrayAdapter extends ArrayAdapter<Forecast> {
-    private final Context mContext;
-    private final int mCurrentDay;
+    private final Context context;
+    private final int currentDay;
 
     public ArrayList<Pair<Forecast, Forecast>> values;
 
@@ -29,19 +29,19 @@ public class ForecastArrayAdapter extends ArrayAdapter<Forecast> {
         public TextView afternoonDataTV;
     }
 
-    public ForecastArrayAdapter(Context context, ArrayList<Forecast> values) {
-        super(context, R.layout.forecast_item, values);
-        this.mContext = context;
+    public ForecastArrayAdapter(Context ctx, ArrayList<Forecast> vals) {
+        super(ctx, R.layout.forecast_item, vals);
+        this.context = ctx;
 
         ArrayList<Pair<Forecast, Forecast>> forecasts = new ArrayList<>();
         for (int i = 0; i < 10; i += 2) {
-            Pair<Forecast, Forecast> thisDay = new Pair <> (values.get(i), values.get(i+1));
+            Pair<Forecast, Forecast> thisDay = new Pair <> (vals.get(i), vals.get(i+1));
             forecasts.add(thisDay);
         }
         this.values = forecasts;
 
         Calendar calendar = Calendar.getInstance();
-        this.mCurrentDay = calendar.get(Calendar.DAY_OF_WEEK);
+        this.currentDay = calendar.get(Calendar.DAY_OF_WEEK);
     }
 
     public void setForecastData(ArrayList<Forecast> newValues) {
@@ -51,6 +51,7 @@ public class ForecastArrayAdapter extends ArrayAdapter<Forecast> {
             forecasts.add(thisDay);
         }
         this.values = forecasts;
+        this.notifyDataSetChanged();
     }
 
     @Override
@@ -63,7 +64,7 @@ public class ForecastArrayAdapter extends ArrayAdapter<Forecast> {
         View rowView = convertView;
         // Make the view reusable
         if (rowView == null) {
-            LayoutInflater inflater = (LayoutInflater) mContext
+            LayoutInflater inflater = (LayoutInflater) context
                                       .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             rowView = inflater.inflate(R.layout.forecast_item, parent, false);
 
@@ -84,7 +85,7 @@ public class ForecastArrayAdapter extends ArrayAdapter<Forecast> {
         ViewHolder holder = (ViewHolder) rowView.getTag();
 
         // Set the day text view
-        String day = getContext().getResources().getStringArray(R.array.daysOfTheWeek)[(((mCurrentDay-1) + position)%7)];
+        String day = getContext().getResources().getStringArray(R.array.daysOfTheWeek)[(((currentDay -1) + position)%7)];
         holder.dayTV.setText(day);
 
         // Set the morning and afternoon data
