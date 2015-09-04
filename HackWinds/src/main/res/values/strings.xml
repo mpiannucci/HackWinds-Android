@@ -86,5 +86,6 @@
 
     <!-- Additional Buoy Plots activity -->
     <string name="title_activity_additional_buoy_plots">Additional Plots</string>
+    <string name="spectral_density_title">Spectral Density</string>
 
 </resources>

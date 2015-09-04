@@ -6,12 +6,16 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
+import com.koushikdutta.ion.Ion;
 import com.nucc.hackwinds.R;
+import com.nucc.hackwinds.models.BuoyModel;
 
 public class AdditionBuoyPlotsActivity extends ActionBarActivity {
 
-    @Override protected void onCreate(Bundle savedInstanceState) {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_additional_buoy_plots);
 
@@ -19,6 +23,13 @@ public class AdditionBuoyPlotsActivity extends ActionBarActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Additional Plots");
         setSupportActionBar(toolbar);
+
+        // Get the plot URLs from the model
+        String spectralDensityPlotURL = BuoyModel.getInstance(getApplicationContext()).getSpectraPlotURL();
+
+        // Load the images for the plots
+        ImageView spectralDensityImage = (ImageView) findViewById(R.id.sprectral_density_plot);
+        Ion.with(this).load(spectralDensityPlotURL).intoImageView(spectralDensityImage);
     }
 
     @Override

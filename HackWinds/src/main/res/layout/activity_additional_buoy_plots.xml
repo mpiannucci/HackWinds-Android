@@ -20,4 +20,33 @@
         app:title="@string/detailed_forecast_toolbar_title_holder"
         />
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/cardview_light_background">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/spectral_density_title"
+                android:padding="10dp"
+                style="@style/DataHeaderText"/>
+
+            <ImageView
+                android:id="@+id/sprectral_density_plot"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/photo_loading_holder"
+                android:scaleType="fitXY"
+                android:adjustViewBounds="true"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
 </LinearLayout>
