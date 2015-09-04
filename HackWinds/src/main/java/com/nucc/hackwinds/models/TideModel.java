@@ -95,9 +95,9 @@ public class TideModel {
                         }
 
                         // Set all of the tidal members
-                        thisTide.Time = hour + ":" + min + " " + ampm;
-                        thisTide.EventType = type;
-                        thisTide.Height = height;
+                        thisTide.time = hour + ":" + min + " " + ampm;
+                        thisTide.eventType = type;
+                        thisTide.height = height;
 
                         // Add the tide to the vector
                         tides.add(thisTide);

@@ -2,18 +2,18 @@ package com.nucc.hackwinds.types;
 
 public class Condition {
 
-    public String Date;
-    public String MinBreakHeight;
-    public String MaxBreakHeight;
-    public String WindSpeed;
-    public String WindDeg;
-    public String WindDirection;
-    public String SwellHeight;
-    public String SwellPeriod;
-    public String SwellDirection;
-    public String SwellChartURL;
-    public String WindChartURL;
-    public String PeriodChartURL;
+    public String date;
+    public String minBreakHeight;
+    public String maxBreakHeight;
+    public String windSpeed;
+    public String windDeg;
+    public String windDirection;
+    public String swellHeight;
+    public String swellPeriod;
+    public String swellDirection;
+    public String swellChartURL;
+    public String windChartURL;
+    public String periodChartURL;
 
     public Condition() {
     }

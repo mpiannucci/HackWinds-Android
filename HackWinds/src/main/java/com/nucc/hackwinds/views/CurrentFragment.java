@@ -109,7 +109,7 @@ public class CurrentFragment extends ListFragment {
                     mStreamView.setVisibility(View.VISIBLE);
 
                     // Execute the video loading AsyncTask
-                    new LoadLiveStreamTask().execute(mCamera.VideoURL);
+                    new LoadLiveStreamTask().execute(mCamera.videoURL);
                 }
             }
         });
@@ -120,7 +120,7 @@ public class CurrentFragment extends ListFragment {
             public boolean onLongClick(View v) {
                 if (ReachabilityHelper.deviceHasInternetAccess(getActivity())) {
                     // Launch the full screen video activity
-                    VideoPlayerActivity.showRemoteVideo(getActivity(), mCamera.VideoURL);
+                    VideoPlayerActivity.showRemoteVideo(getActivity(), mCamera.videoURL);
                     return true;
                 } else {
                     return false;
@@ -209,7 +209,7 @@ public class CurrentFragment extends ListFragment {
             // Get the ImageView to set as the holder before the user calls
             // to play the VideoView
             ImageView img = (ImageView) getActivity().findViewById(R.id.camHolderImage);
-            Ion.with(getActivity()).load(mCamera.ImageURL).intoImageView(img);
+            Ion.with(getActivity()).load(mCamera.imageURL).intoImageView(img);
 
             // Set the play button to show again
             ImageView playButton = (ImageView) getActivity().findViewById(R.id.camPlayButton);

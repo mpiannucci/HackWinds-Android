@@ -90,20 +90,20 @@ public class BuoyArrayAdapter extends ArrayAdapter<Buoy> {
             Buoy buoy = values.get(position-1);
 
             // Set the data into the text views
-            holder.timeTV.setText(buoy.Time);
+            holder.timeTV.setText(buoy.time);
 
             if (dataMode.equals(BuoyModel.SUMMARY_DATA_MODE)) {
-                holder.wvhtTV.setText(buoy.SignificantWaveHeight);
-                holder.periodTV.setText(buoy.DominantPeriod);
-                holder.directionTV.setText(Buoy.getCompassDirection(buoy.MeanDirection));
+                holder.wvhtTV.setText(buoy.significantWaveHeight);
+                holder.periodTV.setText(buoy.dominantPeriod);
+                holder.directionTV.setText(Buoy.getCompassDirection(buoy.meanDirection));
             } else if (dataMode.equals(BuoyModel.SWELL_DATA_MODE)) {
-                holder.wvhtTV.setText(buoy.SwellWaveHeight);
-                holder.periodTV.setText(buoy.SwellPeriod);
-                holder.directionTV.setText(buoy.SwellDirection);
+                holder.wvhtTV.setText(buoy.swellWaveHeight);
+                holder.periodTV.setText(buoy.swellPeriod);
+                holder.directionTV.setText(buoy.swellDirection);
             } else if (dataMode.equals(BuoyModel.WIND_DATA_MODE)) {
-                holder.wvhtTV.setText(buoy.WindWaveHeight);
-                holder.periodTV.setText(buoy.WindWavePeriod);
-                holder.directionTV.setText(buoy.WindWaveDirection);
+                holder.wvhtTV.setText(buoy.windWaveHeight);
+                holder.periodTV.setText(buoy.windWavePeriod);
+                holder.directionTV.setText(buoy.windWaveDirection);
             }
 
             // Make sure the text isn't bold

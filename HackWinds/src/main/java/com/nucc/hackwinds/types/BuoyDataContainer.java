@@ -6,14 +6,14 @@ import java.util.ArrayList;
 public class BuoyDataContainer {
     final static public int BUOY_DATA_POINTS = 20;
 
-    public int BuoyID;
-    public ArrayList<Buoy> BuoyData;
-    public ArrayList<String> WaveHeights;
+    public int buoyID;
+    public ArrayList<Buoy> buoyData;
+    public ArrayList<String> waveHeights;
 
-    public BuoyDataContainer() {
-        // Initialize the capacity of the data structures
-        BuoyData = new ArrayList<>(BUOY_DATA_POINTS);
-        WaveHeights = new ArrayList<>(BUOY_DATA_POINTS);
+    public BuoyDataContainer(int id) {
+        buoyID = id;
+        buoyData = new ArrayList<>(BUOY_DATA_POINTS);
+        waveHeights = new ArrayList<>(BUOY_DATA_POINTS);
     }
 
 }

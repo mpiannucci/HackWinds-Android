@@ -67,7 +67,7 @@ public class ConditionArrayAdapter extends ArrayAdapter<Condition> {
 
         if (position < 1) {
             // If its the first item, set the textviews to the headers
-            holder.dateTV.setText("Time");
+            holder.dateTV.setText("time");
             holder.breakTV.setText("Waves");
             holder.windTV.setText("Wind");
             holder.swellTV.setText("Swell");
@@ -88,10 +88,10 @@ public class ConditionArrayAdapter extends ArrayAdapter<Condition> {
             Condition condition = values.get(position - 1);
 
             // Set the textview for all of the data
-            holder.dateTV.setText(condition.Date);
-            holder.breakTV.setText(condition.MinBreakHeight + " - " + condition.MaxBreakHeight);
-            holder.windTV.setText(condition.WindDirection + " " + condition.WindSpeed);
-            holder.swellTV.setText(condition.SwellDirection + " " + condition.SwellHeight + " ft @ " + condition.SwellPeriod + " s");
+            holder.dateTV.setText(condition.date);
+            holder.breakTV.setText(condition.minBreakHeight + " - " + condition.maxBreakHeight);
+            holder.windTV.setText(condition.windDirection + " " + condition.windSpeed);
+            holder.swellTV.setText(condition.swellDirection + " " + condition.swellHeight + " ft @ " + condition.swellPeriod + " s");
 
             // Make sure the text is normal and not bold
             holder.dateTV.setTypeface(null, Typeface.NORMAL);

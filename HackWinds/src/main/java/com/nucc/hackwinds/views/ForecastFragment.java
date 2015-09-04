@@ -87,10 +87,10 @@ public class ForecastFragment extends ListFragment {
 
             // Set the forecast adapter to the ListView
             if (mForecastArrayAdapter == null) {
-                mForecastArrayAdapter = new ForecastArrayAdapter(getActivity(), mForecastModel.forecasts);
+                mForecastArrayAdapter = new ForecastArrayAdapter(getActivity(), mForecastModel.getForecasts());
                 setListAdapter(mForecastArrayAdapter);
             } else {
-                mForecastArrayAdapter.setForecastData(mForecastModel.forecasts);
+                mForecastArrayAdapter.setForecastData(mForecastModel.getForecasts());
             }
         }
     }

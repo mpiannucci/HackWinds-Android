@@ -8,6 +8,7 @@ import com.nucc.hackwinds.types.Condition;
 import com.nucc.hackwinds.types.Forecast;
 import com.nucc.hackwinds.listeners.ForecastChangedListener;
 import com.nucc.hackwinds.R;
+import com.nucc.hackwinds.types.ForecastDataContainer;
 import com.nucc.hackwinds.utilities.ServiceHandler;
 import com.nucc.hackwinds.views.SettingsActivity;
 
@@ -23,18 +24,19 @@ import java.util.HashMap;
 import java.util.TimeZone;
 
 public class ForecastModel {
+    final public static String TOWN_BEACH_LOCATION = "Narragansett Town Beach";
+    final public static String POINT_JUDITH_LOCATION = "Point Judith Lighthouse";
+    final public static String MATUNUCK_LOCATION = "Matunuck";
+    final public static String SECOND_BEACH_LOCATION = "Second Beach";
 
     // Member variables
     private Context mContext;
     private static ForecastModel mInstance;
-    private String mRawData;
-    private HashMap<String, String> mLocationURLs;
     private ArrayList<ForecastChangedListener> mForecastChangedListeners;
     private SharedPreferences.OnSharedPreferenceChangeListener mPrefsChangedListener;
-    private String mCurrentURL;
 
-    public ArrayList<Condition> conditions;
-    public ArrayList<Forecast> forecasts;
+    private HashMap<String, ForecastDataContainer> mForecastDataContainers;
+    private ForecastDataContainer mCurrentContainer;
 
     public static ForecastModel getInstance( Context context ) {
         if ( mInstance == null ) {
@@ -50,16 +52,8 @@ public class ForecastModel {
         // Initialize the forecast changed listener
         mForecastChangedListeners = new ArrayList<>();
 
-        // Set up the url map
-        mLocationURLs = new HashMap<>();
-        String[] locations = mContext.getResources().getStringArray( R.array.mswForecastLocations );
-        String[] urls = mContext.getResources().getStringArray( R.array.mswForecastURLs );
-        for ( int index = 0; index < locations.length; index++ ) {
-            mLocationURLs.put( locations[index], urls[index] );
-        }
-
-        // Initialize the location URL from the user location settings
-        changeLocation();
+        // Set up the data containers
+        initForecastContainers();
 
         // Set up the settings changed listeners
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences( mContext );
@@ -69,36 +63,45 @@ public class ForecastModel {
                     return;
                 }
 
-                if ( !conditions.isEmpty() || !forecasts.isEmpty() ) {
-                    conditions.clear();
-                    forecasts.clear();
-                }
-
-                if ( !mRawData.isEmpty() ) {
-                    mRawData = "";
-                }
-
                 // Change the location URL
                 changeLocation();
-
-                for ( ForecastChangedListener listener : mForecastChangedListeners ) {
-                    if ( listener != null ) {
-                        listener.forecastLocationChanged();
-                    }
-                }
             }
         };
 
         // Register the listener
-        sharedPrefs.registerOnSharedPreferenceChangeListener( mPrefsChangedListener );
-
-        // Initialize the list of conditions
-        conditions = new ArrayList<>();
-        forecasts = new ArrayList<>();
+        sharedPrefs.registerOnSharedPreferenceChangeListener(mPrefsChangedListener);
     }
 
     public void addForecastChangedListener( ForecastChangedListener forecastListener ) {
-        mForecastChangedListeners.add( forecastListener );
+        mForecastChangedListeners.add(forecastListener);
+    }
+
+    private void initForecastContainers() {
+        final int TOWN_BEACH_ID = 1103;
+        final int POINT_JUDITH_ID = 376;
+        final int MATUNUCK_ID = 377;
+        final int SECOND_BEACH_ID = 846;
+
+        mForecastDataContainers = new HashMap<>();
+
+        // Town Beach
+        ForecastDataContainer townBeachData = new ForecastDataContainer(TOWN_BEACH_ID);
+        mForecastDataContainers.put(TOWN_BEACH_LOCATION, townBeachData);
+
+        // Point Judith
+        ForecastDataContainer pointJudithData = new ForecastDataContainer(POINT_JUDITH_ID);
+        mForecastDataContainers.put(POINT_JUDITH_LOCATION, pointJudithData);
+
+        // Matunuck
+        ForecastDataContainer matunuckData = new ForecastDataContainer(MATUNUCK_ID);
+        mForecastDataContainers.put(MATUNUCK_LOCATION, matunuckData);
+
+        // Second Beach
+        ForecastDataContainer secondBeachData = new ForecastDataContainer(SECOND_BEACH_ID);
+        mForecastDataContainers.put(SECOND_BEACH_LOCATION, secondBeachData);
+
+        // Initialize the current container from the settings
+        changeLocation();
     }
 
     private void changeLocation() {
@@ -107,17 +110,17 @@ public class ForecastModel {
         String location = sharedPrefs.getString( SettingsActivity.FORECAST_LOCATION_KEY, "Narragansett Town Beach" );
 
         // Change the current location url
-        mCurrentURL = mLocationURLs.get( location );
+        mCurrentContainer = mForecastDataContainers.get(location);
+
+        for ( ForecastChangedListener listener : mForecastChangedListeners ) {
+            if ( listener != null ) {
+                listener.forecastLocationChanged();
+            }
+        }
     }
 
     public boolean fetchForecastData() {
-        if ( mRawData == null ) {
-            loadRawData();
-        } else if ( mRawData.isEmpty() ) {
-            loadRawData();
-        }
-
-        if ( conditions.isEmpty() ) {
+        if (mCurrentContainer.conditions.isEmpty()) {
             return parseForecasts();
         } else {
             return true;
@@ -126,28 +129,39 @@ public class ForecastModel {
 
     public ArrayList<Condition> getConditionsForIndex( int index ) {
         // Return the array of conditions
-        ArrayList<Condition> dayConditions = new ArrayList( conditions.subList( index * 6, ( index * 6 ) + 6 ) );
-        return dayConditions;
+        if (mCurrentContainer.conditions.size() == ForecastDataContainer.CONDITION_DATA_COUNT) {
+            return new ArrayList<>(mCurrentContainer.conditions.subList(index * 6, (index * 6) + 6));
+        } else {
+            return null;
+        }
     }
 
     public ArrayList<Forecast> getForecasts() {
         // Return the list of forecasts
-        return forecasts;
+        return mCurrentContainer.forecasts;
     }
 
-    private void loadRawData() {
+    private String retrieveForecastData() {
+        final String BASE_DATA_URL = "http://magicseaweed.com/api/nFSL2f845QOAf1Tuv7Pf5Pd9PXa5sVTS/forecast/?spot_id=%d&fields=localTimestamp,swell.*,wind.*,charts.*";
+
+        // Make the URL
+        String dataURL = String.format(BASE_DATA_URL, mCurrentContainer.forecastID);
+
+        // Fetch and return the data
         ServiceHandler sh = new ServiceHandler();
-        mRawData = sh.makeServiceCall( mCurrentURL, ServiceHandler.GET );
+        return sh.makeServiceCall( dataURL, ServiceHandler.GET );
     }
 
     private boolean parseForecasts() {
-        if ( mRawData.isEmpty() ) {
+        // Get the raw data
+        String rawData = retrieveForecastData();
+        if (rawData == null) {
             return false;
         }
 
         try {
             // Make a json array from the response string
-            JSONArray jsonArr = new JSONArray( mRawData );
+            JSONArray jsonArr = new JSONArray( rawData );
 
             // The number of data points collected
             int conditionCount = 0;
@@ -158,7 +172,9 @@ public class ForecastModel {
 
             // Iterate while the number of parsed is less than what the
             // user asked for
-            while ( ( ( conditionCount < 30 ) || ( forecastCount < 10 ) ) && ( dataIndex < jsonArr.length() ) ) {
+            while ( ( ( conditionCount < ForecastDataContainer.CONDITION_DATA_COUNT ) ||
+                    ( forecastCount < ForecastDataContainer.FORECAST_DATA_COUNT ) ) &&
+                    ( dataIndex < jsonArr.length() ) ) {
 
                 // Get the current json object
                 JSONObject jsonObj = jsonArr.getJSONObject( dataIndex );
@@ -179,56 +195,56 @@ public class ForecastModel {
                 JSONObject wind = jsonObj.getJSONObject( "wind" );
                 JSONObject chart = jsonObj.getJSONObject( "charts" );
 
-                if ( conditionCheck && ( conditionCount < 30 ) ) {
+                if ( conditionCheck && ( conditionCount < ForecastDataContainer.CONDITION_DATA_COUNT ) ) {
                     // Make a new condition object
                     Condition thisCondition = new Condition();
 
                     // Set the date for the conditions
-                    thisCondition.Date = date;
+                    thisCondition.date = date;
 
                     // Get the relevant values from the dicts into the models
                     // Start with the breaking wave sizes
-                    thisCondition.MinBreakHeight = swell.getString( "minBreakingHeight" );
-                    thisCondition.MaxBreakHeight = swell.getString( "maxBreakingHeight" );
+                    thisCondition.minBreakHeight = swell.getString( "minBreakingHeight" );
+                    thisCondition.maxBreakHeight = swell.getString( "maxBreakingHeight" );
 
                     // Get wind information
-                    thisCondition.WindSpeed = wind.getString( "speed" );
-                    thisCondition.WindDeg = wind.getString( "direction" );
-                    thisCondition.WindDirection = wind.getString( "compassDirection" );
+                    thisCondition.windSpeed = wind.getString( "speed" );
+                    thisCondition.windDeg = wind.getString( "direction" );
+                    thisCondition.windDirection = wind.getString( "compassDirection" );
 
                     // Get swell information
-                    thisCondition.SwellHeight = swell.getJSONObject( "components" ).getJSONObject( "primary" ).getString( "height" );
-                    thisCondition.SwellPeriod = swell.getJSONObject( "components" ).getJSONObject( "primary" ).getString( "period" );
-                    thisCondition.SwellDirection =
+                    thisCondition.swellHeight = swell.getJSONObject( "components" ).getJSONObject( "primary" ).getString( "height" );
+                    thisCondition.swellPeriod = swell.getJSONObject( "components" ).getJSONObject( "primary" ).getString( "period" );
+                    thisCondition.swellDirection =
                         swell.getJSONObject( "components" ).getJSONObject( "primary" ).getString( "compassDirection" );
 
                     // Get the chart URLs
-                    thisCondition.SwellChartURL = chart.getString( "swell" );
-                    thisCondition.WindChartURL = chart.getString( "wind" );
-                    thisCondition.PeriodChartURL = chart.getString( "period" );
+                    thisCondition.swellChartURL = chart.getString( "swell" );
+                    thisCondition.windChartURL = chart.getString( "wind" );
+                    thisCondition.periodChartURL = chart.getString( "period" );
 
                     // Add the new condition object to the vector and iterate the number of parsed objects
-                    conditions.add( thisCondition );
+                    mCurrentContainer.conditions.add(thisCondition);
                     conditionCount++;
                 }
 
-                if ( forecastCheck && ( forecastCount < 10 ) ) {
+                if ( forecastCheck && ( forecastCount < ForecastDataContainer.FORECAST_DATA_COUNT ) ) {
                     // Make a new forecast object
                     Forecast thisForecast = new Forecast();
 
                     // Set the date
-                    thisForecast.Date = date;
+                    thisForecast.date = date;
 
                     // Get the minimum and maximum breaking heights
-                    thisForecast.MinBreakHeight = swell.getString( "minBreakingHeight" );
-                    thisForecast.MaxBreakHeight = swell.getString( "maxBreakingHeight" );
+                    thisForecast.minBreakHeight = swell.getString( "minBreakingHeight" );
+                    thisForecast.maxBreakHeight = swell.getString( "maxBreakingHeight" );
 
                     // Get the wind speed and direction
-                    thisForecast.WindSpeed = wind.getString( "speed" );
-                    thisForecast.WindDirection = wind.getString( "compassDirection" );
+                    thisForecast.windSpeed = wind.getString( "speed" );
+                    thisForecast.windDirection = wind.getString( "compassDirection" );
 
                     // Add the new forecast object to the list
-                    forecasts.add( thisForecast );
+                    mCurrentContainer.forecasts.add(thisForecast);
                     forecastCount++;
                 }
             }

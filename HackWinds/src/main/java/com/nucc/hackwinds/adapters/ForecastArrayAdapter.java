@@ -89,20 +89,20 @@ public class ForecastArrayAdapter extends ArrayAdapter<Forecast> {
         holder.dayTV.setText(day);
 
         // Set the morning and afternoon data
-        holder.morningDataTV.setText(String.format("%s - %s feet, Wind %s %s mph", thisDay.first.MinBreakHeight,
-                thisDay.first.MaxBreakHeight, thisDay.first.WindSpeed, thisDay.first.WindDirection));
-        holder.afternoonDataTV.setText(String.format("%s - %s feet, Wind %s %s mph", thisDay.second.MinBreakHeight,
-                thisDay.second.MaxBreakHeight, thisDay.second.WindSpeed, thisDay.second.WindDirection));
+        holder.morningDataTV.setText(String.format("%s - %s feet, Wind %s %s mph", thisDay.first.minBreakHeight,
+                thisDay.first.maxBreakHeight, thisDay.first.windSpeed, thisDay.first.windDirection));
+        holder.afternoonDataTV.setText(String.format("%s - %s feet, Wind %s %s mph", thisDay.second.minBreakHeight,
+                thisDay.second.maxBreakHeight, thisDay.second.windSpeed, thisDay.second.windDirection));
 
         // Set the color of the time of day header based on the swell
-        if (Double.valueOf(thisDay.first.MinBreakHeight) > 1.9) {
-            if (thisDay.first.WindDirection.equals("WSW") ||
-                    thisDay.first.WindDirection.equals("W") ||
-                    thisDay.first.WindDirection.equals("WNW") ||
-                    thisDay.first.WindDirection.equals("NW") ||
-                    thisDay.first.WindDirection.equals("N")) {
+        if (Double.valueOf(thisDay.first.minBreakHeight) > 1.9) {
+            if (thisDay.first.windDirection.equals("WSW") ||
+                    thisDay.first.windDirection.equals("W") ||
+                    thisDay.first.windDirection.equals("WNW") ||
+                    thisDay.first.windDirection.equals("NW") ||
+                    thisDay.first.windDirection.equals("N")) {
                 holder.morningHeaderTV.setTextColor(getContext().getResources().getColor(R.color.forecast_green));
-            } else if (Double.valueOf(thisDay.first.WindSpeed) < 8.0) {
+            } else if (Double.valueOf(thisDay.first.windSpeed) < 8.0) {
                 holder.morningHeaderTV.setTextColor(getContext().getResources().getColor(R.color.forecast_green));
             } else {
                 holder.morningHeaderTV.setTextColor(getContext().getResources().getColor(R.color.forecast_yellow));
@@ -111,14 +111,14 @@ public class ForecastArrayAdapter extends ArrayAdapter<Forecast> {
             holder.morningHeaderTV.setTextColor(getContext().getResources().getColor(R.color.forecast_red));
         }
 
-        if (Double.valueOf(thisDay.second.MinBreakHeight) > 1.9) {
-            if (thisDay.second.WindDirection.equals("WSW") ||
-                    thisDay.second.WindDirection.equals("W") ||
-                    thisDay.second.WindDirection.equals("WNW") ||
-                    thisDay.second.WindDirection.equals("NW") ||
-                    thisDay.second.WindDirection.equals("N")) {
+        if (Double.valueOf(thisDay.second.minBreakHeight) > 1.9) {
+            if (thisDay.second.windDirection.equals("WSW") ||
+                    thisDay.second.windDirection.equals("W") ||
+                    thisDay.second.windDirection.equals("WNW") ||
+                    thisDay.second.windDirection.equals("NW") ||
+                    thisDay.second.windDirection.equals("N")) {
                 holder.afternoonHeaderTV.setTextColor(getContext().getResources().getColor(R.color.forecast_green));
-            } else if (Double.valueOf(thisDay.second.WindSpeed) < 8.0) {
+            } else if (Double.valueOf(thisDay.second.windSpeed) < 8.0) {
                 holder.afternoonHeaderTV.setTextColor(getContext().getResources().getColor(R.color.forecast_green));
             } else {
                 holder.afternoonHeaderTV.setTextColor(getContext().getResources().getColor(R.color.forecast_yellow));

@@ -1,7 +1,6 @@
 package com.nucc.hackwinds.views;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -84,7 +83,7 @@ public class IsoCameraFragment extends Fragment {
                     mVideoView.setVisibility(View.VISIBLE);
 
                     // Execute the video loading AsyncTask
-                    new LoadVideoStreamTask().execute(mCamera.VideoURL);
+                    new LoadVideoStreamTask().execute(mCamera.videoURL);
                 }
             }
         });
@@ -95,7 +94,7 @@ public class IsoCameraFragment extends Fragment {
             public boolean onLongClick(View v) {
                 if (ReachabilityHelper.deviceHasInternetAccess(getActivity())) {
                     // Launch the full screen video activity
-                    VideoPlayerActivity.showRemoteVideo(getActivity(), mCamera.VideoURL);
+                    VideoPlayerActivity.showRemoteVideo(getActivity(), mCamera.videoURL);
                     return true;
                 } else {
                     return false;
@@ -150,26 +149,26 @@ public class IsoCameraFragment extends Fragment {
         mCameraName = camera;
 
         mCamera = CameraModel.getInstance().cameraLocations.get(mLocationName).get(mCameraName);
-        mAutoRefresh = mCamera.Refreshable;
+        mAutoRefresh = mCamera.refreshable;
     }
 
     public void loadCameraImage() {
-        if (!mCamera.VideoURL.equals("")) {
+        if (!mCamera.videoURL.equals("")) {
             // If it is the point judith camera, we want to hide the auto refresh info and show
             // the hidden video status info view
             Switch autoRefreshToggle = (Switch)getActivity().findViewById(R.id.auto_refresh_toggle);
             autoRefreshToggle.performClick();
             getActivity().findViewById(R.id.image_refresh_info_view).setVisibility(View.GONE);
 
-            if (mCamera.Info != null) {
-                ((TextView) getActivity().findViewById(R.id.video_info_text)).setText(mCamera.Info);
+            if (mCamera.info != null) {
+                ((TextView) getActivity().findViewById(R.id.video_info_text)).setText(mCamera.info);
                 getActivity().findViewById(R.id.video_info_view).setVisibility(View.VISIBLE);
             }
         }
 
         if (mContext != null) {
             // If there is a context, then load the next image and create the callback to set it as the current image
-            Ion.with(mContext).load(mCamera.ImageURL).noCache().asBitmap().setCallback(new FutureCallback<Bitmap>() {
+            Ion.with(mContext).load(mCamera.imageURL).noCache().asBitmap().setCallback(new FutureCallback<Bitmap>() {
                 @Override
                 public void onCompleted(Exception e, Bitmap result) {
                     if (e != null) {
@@ -180,13 +179,13 @@ public class IsoCameraFragment extends Fragment {
                         mCameraImage.setImageBitmap(result);
 
                         // If its the point judith view, show the play button
-                        if (!mCamera.VideoURL.equals("")) {
+                        if (!mCamera.videoURL.equals("")) {
                             mPlayButton.setVisibility(View.VISIBLE);
                         }
 
                         // If enabled, start the countdown to loading the next view
                         if (mAutoRefresh) {
-                            mHandler.postDelayed(mRunnable, mCamera.RefreshInterval * 1000);
+                            mHandler.postDelayed(mRunnable, mCamera.refreshInterval * 1000);
                         }
                     }
                 }
@@ -200,7 +199,7 @@ public class IsoCameraFragment extends Fragment {
     private void updateAutoRefreshDurationLabel() {
         TextView autoRefreshDurationLabel = (TextView) getActivity().findViewById(R.id.auto_refresh_duration);
         if (mAutoRefresh) {
-            autoRefreshDurationLabel.setText("Refresh interval is " + String.valueOf(mCamera.RefreshInterval) + " seconds");
+            autoRefreshDurationLabel.setText("Refresh interval is " + String.valueOf(mCamera.refreshInterval) + " seconds");
             autoRefreshDurationLabel.setVisibility(View.VISIBLE);
         } else {
             autoRefreshDurationLabel.setVisibility(View.GONE);

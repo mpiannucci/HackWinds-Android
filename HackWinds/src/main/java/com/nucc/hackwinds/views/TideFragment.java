@@ -1,6 +1,5 @@
 package com.nucc.hackwinds.views;
 
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -17,7 +16,6 @@ import com.nucc.hackwinds.models.BuoyModel;
 import com.nucc.hackwinds.models.TideModel;
 import com.nucc.hackwinds.utilities.ReachabilityHelper;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 
@@ -64,17 +62,17 @@ public class TideFragment extends Fragment {
             if (thisTide.isSunrise()) {
                 // Set the sunrise time that was found
                 TextView sunriseTime = (TextView)getActivity().findViewById(R.id.sunriseTime);
-                sunriseTime.setText(thisTide.Time);
+                sunriseTime.setText(thisTide.time);
             } else if (thisTide.isSunset()) {
                 // Set the sunset time that was read
                 TextView sunsetTime = (TextView)getActivity().findViewById(R.id.sunsetTime);
-                sunsetTime.setText(thisTide.Time);
+                sunsetTime.setText(thisTide.time);
             } else if (thisTide.isTidalEvent()) {
                 // TODO: THERES A BUG HERE.. Yay we found a tide, now set the type (high or low) and the values
                 TextView typeView = (TextView)getActivity().findViewById(mTideTypeViews[tideCount]);
                 TextView timeView = (TextView)getActivity().findViewById(mTideTimeViews[tideCount]);
-                typeView.setText(thisTide.EventType);
-                timeView.setText(thisTide.Height + " at " + thisTide.Time);
+                typeView.setText(thisTide.eventType);
+                timeView.setText(thisTide.height + " at " + thisTide.time);
 
                 // Also set the current status
                 if (tideCount == 0) {
@@ -115,7 +113,7 @@ public class TideFragment extends Fragment {
 
             // Save the temperature and change the buoy location back to its original place
             final ArrayList<Buoy> buoyData = mBuoyModel.getBuoyData();
-            mBIWaterTemp = buoyData.get(0).WaterTemperature;
+            mBIWaterTemp = buoyData.get(0).waterTemperature;
 
             // Return
             return null;

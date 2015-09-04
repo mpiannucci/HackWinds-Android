@@ -186,13 +186,13 @@ public class DetailedForecastFragment extends ListFragment implements SegmentedG
     public void getChartImageForIndex(ChartType chartType, int index) {
         switch(chartType) {
             case SWELL:
-                Ion.with(getActivity()).load(mDayConditions.get(index).SwellChartURL).asBitmap().setCallback(mChartLoadCallback);
+                Ion.with(getActivity()).load(mDayConditions.get(index).swellChartURL).asBitmap().setCallback(mChartLoadCallback);
                 break;
             case WIND:
-                Ion.with(getActivity()).load(mDayConditions.get(index).WindChartURL).asBitmap().setCallback(mChartLoadCallback);
+                Ion.with(getActivity()).load(mDayConditions.get(index).windChartURL).asBitmap().setCallback(mChartLoadCallback);
                 break;
             case PERIOD:
-                Ion.with(getActivity()).load(mDayConditions.get(index).PeriodChartURL).asBitmap().setCallback(mChartLoadCallback);
+                Ion.with(getActivity()).load(mDayConditions.get(index).periodChartURL).asBitmap().setCallback(mChartLoadCallback);
                 break;
             default:
                 break;

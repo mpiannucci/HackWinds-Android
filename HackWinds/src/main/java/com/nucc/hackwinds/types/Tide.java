@@ -7,19 +7,19 @@ public class Tide {
     public static final String SUNRISE_TAG = "Sunrise";
     public static final String SUNSET_TAG = "Sunset";
 
-    public String Time;
-    public String EventType;
-    public String Height;
+    public String time;
+    public String eventType;
+    public String height;
 
     public Tide() {
     }
 
     public boolean isSunrise() {
-        return EventType.equals(SUNRISE_TAG);
+        return eventType.equals(SUNRISE_TAG);
     }
 
     public boolean isSunset() {
-        return EventType.equals(SUNSET_TAG);
+        return eventType.equals(SUNSET_TAG);
     }
 
     public boolean isSolarEvent() {
@@ -27,11 +27,11 @@ public class Tide {
     }
 
     public boolean isHighTide() {
-        return EventType.equals(HIGH_TIDE_TAG);
+        return eventType.equals(HIGH_TIDE_TAG);
     }
 
     public boolean isLowTide() {
-        return EventType.equals(LOW_TIDE_TAG);
+        return eventType.equals(LOW_TIDE_TAG);
     }
 
     public boolean isTidalEvent() {

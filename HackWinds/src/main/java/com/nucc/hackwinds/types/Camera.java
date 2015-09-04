@@ -3,9 +3,9 @@ package com.nucc.hackwinds.types;
 
 public class Camera {
 
-    public String VideoURL;
-    public String ImageURL;
-    public String Info;
-    public boolean Refreshable;
-    public int RefreshInterval;
+    public String videoURL;
+    public String imageURL;
+    public String info;
+    public boolean refreshable;
+    public int refreshInterval;
 }

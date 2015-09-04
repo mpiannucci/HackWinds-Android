@@ -2,11 +2,11 @@ package com.nucc.hackwinds.types;
 
 public class Forecast {
 
-    public String Date;
-    public String MinBreakHeight;
-    public String MaxBreakHeight;
-    public String WindSpeed;
-    public String WindDirection;
+    public String date;
+    public String minBreakHeight;
+    public String maxBreakHeight;
+    public String windSpeed;
+    public String windDirection;
 
     public Forecast() {
 

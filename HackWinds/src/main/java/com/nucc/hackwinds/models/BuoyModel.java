@@ -50,11 +50,11 @@ public class BuoyModel {
         // Initialize the data arrays
         mContext = context;
 
-        // Initialize buoy containers
-        initBuoyContainers();
-
         // Initialize the listener array
         mBuoyChangedListeners = new ArrayList<>();
+
+        // Initialize buoy containers
+        initBuoyContainers();
 
         // Set the time offset variable so the times are correct
         Calendar mCalendar = new GregorianCalendar();
@@ -76,13 +76,6 @@ public class BuoyModel {
 
                 // Update the location from settings
                 changeLocation();
-
-                // Notify the listeners
-                for (BuoyChangedListener listener : mBuoyChangedListeners) {
-                    if (listener != null) {
-                        listener.buoyLocationChanged();
-                    }
-                }
             }
         };
 
@@ -103,18 +96,15 @@ public class BuoyModel {
         mBuoyDataContainers = new HashMap<>();
 
         // Block Island
-        BuoyDataContainer biContainer = new BuoyDataContainer();
-        biContainer.BuoyID = BLOCK_ISLAND_BUOY_ID;
+        BuoyDataContainer biContainer = new BuoyDataContainer(BLOCK_ISLAND_BUOY_ID);
         mBuoyDataContainers.put(BLOCK_ISLAND_LOCATION, biContainer);
 
         // Montauk
-        BuoyDataContainer mtkContainer = new BuoyDataContainer();
-        mtkContainer.BuoyID = MONTAUK_BUOY_ID;
+        BuoyDataContainer mtkContainer = new BuoyDataContainer(MONTAUK_BUOY_ID);
         mBuoyDataContainers.put(MONTAUK_LOCATION, mtkContainer);
 
         // Nantucket
-        BuoyDataContainer ackContainer = new BuoyDataContainer();
-        ackContainer.BuoyID = NANTUCKET_BUOY_ID;
+        BuoyDataContainer ackContainer = new BuoyDataContainer(NANTUCKET_BUOY_ID);
         mBuoyDataContainers.put(NANTUCKET_LOCATION, ackContainer);
 
         // Initialize to Block Island for now
@@ -125,6 +115,13 @@ public class BuoyModel {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
         String location = sharedPrefs.getString(SettingsActivity.BUOY_LOCATION_KEY, BLOCK_ISLAND_LOCATION);
         mCurrentContainer = mBuoyDataContainers.get(location);
+
+        // Notify the listeners
+        for (BuoyChangedListener listener : mBuoyChangedListeners) {
+            if (listener != null) {
+                listener.buoyLocationChanged();
+            }
+        }
     }
 
     public void forceChangeLocation(String location) {
@@ -132,7 +129,7 @@ public class BuoyModel {
     }
 
     public boolean fetchBuoyData() {
-        if (mCurrentContainer.BuoyData.isEmpty()) {
+        if (mCurrentContainer.buoyData.isEmpty()) {
             // Parse the received data
             return parseBuoyData();
         } else {
@@ -141,16 +138,16 @@ public class BuoyModel {
     }
 
     public ArrayList<Buoy> getBuoyData() {
-        return mCurrentContainer.BuoyData;
+        return mCurrentContainer.buoyData;
     }
 
     public ArrayList<String> getWaveHeights() {
-        return mCurrentContainer.WaveHeights;
+        return mCurrentContainer.waveHeights;
     }
 
     public String getSpectraPlotURL() {
         final String BASE_SPECTRA_PLOT_URL = "http://www.ndbc.noaa.gov/spec_plot.php?station=%d";
-        return String.format(BASE_SPECTRA_PLOT_URL, mCurrentContainer.BuoyID);
+        return String.format(BASE_SPECTRA_PLOT_URL, mCurrentContainer.buoyID);
     }
 
     private String[] retrieveBuoyData(Boolean detailed) {
@@ -161,9 +158,9 @@ public class BuoyModel {
         // Craft the URL
         String dataURL;
         if (detailed) {
-            dataURL = String.format(BASE_DATA_URL, mCurrentContainer.BuoyID, DETAIL_URL_SUFFIX);
+            dataURL = String.format(BASE_DATA_URL, mCurrentContainer.buoyID, DETAIL_URL_SUFFIX);
         } else {
-            dataURL = String.format(BASE_DATA_URL, mCurrentContainer.BuoyID, SUMMARY_URL_SUFFIX);
+            dataURL = String.format(BASE_DATA_URL, mCurrentContainer.buoyID, SUMMARY_URL_SUFFIX);
         }
 
         // Fetch and split the data
@@ -192,8 +189,8 @@ public class BuoyModel {
             dataCount++;
 
             // Save the buoy object to the list
-            mCurrentContainer.BuoyData.add(thisBuoy);
-            mCurrentContainer.WaveHeights.add(thisBuoy.SignificantWaveHeight);
+            mCurrentContainer.buoyData.add(thisBuoy);
+            mCurrentContainer.waveHeights.add(thisBuoy.significantWaveHeight);
         }
         // Return that it was successful
         return true;
@@ -214,14 +211,14 @@ public class BuoyModel {
             return false;
         }
 
-        if (buoy.Time == null) {
+        if (buoy.time == null) {
             // Get the original hor timestamp from the buoy report
             int originalHour = (int) (Integer.valueOf(data[baseOffset + HOUR_OFFSET]) + mTimeOffset);
             int convertedHour = getCorrectedHourValue(originalHour);
 
             // Set the time member
             String min = data[baseOffset + MINUTE_OFFSET];
-            buoy.Time = String.format("%d:%s", convertedHour, min);
+            buoy.time = String.format("%d:%s", convertedHour, min);
         }
 
         // Set the period and wind direction values
@@ -229,15 +226,15 @@ public class BuoyModel {
         if (period.equals("MM")) {
             period = "NULL";
         }
-        buoy.DominantPeriod = period;
-        buoy.MeanDirection = data[baseOffset+DIRECTION_OFFSET];
+        buoy.dominantPeriod = period;
+        buoy.meanDirection = data[baseOffset+DIRECTION_OFFSET];
 
         // Convert and set the wave height
         String wv = data[baseOffset+WVHT_OFFSET];
         try {
-            buoy.SignificantWaveHeight = String.format("%4.2f", convertMeterToFoot(Double.valueOf(wv)));
+            buoy.significantWaveHeight = String.format("%4.2f", convertMeterToFoot(Double.valueOf(wv)));
         } catch (Exception e) {
-            buoy.SignificantWaveHeight = "NULL";
+            buoy.significantWaveHeight = "NULL";
         }
 
         // Convert the water temperature to fahrenheit and set it
@@ -246,9 +243,9 @@ public class BuoyModel {
             double rawTemp = Double.valueOf(waterTemp);
             double fahrenheitTemp = ((rawTemp * (9.0 / 5.0) + 32.0) / 0.05) * 0.05;
             waterTemp = String.format("%4.2f", fahrenheitTemp);
-            buoy.WaterTemperature = waterTemp;
+            buoy.waterTemperature = waterTemp;
         } catch (Exception e) {
-            buoy.WaterTemperature = "NULL";
+            buoy.waterTemperature = "NULL";
         }
 
         return true;
@@ -271,29 +268,29 @@ public class BuoyModel {
             return false;
         }
 
-        if (buoy.Time == null) {
+        if (buoy.time == null) {
             // Get the original hor timestamp from the buoy report
             int originalHour = (int) (Integer.valueOf(data[baseOffset + HOUR_OFFSET]) + mTimeOffset);
             int convertedHour = getCorrectedHourValue(originalHour);
 
             // Set the time member
             String min = data[baseOffset + MINUTE_OFFSET];
-            buoy.Time = String.format("%d:%s", convertedHour, min);
+            buoy.time = String.format("%d:%s", convertedHour, min);
         }
 
         // Wave Height
         String swellWaveHeight = data[baseOffset+SWELL_WAVE_HEIGHT_OFFSET];
         String windWaveHeight = data[baseOffset+WIND_WAVE_HEIGHT_OFFSET];
-        buoy.SwellWaveHeight = String.format("%4.2f", convertMeterToFoot(Double.valueOf(swellWaveHeight)));
-        buoy.WindWaveHeight = String.format("%4.2f", convertMeterToFoot(Double.valueOf(windWaveHeight)));
+        buoy.swellWaveHeight = String.format("%4.2f", convertMeterToFoot(Double.valueOf(swellWaveHeight)));
+        buoy.windWaveHeight = String.format("%4.2f", convertMeterToFoot(Double.valueOf(windWaveHeight)));
 
         // Periods
-        buoy.SwellPeriod = data[baseOffset+SWELL_PERIOD_OFFSET];
-        buoy.WindWavePeriod = data[baseOffset+WIND_WAVE_PERIOD_OFFSET];
+        buoy.swellPeriod = data[baseOffset+SWELL_PERIOD_OFFSET];
+        buoy.windWavePeriod = data[baseOffset+WIND_WAVE_PERIOD_OFFSET];
 
         // Directions
-        buoy.SwellDirection = data[baseOffset+SWELL_DIRECTION_OFFSET];
-        buoy.WindWaveDirection = data[baseOffset+WIND_WAVE_DIRECTION_OFFSET];
+        buoy.swellDirection = data[baseOffset+SWELL_DIRECTION_OFFSET];
+        buoy.windWaveDirection = data[baseOffset+WIND_WAVE_DIRECTION_OFFSET];
 
         return true;
     }

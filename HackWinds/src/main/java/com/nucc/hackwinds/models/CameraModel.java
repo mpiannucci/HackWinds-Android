@@ -1,8 +1,6 @@
 package com.nucc.hackwinds.models;
 
 
-import android.util.Log;
-
 import com.nucc.hackwinds.types.Camera;
 import com.nucc.hackwinds.utilities.ServiceHandler;
 
@@ -77,13 +75,13 @@ public class CameraModel {
                     if ( cameraName.equals( "Point Judith" ) ) {
                         thisCamera = fetchPointJudithURLS( thisCameraObject.getString( "Info" ) );
                     } else {
-                        thisCamera.VideoURL = thisCameraObject.getString( "Video" );
+                        thisCamera.videoURL = thisCameraObject.getString( "Video" );
                     }
 
                     // For now everything else is common
-                    thisCamera.ImageURL = thisCameraObject.getString( "Image" );
-                    thisCamera.Refreshable = thisCameraObject.getBoolean( "Refreshable" );
-                    thisCamera.RefreshInterval = Integer.valueOf( thisCameraObject.getString( "RefreshInterval" ) );
+                    thisCamera.imageURL = thisCameraObject.getString( "Image" );
+                    thisCamera.refreshable = thisCameraObject.getBoolean( "Refreshable" );
+                    thisCamera.refreshInterval = Integer.valueOf( thisCameraObject.getString( "RefreshInterval" ) );
 
                     cameraLocations.get( locationName ).put( cameraName, thisCamera );
                     cameraKeys.get( locationCount ).add( cameraName );
@@ -116,9 +114,9 @@ public class CameraModel {
             JSONObject pjStreamData = ( JSONObject )pjResp.getJSONObject( "streamInfo" ).getJSONArray( "stream" ).get( 0 );
 
             // Rip the json data into the camera object
-            pjCamera.VideoURL = pjStreamData.getString( "file" );
-            pjCamera.Info =
-                String.format( "Camera Status: %s\nDate: %s\nTime: %s\n If the video does not play, the camrea may be down. It is a daily upload during the summer and it becomes unavailable each evening.",
+            pjCamera.videoURL = pjStreamData.getString( "file" );
+            pjCamera.info =
+                String.format( "Camera Status: %s\nDate: %s\ntime: %s\n If the video does not play, the camrea may be down. It is a daily upload during the summer and it becomes unavailable each evening.",
                                pjStreamData.getString( "camStatus" ),
                                pjStreamData.getString( "reportDate" ),
                                pjStreamData.getString( "reportTime" ) );
