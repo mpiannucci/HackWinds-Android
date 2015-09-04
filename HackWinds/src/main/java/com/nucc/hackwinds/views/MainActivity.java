@@ -57,6 +57,23 @@ public class MainActivity extends ActionBarActivity {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         sharedPrefs.edit().putString(SettingsActivity.BUOY_LOCATION_KEY, BuoyModel.BLOCK_ISLAND_LOCATION).apply();
 
+        // Create a listener so the user can update the location from the settings
+        mSharedPrefsChangedListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+            @Override
+            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+                if ( !key.equals( SettingsActivity.FORECAST_LOCATION_KEY ) ) {
+                    return;
+                }
+
+                int currentPage = pager.getCurrentItem();
+                String currentPageTitle = String.valueOf(mAdapter.getPageTitle(currentPage));
+                if (currentPageTitle.equals("LIVE") || currentPageTitle.equals("FORECAST")) {
+                    setSpinnerForecastLocation();
+                }
+            }
+        };
+        sharedPrefs.registerOnSharedPreferenceChangeListener(mSharedPrefsChangedListener);
+
         // Set up the spinner locations
         initLocationArrays();
         mLocationAdapter = new LocationArrayAdapter(this, mForecastLocations);
