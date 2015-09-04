@@ -148,6 +148,11 @@ public class BuoyModel {
         return mCurrentContainer.WaveHeights;
     }
 
+    public String getSpectraPlotURL() {
+        final String BASE_SPECTRA_PLOT_URL = "http://www.ndbc.noaa.gov/spec_plot.php?station=%d";
+        return String.format(BASE_SPECTRA_PLOT_URL, mCurrentContainer.BuoyID);
+    }
+
     private String[] retrieveBuoyData(Boolean detailed) {
         final String BASE_DATA_URL = "http://www.ndbc.noaa.gov/data/realtime2/%d%s";
         final String SUMMARY_URL_SUFFIX = ".txt";
@@ -220,19 +225,31 @@ public class BuoyModel {
         }
 
         // Set the period and wind direction values
-        buoy.DominantPeriod = data[baseOffset+DPD_OFFSET];
+        String period = data[baseOffset+DPD_OFFSET];
+        if (period.equals("MM")) {
+            period = "NULL";
+        }
+        buoy.DominantPeriod = period;
         buoy.MeanDirection = data[baseOffset+DIRECTION_OFFSET];
 
         // Convert and set the wave height
         String wv = data[baseOffset+WVHT_OFFSET];
-        buoy.SignificantWaveHeight = String.format("%4.2f", convertMeterToFoot(Double.valueOf(wv)));
+        try {
+            buoy.SignificantWaveHeight = String.format("%4.2f", convertMeterToFoot(Double.valueOf(wv)));
+        } catch (Exception e) {
+            buoy.SignificantWaveHeight = "NULL";
+        }
 
         // Convert the water temperature to fahrenheit and set it
         String waterTemp = data[baseOffset + TEMPERATURE_OFFSET];
-        double rawTemp = Double.valueOf(waterTemp);
-        double fahrenheitTemp = ((rawTemp * (9.0 / 5.0) + 32.0) / 0.05) * 0.05;
-        waterTemp = String.format("%4.2f", fahrenheitTemp);
-        buoy.WaterTemperature = waterTemp;
+        try {
+            double rawTemp = Double.valueOf(waterTemp);
+            double fahrenheitTemp = ((rawTemp * (9.0 / 5.0) + 32.0) / 0.05) * 0.05;
+            waterTemp = String.format("%4.2f", fahrenheitTemp);
+            buoy.WaterTemperature = waterTemp;
+        } catch (Exception e) {
+            buoy.WaterTemperature = "NULL";
+        }
 
         return true;
     }

@@ -6,6 +6,24 @@
     -->
 
     <!-- Styles for individual views go here -->
+    <style name="ToolbarAppTitle">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">sans-serif-bold</item>
+    </style>
+
+    <style name="ToolbarLocationSubtitle">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+
+    <style name="LocationSpinnerText">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+
     <style name="HeaderText">
         <item name="android:textColor">@color/numix_grey</item>
         <item name="android:textSize">40sp</item>

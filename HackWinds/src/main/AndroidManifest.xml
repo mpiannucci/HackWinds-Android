@@ -52,8 +52,18 @@
                 android:value=".views.MainActivity" />
         </activity>
         <activity
+            android:name=".views.AdditionBuoyPlotsActivity"
+            android:label="@string/title_activity_alternate_cameras"
+            android:parentActivityName=".views.MainActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/Theme.HackWindsMaterial">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".views.MainActivity" />
+        </activity>
+        <activity
             android:name="com.nucc.hackwinds.views.VideoPlayerActivity"
-            android:label="@string/title_activity_video_player"
+            android:label="@string/title_activity_additional_buoy_plots"
             android:theme="@style/Theme.HackWindsMaterial"
             android:configChanges="orientation|screenSize">
         </activity>

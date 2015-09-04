@@ -11,6 +11,7 @@
     <string name="action_tide">Tide</string>
     <string name="action_pics">Still Camera</string>
     <string name="action_alt_cameras">Alternate Cameras</string>
+    <string name="action_buoy_plots">Additional Plots</string>
 
     <!-- Overview Page -->
     <string name="break_header">Waves</string>
@@ -67,7 +68,7 @@
         the waves easier for surfers when using a phone. I am specifically operating within the user licensing
         for the MagicSeaweed and Wunderground API\'s.</string>
 
-    <!-- Detailed Forecast Page -->
+    <!-- Detailed Forecast activity -->
     <string name="title_activity_detailed_forecast">DetailedForecastActivity</string>
     <string name="detailed_forecast_toolbar_title_holder">Weekday</string>
     <string name="swell_chart_segment">Swell</string>
@@ -82,5 +83,8 @@
 
     <!-- Video player activity -->
     <string name="title_activity_video_player">Video Player</string>
+
+    <!-- Additional Buoy Plots activity -->
+    <string name="title_activity_additional_buoy_plots">Additional Plots</string>
 
 </resources>

@@ -1,5 +1,6 @@
 package com.nucc.hackwinds.views;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -10,15 +11,20 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.nucc.hackwinds.R;
+import com.nucc.hackwinds.types.Buoy;
 import com.nucc.hackwinds.types.Tide;
 import com.nucc.hackwinds.models.BuoyModel;
 import com.nucc.hackwinds.models.TideModel;
 import com.nucc.hackwinds.utilities.ReachabilityHelper;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 
 public class TideFragment extends Fragment {
     private TideModel mTideModel;
     private BuoyModel mBuoyModel;
+    private String mBIWaterTemp;
 
     final private int[] mTideTypeViews = new int[]{R.id.upcomingTideType1,
                                                    R.id.upcomingTideType2,
@@ -76,11 +82,11 @@ public class TideFragment extends Fragment {
                     if (thisTide.isHighTide()) {
                         // Tide is incoming
                         currentTextView.setText("Incoming");
-                        currentTextView.setTextColor(Color.GREEN);
+                        currentTextView.setTextColor(Color.parseColor("#009933"));
                     } else {
                         // Assume low time so outgoing
                         currentTextView.setText("Outgoing");
-                        currentTextView.setTextColor(Color.RED);
+                        currentTextView.setTextColor(Color.parseColor("#D60000"));
                     }
                 }
 
@@ -90,7 +96,7 @@ public class TideFragment extends Fragment {
         // Update the water temperature from the latest buoy reading
         TextView biWaterTemp = (TextView) getActivity().findViewById(R.id.water_temp_value);
         if (mBuoyModel.getBuoyData().size() > 0) {
-            String waterTempValue = mBuoyModel.getBuoyData().get(0).WaterTemperature + " " + getResources().getString(R.string.water_temp_holder);
+            String waterTempValue = mBIWaterTemp + " " + getResources().getString(R.string.water_temp_holder);
             biWaterTemp.setText(waterTempValue);
         }
     }
@@ -101,7 +107,15 @@ public class TideFragment extends Fragment {
         protected Void doInBackground(Void... arg0) {
             // Get the values using the model and parse the data
             mTideModel.fetchTideData();
+
+            // TODO: Make sure the water temperature is for Block Island
+
+            // Fetch the water temperature from the block island buoy
             mBuoyModel.fetchBuoyData();
+
+            // Save the temperature and change the buoy location back to its original place
+            final ArrayList<Buoy> buoyData = mBuoyModel.getBuoyData();
+            mBIWaterTemp = buoyData.get(0).WaterTemperature;
 
             // Return
             return null;

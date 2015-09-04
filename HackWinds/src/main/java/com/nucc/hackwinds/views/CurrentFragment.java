@@ -3,12 +3,16 @@ package com.nucc.hackwinds.views;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -40,6 +44,9 @@ public class CurrentFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Setup the menu
+        setHasOptionsMenu(true);
 
         if (!ReachabilityHelper.deviceHasInternetAccess(getActivity())) {
             // Alert the user they need the network and close the app on completion
@@ -141,6 +148,23 @@ public class CurrentFragment extends ListFragment {
 
         // Clean up the video playing
         finishedWithVideo();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+        menuInflater.inflate(R.menu.live_menu_options, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_alt_cameras:
+                startActivity(new Intent(getActivity(), AlternateCameraActivity.class));
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+        return true;
     }
 
     private void finishedWithVideo() {

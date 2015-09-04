@@ -1,9 +1,13 @@
 package com.nucc.hackwinds.views;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioButton;
@@ -23,12 +27,14 @@ public class BuoyFragment extends ListFragment {
     // Member variables
     private BuoyModel mBuoyModel;
     private BuoyArrayAdapter mBuoyArrayAdapter;
-    private String mLocation = BuoyModel.BLOCK_ISLAND_LOCATION;
     private BuoyChangedListener mBuoyChangedListener;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Set up the menu options
+        setHasOptionsMenu(true);
 
         if (ReachabilityHelper.deviceHasInternetAccess(getActivity())) {
             // Get the buoy model
@@ -70,6 +76,23 @@ public class BuoyFragment extends ListFragment {
             }
         });
         return V;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+        menuInflater.inflate(R.menu.buoy_menu_options, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_buoy_plots:
+                startActivity(new Intent(getActivity(), AdditionBuoyPlotsActivity.class));
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+        return true;
     }
 
     public class FetchBuoyDataTask extends AsyncTask<Void, Void, Void> {

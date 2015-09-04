@@ -2,15 +2,10 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_alt_cameras"
-        android:icon="@drawable/action_camera_refresh"
-        android:title="@string/action_alt_cameras"
-        app:showAsAction="always" />
-
-    <item
         android:id="@+id/action_settings"
         android:icon="@drawable/action_settings"
         android:title="@string/action_settings"
-        app:showAsAction="always" />
+        app:showAsAction="always"
+        android:menuCategory="system"/>
 
  </menu>

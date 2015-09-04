@@ -144,9 +144,6 @@ public class MainActivity extends ActionBarActivity {
             case R.id.action_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
                 break;
-            case R.id.action_alt_cameras:
-                startActivity(new Intent(this, AlternateCameraActivity.class));
-                break;
             default:
                 return super.onOptionsItemSelected(item);
         }
