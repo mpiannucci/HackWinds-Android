@@ -35,6 +35,7 @@ public class ConditionArrayAdapter extends ArrayAdapter<Condition> {
 
     public void setConditonData(ArrayList<Condition> newValues) {
         this.values = newValues;
+        this.notifyDataSetChanged();
     }
 
     @Override

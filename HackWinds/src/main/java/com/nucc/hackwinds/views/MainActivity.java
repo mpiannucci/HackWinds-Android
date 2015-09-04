@@ -1,8 +1,6 @@
 package com.nucc.hackwinds.views;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Locale;
 
 import android.content.SharedPreferences;
@@ -13,7 +11,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v7.widget.Toolbar;
@@ -25,6 +22,8 @@ import android.widget.Spinner;
 import com.astuetz.PagerSlidingTabStrip;
 import com.nucc.hackwinds.R;
 import com.nucc.hackwinds.adapters.LocationArrayAdapter;
+import com.nucc.hackwinds.models.BuoyModel;
+import com.nucc.hackwinds.models.ForecastModel;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 public class MainActivity extends ActionBarActivity {
@@ -40,6 +39,8 @@ public class MainActivity extends ActionBarActivity {
     private ArrayList<String> mForecastLocations;
     private ArrayList<String> mBuoyLocations;
     private ArrayList<String> mTideLocation;
+    private SharedPreferences.OnSharedPreferenceChangeListener mSharedPrefsChangedListener;
+    private boolean initialPageLoad = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,17 +53,28 @@ public class MainActivity extends ActionBarActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(false);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        // SharedPreference setup, always set the buoys to start at block island
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        sharedPrefs.edit().putString(SettingsActivity.BUOY_LOCATION_KEY, BuoyModel.BLOCK_ISLAND_LOCATION).apply();
+
         // Set up the spinner locations
         initLocationArrays();
         mLocationAdapter = new LocationArrayAdapter(this, mForecastLocations);
         mLocationSpinner = (Spinner) findViewById(R.id.navigation_spinner);
         mLocationSpinner.setAdapter(mLocationAdapter);
+        setSpinnerForecastLocation();
         mLocationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (initialPageLoad) {
+                    initialPageLoad = false;
+                    return;
+                }
+
                 String prefKey;
                 final String currentPageTitle = String.valueOf(mAdapter.getPageTitle(pager.getCurrentItem()));
-                if (currentPageTitle.equals("FORECAST")) {
+                if (currentPageTitle.equals("FORECAST") || currentPageTitle.equals("LIVE")) {
                     prefKey = SettingsActivity.FORECAST_LOCATION_KEY;
                 } else if (currentPageTitle.equals("BUOYS")) {
                     prefKey = SettingsActivity.BUOY_LOCATION_KEY;
@@ -108,12 +120,15 @@ public class MainActivity extends ActionBarActivity {
                 if (title.equals("LIVE") || title.equals("FORECAST")) {
                     mLocationAdapter.changeLocations(mForecastLocations);
                     mLocationAdapter.notifyDataSetChanged();
+                    setSpinnerForecastLocation();
                 } else if (title.equals("BUOYS")) {
                     mLocationAdapter.changeLocations(mBuoyLocations);
                     mLocationAdapter.notifyDataSetChanged();
+                    setSpinnerBuoyLocation();
                 } else if (title.equals("TIDE")) {
                     mLocationAdapter.changeLocations(mTideLocation);
                     mLocationAdapter.notifyDataSetChanged();
+                    mLocationSpinner.setSelection(0);
                 }
             }
 
@@ -164,6 +179,36 @@ public class MainActivity extends ActionBarActivity {
 
         mTideLocation = new ArrayList<>();
         mTideLocation.add("Point Judith Harbor");
+    }
+
+    public void setSpinnerForecastLocation() {
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String forecastLocation = sharedPrefs.getString(SettingsActivity.FORECAST_LOCATION_KEY, ForecastModel.TOWN_BEACH_LOCATION);
+        int index = 0;
+        for (int i = 0; i < mLocationSpinner.getCount(); i++) {
+            if (mLocationSpinner.getItemAtPosition(i).equals(forecastLocation)){
+                index = i;
+                break;
+            }
+        }
+
+        // Set the spinner to the correct index
+        mLocationSpinner.setSelection(index);
+    }
+
+    public void setSpinnerBuoyLocation() {
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String buoyLocation = sharedPrefs.getString(SettingsActivity.BUOY_LOCATION_KEY, BuoyModel.BLOCK_ISLAND_LOCATION);
+        int index = 0;
+        for (int i = 0; i < mLocationSpinner.getCount(); i++) {
+            if (mLocationSpinner.getItemAtPosition(i).equals(buoyLocation)){
+                index = i;
+                break;
+            }
+        }
+
+        // Set the spinner to the correct index
+        mLocationSpinner.setSelection(index);
     }
 
     public class MainPagerAdapter extends FragmentPagerAdapter {
