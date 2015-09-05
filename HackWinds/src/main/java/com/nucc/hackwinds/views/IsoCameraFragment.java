@@ -148,7 +148,9 @@ public class IsoCameraFragment extends Fragment {
         mLocationName = location;
         mCameraName = camera;
 
-        mCamera = CameraModel.getInstance(getActivity().getApplicationContext()).cameraLocations.get(mLocationName).get(mCameraName);
+        // Calling this ona  null object reference is fine because the camera model already needs to have
+        // a context
+        mCamera = CameraModel.getInstance(null).cameraLocations.get(mLocationName).get(mCameraName);
         mAutoRefresh = mCamera.refreshable;
     }
 
