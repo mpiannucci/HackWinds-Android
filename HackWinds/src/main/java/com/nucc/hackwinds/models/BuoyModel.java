@@ -5,10 +5,10 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.text.format.DateFormat;
 
+import com.koushikdutta.ion.Ion;
 import com.nucc.hackwinds.listeners.BuoyChangedListener;
 import com.nucc.hackwinds.types.Buoy;
 import com.nucc.hackwinds.types.BuoyDataContainer;
-import com.nucc.hackwinds.utilities.ServiceHandler;
 import com.nucc.hackwinds.views.SettingsActivity;
 
 import java.util.ArrayList;
@@ -164,9 +164,12 @@ public class BuoyModel {
         }
 
         // Fetch and split the data
-        ServiceHandler sh = new ServiceHandler();
-        String rawData = sh.makeServiceCall(dataURL, ServiceHandler.GET);
-        return rawData.split("\\s+");
+        try {
+            String rawData = Ion.with(mContext).load(dataURL).asString().get();
+            return rawData.split("\\s+");
+        } catch (Exception e) {
+            return new String[1];
+        }
     }
 
     private boolean parseBuoyData() {

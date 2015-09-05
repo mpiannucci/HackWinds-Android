@@ -193,7 +193,7 @@ public class CurrentFragment extends ListFragment {
         protected Void doInBackground(Void... arg0) {
             // Get the conditions from the model
             if (mCamera == null) {
-                CameraModel cameraModel = CameraModel.getInstance();
+                CameraModel cameraModel = CameraModel.getInstance(getActivity());
                 cameraModel.fetchCameraURLs();
                 mCamera = cameraModel.cameraLocations.get("Narragansett").get("Warm Winds");
             }

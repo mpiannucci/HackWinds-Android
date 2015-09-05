@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v7.widget.Toolbar;
@@ -26,14 +27,12 @@ import com.nucc.hackwinds.models.BuoyModel;
 import com.nucc.hackwinds.models.ForecastModel;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
-public class MainActivity extends ActionBarActivity {
-    Toolbar toolbar;
-    PagerSlidingTabStrip tabs;
-    ViewPager pager;
-
+public class MainActivity extends AppCompatActivity {
+    private Toolbar mToolbar;
+    private PagerSlidingTabStrip mSlidingTabStrip;
+    private ViewPager mViewPager;
     private MainPagerAdapter mAdapter;
     private SystemBarTintManager mTintManager;
-
     private Spinner mLocationSpinner;
     private LocationArrayAdapter mLocationAdapter;
     private ArrayList<String> mForecastLocations;
@@ -48,8 +47,8 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
         // Get the toolbar and set it as the actionbar
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
@@ -65,7 +64,7 @@ public class MainActivity extends ActionBarActivity {
                     return;
                 }
 
-                int currentPage = pager.getCurrentItem();
+                int currentPage = mViewPager.getCurrentItem();
                 String currentPageTitle = String.valueOf(mAdapter.getPageTitle(currentPage));
                 if (currentPageTitle.equals("LIVE") || currentPageTitle.equals("FORECAST")) {
                     setSpinnerForecastLocation();
@@ -90,7 +89,7 @@ public class MainActivity extends ActionBarActivity {
                 }
 
                 String prefKey;
-                final String currentPageTitle = String.valueOf(mAdapter.getPageTitle(pager.getCurrentItem()));
+                final String currentPageTitle = String.valueOf(mAdapter.getPageTitle(mViewPager.getCurrentItem()));
                 if (currentPageTitle.equals("FORECAST") || currentPageTitle.equals("LIVE")) {
                     prefKey = SettingsActivity.FORECAST_LOCATION_KEY;
                 } else if (currentPageTitle.equals("BUOYS")) {
@@ -117,13 +116,13 @@ public class MainActivity extends ActionBarActivity {
         mTintManager.setStatusBarTintEnabled(true);
 
         // Create and set the new pager adapter
-        pager = (ViewPager) findViewById(R.id.pager);
-        tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+        mViewPager = (ViewPager) findViewById(R.id.pager);
+        mSlidingTabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         mAdapter = new MainPagerAdapter(getSupportFragmentManager());
-        pager.setAdapter(mAdapter);
-        tabs.setViewPager(pager);
+        mViewPager.setAdapter(mAdapter);
+        mSlidingTabStrip.setViewPager(mViewPager);
 
-        tabs.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        mSlidingTabStrip.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -156,12 +155,12 @@ public class MainActivity extends ActionBarActivity {
         });
 
         // Set the background color of the tab strip, status bar, and action bar
-        tabs.setBackgroundColor(getResources().getColor(R.color.hackwinds_blue));
+        mSlidingTabStrip.setBackgroundColor(getResources().getColor(R.color.hackwinds_blue));
         mTintManager.setStatusBarTintColor(getResources().getColor(R.color.hackwinds_blue));
-        toolbar.setBackgroundColor(getResources().getColor(R.color.hackwinds_blue));
+        mToolbar.setBackgroundColor(getResources().getColor(R.color.hackwinds_blue));
 
         // Set the toolbar Icon
-        toolbar.setNavigationIcon(R.drawable.ic_launcher);
+        mToolbar.setNavigationIcon(R.drawable.ic_launcher);
     }
 
     @Override

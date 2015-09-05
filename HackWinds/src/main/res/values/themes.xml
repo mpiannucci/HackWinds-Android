@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.HackWindsMaterial" parent="Theme.AppCompat.Light">
-        <item name="windowActionBar">false</item>
+    <style name="Theme.HackWindsMaterial" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/hackwinds_blue</item>
         <item name="colorPrimaryDark">@color/icon_blue</item>
         <item name="android:textColorPrimary">@color/white</item>
     </style>
 
-    <style name="Theme.HackWindsMaterialSettings" parent="Theme.AppCompat.Light">
-        <item name="windowActionBar">false</item>
+    <style name="Theme.HackWindsMaterialSettings" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/hackwinds_blue</item>
         <item name="colorPrimaryDark">@color/icon_blue</item>
         <item name="colorAccent">@color/icon_blue</item>

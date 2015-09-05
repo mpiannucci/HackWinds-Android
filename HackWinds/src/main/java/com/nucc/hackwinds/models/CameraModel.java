@@ -1,8 +1,10 @@
 package com.nucc.hackwinds.models;
 
 
+import android.content.Context;
+
+import com.koushikdutta.ion.Ion;
 import com.nucc.hackwinds.types.Camera;
-import com.nucc.hackwinds.utilities.ServiceHandler;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,17 +26,19 @@ public class CameraModel {
     public int locationCount;
 
     private static CameraModel mInstance;
+    private Context mContext;
     private boolean mForceReload;
 
-    public static CameraModel getInstance() {
+    public static CameraModel getInstance(Context ctx) {
         if ( mInstance == null ) {
-            mInstance = new CameraModel();
+            mInstance = new CameraModel(ctx);
         }
         return mInstance;
     }
 
-    private CameraModel() {
+    private CameraModel(Context ctx) {
         // Initialize the context
+        mContext = ctx;
         mForceReload = true;
         cameraLocations = new HashMap<>();
         locationKeys = new ArrayList<>();
@@ -48,8 +52,12 @@ public class CameraModel {
             return true;
         }
 
-        ServiceHandler sh = new ServiceHandler();
-        String rawData = sh.makeServiceCall( HACKWINDS_API_URL, ServiceHandler.GET );
+        String rawData;
+        try {
+            rawData = Ion.with(mContext).load(HACKWINDS_API_URL).asString().get();
+        } catch(Exception e) {
+            return false;
+        }
 
         try {
             JSONObject jsonResp = new JSONObject( rawData );
@@ -108,8 +116,7 @@ public class CameraModel {
 
         try {
             // Get the point judith camera data from Surfline
-            ServiceHandler sh = new ServiceHandler();
-            String rawPJData = sh.makeServiceCall( pjURL, ServiceHandler.GET );
+            String rawPJData = Ion.with(mContext).load(pjURL).asString().get();
             JSONObject pjResp = new JSONObject( rawPJData );
             JSONObject pjStreamData = ( JSONObject )pjResp.getJSONObject( "streamInfo" ).getJSONArray( "stream" ).get( 0 );
 
@@ -121,7 +128,7 @@ public class CameraModel {
                                pjStreamData.getString( "reportDate" ),
                                pjStreamData.getString( "reportTime" ) );
 
-        } catch ( JSONException e ) {
+        } catch ( Exception e ) {
             e.printStackTrace();
         }
 

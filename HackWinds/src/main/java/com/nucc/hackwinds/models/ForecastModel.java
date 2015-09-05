@@ -4,12 +4,11 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.content.Context;
 
+import com.koushikdutta.ion.Ion;
 import com.nucc.hackwinds.types.Condition;
 import com.nucc.hackwinds.types.Forecast;
 import com.nucc.hackwinds.listeners.ForecastChangedListener;
-import com.nucc.hackwinds.R;
 import com.nucc.hackwinds.types.ForecastDataContainer;
-import com.nucc.hackwinds.utilities.ServiceHandler;
 import com.nucc.hackwinds.views.SettingsActivity;
 
 import org.json.JSONArray;
@@ -148,8 +147,11 @@ public class ForecastModel {
         String dataURL = String.format(BASE_DATA_URL, mCurrentContainer.forecastID);
 
         // Fetch and return the data
-        ServiceHandler sh = new ServiceHandler();
-        return sh.makeServiceCall( dataURL, ServiceHandler.GET );
+        try {
+            return Ion.with(mContext).load(dataURL).asString().get();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     private boolean parseForecasts() {
