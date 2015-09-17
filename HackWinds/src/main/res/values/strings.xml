@@ -29,6 +29,7 @@
     <string name="morning_header">Morning</string>
     <string name="afternoon_header">Afternoon</string>
     <string name="loading_text">Loading...</string>
+    <string name="action_model_forecast">View Model</string>
 
     <!-- Buoy Page -->
     <string name="summary_mode_segment_title">Summary</string>

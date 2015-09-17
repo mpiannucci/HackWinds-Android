@@ -5,6 +5,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
@@ -27,6 +30,9 @@ public class ForecastFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Setup the menu
+        setHasOptionsMenu(true);
 
         if (ReachabilityHelper.deviceHasInternetAccess(getActivity())) {
             // Initialize forecast model
@@ -53,6 +59,24 @@ public class ForecastFragment extends ListFragment {
         View V = inflater.inflate(R.layout.forecast_fragment, container, false);
 
         return V;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+        menuInflater.inflate(R.menu.forecast_menu_options, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_model_forecast:
+                // TODO: Launch Model activity
+                // startActivity(new Intent(getActivity(), AlternateCameraActivity.class));
+                //break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+        //return true;
     }
 
     @Override

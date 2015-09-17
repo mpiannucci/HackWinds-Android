@@ -3,7 +3,7 @@
 
     <item
         android:id="@+id/action_settings"
-        android:icon="@drawable/action_settings"
+        android:icon="@drawable/ic_settings_white_48dp"
         android:title="@string/action_settings"
         app:showAsAction="always"
         android:menuCategory="system"/>
