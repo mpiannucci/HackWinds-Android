@@ -48,62 +48,65 @@ public class CameraModel {
     }
 
     public boolean fetchCameraURLs() {
-        if ( !mForceReload ) {
+
+        synchronized (this) {
+            if (!mForceReload) {
+                return true;
+            }
+
+            String rawData;
+            try {
+                rawData = Ion.with(mContext).load(HACKWINDS_API_URL).asString().get();
+            } catch (Exception e) {
+                return false;
+            }
+
+            try {
+                JSONObject jsonResp = new JSONObject(rawData);
+                JSONObject cameraObject = jsonResp.getJSONObject("camera_locations");
+
+                Iterator<String> locationIterator = cameraObject.keys();
+                while (locationIterator.hasNext()) {
+                    String locationName = locationIterator.next();
+                    cameraLocations.put(locationName, new HashMap<String, Camera>());
+                    locationKeys.add(locationName);
+                    cameraKeys.add(new ArrayList<String>());
+
+                    JSONObject locationObject = cameraObject.getJSONObject(locationName);
+                    Iterator<String> cameraIterator = locationObject.keys();
+                    while (cameraIterator.hasNext()) {
+                        String cameraName = cameraIterator.next();
+                        JSONObject thisCameraObject = locationObject.getJSONObject(cameraName);
+
+                        // Create the new camera object for the camera
+                        Camera thisCamera = new Camera();
+
+                        // If its point judith then do some magic
+                        if (cameraName.equals("Point Judith")) {
+                            thisCamera = fetchPointJudithURLS(thisCameraObject.getString("Info"));
+                        } else {
+                            thisCamera.videoURL = thisCameraObject.getString("Video");
+                        }
+
+                        // For now everything else is common
+                        thisCamera.imageURL = thisCameraObject.getString("Image");
+                        thisCamera.refreshable = thisCameraObject.getBoolean("Refreshable");
+                        thisCamera.refreshInterval = Integer.valueOf(thisCameraObject.getString("RefreshInterval"));
+
+                        cameraLocations.get(locationName).put(cameraName, thisCamera);
+                        cameraKeys.get(locationCount).add(cameraName);
+                        cameraCount++;
+                    }
+                    locationCount++;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return false;
+            }
+
+            mForceReload = false;
             return true;
         }
-
-        String rawData;
-        try {
-            rawData = Ion.with(mContext).load(HACKWINDS_API_URL).asString().get();
-        } catch(Exception e) {
-            return false;
-        }
-
-        try {
-            JSONObject jsonResp = new JSONObject( rawData );
-            JSONObject cameraObject = jsonResp.getJSONObject( "camera_locations" );
-
-            Iterator<String> locationIterator = cameraObject.keys();
-            while ( locationIterator.hasNext() ) {
-                String locationName = locationIterator.next();
-                cameraLocations.put( locationName, new HashMap<String, Camera>() );
-                locationKeys.add( locationName );
-                cameraKeys.add( new ArrayList<String>() );
-
-                JSONObject locationObject = cameraObject.getJSONObject( locationName );
-                Iterator<String> cameraIterator = locationObject.keys();
-                while ( cameraIterator.hasNext() ) {
-                    String cameraName = cameraIterator.next();
-                    JSONObject thisCameraObject = locationObject.getJSONObject( cameraName );
-
-                    // Create the new camera object for the camera
-                    Camera thisCamera = new Camera();
-
-                    // If its point judith then do some magic
-                    if ( cameraName.equals( "Point Judith" ) ) {
-                        thisCamera = fetchPointJudithURLS( thisCameraObject.getString( "Info" ) );
-                    } else {
-                        thisCamera.videoURL = thisCameraObject.getString( "Video" );
-                    }
-
-                    // For now everything else is common
-                    thisCamera.imageURL = thisCameraObject.getString( "Image" );
-                    thisCamera.refreshable = thisCameraObject.getBoolean( "Refreshable" );
-                    thisCamera.refreshInterval = Integer.valueOf( thisCameraObject.getString( "RefreshInterval" ) );
-
-                    cameraLocations.get( locationName ).put( cameraName, thisCamera );
-                    cameraKeys.get( locationCount ).add( cameraName );
-                    cameraCount++;
-                }
-                locationCount++;
-            }
-        } catch ( JSONException e ) {
-            e.printStackTrace();
-            return false;
-        }
-
-        mForceReload = false;
-        return true;
     }
 
     public boolean forceFetchCameraURLs() {

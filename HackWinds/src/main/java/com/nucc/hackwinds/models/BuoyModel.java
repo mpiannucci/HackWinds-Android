@@ -129,11 +129,13 @@ public class BuoyModel {
     }
 
     public boolean fetchBuoyData() {
-        if (mCurrentContainer.buoyData.isEmpty()) {
-            // Parse the received data
-            return parseBuoyData();
-        } else {
-            return true;
+        synchronized (this) {
+            if (mCurrentContainer.buoyData.isEmpty()) {
+                // Parse the received data
+                return parseBuoyData();
+            } else {
+                return true;
+            }
         }
     }
 

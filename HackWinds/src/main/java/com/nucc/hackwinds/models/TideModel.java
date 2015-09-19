@@ -35,12 +35,13 @@ public class TideModel {
     }
 
     public boolean fetchTideData() {
-        // Check if there is already data read in
-        if (tides.isEmpty()) {
-            // Parse the tide data
-            return parseTideData();
-        } else {
-            return true;
+        synchronized (this) {
+            if (tides.isEmpty()) {
+                // Parse the tide data
+                return parseTideData();
+            } else {
+                return true;
+            }
         }
     }
 

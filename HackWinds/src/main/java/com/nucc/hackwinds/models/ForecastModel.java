@@ -119,10 +119,12 @@ public class ForecastModel {
     }
 
     public boolean fetchForecastData() {
-        if (mCurrentContainer.conditions.isEmpty()) {
-            return parseForecasts();
-        } else {
-            return true;
+        synchronized (this) {
+            if (mCurrentContainer.conditions.isEmpty()) {
+                return parseForecasts();
+            } else {
+                return true;
+            }
         }
     }
 
