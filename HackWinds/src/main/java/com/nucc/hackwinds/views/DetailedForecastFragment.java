@@ -117,12 +117,12 @@ public class DetailedForecastFragment extends ListFragment implements SegmentedG
                 if (nFrames == 1) {
                     // Set the chart preview image as bitmap that was just received
                     ImageView chartImage = (ImageView) getActivity().findViewById(R.id.chartImage);
-                    chartImage.setBackground(chartFrame);
+                    chartImage.setImageDrawable(chartFrame);
 
                 } else if (nFrames == 6) {
                     // Set the animation drawable as the imageview background
                     ImageView chartImage = (ImageView) getActivity().findViewById(R.id.chartImage);
-                    chartImage.setBackground(mChartAnimation);
+                    chartImage.setImageDrawable(mChartAnimation);
 
                     // Show the play button
                     ImageView playButton = (ImageView) getActivity().findViewById(R.id.animatePlayButton);

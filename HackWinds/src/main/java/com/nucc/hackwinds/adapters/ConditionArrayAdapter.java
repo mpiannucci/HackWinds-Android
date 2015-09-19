@@ -68,7 +68,7 @@ public class ConditionArrayAdapter extends ArrayAdapter<Condition> {
 
         if (position < 1) {
             // If its the first item, set the textviews to the headers
-            holder.dateTV.setText("time");
+            holder.dateTV.setText("Time");
             holder.breakTV.setText("Waves");
             holder.windTV.setText("Wind");
             holder.swellTV.setText("Swell");
