@@ -13,7 +13,7 @@ import com.koushikdutta.ion.Ion;
 import com.nucc.hackwinds.R;
 import com.nucc.hackwinds.models.BuoyModel;
 
-public class AdditionBuoyPlotsActivity extends AppCompatActivity {
+public class AdditionalBuoyPlotsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

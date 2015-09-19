@@ -4,7 +4,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.nucc.hackwinds.views.AdditionBuoyPlotsActivity">
+    tools:context="com.nucc.hackwinds.views.AdditionalBuoyPlotsActivity">
 
     <android.support.v7.widget.Toolbar
         xmlns:android="http://schemas.android.com/apk/res/android"

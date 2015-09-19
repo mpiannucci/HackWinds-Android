@@ -13,9 +13,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class TideModel {
-    // Set the constants for the data tags and urls
-    final private String WUNDER_URL = "http://api.wunderground.com/api/2e5424aab8c91757/tide/q/RI/Point_Judith.json";
-
     // Member variables
     private static TideModel mInstance;
     public ArrayList<Tide> tides;
@@ -51,6 +48,8 @@ public class TideModel {
     }
 
     private boolean parseTideData() {
+        final String WUNDER_URL = "http://api.wunderground.com/api/2e5424aab8c91757/tide/q/RI/Point_Judith.json";
+
         String rawData;
         try {
             rawData = Ion.with(mContext).load(WUNDER_URL).asString().get();

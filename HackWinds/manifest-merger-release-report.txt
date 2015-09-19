@@ -97,7 +97,7 @@ ADDED from AndroidManifest.xml:44:9
 		ADDED from AndroidManifest.xml:49:13
 	android:name
 		ADDED from AndroidManifest.xml:45:13
-activity#com.nucc.hackwinds.views.AdditionBuoyPlotsActivity
+activity#com.nucc.hackwinds.views.AdditionalBuoyPlotsActivity
 ADDED from AndroidManifest.xml:54:9
 	android:label
 		ADDED from AndroidManifest.xml:56:13

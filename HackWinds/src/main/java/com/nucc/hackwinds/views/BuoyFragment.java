@@ -87,7 +87,7 @@ public class BuoyFragment extends ListFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_buoy_plots:
-                startActivity(new Intent(getActivity(), AdditionBuoyPlotsActivity.class));
+                startActivity(new Intent(getActivity(), AdditionalBuoyPlotsActivity.class));
                 break;
             default:
                 return super.onOptionsItemSelected(item);
