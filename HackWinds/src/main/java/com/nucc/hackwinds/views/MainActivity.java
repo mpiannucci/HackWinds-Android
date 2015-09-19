@@ -10,7 +10,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -49,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
         // Get the toolbar and set it as the actionbar
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayShowHomeEnabled(false);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         // SharedPreference setup, always set the buoys to start at block island
@@ -159,8 +157,6 @@ public class MainActivity extends AppCompatActivity {
         mTintManager.setStatusBarTintColor(getResources().getColor(R.color.hackwinds_blue));
         mToolbar.setBackgroundColor(getResources().getColor(R.color.hackwinds_blue));
 
-        // Set the toolbar Icon
-        mToolbar.setNavigationIcon(R.drawable.ic_launcher);
     }
 
     @Override

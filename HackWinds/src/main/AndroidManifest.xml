@@ -62,6 +62,16 @@
                 android:value=".views.MainActivity" />
         </activity>
         <activity
+            android:name="com.nucc.hackwinds.views.WaveWatchChartActivity"
+            android:label="@string/title_activity_wavewatch_chart"
+            android:parentActivityName=".views.MainActivity"
+            android:theme="@style/Theme.HackWindsMaterial"
+            android:configChanges="orientation|screenSize">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".views.MainActivity" />
+        </activity>
+        <activity
             android:name="com.nucc.hackwinds.views.VideoPlayerActivity"
             android:label="@string/title_activity_additional_buoy_plots"
             android:theme="@style/Theme.HackWindsMaterial"

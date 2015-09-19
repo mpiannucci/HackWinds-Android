@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -60,12 +61,12 @@ public class BuoyFragment extends ListFragment {
         View V = inflater.inflate(R.layout.buoy_fragment, container, false);
 
         // Set the segment control to block island
-        RadioButton biButton = (RadioButton) V.findViewById(R.id.buoy_summary_mode_segment_button);
-        biButton.setChecked(true);
+        RadioButton summaryButton = (RadioButton) V.findViewById(R.id.buoy_summary_mode_segment_button);
+        summaryButton.setChecked(true);
 
         // Set the tint of the segment control
-        SegmentedGroup locationGroup = (SegmentedGroup) V.findViewById(R.id.segmentedBuoyGroup);
-        locationGroup.setTintColor(getResources().getColor(R.color.hackwinds_blue));
+        SegmentedGroup locationGroup = (SegmentedGroup) V.findViewById(R.id.buoy_segmented_group);
+        locationGroup.setTintColor(ContextCompat.getColor(getActivity(), R.color.hackwinds_blue));
 
         // Set the listener for the segment group radio change
         locationGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {

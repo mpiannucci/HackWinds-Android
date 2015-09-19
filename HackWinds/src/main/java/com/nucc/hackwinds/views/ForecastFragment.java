@@ -71,7 +71,7 @@ public class ForecastFragment extends ListFragment {
         switch (item.getItemId()) {
             case R.id.action_model_forecast:
                 // TODO: Launch Model activity
-                // startActivity(new Intent(getActivity(), AlternateCameraActivity.class));
+                startActivity(new Intent(getActivity(), WaveWatchChartActivity.class));
                 //break;
             default:
                 return super.onOptionsItemSelected(item);

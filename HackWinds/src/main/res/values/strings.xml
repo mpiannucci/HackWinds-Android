@@ -32,9 +32,9 @@
     <string name="action_model_forecast">View Model</string>
 
     <!-- Buoy Page -->
-    <string name="summary_mode_segment_title">Summary</string>
-    <string name="swell_mode_segment_title">Swell</string>
-    <string name="wind_mode_segment_title">Wind Wave</string>
+    <string name="buoy_summary_mode_segment_title">Summary</string>
+    <string name="buoy_swell_mode_segment_title">Swell</string>
+    <string name="buoy_wind_mode_segment_title">Wind Wave</string>
 
     <!-- Tide Page -->
     <string name="low_tide">Low Tide</string>
@@ -88,5 +88,12 @@
     <!-- Additional Buoy Plots activity -->
     <string name="title_activity_additional_buoy_plots">Additional Plots</string>
     <string name="spectral_density_title">Spectral Density</string>
+
+    <!-- WaveWatch Charts activity -->
+    <string name="title_activity_wavewatch_chart">NOAA Wave Watch III</string>
+    <string name="wavewatch_wave_height_title">Waves</string>
+    <string name="wavewatch_swell_title">Swell</string>
+    <string name="wavewatch_period_title">Period</string>
+    <string name="wavewatch_wind_title">Wind</string>
 
 </resources>

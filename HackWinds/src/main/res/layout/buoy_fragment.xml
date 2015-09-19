@@ -6,7 +6,7 @@
     android:background="@color/cardview_light_background">
 
     <info.hoang8f.android.segmented.SegmentedGroup
-        android:id="@+id/segmentedBuoyGroup"
+        android:id="@+id/buoy_segmented_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -20,7 +20,7 @@
             android:id="@+id/buoy_summary_mode_segment_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/summary_mode_segment_title"
+            android:text="@string/buoy_summary_mode_segment_title"
             android:layout_weight="1"
             style="@style/RadioButton" />
 
@@ -29,7 +29,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/swell_mode_segment_title"
+            android:text="@string/buoy_swell_mode_segment_title"
             style="@style/RadioButton" />
 
         <RadioButton
@@ -37,7 +37,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/wind_mode_segment_title"
+            android:text="@string/buoy_wind_mode_segment_title"
             style="@style/RadioButton"/>
 
     </info.hoang8f.android.segmented.SegmentedGroup>

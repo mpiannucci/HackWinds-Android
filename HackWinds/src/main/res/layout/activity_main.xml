@@ -12,7 +12,10 @@
         android:id="@+id/toolbar"
         android:theme="@style/Theme.HackWindsMaterial"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:navigationIcon="@drawable/ic_launcher">
 
         <Spinner
             android:id="@+id/navigation_spinner"
