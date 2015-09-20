@@ -1,17 +1,24 @@
 package com.nucc.hackwinds.views;
 
 
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.Image;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
@@ -54,72 +61,10 @@ public class WaveWatchChartActivity extends AppCompatActivity implements Segment
         chartGroup.setTintColor(ContextCompat.getColor(getApplicationContext(), R.color.hackwinds_blue));
         chartGroup.setOnCheckedChangeListener(this);
 
-        // Hide the play button and set the click listener
-        ImageView chartPlayButton = (ImageView) findViewById(R.id.wavewatch_animate_play_button);
-        chartPlayButton.setVisibility(View.GONE);
-        chartPlayButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Hide the play button
-                view.setVisibility(View.GONE);
+        setupChartView();
 
-                // Start the animation
-                mChartAnimation.start();
-            }
-        });
+        setupManualControls();
 
-        // Set clicking the imageview to act as a pause button
-        ImageView chartImage = (ImageView) findViewById(R.id.wavewatch_chart_image);
-        chartImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mChartAnimation.isRunning()) {
-                    // Only call to stop the animation if it is currently running
-                    mChartAnimation.stop();
-
-                    // Show the play button
-                    ImageView playButton = (ImageView) findViewById(R.id.wavewatch_animate_play_button);
-                    playButton.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-
-        // Create the chart animation instance
-        mChartAnimation = new AnimationDrawable();
-
-        // Create chart loading callback
-        mChartLoadCallback = new FutureCallback<Bitmap>() {
-            @Override
-            public void onCompleted(Exception e, Bitmap result) {
-                BitmapDrawable chartFrame = new BitmapDrawable(getResources(), result);
-                mChartAnimation.addFrame(chartFrame, 500);
-
-                int nFrames = mChartAnimation.getNumberOfFrames();
-                if (nFrames == 1) {
-                    // Set the chart preview image as bitmap that was just received
-                    ImageView chartImage = (ImageView) findViewById(R.id.wavewatch_chart_image);
-                    chartImage.setImageDrawable(chartFrame);
-
-                } else if (nFrames == WAVE_WATCH_IMAGE_COUNT) {
-                    // Set the animation drawable as the imageview background
-                    ImageView chartImage = (ImageView) findViewById(R.id.wavewatch_chart_image);
-                    chartImage.setImageDrawable(mChartAnimation);
-
-                    // Show the play button
-                    ImageView playButton = (ImageView) findViewById(R.id.wavewatch_animate_play_button);
-                    playButton.setVisibility(View.VISIBLE);
-                }
-
-                if (nFrames < WAVE_WATCH_IMAGE_COUNT) {
-                    // Load the next image
-                    getChartImageForIndex(mWaveWatchChartType, nFrames);
-                }
-            }
-        };
-
-        // TODO: Load in the settings and the controls so set them up
-        Switch manualControlSwitch = (Switch) findViewById(R.id.wavewatch_manual_control_switch);
-        manualControlSwitch.setOnClickListener(new On);
     }
 
     @Override
@@ -151,7 +96,6 @@ public class WaveWatchChartActivity extends AppCompatActivity implements Segment
         super.onPause();
 
         if (mChartAnimation.isRunning()) {
-            // Stop the animation if it is still running
             mChartAnimation.stop();
         }
     }
@@ -174,6 +118,8 @@ public class WaveWatchChartActivity extends AppCompatActivity implements Segment
         if (mChartAnimation.isRunning()) {
             mChartAnimation.stop();
         }
+
+        resetCurrentHourEdit();
 
         // Remove the animation from the imageview
         findViewById(R.id.wavewatch_chart_image).setBackground(null);
@@ -218,4 +164,169 @@ public class WaveWatchChartActivity extends AppCompatActivity implements Segment
         }
     }
 
+    private void setupChartView() {
+        // Hide the play button and set the click listener
+        ImageView chartPlayButton = (ImageView) findViewById(R.id.wavewatch_animate_play_button);
+        chartPlayButton.setVisibility(View.GONE);
+        chartPlayButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Hide the play button
+                view.setVisibility(View.GONE);
+
+                // Start the animation
+                mChartAnimation.start();
+            }
+        });
+
+        // Set clicking the imageview to act as a pause button
+        ImageView chartImage = (ImageView) findViewById(R.id.wavewatch_chart_image);
+        chartImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mChartAnimation.isRunning()) {
+                    // Only call to stop the animation if it is currently running
+                    mChartAnimation.stop();
+                    mChartAnimation.selectDrawable(0);
+
+                    // Show the play button
+                    ImageView playButton = (ImageView) findViewById(R.id.wavewatch_animate_play_button);
+                    playButton.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        // Create the chart animation instance
+        mChartAnimation = new AnimationDrawable();
+
+        // Create chart loading callback
+        mChartLoadCallback = new FutureCallback<Bitmap>() {
+            @Override
+            public void onCompleted(Exception e, Bitmap result) {
+                BitmapDrawable chartFrame = new BitmapDrawable(getResources(), result);
+                mChartAnimation.addFrame(chartFrame, 500);
+
+                int nFrames = mChartAnimation.getNumberOfFrames();
+                if (nFrames == 1) {
+                    // Set the chart preview image as bitmap that was just received
+                    ImageView chartImage = (ImageView) findViewById(R.id.wavewatch_chart_image);
+                    chartImage.setImageDrawable(chartFrame);
+
+                } else if (nFrames == WAVE_WATCH_IMAGE_COUNT) {
+                    // Set the animation drawable as the imageview background
+                    ImageView chartImage = (ImageView) findViewById(R.id.wavewatch_chart_image);
+                    chartImage.setImageDrawable(mChartAnimation);
+
+                    // Show the play button
+                    ImageView playButton = (ImageView) findViewById(R.id.wavewatch_animate_play_button);
+                    Switch manualControlSwitch = (Switch) findViewById(R.id.wavewatch_manual_control_switch);
+                    if (!manualControlSwitch.isChecked()) {
+                        playButton.setVisibility(View.VISIBLE);
+                    }
+                }
+
+                if (nFrames < WAVE_WATCH_IMAGE_COUNT) {
+                    // Load the next image
+                    getChartImageForIndex(mWaveWatchChartType, nFrames);
+                }
+            }
+        };
+    }
+
+    private void setupManualControls() {
+        // Load in the settings and the controls so set them up
+        Switch manualControlSwitch = (Switch) findViewById(R.id.wavewatch_manual_control_switch);
+        manualControlSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                LinearLayout mediaControlLayout = (LinearLayout) findViewById(R.id.wavewatch_media_control_layout);
+                ImageView playButton = (ImageView) findViewById(R.id.wavewatch_animate_play_button);
+                if (isChecked) {
+                    mediaControlLayout.setVisibility(View.VISIBLE);
+                    playButton.setVisibility(View.GONE);
+                    if (mChartAnimation.isRunning()) {
+                        mChartAnimation.stop();
+                        mChartAnimation.selectDrawable(0);
+                    }
+                } else {
+                    mediaControlLayout.setVisibility(View.GONE);
+
+                    if (mChartAnimation.getNumberOfFrames() == WAVE_WATCH_IMAGE_COUNT) {
+                        playButton.setVisibility(View.VISIBLE);
+                        mChartAnimation.selectDrawable(0);
+                    }
+                }
+
+                // Save the state
+                PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).
+                        edit().
+                        putBoolean("WaveWatchManualControl", isChecked).
+                        apply();
+            }
+        });
+
+        // Get the users settings
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        manualControlSwitch.setChecked(preferences.getBoolean("WaveWatchManualControl", false));
+
+        ImageButton previousDayButton = (ImageButton) findViewById(R.id.wavewatch_previous_day_chart_button);
+        previousDayButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                incrementChartStep(-WAVE_WATCH_HOUR_STEP * 8);
+            }
+        });
+
+        ImageButton previousStepButton = (ImageButton) findViewById(R.id.wavewatch_previous_chart_image_button);
+        previousStepButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                incrementChartStep(-WAVE_WATCH_HOUR_STEP);
+            }
+        });
+
+        ImageButton nextDayButton = (ImageButton) findViewById(R.id.wavewatch_next_day_chart_button);
+        nextDayButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                incrementChartStep(WAVE_WATCH_HOUR_STEP*8);
+            }
+        });
+
+        ImageButton nextStepButton = (ImageButton) findViewById(R.id.wavewatch_next_chart_image_button);
+        nextStepButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                incrementChartStep(WAVE_WATCH_HOUR_STEP);
+            }
+        });
+
+        resetCurrentHourEdit();
+    }
+
+    private void incrementChartStep(int hourStep) {
+        EditText currentHourEdit = (EditText) findViewById(R.id.wavewatch_current_hour_edit);
+        int hour = Integer.valueOf(currentHourEdit.getText().toString());
+        if ((hour == WAVE_WATCH_MAX_HOUR) && (hourStep > 0)) {
+            return;
+        } else if ((hour == WAVE_WATCH_MIN_HOUR) && (hourStep < 0)) {
+            return;
+        }
+
+        hour += hourStep;
+
+        if (hour > WAVE_WATCH_MAX_HOUR) {
+            hour = WAVE_WATCH_MAX_HOUR;
+        } else if (hour < WAVE_WATCH_MIN_HOUR) {
+            hour = WAVE_WATCH_MIN_HOUR;
+        }
+
+        currentHourEdit.setText(String.valueOf(hour / WAVE_WATCH_HOUR_STEP));
+        mChartAnimation.selectDrawable(hour / WAVE_WATCH_HOUR_STEP);
+    }
+
+    private void resetCurrentHourEdit() {
+        EditText currentHourEdit = (EditText) findViewById(R.id.wavewatch_current_hour_edit);
+        currentHourEdit.setText(String.valueOf(0));
+    }
 }

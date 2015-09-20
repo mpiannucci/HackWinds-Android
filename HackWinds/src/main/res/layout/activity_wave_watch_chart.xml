@@ -137,25 +137,26 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.8"
-                    android:checked="false"
+                    android:checked="true"
                     />
 
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/wavewatch_media_control_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:orientation="horizontal">
 
-                <ImageView
+                <ImageButton
                     android:id="@+id/wavewatch_previous_day_chart_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:src="@drawable/ic_fast_rewind_black_36dp"/>
 
-                <ImageView
+                <ImageButton
                     android:id="@+id/wavewatch_previous_chart_image_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -167,16 +168,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:focusable="false"
                     android:textColor="@color/black" />
 
-                <ImageView
+                <ImageButton
                     android:id="@+id/wavewatch_next_chart_image_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:src="@drawable/ic_chevron_right_black_36dp"/>
 
-                <ImageView
+                <ImageButton
                     android:id="@+id/wavewatch_next_day_chart_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
