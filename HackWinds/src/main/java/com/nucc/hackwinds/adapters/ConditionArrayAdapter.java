@@ -3,6 +3,7 @@ package com.nucc.hackwinds.adapters;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,10 +81,10 @@ public class ConditionArrayAdapter extends ArrayAdapter<Condition> {
             holder.swellTV.setTypeface(null, Typeface.BOLD);
 
             // And make it blue too
-            holder.dateTV.setTextColor(context.getResources().getColor(R.color.hackwinds_blue));
-            holder.breakTV.setTextColor(context.getResources().getColor(R.color.hackwinds_blue));
-            holder.windTV.setTextColor(context.getResources().getColor(R.color.hackwinds_blue));
-            holder.swellTV.setTextColor(context.getResources().getColor(R.color.hackwinds_blue));
+            holder.dateTV.setTextColor(ContextCompat.getColor(context, R.color.hackwinds_blue));
+            holder.breakTV.setTextColor(ContextCompat.getColor(context, R.color.hackwinds_blue));
+            holder.windTV.setTextColor(ContextCompat.getColor(context, R.color.hackwinds_blue));
+            holder.swellTV.setTextColor(ContextCompat.getColor(context, R.color.hackwinds_blue));
         } else {
             // Get the data for the position in the list
             Condition condition = values.get(position - 1);

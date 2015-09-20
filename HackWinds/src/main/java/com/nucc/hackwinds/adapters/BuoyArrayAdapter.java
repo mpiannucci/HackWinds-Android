@@ -3,6 +3,7 @@ package com.nucc.hackwinds.adapters;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,10 +82,10 @@ public class BuoyArrayAdapter extends ArrayAdapter<Buoy> {
             holder.directionTV.setTypeface(null, Typeface.BOLD);
 
             // And make it blue
-            holder.timeTV.setTextColor(context.getResources().getColor(R.color.hackwinds_blue));
-            holder.wvhtTV.setTextColor(context.getResources().getColor(R.color.hackwinds_blue));
-            holder.periodTV.setTextColor(context.getResources().getColor(R.color.hackwinds_blue));
-            holder.directionTV.setTextColor(context.getResources().getColor(R.color.hackwinds_blue));
+            holder.timeTV.setTextColor(ContextCompat.getColor(context, R.color.hackwinds_blue));
+            holder.wvhtTV.setTextColor(ContextCompat.getColor(context, R.color.hackwinds_blue));
+            holder.periodTV.setTextColor(ContextCompat.getColor(context, R.color.hackwinds_blue));
+            holder.directionTV.setTextColor(ContextCompat.getColor(context, R.color.hackwinds_blue));
         } else {
             // Get the buoy item for the list position
             Buoy buoy = values.get(position-1);

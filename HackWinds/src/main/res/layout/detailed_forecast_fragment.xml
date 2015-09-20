@@ -7,7 +7,7 @@
         tools:context="com.nucc.hackwinds.views.DetailedForecastFragment">
 
     <info.hoang8f.android.segmented.SegmentedGroup
-        android:id="@+id/segmentedChart"
+        android:id="@+id/forecast_segment_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -18,7 +18,7 @@
         android:orientation="horizontal">
 
         <RadioButton
-            android:id="@+id/swellSegmentButton"
+            android:id="@+id/forecast_swell_segment_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/swell_chart_segment"
@@ -26,7 +26,7 @@
             style="@style/RadioButton" />
 
         <RadioButton
-            android:id="@+id/windSegmentButton"
+            android:id="@+id/forecast_wind_segment_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -34,7 +34,7 @@
             style="@style/RadioButton" />
 
         <RadioButton
-            android:id="@+id/periodSegmentButton"
+            android:id="@+id/forecast_period_segment_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -53,7 +53,7 @@
             android:background="@color/light_grey">
 
             <ImageView
-                android:id="@+id/chartImage"
+                android:id="@+id/forecast_chart_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/photo_loading_holder"
@@ -61,7 +61,7 @@
                 android:adjustViewBounds="true"/>
 
             <ImageView
-                android:id="@+id/animatePlayButton"
+                android:id="@+id/forecast_animate_play_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_av_play_over_video_big"

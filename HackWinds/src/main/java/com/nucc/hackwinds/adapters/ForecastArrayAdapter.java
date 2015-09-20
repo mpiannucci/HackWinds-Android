@@ -1,6 +1,7 @@
 package com.nucc.hackwinds.adapters;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -101,14 +102,14 @@ public class ForecastArrayAdapter extends ArrayAdapter<Forecast> {
                     thisDay.first.windDirection.equals("WNW") ||
                     thisDay.first.windDirection.equals("NW") ||
                     thisDay.first.windDirection.equals("N")) {
-                holder.morningHeaderTV.setTextColor(getContext().getResources().getColor(R.color.forecast_green));
+                holder.morningHeaderTV.setTextColor(ContextCompat.getColor(context, R.color.forecast_green));
             } else if (Double.valueOf(thisDay.first.windSpeed) < 8.0) {
-                holder.morningHeaderTV.setTextColor(getContext().getResources().getColor(R.color.forecast_green));
+                holder.morningHeaderTV.setTextColor(ContextCompat.getColor(context, R.color.forecast_green));
             } else {
-                holder.morningHeaderTV.setTextColor(getContext().getResources().getColor(R.color.forecast_yellow));
+                holder.morningHeaderTV.setTextColor(ContextCompat.getColor(context, R.color.forecast_yellow));
             }
         } else {
-            holder.morningHeaderTV.setTextColor(getContext().getResources().getColor(R.color.forecast_red));
+            holder.morningHeaderTV.setTextColor(ContextCompat.getColor(context, R.color.forecast_red));
         }
 
         if (Double.valueOf(thisDay.second.minBreakHeight) > 1.9) {
@@ -117,14 +118,14 @@ public class ForecastArrayAdapter extends ArrayAdapter<Forecast> {
                     thisDay.second.windDirection.equals("WNW") ||
                     thisDay.second.windDirection.equals("NW") ||
                     thisDay.second.windDirection.equals("N")) {
-                holder.afternoonHeaderTV.setTextColor(getContext().getResources().getColor(R.color.forecast_green));
+                holder.afternoonHeaderTV.setTextColor(ContextCompat.getColor(context, R.color.forecast_green));
             } else if (Double.valueOf(thisDay.second.windSpeed) < 8.0) {
-                holder.afternoonHeaderTV.setTextColor(getContext().getResources().getColor(R.color.forecast_green));
+                holder.afternoonHeaderTV.setTextColor(ContextCompat.getColor(context, R.color.forecast_green));
             } else {
-                holder.afternoonHeaderTV.setTextColor(getContext().getResources().getColor(R.color.forecast_yellow));
+                holder.afternoonHeaderTV.setTextColor(ContextCompat.getColor(context, R.color.forecast_yellow));
             }
         } else {
-            holder.afternoonHeaderTV.setTextColor(getContext().getResources().getColor(R.color.forecast_red));
+            holder.afternoonHeaderTV.setTextColor(ContextCompat.getColor(context, R.color.forecast_red));
         }
 
         // Return the completed view to render on screen
