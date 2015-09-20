@@ -95,5 +95,7 @@
     <string name="wavewatch_swell_title">Swell</string>
     <string name="wavewatch_period_title">Period</string>
     <string name="wavewatch_wind_title">Wind</string>
+    <string name="wavewatch_animation_speed_title">Animation Speed</string>
+    <string name="wavewatch_manual_control_title">Manual Control</string>
 
 </resources>

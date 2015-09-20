@@ -26,6 +26,7 @@
         android:layout_height="match_parent">
 
         <LinearLayout
+            android:id="@+id/wavewatch_main_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -78,8 +79,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1">
+                android:layout_height="300dp">
 
                 <FrameLayout
                     android:layout_width="match_parent"
@@ -87,7 +87,7 @@
                     android:background="@color/light_grey">
 
                     <ImageView
-                        android:id="@+id/wave_watch_chart_image"
+                        android:id="@+id/wavewatch_chart_image"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:src="@drawable/photo_loading_holder"
@@ -104,6 +104,87 @@
                 </FrameLayout>
 
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/wavewatch_animation_speed_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                style="@style/DescriptionText"
+                android:text="@string/wavewatch_animation_speed_title"/>
+
+            <SeekBar
+                android:id="@+id/wavewatch_animation_speed_slider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/wavewatch_manual_control_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.2"
+                    style="@style/DescriptionText"
+                    android:text="@string/wavewatch_manual_control_title"/>
+
+                <Switch
+                    android:id="@+id/wavewatch_manual_control_switch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.8"
+                    android:checked="false"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/wavewatch_previous_day_chart_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_fast_rewind_black_36dp"/>
+
+                <ImageView
+                    android:id="@+id/wavewatch_previous_chart_image_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_chevron_left_black_36dp"/>
+
+                <EditText
+                    android:id="@+id/wavewatch_current_hour_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="@color/black" />
+
+                <ImageView
+                    android:id="@+id/wavewatch_next_chart_image_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_chevron_right_black_36dp"/>
+
+                <ImageView
+                    android:id="@+id/wavewatch_next_day_chart_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_fast_forward_black_36dp"/>
+
+            </LinearLayout>
+
 
         </LinearLayout>
 

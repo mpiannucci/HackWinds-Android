@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Switch;
 
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
@@ -68,7 +69,7 @@ public class WaveWatchChartActivity extends AppCompatActivity implements Segment
         });
 
         // Set clicking the imageview to act as a pause button
-        ImageView chartImage = (ImageView) findViewById(R.id.wave_watch_chart_image);
+        ImageView chartImage = (ImageView) findViewById(R.id.wavewatch_chart_image);
         chartImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -96,12 +97,12 @@ public class WaveWatchChartActivity extends AppCompatActivity implements Segment
                 int nFrames = mChartAnimation.getNumberOfFrames();
                 if (nFrames == 1) {
                     // Set the chart preview image as bitmap that was just received
-                    ImageView chartImage = (ImageView) findViewById(R.id.wave_watch_chart_image);
+                    ImageView chartImage = (ImageView) findViewById(R.id.wavewatch_chart_image);
                     chartImage.setImageDrawable(chartFrame);
 
                 } else if (nFrames == WAVE_WATCH_IMAGE_COUNT) {
                     // Set the animation drawable as the imageview background
-                    ImageView chartImage = (ImageView) findViewById(R.id.wave_watch_chart_image);
+                    ImageView chartImage = (ImageView) findViewById(R.id.wavewatch_chart_image);
                     chartImage.setImageDrawable(mChartAnimation);
 
                     // Show the play button
@@ -115,6 +116,10 @@ public class WaveWatchChartActivity extends AppCompatActivity implements Segment
                 }
             }
         };
+
+        // TODO: Load in the settings and the controls so set them up
+        Switch manualControlSwitch = (Switch) findViewById(R.id.wavewatch_manual_control_switch);
+        manualControlSwitch.setOnClickListener(new On);
     }
 
     @Override
@@ -171,7 +176,7 @@ public class WaveWatchChartActivity extends AppCompatActivity implements Segment
         }
 
         // Remove the animation from the imageview
-        findViewById(R.id.wave_watch_chart_image).setBackground(null);
+        findViewById(R.id.wavewatch_chart_image).setBackground(null);
 
         // Reset the chart animation object
         mChartAnimation = new AnimationDrawable();
