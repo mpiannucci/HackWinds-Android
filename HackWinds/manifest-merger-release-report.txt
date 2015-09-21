@@ -109,16 +109,28 @@ ADDED from AndroidManifest.xml:54:9
 		ADDED from AndroidManifest.xml:59:13
 	android:name
 		ADDED from AndroidManifest.xml:55:13
-activity#com.nucc.hackwinds.views.VideoPlayerActivity
+activity#com.nucc.hackwinds.views.WaveWatchChartActivity
 ADDED from AndroidManifest.xml:64:9
 	android:label
 		ADDED from AndroidManifest.xml:66:13
-	android:configChanges
-		ADDED from AndroidManifest.xml:68:13
-	android:theme
+	android:parentActivityName
 		ADDED from AndroidManifest.xml:67:13
+	android:configChanges
+		ADDED from AndroidManifest.xml:69:13
+	android:theme
+		ADDED from AndroidManifest.xml:68:13
 	android:name
 		ADDED from AndroidManifest.xml:65:13
+activity#com.nucc.hackwinds.views.VideoPlayerActivity
+ADDED from AndroidManifest.xml:74:9
+	android:label
+		ADDED from AndroidManifest.xml:76:13
+	android:configChanges
+		ADDED from AndroidManifest.xml:78:13
+	android:theme
+		ADDED from AndroidManifest.xml:77:13
+	android:name
+		ADDED from AndroidManifest.xml:75:13
 uses-sdk
 INJECTED from AndroidManifest.xml:0:0 reason: use-sdk injection requested
 MERGED from com.android.support:support-v4:23.0.0:20:5

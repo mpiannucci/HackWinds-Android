@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
-import android.media.Image;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
@@ -15,7 +14,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -23,6 +21,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
@@ -344,8 +343,8 @@ public class WaveWatchChartActivity extends AppCompatActivity implements Segment
     }
 
     private void incrementChartStep(int hourStep) {
-        EditText currentHourEdit = (EditText) findViewById(R.id.wavewatch_current_hour_edit);
-        int hour = Integer.valueOf(currentHourEdit.getText().toString());
+        TextView currentHour = (TextView) findViewById(R.id.wavewatch_current_hour);
+        int hour = Integer.valueOf(currentHour.getText().toString().split(" ")[0]);
         if ((hour == WAVE_WATCH_MAX_HOUR) && (hourStep > 0)) {
             return;
         } else if ((hour == WAVE_WATCH_MIN_HOUR) && (hourStep < 0)) {
@@ -360,12 +359,12 @@ public class WaveWatchChartActivity extends AppCompatActivity implements Segment
             hour = WAVE_WATCH_MIN_HOUR;
         }
 
-        currentHourEdit.setText(String.valueOf(hour));
+        currentHour.setText(String.valueOf(hour) + " Hours");
         mChartAnimation.selectDrawable(hour / WAVE_WATCH_HOUR_STEP);
     }
 
     private void resetCurrentHourEdit() {
-        EditText currentHourEdit = (EditText) findViewById(R.id.wavewatch_current_hour_edit);
-        currentHourEdit.setText(String.valueOf(0));
+        TextView currentHour = (TextView) findViewById(R.id.wavewatch_current_hour);
+        currentHour.setText(String.valueOf(0) + " Hours");
     }
 }

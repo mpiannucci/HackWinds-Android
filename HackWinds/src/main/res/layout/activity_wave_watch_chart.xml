@@ -164,15 +164,16 @@
                     android:layout_weight="1"
                     android:src="@drawable/ic_chevron_left_black_36dp"/>
 
-                <EditText
-                    android:id="@+id/wavewatch_current_hour_edit"
+                <TextView
+                    android:id="@+id/wavewatch_current_hour"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:layout_weight="0.8"
-                    android:focusable="false"
+                    android:layout_weight="0.9"
+                    style="@style/ForecastTimeOfDay"
                     android:textColor="@color/black"
-                    android:gravity="center_horizontal|center_vertical"/>
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center_vertical"/>
 
                 <ImageButton
                     android:id="@+id/wavewatch_next_chart_image_button"
