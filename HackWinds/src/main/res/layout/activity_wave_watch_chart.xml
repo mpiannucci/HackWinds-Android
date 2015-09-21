@@ -116,7 +116,8 @@
             <SeekBar
                 android:id="@+id/wavewatch_animation_speed_slider"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:max="10" />
 
             <LinearLayout
                 android:layout_width="match_parent"

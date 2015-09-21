@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.SeekBar;
 import android.widget.Switch;
 
 import com.koushikdutta.async.future.FutureCallback;
@@ -46,6 +47,7 @@ public class WaveWatchChartActivity extends AppCompatActivity implements Segment
     private WaveWatchChartType mWaveWatchChartType;
     private AnimationDrawable mChartAnimation;
     private FutureCallback<Bitmap> mChartLoadCallback;
+    private int mAnimationDuration;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +117,10 @@ public class WaveWatchChartActivity extends AppCompatActivity implements Segment
             return;
         }
 
+        resetAnimation();
+    }
+
+    private void resetAnimation() {
         if (mChartAnimation.isRunning()) {
             mChartAnimation.stop();
         }
@@ -125,8 +131,11 @@ public class WaveWatchChartActivity extends AppCompatActivity implements Segment
         findViewById(R.id.wavewatch_chart_image).setBackground(null);
 
         // Reset the chart animation object
+        ImageView chartImage = (ImageView) findViewById(R.id.wavewatch_chart_image);
+        chartImage.setImageDrawable(mChartAnimation.getFrame(0));
+
         mChartAnimation = new AnimationDrawable();
-        mChartAnimation.setOneShot(false);
+        mChartAnimation.setOneShot(true);
         getChartImageForIndex(mWaveWatchChartType, 0);
     }
 
@@ -196,6 +205,36 @@ public class WaveWatchChartActivity extends AppCompatActivity implements Segment
             }
         });
 
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SeekBar animationSpeed = (SeekBar) findViewById(R.id.wavewatch_animation_speed_slider);
+        mAnimationDuration = preferences.getInt("WaveWatchAnimationSpeed", 500);
+        animationSpeed.setProgress((1000 - mAnimationDuration)/100);
+        animationSpeed.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (progress == 0) {
+                    progress = 1;
+                } else if (progress == 10) {
+                    progress = 9;
+                }
+
+                mAnimationDuration = 1000 - (progress*100);
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                preferences.edit().putInt("WaveWatchAnimationSpeed", mAnimationDuration).apply();
+                resetAnimation();
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // Nothing
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // Nothing
+            }
+        });
+
         // Create the chart animation instance
         mChartAnimation = new AnimationDrawable();
 
@@ -204,7 +243,7 @@ public class WaveWatchChartActivity extends AppCompatActivity implements Segment
             @Override
             public void onCompleted(Exception e, Bitmap result) {
                 BitmapDrawable chartFrame = new BitmapDrawable(getResources(), result);
-                mChartAnimation.addFrame(chartFrame, 500);
+                mChartAnimation.addFrame(chartFrame, mAnimationDuration);
 
                 int nFrames = mChartAnimation.getNumberOfFrames();
                 if (nFrames == 1) {
