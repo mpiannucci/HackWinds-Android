@@ -4,6 +4,7 @@
         <item name="colorPrimary">@color/hackwinds_blue</item>
         <item name="colorPrimaryDark">@color/icon_blue</item>
         <item name="android:textColorPrimary">@color/white</item>
+        <item name="colorAccent">@color/hackwinds_blue</item>
     </style>
 
     <style name="Theme.HackWindsMaterialSettings" parent="Theme.AppCompat.Light.NoActionBar">

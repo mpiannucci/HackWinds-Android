@@ -321,7 +321,7 @@ public class WaveWatchChartActivity extends AppCompatActivity implements Segment
             hour = WAVE_WATCH_MIN_HOUR;
         }
 
-        currentHourEdit.setText(String.valueOf(hour / WAVE_WATCH_HOUR_STEP));
+        currentHourEdit.setText(String.valueOf(hour));
         mChartAnimation.selectDrawable(hour / WAVE_WATCH_HOUR_STEP);
     }
 
