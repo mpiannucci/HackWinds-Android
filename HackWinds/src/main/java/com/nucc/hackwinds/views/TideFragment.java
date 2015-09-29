@@ -53,6 +53,17 @@ public class TideFragment extends Fragment {
         return V;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateView();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
     // Set the view to reflect the current values received
     public void updateView() {
         int tideCount = 0;
