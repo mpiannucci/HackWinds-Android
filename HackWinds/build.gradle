@@ -42,4 +42,7 @@ dependencies {
     compile 'info.hoang8f:android-segmented:1.0.2'
     compile 'com.jpardogo.materialtabstrip:library:1.0.6'
     compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
+    compile 'com.squareup.picasso:picasso:2.3.2'
+    compile 'com.nineoldandroids:library:2.4.0'
+    compile 'com.daimajia.slider:library:1.1.5@aar'
 }

@@ -1,11 +1,11 @@
 package com.nucc.hackwinds.views;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.media.MediaPlayer;
-import android.net.Uri;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -15,13 +15,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.MediaController;
 import android.widget.TextView;
-import android.widget.VideoView;
 
+import com.daimajia.slider.library.SliderAdapter;
+import com.daimajia.slider.library.SliderLayout;
+
+import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
+import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
-
 import com.nucc.hackwinds.R;
 import com.nucc.hackwinds.adapters.ConditionArrayAdapter;
 import com.nucc.hackwinds.listeners.ForecastChangedListener;
@@ -38,8 +39,8 @@ public class CurrentFragment extends ListFragment {
     private ConditionArrayAdapter mConditionArrayAdapter;
     private Camera mCamera;
     private ForecastModel mForecastModel;
-    public VideoView mStreamView;
     private ForecastChangedListener mForecastChangedListener;
+    private SliderLayout mCameraSliderLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -86,50 +87,14 @@ public class CurrentFragment extends ListFragment {
         View V = inflater.inflate(R.layout.current_fragment, container, false);
 
         // Set the day header to the current day
-        TextView date = (TextView) V.findViewById(R.id.dateHeader);
+        TextView date = (TextView) V.findViewById(R.id.today_date_header);
         Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_WEEK);
         String dayName = getResources().getStringArray(R.array.daysOfTheWeek)[day-1];
         date.setText(dayName);
 
-        // Set the play button image over the holder camera image
-        ImageView playButton = (ImageView) V.findViewById(R.id.camPlayButton);
-        mStreamView = (VideoView) V.findViewById(R.id.currentVideoStreamView);
-
-        // Set the onClick callback for the play button to start the VideoView
-        playButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // Hide the play button and the holder image
-                if (ReachabilityHelper.deviceHasInternetAccess(getActivity())) {
-                    v.setVisibility(View.GONE);
-                    ImageView pic = (ImageView) getActivity().findViewById(R.id.camHolderImage);
-                    pic.setVisibility(View.GONE);
-
-                    // Show the VideoView
-                    mStreamView.setVisibility(View.VISIBLE);
-
-                    // Execute the video loading AsyncTask
-                    new LoadLiveStreamTask().execute(mCamera.videoURL);
-                }
-            }
-        });
-
-        // Set long click listener to launch in the full screen intent
-        playButton.setLongClickable(true);
-        playButton.setOnLongClickListener(new View.OnLongClickListener() {
-            public boolean onLongClick(View v) {
-                if (ReachabilityHelper.deviceHasInternetAccess(getActivity())) {
-                    // Launch the full screen video activity
-                    VideoPlayerActivity.showRemoteVideo(getActivity(), mCamera.videoURL);
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        });
-
-        // Hide the play button until the camera urls are finished
-        playButton.setVisibility(View.GONE);
+        // Find the image slider, and initialize it
+        mCameraSliderLayout = (SliderLayout) V.findViewById(R.id.camera_image_slider);
 
         // return the view
         return V;
@@ -145,9 +110,6 @@ public class CurrentFragment extends ListFragment {
     @Override
     public void onPause() {
         super.onPause();
-
-        // Clean up the video playing
-        finishedWithVideo();
     }
 
     @Override
@@ -167,23 +129,22 @@ public class CurrentFragment extends ListFragment {
         return true;
     }
 
-    private void finishedWithVideo() {
-        // Make sure the videoview stops
-        if (mStreamView != null) {
-            if (mStreamView.isPlaying()) {
-                mStreamView.stopPlayback();
+    private void loadCameraImages() {
+        final int CAMERA_IMAGE_COUNT = 8;
 
-                // And make sure to hide it again
-                mStreamView.setVisibility(View.GONE);
-            }
+        mCameraSliderLayout.stopAutoCycle();
+        mCameraSliderLayout.removeAllSliders();
 
-            // Show the play button again
-            ImageView playButton = (ImageView) getActivity().findViewById(R.id.camPlayButton);
-            playButton.setVisibility(View.VISIBLE);
-
-            // Show the holder image again
-            ImageView holderPic = (ImageView) getActivity().findViewById(R.id.camHolderImage);
-            holderPic.setVisibility(View.VISIBLE);
+        for (int i = 0; i < CAMERA_IMAGE_COUNT; i++) {
+            String cameraURL = mCamera.imageURL.replace("1.jpg", String.format("%d.jpg", i));
+//            Ion.with(getActivity()).load(cameraURL).asBitmap().setCallback(new FutureCallback<Bitmap>() {
+//                @Override
+//                public void onCompleted(Exception e, Bitmap result) {
+//                    Drawable cameraImage = new BitmapDrawable(getResources(), result);
+//                    DefaultSliderView cameraSliderView = new DefaultSliderView(getActivity());
+//                    cameraSliderView.image(result);
+//                }
+//            });
         }
     }
 
@@ -206,86 +167,6 @@ public class CurrentFragment extends ListFragment {
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
 
-            // Get the ImageView to set as the holder before the user calls
-            // to play the VideoView
-            ImageView img = (ImageView) getActivity().findViewById(R.id.camHolderImage);
-            Ion.with(getActivity()).load(mCamera.imageURL).intoImageView(img);
-
-            // Set the play button to show again
-            ImageView playButton = (ImageView) getActivity().findViewById(R.id.camPlayButton);
-            playButton.setVisibility(View.VISIBLE);
-        }
-    }
-
-    public class LoadLiveStreamTask extends AsyncTask<String, Uri, Void> {
-        ProgressDialog dialog;
-
-        protected void onPreExecute() {
-            // Show a progress dialog so the user knows the videoview is loading
-            dialog = new ProgressDialog(getActivity());
-            dialog.setMessage("Loading Live Stream...");
-            dialog.setCancelable(false);
-            dialog.show();
-        }
-
-        protected void onProgressUpdate(final Uri... uri) {
-
-            try {
-                // Set the video url to the stream
-                mStreamView.setVideoURI(uri[0]);
-                mStreamView.requestFocus();
-
-                // Set the media controls
-                mStreamView.setMediaController(new MediaController(getActivity()));
-
-                // On Prepared Listener
-                mStreamView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-
-                    public void onPrepared(MediaPlayer mp) {
-                        // When the stream is ready start the videoview and
-                        // hide the progress dialog
-                        mStreamView.start();
-                        dialog.dismiss();
-                    }
-                });
-
-                // On Completion Listener
-                mStreamView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                    public void onCompletion(MediaPlayer mp) {
-                        // The video is done so show the original interface
-                        finishedWithVideo();
-                    }
-                });
-
-                // On Error Listener
-                mStreamView.setOnErrorListener(new MediaPlayer.OnErrorListener() {
-                    public boolean onError(MediaPlayer mp, int what, int extra) {
-                        // This is expected because the video times out in a way that I can't catch.
-                        // Just show the original interface
-                        finishedWithVideo();
-                        return true;
-                    }
-                });
-
-            } catch (IllegalArgumentException e) {
-                e.printStackTrace();
-            } catch (IllegalStateException e) {
-                e.printStackTrace();
-            } catch (SecurityException e) {
-                e.printStackTrace();
-            }
-        }
-
-        @Override
-        protected Void doInBackground(String... params) {
-            try {
-                // Check the progress of the download
-                Uri uri = Uri.parse(params[0]);
-                publishProgress(uri);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
         }
     }
 
