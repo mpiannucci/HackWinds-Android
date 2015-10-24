@@ -13,6 +13,7 @@ ADDED from AndroidManifest.xml:2:1
 		INJECTED from AndroidManifest.xml:0:0
 uses-permission#android.permission.INTERNET
 ADDED from AndroidManifest.xml:5:5
+MERGED from HackWinds-Android:AndroidImageSlider:unspecified:11:5
 	android:name
 		ADDED from AndroidManifest.xml:5:22
 uses-permission#android.permission.ACCESS_NETWORK_STATE
@@ -26,6 +27,9 @@ MERGED from com.android.support:appcompat-v7:23.0.0:22:5
 MERGED from com.android.support:support-v4:23.0.0:22:5
 MERGED from com.android.support:cardview-v7:23.0.0:22:5
 MERGED from com.jpardogo.materialtabstrip:library:1.0.6:9:5
+MERGED from com.android.support:support-v4:23.0.0:22:5
+MERGED from com.android.support:appcompat-v7:23.0.0:22:5
+MERGED from com.android.support:support-v4:23.0.0:22:5
 MERGED from com.android.support:support-v4:23.0.0:22:5
 	android:label
 		ADDED from AndroidManifest.xml:11:9
@@ -140,9 +144,19 @@ MERGED from com.android.support:cardview-v7:23.0.0:20:5
 MERGED from info.hoang8f:android-segmented:1.0.2:3:5
 MERGED from com.jpardogo.materialtabstrip:library:1.0.6:5:5
 MERGED from com.android.support:support-v4:23.0.0:20:5
+MERGED from HackWinds-Android:AndroidImageSlider:unspecified:7:5
+MERGED from com.android.support:appcompat-v7:23.0.0:20:5
+MERGED from com.android.support:support-v4:23.0.0:20:5
+MERGED from com.android.support:support-v4:23.0.0:20:5
 	android:targetSdkVersion
 		INJECTED from AndroidManifest.xml:0:0
 		INJECTED from AndroidManifest.xml:0:0
 	android:minSdkVersion
 		INJECTED from AndroidManifest.xml:0:0
 		INJECTED from AndroidManifest.xml:0:0
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+ADDED from HackWinds-Android:AndroidImageSlider:unspecified:12:5
+	android:name
+		ADDED from HackWinds-Android:AndroidImageSlider:unspecified:12:22
+android:uses-permission#android.permission.READ_EXTERNAL_STORAGE
+IMPLIED from AndroidManifest.xml:2:1 reason: com.daimajia.slider.library requested WRITE_EXTERNAL_STORAGE
