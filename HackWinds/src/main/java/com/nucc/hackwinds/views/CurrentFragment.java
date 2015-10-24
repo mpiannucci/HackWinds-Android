@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -95,6 +96,8 @@ public class CurrentFragment extends ListFragment {
 
         // Find the image slider, and initialize it
         mCameraSliderLayout = (SliderLayout) V.findViewById(R.id.camera_image_slider);
+        int hackWindsColor = Color.parseColor("#47A3FF");
+        mCameraSliderLayout.getPagerIndicator().setDefaultIndicatorColor(hackWindsColor, Color.WHITE);
 
         // return the view
         return V;
@@ -135,16 +138,16 @@ public class CurrentFragment extends ListFragment {
         mCameraSliderLayout.stopAutoCycle();
         mCameraSliderLayout.removeAllSliders();
 
-        for (int i = 0; i < CAMERA_IMAGE_COUNT; i++) {
+        for (int i = 1; i < CAMERA_IMAGE_COUNT+1; i++) {
             String cameraURL = mCamera.imageURL.replace("1.jpg", String.format("%d.jpg", i));
-//            Ion.with(getActivity()).load(cameraURL).asBitmap().setCallback(new FutureCallback<Bitmap>() {
-//                @Override
-//                public void onCompleted(Exception e, Bitmap result) {
-//                    Drawable cameraImage = new BitmapDrawable(getResources(), result);
-//                    DefaultSliderView cameraSliderView = new DefaultSliderView(getActivity());
-//                    cameraSliderView.image(result);
-//                }
-//            });
+            Ion.with(getActivity()).load(cameraURL).asBitmap().setCallback(new FutureCallback<Bitmap>() {
+                @Override
+                public void onCompleted(Exception e, Bitmap result) {
+                    DefaultSliderView cameraSliderView = new DefaultSliderView(getActivity());
+                    cameraSliderView.image(result);
+                    mCameraSliderLayout.addSlider(cameraSliderView);
+                }
+            });
         }
     }
 
@@ -157,6 +160,7 @@ public class CurrentFragment extends ListFragment {
                 CameraModel cameraModel = CameraModel.getInstance(getActivity());
                 cameraModel.fetchCameraURLs();
                 mCamera = cameraModel.cameraLocations.get("Narragansett").get("Warm Winds");
+                loadCameraImages();
             }
 
             // Return
