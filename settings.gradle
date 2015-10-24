@@ -1,1 +1,4 @@
+include ':AndroidImageSlider'
+project(':AndroidImageSlider').projectDir = new File(settingsDir, '../AndroidImageSlider/library')
+
 include ':HackWinds'
