@@ -11,6 +11,16 @@
             android:defaultValue="Narragansett Town Beach"/>
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/pref_default_buoy_location_group_title" >
+        <ListPreference
+            android:title="@string/pref_change_default_buoy_title"
+            android:summary="Current Location"
+            android:key="defaultBuoyLocation"
+            android:entries="@array/buoyLocations"
+            android:entryValues="@array/buoyLocations"
+            android:defaultValue="Block Island"/>
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/pref_about_title">
         <Preference
             android:title="@string/pref_review_title"

@@ -30,7 +30,9 @@ public class Buoy {
 
     public static String getCompassDirection(String direction) {
         // Set the direction to its letter value on a compass
-        if (!direction.equals("MM")) {
+        if (direction == null) {
+            return "";
+        } else if (!direction.equals("MM")) {
             int windIndex = Integer.valueOf(direction) / (360 / COMPASS_DIRS.length);
             if (windIndex >= COMPASS_DIRS.length) {
                 // If its past NNW, force it to be north

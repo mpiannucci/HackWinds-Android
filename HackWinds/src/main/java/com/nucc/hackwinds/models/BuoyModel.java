@@ -107,8 +107,10 @@ public class BuoyModel {
         BuoyDataContainer ackContainer = new BuoyDataContainer(NANTUCKET_BUOY_ID);
         mBuoyDataContainers.put(NANTUCKET_LOCATION, ackContainer);
 
-        // Initialize to Block Island for now
-        mCurrentContainer = biContainer;
+        // Initialize to the default location
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+        String location = sharedPrefs.getString(SettingsActivity.BUOY_LOCATION_KEY, BLOCK_ISLAND_LOCATION);
+        mCurrentContainer = mBuoyDataContainers.get(location);
     }
 
     public void changeLocation() {
@@ -189,8 +191,11 @@ public class BuoyModel {
         int dataCount = 0;
         while (dataCount < BuoyDataContainer.BUOY_DATA_POINTS) {
             Buoy thisBuoy = new Buoy();
-            getBuoySummaryDataForIndexOfArray(dataCount, rawSummaryData, thisBuoy);
-            getBuoyDetailedDataForIndexOfArray(dataCount, rawDetailedData, thisBuoy);
+            boolean summaryError = getBuoySummaryDataForIndexOfArray(dataCount, rawSummaryData, thisBuoy);
+            boolean detailedError = getBuoyDetailedDataForIndexOfArray(dataCount, rawDetailedData, thisBuoy);
+            if (!summaryError || !detailedError) {
+                return false;
+            }
             dataCount++;
 
             // Save the buoy object to the list
@@ -213,6 +218,10 @@ public class BuoyModel {
 
         int baseOffset = DATA_HEADER_LENGTH + (DATA_LINE_LEN * index);
         if (baseOffset >= (DATA_HEADER_LENGTH+(DATA_LINE_LEN*BuoyDataContainer.BUOY_DATA_POINTS))) {
+            return false;
+        }
+
+        if (baseOffset > data.length) {
             return false;
         }
 
@@ -270,6 +279,10 @@ public class BuoyModel {
 
         int baseOffset = DATA_HEADER_LENGTH + (DATA_LINE_LEN * index);
         if (baseOffset >= (DATA_HEADER_LENGTH+(DATA_LINE_LEN*BuoyDataContainer.BUOY_DATA_POINTS))) {
+            return false;
+        }
+
+        if (baseOffset > data.length) {
             return false;
         }
 

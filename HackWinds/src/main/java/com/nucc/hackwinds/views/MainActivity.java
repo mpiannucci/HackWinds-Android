@@ -52,7 +52,8 @@ public class MainActivity extends AppCompatActivity {
 
         // SharedPreference setup, always set the buoys to start at block island
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        sharedPrefs.edit().putString(SettingsActivity.BUOY_LOCATION_KEY, BuoyModel.BLOCK_ISLAND_LOCATION).apply();
+        String defaultBuoyLocation = sharedPrefs.getString(SettingsActivity.DEFAULT_BUOY_LOCATION_KEY, BuoyModel.BLOCK_ISLAND_LOCATION);
+        sharedPrefs.edit().putString(SettingsActivity.BUOY_LOCATION_KEY, defaultBuoyLocation).apply();
 
         // Create a listener so the user can update the location from the settings
         mSharedPrefsChangedListener = new SharedPreferences.OnSharedPreferenceChangeListener() {

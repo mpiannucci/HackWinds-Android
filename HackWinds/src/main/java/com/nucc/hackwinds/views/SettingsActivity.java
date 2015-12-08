@@ -26,6 +26,7 @@ import com.nucc.hackwinds.R;
 public class SettingsActivity extends AppCompatActivity {
 
     public static final String FORECAST_LOCATION_KEY = "forecastLocation";
+    public static final String DEFAULT_BUOY_LOCATION_KEY = "defaultBuoyLocation";
     public static final String BUOY_LOCATION_KEY = "buoyLocation";
     public static final String TIDE_LOCATION_KEY = "tideLocation";
     public static final String RATE_APP_KEY = "rateApp";
@@ -66,6 +67,10 @@ public class SettingsActivity extends AppCompatActivity {
             // Set the summary of the location preference to be the current location
             Preference forecastLocationPref = findPreference(FORECAST_LOCATION_KEY);
             forecastLocationPref.setSummary(sharedPrefs.getString(FORECAST_LOCATION_KEY, getResources().getStringArray(R.array.mswForecastLocations)[0]));
+
+            // Set the summary of the buoy preference to be the current location
+            Preference defaultBuoyLocationPref = findPreference(DEFAULT_BUOY_LOCATION_KEY);
+            defaultBuoyLocationPref.setSummary(sharedPrefs.getString(DEFAULT_BUOY_LOCATION_KEY, getResources().getStringArray(R.array.buoyLocations)[0]));
 
             // Callbacks to the preference clicks
             // First is the call to send the user Google Play to rate the app
@@ -143,6 +148,9 @@ public class SettingsActivity extends AppCompatActivity {
                 // If the location was changed set the summary to the new location
                 Preference forecastLocationPref = findPreference(key);
                 forecastLocationPref.setSummary(sharedPreferences.getString(key, getResources().getStringArray(R.array.mswForecastLocations)[0]));
+            } else if (key.equals(DEFAULT_BUOY_LOCATION_KEY)) {
+                Preference defaultBuoyLocationPref = findPreference(key);
+                defaultBuoyLocationPref.setSummary(sharedPreferences.getString(key, getResources().getStringArray(R.array.buoyLocations)[0]));
             }
         }
     }

@@ -29,6 +29,7 @@ public class BuoyFragment extends ListFragment {
     private BuoyModel mBuoyModel;
     private BuoyArrayAdapter mBuoyArrayAdapter;
     private BuoyChangedListener mBuoyChangedListener;
+    private boolean mLastFetch = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -101,7 +102,7 @@ public class BuoyFragment extends ListFragment {
         @Override
         protected Void doInBackground(Void... arg0) {
             // Get the values using the model and parse the data
-            mBuoyModel.fetchBuoyData();
+            mLastFetch = mBuoyModel.fetchBuoyData();
 
             // Return
             return null;
@@ -112,10 +113,16 @@ public class BuoyFragment extends ListFragment {
             super.onPostExecute(result);
 
             if (mBuoyArrayAdapter == null) {
-                mBuoyArrayAdapter = new BuoyArrayAdapter(getActivity(), mBuoyModel.getBuoyData(), BuoyModel.SUMMARY_DATA_MODE);
-                setListAdapter(mBuoyArrayAdapter);
+                if (mLastFetch) {
+                    mBuoyArrayAdapter = new BuoyArrayAdapter(getActivity(), mBuoyModel.getBuoyData(), BuoyModel.SUMMARY_DATA_MODE);
+                    setListAdapter(mBuoyArrayAdapter);
+                }
             } else {
-                mBuoyArrayAdapter.setBuoyData(mBuoyModel.getBuoyData());
+                if (mLastFetch) {
+                    mBuoyArrayAdapter.setBuoyData(mBuoyModel.getBuoyData());
+                } else {
+                    mBuoyArrayAdapter.clear();
+                }
             }
         }
 

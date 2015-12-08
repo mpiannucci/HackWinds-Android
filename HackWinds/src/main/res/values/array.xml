@@ -15,10 +15,9 @@
         <item name="matunuck">Matunuck</item>
         <item name="second_beach">Second Beach</item>
     </string-array>
-    <string-array name="mswForecastURLs">
-        <item name="narragansett">http://magicseaweed.com/api/nFSL2f845QOAf1Tuv7Pf5Pd9PXa5sVTS/forecast/?spot_id=1103&amp;fields=localTimestamp,swell.*,wind.*,charts.*</item>
-        <item name="point_judith">http://magicseaweed.com/api/nFSL2f845QOAf1Tuv7Pf5Pd9PXa5sVTS/forecast/?spot_id=376&amp;fields=localTimestamp,swell.*,wind.*,charts.*</item>
-        <item name="matunuck">http://magicseaweed.com/api/nFSL2f845QOAf1Tuv7Pf5Pd9PXa5sVTS/forecast/?spot_id=377&amp;fields=localTimestamp,swell.*,wind.*,charts.*</item>
-        <item name="second_beach">http://magicseaweed.com/api/nFSL2f845QOAf1Tuv7Pf5Pd9PXa5sVTS/forecast/?spot_id=846&amp;fields=localTimestamp,swell.*,wind.*,charts.*</item>
+    <string-array name="buoyLocations">
+        <item name="block_island">Block Island</item>
+        <item name="montauk">Montauk</item>
+        <item name="nantucket">Nantucket</item>
     </string-array>
 </resources>
