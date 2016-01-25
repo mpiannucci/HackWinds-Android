@@ -1,7 +1,7 @@
 HackWinds
 =====================
 
-![icon](https://raw.githubusercontent.com/mpiannucci/HackWinds/master/HackWinds/src/main/res/drawable-xxxhdpi/ic_launcher.png)
+![icon](https://raw.githubusercontent.com/mpiannucci/HackWinds/master/HackWinds/src/main/res/mipmap-xxxhdpi/ic_launcher.png)
 
 [Download from Google Play now!](https://play.google.com/store/apps/details?id=com.nucc.hackwinds)
 

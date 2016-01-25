@@ -23,7 +23,7 @@ import com.nucc.hackwinds.utilities.ReachabilityHelper;
 import info.hoang8f.android.segmented.SegmentedGroup;
 
 
-public class BuoyFragment extends ListFragment {
+public class BuoyHistoryFragment extends ListFragment {
 
     // Member variables
     private BuoyModel mBuoyModel;
@@ -59,7 +59,7 @@ public class BuoyFragment extends ListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View V = inflater.inflate(R.layout.buoy_fragment, container, false);
+        View V = inflater.inflate(R.layout.buoy_history_fragment, container, false);
 
         // Set the segment control to block island
         RadioButton summaryButton = (RadioButton) V.findViewById(R.id.buoy_summary_mode_segment_button);
@@ -74,7 +74,9 @@ public class BuoyFragment extends ListFragment {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 RadioButton clickedButton = (RadioButton) getActivity().findViewById(radioGroup.getCheckedRadioButtonId());
-                mBuoyArrayAdapter.setDataMode(String.valueOf(clickedButton.getText()));
+                if (mBuoyArrayAdapter != null) {
+                    mBuoyArrayAdapter.setDataMode(String.valueOf(clickedButton.getText()));
+                }
             }
         });
         return V;

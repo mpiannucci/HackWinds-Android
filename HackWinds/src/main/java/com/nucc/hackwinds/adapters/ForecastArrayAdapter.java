@@ -57,6 +57,9 @@ public class ForecastArrayAdapter extends ArrayAdapter<Forecast> {
 
     @Override
     public int getCount() {
+        if (values == null) {
+            return 0;
+        }
         return values.size();
     }
 

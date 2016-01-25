@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
         // SharedPreference setup, always set the buoys to start at block island
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        String defaultBuoyLocation = sharedPrefs.getString(SettingsActivity.DEFAULT_BUOY_LOCATION_KEY, BuoyModel.BLOCK_ISLAND_LOCATION);
+        String defaultBuoyLocation = sharedPrefs.getString(SettingsActivity.DEFAULT_BUOY_LOCATION_KEY, BuoyModel.MONTAUK_LOCATION);
         sharedPrefs.edit().putString(SettingsActivity.BUOY_LOCATION_KEY, defaultBuoyLocation).apply();
 
         // Create a listener so the user can update the location from the settings
@@ -264,7 +264,7 @@ public class MainActivity extends AppCompatActivity {
                     return new ForecastFragment();
                 case 2:
                     // Then the Buoy Fragment
-                    return new BuoyFragment();
+                    return new BuoyHistoryFragment();
                 case 3:
                     // Lastly the Tide Fragment
                     return new TideFragment();

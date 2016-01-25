@@ -41,6 +41,9 @@ public class ConditionArrayAdapter extends ArrayAdapter<Condition> {
 
     @Override
     public int getCount() {
+        if (values == null) {
+            return 0;
+        }
         return values.size() + 1;
     }
 

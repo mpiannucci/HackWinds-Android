@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        app:navigationIcon="@drawable/ic_launcher">
+        app:navigationIcon="@mipmap/ic_launcher">
 
         <Spinner
             android:id="@+id/navigation_spinner"

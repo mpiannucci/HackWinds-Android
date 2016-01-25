@@ -70,7 +70,7 @@ public class SettingsActivity extends AppCompatActivity {
 
             // Set the summary of the buoy preference to be the current location
             Preference defaultBuoyLocationPref = findPreference(DEFAULT_BUOY_LOCATION_KEY);
-            defaultBuoyLocationPref.setSummary(sharedPrefs.getString(DEFAULT_BUOY_LOCATION_KEY, getResources().getStringArray(R.array.buoyLocations)[0]));
+            defaultBuoyLocationPref.setSummary(sharedPrefs.getString(DEFAULT_BUOY_LOCATION_KEY, getResources().getStringArray(R.array.buoyLocations)[1]));
 
             // Callbacks to the preference clicks
             // First is the call to send the user Google Play to rate the app
@@ -117,7 +117,7 @@ public class SettingsActivity extends AppCompatActivity {
                                     // continue with delete
                                 }
                             })
-                            .setIcon(R.drawable.ic_launcher)
+                            .setIcon(R.mipmap.ic_launcher)
                             .show();
                     return false;
                 }
@@ -150,7 +150,7 @@ public class SettingsActivity extends AppCompatActivity {
                 forecastLocationPref.setSummary(sharedPreferences.getString(key, getResources().getStringArray(R.array.mswForecastLocations)[0]));
             } else if (key.equals(DEFAULT_BUOY_LOCATION_KEY)) {
                 Preference defaultBuoyLocationPref = findPreference(key);
-                defaultBuoyLocationPref.setSummary(sharedPreferences.getString(key, getResources().getStringArray(R.array.buoyLocations)[0]));
+                defaultBuoyLocationPref.setSummary(sharedPreferences.getString(key, getResources().getStringArray(R.array.buoyLocations)[1]));
             }
         }
     }
