@@ -16,7 +16,7 @@ import com.nucc.hackwinds.R;
 
 import java.util.ArrayList;
 
-public class BuoyArrayAdapter extends ArrayAdapter<Buoy> {
+public class BuoyHistoryArrayAdapter extends ArrayAdapter<Buoy> {
 
     private final Context context;
     private ArrayList<Buoy> values;
@@ -29,7 +29,7 @@ public class BuoyArrayAdapter extends ArrayAdapter<Buoy> {
         public TextView directionTV;
     }
 
-    public BuoyArrayAdapter(Context ctx, ArrayList<Buoy> vals, String mode) {
+    public BuoyHistoryArrayAdapter(Context ctx, ArrayList<Buoy> vals, String mode) {
         super(ctx, R.layout.buoy_item, vals);
         this.context = ctx;
         this.values = vals;

@@ -15,7 +15,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.nucc.hackwinds.R;
-import com.nucc.hackwinds.adapters.BuoyArrayAdapter;
+import com.nucc.hackwinds.adapters.BuoyHistoryArrayAdapter;
 import com.nucc.hackwinds.listeners.BuoyChangedListener;
 import com.nucc.hackwinds.models.BuoyModel;
 import com.nucc.hackwinds.utilities.ReachabilityHelper;
@@ -27,7 +27,7 @@ public class BuoyHistoryFragment extends ListFragment {
 
     // Member variables
     private BuoyModel mBuoyModel;
-    private BuoyArrayAdapter mBuoyArrayAdapter;
+    private BuoyHistoryArrayAdapter mBuoyArrayAdapter;
     private BuoyChangedListener mBuoyChangedListener;
     private boolean mLastFetch = false;
 
@@ -116,7 +116,7 @@ public class BuoyHistoryFragment extends ListFragment {
 
             if (mBuoyArrayAdapter == null) {
                 if (mLastFetch) {
-                    mBuoyArrayAdapter = new BuoyArrayAdapter(getActivity(), mBuoyModel.getBuoyData(), BuoyModel.SUMMARY_DATA_MODE);
+                    mBuoyArrayAdapter = new BuoyHistoryArrayAdapter(getActivity(), mBuoyModel.getBuoyData(), BuoyModel.SUMMARY_DATA_MODE);
                     setListAdapter(mBuoyArrayAdapter);
                 }
             } else {

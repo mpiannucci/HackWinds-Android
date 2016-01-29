@@ -22,10 +22,49 @@ public class Buoy {
     public String swellDirection;
     public String windWaveDirection;
 
+    // Wave Steepness
+    public String steepness;
+
     public String waterTemperature;
 
     public Buoy() {
 
+    }
+
+    public void interpolateDominantPeriod() {
+        if (steepness == null) {
+            return;
+        }
+
+        if (steepness.equals("SWELL") || steepness.equals("AVERAGE")) {
+            dominantPeriod = swellPeriod;
+        } else {
+            dominantPeriod = windWavePeriod;
+        }
+    }
+
+    public String getWaveSummaryStatusText() {
+        return String.format("%s ft @ %s s %s", significantWaveHeight, dominantPeriod, meanDirection);
+    }
+
+    public String getPrimarySwellText() {
+        if (steepness.equals("SWELL") || steepness.equals("AVERAGE")) {
+            return String.format("%s ft @ %s s %s", swellWaveHeight, swellPeriod, swellDirection);
+        } else {
+            return String.format("%s ft @ %s s %s", windWaveHeight, windWavePeriod, windWaveDirection);
+        }
+    }
+
+    public String getSecondarySwellText() {
+        if (steepness.equals("SWELL") || steepness.equals("AVERAGE")) {
+            return String.format("%s ft @ %s s %s", windWaveHeight, windWavePeriod, windWaveDirection);
+        } else {
+            if (swellPeriod.equals("MM")) {
+                return "";
+            } else {
+                return String.format("%s ft @ %s s %s", swellWaveHeight, swellPeriod, swellDirection);
+            }
+        }
     }
 
     public static String getCompassDirection(String direction) {
