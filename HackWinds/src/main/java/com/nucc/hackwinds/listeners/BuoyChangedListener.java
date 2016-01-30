@@ -2,5 +2,6 @@ package com.nucc.hackwinds.listeners;
 
 
 public interface BuoyChangedListener {
-    void buoyLocationChanged();
+    void buoyDataUpdated();
+    void buoyDataUpdateFailed();
 }

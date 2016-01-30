@@ -23,13 +23,11 @@ import com.nucc.hackwinds.utilities.ReachabilityHelper;
 import info.hoang8f.android.segmented.SegmentedGroup;
 
 
-public class BuoyHistoryFragment extends ListFragment {
+public class BuoyHistoryFragment extends ListFragment implements BuoyChangedListener {
 
     // Member variables
     private BuoyModel mBuoyModel;
     private BuoyHistoryArrayAdapter mBuoyArrayAdapter;
-    private BuoyChangedListener mBuoyChangedListener;
-    private boolean mLastFetch = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,16 +41,7 @@ public class BuoyHistoryFragment extends ListFragment {
             mBuoyModel = BuoyModel.getInstance(getActivity());
 
             // Set up the buoy listener
-            mBuoyChangedListener = new BuoyChangedListener() {
-                @Override
-                public void buoyLocationChanged() {
-                    new FetchBuoyDataTask().execute();
-                }
-            };
-            mBuoyModel.addBuoyChangedListener(mBuoyChangedListener);
-
-            // Get the BI location to initialize
-            new FetchBuoyDataTask().execute();
+            mBuoyModel.addBuoyChangedListener(this);
         }
     }
 
@@ -99,34 +88,20 @@ public class BuoyHistoryFragment extends ListFragment {
         return true;
     }
 
-    public class FetchBuoyDataTask extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Void... arg0) {
-            // Get the values using the model and parse the data
-            mLastFetch = mBuoyModel.fetchBuoyData();
-
-            // Return
-            return null;
+    @Override
+    public void buoyDataUpdated() {
+        // Update the data in the list adapter
+        if (mBuoyArrayAdapter == null) {
+            mBuoyArrayAdapter = new BuoyHistoryArrayAdapter(getActivity(), mBuoyModel.getBuoyData(), BuoyModel.SUMMARY_DATA_MODE);
+            setListAdapter(mBuoyArrayAdapter);
+        } else {
+            mBuoyArrayAdapter.setBuoyData(mBuoyModel.getBuoyData());
         }
+    }
 
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-
-            if (mBuoyArrayAdapter == null) {
-                if (mLastFetch) {
-                    mBuoyArrayAdapter = new BuoyHistoryArrayAdapter(getActivity(), mBuoyModel.getBuoyData(), BuoyModel.SUMMARY_DATA_MODE);
-                    setListAdapter(mBuoyArrayAdapter);
-                }
-            } else {
-                if (mLastFetch) {
-                    mBuoyArrayAdapter.setBuoyData(mBuoyModel.getBuoyData());
-                } else {
-                    mBuoyArrayAdapter.clear();
-                }
-            }
-        }
-
+    @Override
+    public void buoyDataUpdateFailed() {
+        // No data for the buoy so clear out the adapter
+        mBuoyArrayAdapter.clear();
     }
 }
