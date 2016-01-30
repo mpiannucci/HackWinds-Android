@@ -195,12 +195,15 @@ public class BuoyModel {
         final int DATA_LINE_LEN = 15;
         final int HOUR_OFFSET = 3;
         final int MINUTE_OFFSET = 4;
+        final int SIGNIFICANt_WAVE_HEIGHT_OFFSET = 5;
         final int SWELL_WAVE_HEIGHT_OFFSET = 6;
         final int SWELL_PERIOD_OFFSET = 7;
         final int WIND_WAVE_HEIGHT_OFFSET = 8;
         final int WIND_WAVE_PERIOD_OFFSET = 9;
         final int SWELL_DIRECTION_OFFSET = 10;
         final int WIND_WAVE_DIRECTION_OFFSET = 11;
+        final int WAVE_STEEPNESS_OFFSET = 12;
+        final int MEAN_WAVE_DIRECTION = 14;
 
         // Loop through the data and make new buoy objects to add to the list
         int dataCount = 0;
@@ -227,8 +230,10 @@ public class BuoyModel {
             }
 
             // Wave Height
+            String significantWaveHeight = data[baseOffset + SIGNIFICANt_WAVE_HEIGHT_OFFSET];
             String swellWaveHeight = data[baseOffset + SWELL_WAVE_HEIGHT_OFFSET];
             String windWaveHeight = data[baseOffset + WIND_WAVE_HEIGHT_OFFSET];
+            buoy.significantWaveHeight = String.format(Locale.US, "%4.2f", convertMeterToFoot(Double.valueOf(significantWaveHeight)));
             buoy.swellWaveHeight = String.format(Locale.US, "%4.2f", convertMeterToFoot(Double.valueOf(swellWaveHeight)));
             buoy.windWaveHeight = String.format(Locale.US, "%4.2f", convertMeterToFoot(Double.valueOf(windWaveHeight)));
 
@@ -236,9 +241,14 @@ public class BuoyModel {
             buoy.swellPeriod = data[baseOffset + SWELL_PERIOD_OFFSET];
             buoy.windWavePeriod = data[baseOffset + WIND_WAVE_PERIOD_OFFSET];
 
+            // Steepness
+            buoy.steepness = data[baseOffset + WAVE_STEEPNESS_OFFSET];
+            buoy.interpolateDominantPeriod();
+
             // Directions
             buoy.swellDirection = data[baseOffset + SWELL_DIRECTION_OFFSET];
             buoy.windWaveDirection = data[baseOffset + WIND_WAVE_DIRECTION_OFFSET];
+            buoy.meanDirection = Buoy.getCompassDirection(data[baseOffset + MEAN_WAVE_DIRECTION]);
 
             // Increment the buoy data count
             dataCount++;

@@ -96,7 +96,7 @@ public class BuoyHistoryArrayAdapter extends ArrayAdapter<Buoy> {
             if (dataMode.equals(BuoyModel.SUMMARY_DATA_MODE)) {
                 holder.wvhtTV.setText(buoy.significantWaveHeight);
                 holder.periodTV.setText(buoy.dominantPeriod);
-                holder.directionTV.setText(Buoy.getCompassDirection(buoy.meanDirection));
+                holder.directionTV.setText(buoy.meanDirection);
             } else if (dataMode.equals(BuoyModel.SWELL_DATA_MODE)) {
                 holder.wvhtTV.setText(buoy.swellWaveHeight);
                 holder.periodTV.setText(buoy.swellPeriod);

@@ -42,6 +42,7 @@ public class BuoyHistoryFragment extends ListFragment implements BuoyChangedList
 
             // Set up the buoy listener
             mBuoyModel.addBuoyChangedListener(this);
+
         }
     }
 
@@ -68,6 +69,9 @@ public class BuoyHistoryFragment extends ListFragment implements BuoyChangedList
                 }
             }
         });
+
+        mBuoyModel.fetchBuoyData();
+
         return V;
     }
 
@@ -91,17 +95,27 @@ public class BuoyHistoryFragment extends ListFragment implements BuoyChangedList
     @Override
     public void buoyDataUpdated() {
         // Update the data in the list adapter
-        if (mBuoyArrayAdapter == null) {
-            mBuoyArrayAdapter = new BuoyHistoryArrayAdapter(getActivity(), mBuoyModel.getBuoyData(), BuoyModel.SUMMARY_DATA_MODE);
-            setListAdapter(mBuoyArrayAdapter);
-        } else {
-            mBuoyArrayAdapter.setBuoyData(mBuoyModel.getBuoyData());
-        }
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (mBuoyArrayAdapter == null) {
+                    mBuoyArrayAdapter = new BuoyHistoryArrayAdapter(getActivity(), mBuoyModel.getBuoyData(), BuoyModel.SUMMARY_DATA_MODE);
+                    setListAdapter(mBuoyArrayAdapter);
+                } else {
+                    mBuoyArrayAdapter.setBuoyData(mBuoyModel.getBuoyData());
+                }
+            }
+        });
     }
 
     @Override
     public void buoyDataUpdateFailed() {
         // No data for the buoy so clear out the adapter
-        mBuoyArrayAdapter.clear();
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mBuoyArrayAdapter.clear();
+            }
+        });
     }
 }

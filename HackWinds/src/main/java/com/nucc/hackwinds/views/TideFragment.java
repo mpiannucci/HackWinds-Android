@@ -133,7 +133,7 @@ public class TideFragment extends Fragment {
             // Save the temperature and change the buoy location back to its original place
             final ArrayList<Buoy> buoyData = mBuoyModel.getBuoyData();
             if (buoyData.size() > 0) {
-                mWaterTemp = buoyData.get(0).waterTemperature;
+                //mWaterTemp = buoyData.get(0).waterTemperature;
             } else {
                 mWaterTemp = "";
             }
