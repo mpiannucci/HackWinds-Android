@@ -11,6 +11,7 @@ import com.koushikdutta.ion.Ion;
 import com.nucc.hackwinds.listeners.BuoyChangedListener;
 import com.nucc.hackwinds.types.Buoy;
 import com.nucc.hackwinds.types.BuoyDataContainer;
+import com.nucc.hackwinds.utilities.HashMapXMLParser;
 import com.nucc.hackwinds.views.SettingsActivity;
 
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
@@ -176,6 +178,87 @@ public class BuoyModel {
         }
     }
 
+    public void fetchLatestBuoyReading() {
+        synchronized (this) {
+            if (!mCurrentContainer.buoyData.isEmpty()) {
+                // Send an update to the listeners cuz the data is already here
+                for (BuoyChangedListener listener : mBuoyChangedListeners) {
+                    if (listener != null) {
+                        listener.buoyDataUpdated();
+                    }
+                }
+                return;
+            }
+
+            Ion.with(mContext).load(mCurrentContainer.createDetailedWaveURL()).asString().setCallback(new FutureCallback<String>() {
+                @Override
+                public void onCompleted(Exception e, String result) {
+                    if (e != null) {
+                        // Throw message saying failure to the children listeners
+                        for (BuoyChangedListener listener : mBuoyChangedListeners) {
+                            if (listener != null) {
+                                listener.buoyDataUpdateFailed();
+                            }
+                        }
+                        return;
+                    }
+
+                    Boolean successfulParse = parseLatestBuoyData(result);
+                    if (successfulParse) {
+                        // Tell the children that there is new data!
+                        for (BuoyChangedListener listener : mBuoyChangedListeners) {
+                            if (listener != null) {
+                                listener.buoyDataUpdated();
+                            }
+                        }
+                    } else {
+                        // Throw message saying failure to the children listeners
+                        for (BuoyChangedListener listener : mBuoyChangedListeners) {
+                            if (listener != null) {
+                                listener.buoyDataUpdateFailed();
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    public void fetchLatestBuoyReadingForLocation(String location, BuoyChangedListener listener) {
+        synchronized (this) {
+
+            // Change the location. Get the original first to change the location back.
+            forceChangeLocation(location);
+
+            if (!mCurrentContainer.buoyData.isEmpty()) {
+                // Send an update to the listeners cuz the data is already here
+                return;
+            }
+
+            Ion.with(mContext).load(mCurrentContainer.createDetailedWaveURL()).asString().setCallback(new FutureCallback<String>() {
+                @Override
+                public void onCompleted(Exception e, String result) {
+                    if (e != null) {
+                        // Throw message saying failure to the children listeners
+
+                        return;
+                    }
+
+                    Boolean successfulParse = parseLatestBuoyData(result);
+                    if (successfulParse) {
+                        // Tell the children that there is new data!
+
+                    } else {
+                        // Throw message saying failure to the children listeners
+
+                    }
+
+                    // Change the location back to what it was before.
+                }
+            });
+        }
+    }
+
     public ArrayList<Buoy> getBuoyData() {
         return mCurrentContainer.buoyData;
     }
@@ -261,10 +344,19 @@ public class BuoyModel {
         return true;
     }
 
-    // TODO: Parsing the latest buoy xml
-//    private Boolean parseLatestBuoyData() {
-//
-//    }
+    private Boolean parseLatestBuoyData(String rawXML) {
+        Map<String, String> buoyXML;
+        try {
+            buoyXML = HashMapXMLParser.convertNodesFromXml(rawXML);
+
+            // TODO: Actually parse the buoy
+
+        } catch (Exception e) {
+            return false;
+        }
+
+        return true;
+    }
 
     private int getCorrectedHourValue(int rawHour) {
         int convertedHour;
