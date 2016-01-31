@@ -12,6 +12,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.nucc.hackwinds.R;
+import com.nucc.hackwinds.listeners.BuoyChangedListener;
+import com.nucc.hackwinds.listeners.LatestBuoyFetchListener;
+import com.nucc.hackwinds.listeners.TideChangedListener;
 import com.nucc.hackwinds.types.Buoy;
 import com.nucc.hackwinds.types.Tide;
 import com.nucc.hackwinds.models.BuoyModel;
@@ -21,10 +24,8 @@ import com.nucc.hackwinds.utilities.ReachabilityHelper;
 import java.util.ArrayList;
 
 
-public class TideFragment extends Fragment {
+public class TideFragment extends Fragment implements TideChangedListener, LatestBuoyFetchListener {
     private TideModel mTideModel;
-    private BuoyModel mBuoyModel;
-    private String mWaterTemp;
     private String mDefaultBuoyLocation;
 
     final private int[] mTideTypeViews = new int[]{R.id.upcomingTideType1,
@@ -45,10 +46,7 @@ public class TideFragment extends Fragment {
 
         if (ReachabilityHelper.deviceHasInternetAccess(getActivity())) {
             mTideModel = TideModel.getInstance(getActivity());
-            mBuoyModel = BuoyModel.getInstance(getActivity());
-
-            // deploy the Wunderground async task
-            new FetchTideDataTask().execute();
+            mTideModel.addTideChangedListener(this);
         }
     }
 
@@ -66,7 +64,10 @@ public class TideFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        updateView();
+
+        // Fetch the data from the models
+        mTideModel.fetchTideData();
+        BuoyModel.getInstance(getActivity()).fetchLatestBuoyReadingForLocation(mDefaultBuoyLocation, this);
     }
 
     @Override
@@ -74,80 +75,73 @@ public class TideFragment extends Fragment {
         super.onPause();
     }
 
-    // Set the view to reflect the current values received
-    public void updateView() {
-        int tideCount = 0;
+    @Override
+    public void tideDataUpdated() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                int tideCount = 0;
 
-        // Set the upcoming and sunrise/sunset values
-        for (Tide thisTide : mTideModel.tides ) {
-            if (thisTide.isSunrise()) {
-                // Set the sunrise time that was found
-                TextView sunriseTime = (TextView)getActivity().findViewById(R.id.sunriseTime);
-                sunriseTime.setText(thisTide.time);
-            } else if (thisTide.isSunset()) {
-                // Set the sunset time that was read
-                TextView sunsetTime = (TextView)getActivity().findViewById(R.id.sunsetTime);
-                sunsetTime.setText(thisTide.time);
-            } else if (thisTide.isTidalEvent()) {
-                // TODO: THERES A BUG HERE.. Yay we found a tide, now set the type (high or low) and the values
-                TextView typeView = (TextView)getActivity().findViewById(mTideTypeViews[tideCount]);
-                TextView timeView = (TextView)getActivity().findViewById(mTideTimeViews[tideCount]);
-                typeView.setText(thisTide.eventType);
-                timeView.setText(thisTide.height + " at " + thisTide.time);
+                // Set the upcoming and sunrise/sunset values
+                for (Tide thisTide : mTideModel.tides ) {
+                    if (thisTide.isSunrise()) {
+                        // Set the sunrise time that was found
+                        TextView sunriseTime = (TextView)getActivity().findViewById(R.id.sunriseTime);
+                        sunriseTime.setText(thisTide.time);
+                    } else if (thisTide.isSunset()) {
+                        // Set the sunset time that was read
+                        TextView sunsetTime = (TextView)getActivity().findViewById(R.id.sunsetTime);
+                        sunsetTime.setText(thisTide.time);
+                    } else if (thisTide.isTidalEvent()) {
+                        // TODO: THERES A BUG HERE.. Yay we found a tide, now set the type (high or low) and the values
+                        TextView typeView = (TextView)getActivity().findViewById(mTideTypeViews[tideCount]);
+                        TextView timeView = (TextView)getActivity().findViewById(mTideTimeViews[tideCount]);
+                        typeView.setText(thisTide.eventType);
+                        timeView.setText(thisTide.height + " at " + thisTide.time);
 
-                // Also set the current status
-                if (tideCount == 0) {
-                    TextView currentTextView = (TextView) getActivity().findViewById(R.id.currentTideStatus);
-                    if (thisTide.isHighTide()) {
-                        // Tide is incoming
-                        currentTextView.setText("Incoming");
-                        currentTextView.setTextColor(Color.parseColor("#009933"));
-                    } else {
-                        // Assume low time so outgoing
-                        currentTextView.setText("Outgoing");
-                        currentTextView.setTextColor(Color.parseColor("#D60000"));
+                        // Also set the current status
+                        if (tideCount == 0) {
+                            TextView currentTextView = (TextView) getActivity().findViewById(R.id.currentTideStatus);
+                            if (thisTide.isHighTide()) {
+                                // Tide is incoming
+                                currentTextView.setText("Incoming");
+                                currentTextView.setTextColor(Color.parseColor("#009933"));
+                            } else {
+                                // Assume low time so outgoing
+                                currentTextView.setText("Outgoing");
+                                currentTextView.setTextColor(Color.parseColor("#D60000"));
+                            }
+                        }
+
+                        tideCount++;
                     }
                 }
-
-                tideCount++;
             }
-        }
-        // Update the water temperature from the latest buoy reading
-        TextView biWaterTemp = (TextView) getActivity().findViewById(R.id.water_temp_value);
-        if (mBuoyModel.getBuoyData().size() > 0) {
-            String waterTempValue = mWaterTemp + " " + getResources().getString(R.string.water_temp_holder);
-            biWaterTemp.setText(waterTempValue);
-        }
+        });
     }
 
-    public class FetchTideDataTask extends AsyncTask<Void, Void, Void> {
+    @Override
+    public void tideDataUpdateFailed() {
+        // For now do nothing
+    }
 
-        @Override
-        protected Void doInBackground(Void... arg0) {
-            // Get the values using the model and parse the data
-            mTideModel.fetchTideData();
-
-            // Fetch the water temperature from the buoy
-            mBuoyModel.fetchBuoyData();
-
-            // Save the temperature and change the buoy location back to its original place
-            final ArrayList<Buoy> buoyData = mBuoyModel.getBuoyData();
-            if (buoyData.size() > 0) {
-                //mWaterTemp = buoyData.get(0).waterTemperature;
-            } else {
-                mWaterTemp = "";
+    @Override
+    public void latestBuoyFetchSuccess(final Buoy latestBuoy) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                // Update the water temperature from the latest buoy reading
+                TextView waterTemp = (TextView) getActivity().findViewById(R.id.water_temp_value);
+                if (latestBuoy != null) {
+                    String waterTempValue = latestBuoy.waterTemperature + " " + getResources().getString(R.string.water_temp_holder);
+                    waterTemp.setText(waterTempValue);
+                }
             }
+        });
+    }
 
-            // Return
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-
-            // Set the tide adapter to the list
-            updateView();
-        }
+    @Override
+    public void latestBuoyFetchFailed() {
+        // For now do nothing
     }
 }

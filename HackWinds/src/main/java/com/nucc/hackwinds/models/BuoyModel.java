@@ -9,6 +9,7 @@ import android.text.format.DateFormat;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.nucc.hackwinds.listeners.BuoyChangedListener;
+import com.nucc.hackwinds.listeners.LatestBuoyFetchListener;
 import com.nucc.hackwinds.types.Buoy;
 import com.nucc.hackwinds.types.BuoyDataContainer;
 import com.nucc.hackwinds.utilities.HashMapXMLParser;
@@ -37,6 +38,7 @@ public class BuoyModel {
 
     // Member variables
     private static BuoyModel mInstance;
+    private String mCurrentLocation;
     private BuoyDataContainer mCurrentContainer;
     private HashMap<String, BuoyDataContainer> mBuoyDataContainers;
     private ArrayList<BuoyChangedListener> mBuoyChangedListeners;
@@ -116,12 +118,14 @@ public class BuoyModel {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
         String location = sharedPrefs.getString(SettingsActivity.BUOY_LOCATION_KEY, BLOCK_ISLAND_LOCATION);
         mCurrentContainer = mBuoyDataContainers.get(location);
+        mCurrentLocation = location;
     }
 
     public void changeLocation() {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
         String location = sharedPrefs.getString(SettingsActivity.BUOY_LOCATION_KEY, BLOCK_ISLAND_LOCATION);
         mCurrentContainer = mBuoyDataContainers.get(location);
+        mCurrentLocation = location;
 
         // Fetch new data
         fetchBuoyData();
@@ -129,6 +133,7 @@ public class BuoyModel {
 
     public void forceChangeLocation(String location) {
         mCurrentContainer = mBuoyDataContainers.get(location);
+        mCurrentLocation = location;
     }
 
     public void fetchBuoyData() {
@@ -190,7 +195,7 @@ public class BuoyModel {
                 return;
             }
 
-            Ion.with(mContext).load(mCurrentContainer.createDetailedWaveURL()).asString().setCallback(new FutureCallback<String>() {
+            Ion.with(mContext).load(mCurrentContainer.createLatestReportOnlyURL()).asString().setCallback(new FutureCallback<String>() {
                 @Override
                 public void onCompleted(Exception e, String result) {
                     if (e != null) {
@@ -203,8 +208,11 @@ public class BuoyModel {
                         return;
                     }
 
-                    Boolean successfulParse = parseLatestBuoyData(result);
-                    if (successfulParse) {
+                    Buoy latestBuoy = parseLatestBuoyData(result);
+                    if (latestBuoy != null) {
+                        mCurrentContainer.buoyData.get(0).dominantPeriod = latestBuoy.dominantPeriod;
+                        mCurrentContainer.buoyData.get(0).waterTemperature = latestBuoy.waterTemperature;
+
                         // Tell the children that there is new data!
                         for (BuoyChangedListener listener : mBuoyChangedListeners) {
                             if (listener != null) {
@@ -224,36 +232,39 @@ public class BuoyModel {
         }
     }
 
-    public void fetchLatestBuoyReadingForLocation(String location, BuoyChangedListener listener) {
+    public void fetchLatestBuoyReadingForLocation(String location, final LatestBuoyFetchListener listener) {
         synchronized (this) {
 
             // Change the location. Get the original first to change the location back.
+            final String originalLocation = mCurrentLocation;
             forceChangeLocation(location);
 
             if (!mCurrentContainer.buoyData.isEmpty()) {
                 // Send an update to the listeners cuz the data is already here
+                listener.latestBuoyFetchSuccess(getBuoyData().get(0));
                 return;
             }
 
-            Ion.with(mContext).load(mCurrentContainer.createDetailedWaveURL()).asString().setCallback(new FutureCallback<String>() {
+            Ion.with(mContext).load(mCurrentContainer.createLatestReportOnlyURL()).asString().setCallback(new FutureCallback<String>() {
                 @Override
                 public void onCompleted(Exception e, String result) {
                     if (e != null) {
-                        // Throw message saying failure to the children listeners
-
+                        // Throw message saying failure to the listener
+                        listener.latestBuoyFetchFailed();
                         return;
                     }
 
-                    Boolean successfulParse = parseLatestBuoyData(result);
-                    if (successfulParse) {
-                        // Tell the children that there is new data!
-
+                    Buoy latestBuoy = parseLatestBuoyData(result);
+                    if (latestBuoy != null) {
+                        // Tell the listener we have the new buoy!
+                        listener.latestBuoyFetchSuccess(latestBuoy);
                     } else {
-                        // Throw message saying failure to the children listeners
-
+                        // Throw message saying failure to the listener
+                        listener.latestBuoyFetchFailed();
                     }
 
                     // Change the location back to what it was before.
+                    forceChangeLocation(originalLocation);
                 }
             });
         }
@@ -278,7 +289,7 @@ public class BuoyModel {
         final int DATA_LINE_LEN = 15;
         final int HOUR_OFFSET = 3;
         final int MINUTE_OFFSET = 4;
-        final int SIGNIFICANt_WAVE_HEIGHT_OFFSET = 5;
+        final int SIGNIFICANT_WAVE_HEIGHT_OFFSET = 5;
         final int SWELL_WAVE_HEIGHT_OFFSET = 6;
         final int SWELL_PERIOD_OFFSET = 7;
         final int WIND_WAVE_HEIGHT_OFFSET = 8;
@@ -313,7 +324,7 @@ public class BuoyModel {
             }
 
             // Wave Height
-            String significantWaveHeight = data[baseOffset + SIGNIFICANt_WAVE_HEIGHT_OFFSET];
+            String significantWaveHeight = data[baseOffset + SIGNIFICANT_WAVE_HEIGHT_OFFSET];
             String swellWaveHeight = data[baseOffset + SWELL_WAVE_HEIGHT_OFFSET];
             String windWaveHeight = data[baseOffset + WIND_WAVE_HEIGHT_OFFSET];
             buoy.significantWaveHeight = String.format(Locale.US, "%4.2f", convertMeterToFoot(Double.valueOf(significantWaveHeight)));
@@ -344,18 +355,18 @@ public class BuoyModel {
         return true;
     }
 
-    private Boolean parseLatestBuoyData(String rawXML) {
-        Map<String, String> buoyXML;
+    private Buoy parseLatestBuoyData(String rawXML) {
         try {
-            buoyXML = HashMapXMLParser.convertNodesFromXml(rawXML);
+            Map<String, String> buoyXML = HashMapXMLParser.convertNodesFromXml(rawXML);
 
             // TODO: Actually parse the buoy
+            Buoy newBuoy = new Buoy();
+
+            return newBuoy;
 
         } catch (Exception e) {
-            return false;
+            return null;
         }
-
-        return true;
     }
 
     private int getCorrectedHourValue(int rawHour) {

@@ -3,7 +3,9 @@ package com.nucc.hackwinds.models;
 import android.text.format.DateFormat;
 import android.content.Context;
 
+import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
+import com.nucc.hackwinds.listeners.TideChangedListener;
 import com.nucc.hackwinds.types.Tide;
 
 import org.json.JSONArray;
@@ -14,9 +16,11 @@ import java.util.ArrayList;
 
 public class TideModel {
     // Member variables
-    private static TideModel mInstance;
     public ArrayList<Tide> tides;
     private Context mContext;
+
+    private static TideModel mInstance;
+    private ArrayList<TideChangedListener> mTideChangedListeners;
 
     public static TideModel getInstance(Context context) {
         if (mInstance == null) {
@@ -29,16 +33,53 @@ public class TideModel {
         // Initialize tide array
         mContext = context;
         tides = new ArrayList<>();
+        mTideChangedListeners = new ArrayList<>();
     }
 
-    public boolean fetchTideData() {
+    public void addTideChangedListener(TideChangedListener listener) {
+        mTideChangedListeners.add(listener);
+    }
+
+    public void fetchTideData() {
         synchronized (this) {
-            if (tides.isEmpty()) {
-                // Parse the tide data
-                return parseTideData();
-            } else {
-                return true;
+            final String WUNDER_URL = "http://api.wunderground.com/api/2e5424aab8c91757/tide/q/RI/Point_Judith.json";
+
+            if (!tides.isEmpty()) {
+                for (TideChangedListener listener : mTideChangedListeners) {
+                    if (listener != null) {
+                        listener.tideDataUpdated();
+                    }
+                }
+                return;
             }
+
+            Ion.with(mContext).load(WUNDER_URL).asString().setCallback(new FutureCallback<String>() {
+                @Override
+                public void onCompleted(Exception e, String result) {
+                    if (e != null) {
+                        for (TideChangedListener listener : mTideChangedListeners) {
+                            if (listener != null) {
+                                listener.tideDataUpdateFailed();
+                            }
+                        }
+                    }
+
+                    Boolean successfulParse = parseTideData(result);
+                    if (successfulParse) {
+                        for (TideChangedListener listener : mTideChangedListeners) {
+                            if (listener != null) {
+                                listener.tideDataUpdated();
+                            }
+                        }
+                    } else {
+                        for (TideChangedListener listener : mTideChangedListeners) {
+                            if (listener != null) {
+                                listener.tideDataUpdateFailed();
+                            }
+                        }
+                    }
+                }
+            });
         }
     }
 
@@ -47,16 +88,7 @@ public class TideModel {
         return tides;
     }
 
-    private boolean parseTideData() {
-        final String WUNDER_URL = "http://api.wunderground.com/api/2e5424aab8c91757/tide/q/RI/Point_Judith.json";
-
-        String rawData;
-        try {
-            rawData = Ion.with(mContext).load(WUNDER_URL).asString().get();
-        } catch (Exception e) {
-            return false;
-        }
-
+    private boolean parseTideData(String rawData) {
         if (rawData == null) {
             return false;
         }
