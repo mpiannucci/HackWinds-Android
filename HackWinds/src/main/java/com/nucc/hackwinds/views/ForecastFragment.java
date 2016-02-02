@@ -20,12 +20,11 @@ import com.nucc.hackwinds.models.ForecastModel;
 import com.nucc.hackwinds.utilities.ReachabilityHelper;
 
 
-public class ForecastFragment extends ListFragment {
+public class ForecastFragment extends ListFragment implements ForecastChangedListener {
 
     // Declare member variables
     private ForecastModel mForecastModel;
     private ForecastArrayAdapter mForecastArrayAdapter;
-    private ForecastChangedListener mForecastChangedListener;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,18 +37,8 @@ public class ForecastFragment extends ListFragment {
             // Initialize forecast model
             mForecastModel = ForecastModel.getInstance(getActivity());
 
-            // Set the forecast location changed listener
-            mForecastChangedListener = new ForecastChangedListener() {
-                @Override
-                public void forecastLocationChanged() {
-                    // When the forecast changes reload the condition data
-                    new FetchForecastTask().execute();
-                }
-            };
-            mForecastModel.addForecastChangedListener(mForecastChangedListener);
+            // TODO: Set the forecast updated listener
 
-            // Get the forecast data
-            new FetchForecastTask().execute();
         }
     }
 
@@ -70,13 +59,12 @@ public class ForecastFragment extends ListFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_model_forecast:
-                // TODO: Launch Model activity
+                // Launch Model activity
                 startActivity(new Intent(getActivity(), WaveWatchChartActivity.class));
-                //break;
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
-        //return true;
     }
 
     @Override
@@ -95,27 +83,31 @@ public class ForecastFragment extends ListFragment {
         startActivity(intent);
     }
 
-    class FetchForecastTask extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected Void doInBackground(Void... arg0) {
-
-            // Forecast data
-            mForecastModel.fetchForecastData();
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-
-            // Set the forecast adapter to the ListView
-            if (mForecastArrayAdapter == null) {
-                mForecastArrayAdapter = new ForecastArrayAdapter(getActivity(), mForecastModel.getForecasts());
-                setListAdapter(mForecastArrayAdapter);
-            } else {
-                mForecastArrayAdapter.setForecastData(mForecastModel.getForecasts());
+    @Override
+    public void forecastDataUpdated() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                // Set the forecast adapter to the ListView
+                if (mForecastArrayAdapter == null) {
+                    mForecastArrayAdapter = new ForecastArrayAdapter(getActivity(), mForecastModel.getForecasts());
+                    setListAdapter(mForecastArrayAdapter);
+                } else {
+                    mForecastArrayAdapter.setForecastData(mForecastModel.getForecasts());
+                }
             }
-        }
+        });
+    }
+
+    @Override
+    public void forecastDataUpdateFailed() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (mForecastArrayAdapter != null) {
+                    mForecastArrayAdapter.clear();
+                }
+            }
+        });
     }
 }

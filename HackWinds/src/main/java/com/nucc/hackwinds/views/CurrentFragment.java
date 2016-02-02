@@ -35,12 +35,11 @@ import com.nucc.hackwinds.utilities.ReachabilityHelper;
 import java.util.Calendar;
 
 
-public class CurrentFragment extends ListFragment {
+public class CurrentFragment extends ListFragment implements ForecastChangedListener {
     // Initialize the other variables
     private ConditionArrayAdapter mConditionArrayAdapter;
     private Camera mCamera;
     private ForecastModel mForecastModel;
-    private ForecastChangedListener mForecastChangedListener;
     private SliderLayout mCameraSliderLayout;
 
     @Override
@@ -68,17 +67,10 @@ public class CurrentFragment extends ListFragment {
         // Get the magicseaweed model instance
         mForecastModel = ForecastModel.getInstance(getActivity());
 
-        // Set the forecast location changed listener
-        mForecastChangedListener = new ForecastChangedListener() {
-            @Override
-            public void forecastLocationChanged() {
-                // When the forecast changes reload the condition data
-                new FetchConditionDataTask().execute();
-            }
-        };
-        mForecastModel.addForecastChangedListener(mForecastChangedListener);
+        // TODO Set the forecast data changed listener
 
-        new FetchConditionDataTask().execute();
+        // TODO: Set the camera data updated listener
+
         new FetchCameraLocationsTask().execute();
     }
 
@@ -132,6 +124,34 @@ public class CurrentFragment extends ListFragment {
         return true;
     }
 
+    @Override
+    public void forecastDataUpdated() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                // Set the condition adapter for the list
+                if (mConditionArrayAdapter == null) {
+                    mConditionArrayAdapter = new ConditionArrayAdapter(getActivity(), mForecastModel.getConditionsForIndex(0));
+                    setListAdapter(mConditionArrayAdapter);
+                } else {
+                    mConditionArrayAdapter.setConditonData(mForecastModel.getConditionsForIndex(0));
+                }
+            }
+        });
+    }
+
+    @Override
+    public void forecastDataUpdateFailed() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (mConditionArrayAdapter != null) {
+                    mConditionArrayAdapter.clear();
+                }
+            }
+        });
+    }
+
     private void loadCameraImages() {
         final int CAMERA_IMAGE_COUNT = 8;
 
@@ -171,32 +191,6 @@ public class CurrentFragment extends ListFragment {
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
 
-        }
-    }
-
-    public class FetchConditionDataTask extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Void... arg0) {
-            // Get the conditions from the model
-            // We need 6 conditions for this view
-            mForecastModel.fetchForecastData();
-
-            // Return
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-
-            // Set the condition adapter for the list
-            if (mConditionArrayAdapter == null) {
-                mConditionArrayAdapter = new ConditionArrayAdapter(getActivity(), mForecastModel.getConditionsForIndex(0));
-                setListAdapter(mConditionArrayAdapter);
-            } else {
-                mConditionArrayAdapter.setConditonData(mForecastModel.getConditionsForIndex(0));
-            }
         }
     }
 }
