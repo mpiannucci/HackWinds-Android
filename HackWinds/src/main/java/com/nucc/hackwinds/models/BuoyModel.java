@@ -3,7 +3,6 @@ package com.nucc.hackwinds.models;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.text.BoringLayout;
 import android.text.format.DateFormat;
 
 import com.koushikdutta.async.future.FutureCallback;
@@ -12,7 +11,7 @@ import com.nucc.hackwinds.listeners.BuoyChangedListener;
 import com.nucc.hackwinds.listeners.LatestBuoyFetchListener;
 import com.nucc.hackwinds.types.Buoy;
 import com.nucc.hackwinds.types.BuoyDataContainer;
-import com.nucc.hackwinds.utilities.HashMapXMLParser;
+import com.nucc.hackwinds.utilities.LatestBuoyXMLParser;
 import com.nucc.hackwinds.views.SettingsActivity;
 
 import java.util.ArrayList;
@@ -357,13 +356,7 @@ public class BuoyModel {
 
     private Buoy parseLatestBuoyData(String rawXML) {
         try {
-            Map<String, String> buoyXML = HashMapXMLParser.convertNodesFromXml(rawXML);
-
-            // TODO: Actually parse the buoy
-            Buoy newBuoy = new Buoy();
-
-            return newBuoy;
-
+            return LatestBuoyXMLParser.parseLatestBuoy(rawXML);
         } catch (Exception e) {
             return null;
         }
