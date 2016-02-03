@@ -30,8 +30,10 @@ import com.nucc.hackwinds.listeners.ForecastChangedListener;
 import com.nucc.hackwinds.types.Camera;
 import com.nucc.hackwinds.models.CameraModel;
 import com.nucc.hackwinds.models.ForecastModel;
+import com.nucc.hackwinds.types.Condition;
 import com.nucc.hackwinds.utilities.ReachabilityHelper;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 
@@ -67,7 +69,8 @@ public class CurrentFragment extends ListFragment implements ForecastChangedList
         // Get the magicseaweed model instance
         mForecastModel = ForecastModel.getInstance(getActivity());
 
-        // TODO Set the forecast data changed listener
+        // Set the forecast data changed listener
+        mForecastModel.addForecastChangedListener(this);
 
         // TODO: Set the camera data updated listener
 
@@ -131,10 +134,12 @@ public class CurrentFragment extends ListFragment implements ForecastChangedList
             public void run() {
                 // Set the condition adapter for the list
                 if (mConditionArrayAdapter == null) {
-                    mConditionArrayAdapter = new ConditionArrayAdapter(getActivity(), mForecastModel.getConditionsForIndex(0));
+                    ArrayList<Condition> conditions = mForecastModel.getConditionsForIndex(0);
+                    mConditionArrayAdapter = new ConditionArrayAdapter(getActivity(), conditions);
                     setListAdapter(mConditionArrayAdapter);
                 } else {
-                    mConditionArrayAdapter.setConditonData(mForecastModel.getConditionsForIndex(0));
+                    ArrayList<Condition> conditions = mForecastModel.getConditionsForIndex(0);
+                    mConditionArrayAdapter.setConditonData(conditions);
                 }
             }
         });

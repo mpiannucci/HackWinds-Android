@@ -37,8 +37,8 @@ public class ForecastFragment extends ListFragment implements ForecastChangedLis
             // Initialize forecast model
             mForecastModel = ForecastModel.getInstance(getActivity());
 
-            // TODO: Set the forecast updated listener
-
+            // Set the forecast updated listener
+            mForecastModel.addForecastChangedListener(this);
         }
     }
 
@@ -48,6 +48,12 @@ public class ForecastFragment extends ListFragment implements ForecastChangedLis
         View V = inflater.inflate(R.layout.forecast_fragment, container, false);
 
         return V;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
     }
 
     @Override

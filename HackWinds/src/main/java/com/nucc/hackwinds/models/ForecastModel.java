@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.content.Context;
 
+import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.nucc.hackwinds.types.Condition;
 import com.nucc.hackwinds.types.Forecast;
@@ -20,6 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.TimeZone;
 
 public class ForecastModel {
@@ -111,20 +113,52 @@ public class ForecastModel {
         // Change the current location url
         mCurrentContainer = mForecastDataContainers.get(location);
 
-        for ( ForecastChangedListener listener : mForecastChangedListeners ) {
-            if ( listener != null ) {
-                listener.forecastLocationChanged();
-            }
-        }
+        // Update the data for the location
+        fetchForecastData();
     }
 
-    public boolean fetchForecastData() {
+    public void fetchForecastData() {
         synchronized (this) {
-            if (mCurrentContainer.conditions.isEmpty()) {
-                return parseForecasts();
-            } else {
-                return true;
+            if (!mCurrentContainer.conditions.isEmpty()) {
+                for(ForecastChangedListener listener : mForecastChangedListeners) {
+                    if (listener != null) {
+                        listener.forecastDataUpdated();
+                    }
+                }
+                return;
             }
+
+            // Make the data URL
+            final String BASE_DATA_URL = "http://magicseaweed.com/api/nFSL2f845QOAf1Tuv7Pf5Pd9PXa5sVTS/forecast/?spot_id=%d&fields=localTimestamp,swell.*,wind.*,charts.*";
+            String dataURL = String.format(Locale.US, BASE_DATA_URL, mCurrentContainer.forecastID);
+            Ion.with(mContext).load(dataURL).asString().setCallback(new FutureCallback<String>() {
+                @Override
+                public void onCompleted(Exception e, String result) {
+                    if (e != null) {
+                        for(ForecastChangedListener listener : mForecastChangedListeners) {
+                            if (listener != null) {
+                                listener.forecastDataUpdateFailed();
+                            }
+                        }
+                        return;
+                    }
+
+                    Boolean successfulParse = parseForecasts(result);
+                    if (successfulParse) {
+                        for(ForecastChangedListener listener : mForecastChangedListeners) {
+                            if (listener != null) {
+                                listener.forecastDataUpdated();
+                            }
+                        }
+                    } else {
+                        for(ForecastChangedListener listener : mForecastChangedListeners) {
+                            if (listener != null) {
+                                listener.forecastDataUpdateFailed();
+                            }
+                        }
+                    }
+                }
+            });
         }
     }
 
@@ -142,23 +176,8 @@ public class ForecastModel {
         return mCurrentContainer.forecasts;
     }
 
-    private String retrieveForecastData() {
-        final String BASE_DATA_URL = "http://magicseaweed.com/api/nFSL2f845QOAf1Tuv7Pf5Pd9PXa5sVTS/forecast/?spot_id=%d&fields=localTimestamp,swell.*,wind.*,charts.*";
-
-        // Make the URL
-        String dataURL = String.format(BASE_DATA_URL, mCurrentContainer.forecastID);
-
-        // Fetch and return the data
-        try {
-            return Ion.with(mContext).load(dataURL).asString().get();
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    private boolean parseForecasts() {
+    private boolean parseForecasts(String rawData) {
         // Get the raw data
-        String rawData = retrieveForecastData();
         if (rawData == null) {
             return false;
         }
