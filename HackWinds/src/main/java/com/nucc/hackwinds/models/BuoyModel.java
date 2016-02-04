@@ -115,14 +115,14 @@ public class BuoyModel {
 
         // Initialize to the default location
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
-        String location = sharedPrefs.getString(SettingsActivity.BUOY_LOCATION_KEY, BLOCK_ISLAND_LOCATION);
+        String location = sharedPrefs.getString(SettingsActivity.BUOY_LOCATION_KEY, MONTAUK_LOCATION);
         mCurrentContainer = mBuoyDataContainers.get(location);
         mCurrentLocation = location;
     }
 
     public void changeLocation() {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
-        String location = sharedPrefs.getString(SettingsActivity.BUOY_LOCATION_KEY, BLOCK_ISLAND_LOCATION);
+        String location = sharedPrefs.getString(SettingsActivity.BUOY_LOCATION_KEY, MONTAUK_LOCATION);
         mCurrentContainer = mBuoyDataContainers.get(location);
         mCurrentLocation = location;
 

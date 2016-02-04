@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/action_model_forecast"
-        android:icon="@drawable/ic_track_changes_white_48dp"
+        android:icon="@drawable/ic_track_changes_white_24dp"
         android:title="@string/action_model_forecast"
         app:showAsAction="always" />
 

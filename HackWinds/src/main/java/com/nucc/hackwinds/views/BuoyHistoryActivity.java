@@ -1,36 +1,37 @@
 package com.nucc.hackwinds.views;
 
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageView;
 
-import com.koushikdutta.ion.Ion;
 import com.nucc.hackwinds.R;
 import com.nucc.hackwinds.models.BuoyModel;
 
-public class AdditionalBuoyPlotsActivity extends AppCompatActivity {
-
+public class BuoyHistoryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_additional_buoy_plots);
+        setContentView(R.layout.activity_buoy_history);
+
+        // Get the day name to set the toolbar title
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String buoyLocation = sharedPrefs.getString(SettingsActivity.BUOY_LOCATION_KEY, BuoyModel.MONTAUK_LOCATION);
 
         // Set up the toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Additional Plots");
+        toolbar.setTitle(buoyLocation);
         setSupportActionBar(toolbar);
 
-        // Get the plot URLs from the model
-        String spectralDensityPlotURL = BuoyModel.getInstance(getApplicationContext()).getSpectraPlotURL();
+        // Create a new DetailedForecast Widget with the day index as a bundle
+        BuoyHistoryFragment buoyHistoryFragment = new BuoyHistoryFragment();
 
-        // Load the images for the plots
-        ImageView spectralDensityImage = (ImageView) findViewById(R.id.sprectral_density_plot);
-        Ion.with(this).load(spectralDensityPlotURL).intoImageView(spectralDensityImage);
+        // Load the preference fragment
+        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, buoyHistoryFragment).commit();
     }
 
     @Override
@@ -47,5 +48,4 @@ public class AdditionalBuoyPlotsActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
 }

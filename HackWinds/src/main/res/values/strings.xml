@@ -11,7 +11,7 @@
     <string name="action_tide">Tide</string>
     <string name="action_pics">Still Camera</string>
     <string name="action_alt_cameras">Alternate Cameras</string>
-    <string name="action_buoy_plots">Additional Plots</string>
+    <string name="action_buoy_history">Buoy History</string>
 
     <!-- Overview Page -->
     <string name="break_header">Waves</string>
@@ -32,9 +32,7 @@
     <string name="action_model_forecast">View Model</string>
 
     <!-- Buoy Page -->
-    <string name="buoy_summary_mode_segment_title">Summary</string>
-    <string name="buoy_swell_mode_segment_title">Swell</string>
-    <string name="buoy_wind_mode_segment_title">Wind Wave</string>
+
 
     <!-- Tide Page -->
     <string name="low_tide">Low Tide</string>
@@ -87,9 +85,11 @@
     <!-- Video player activity -->
     <string name="title_activity_video_player">Video Player</string>
 
-    <!-- Additional Buoy Plots activity -->
-    <string name="title_activity_additional_buoy_plots">Additional Plots</string>
-    <string name="spectral_density_title">Spectral Density</string>
+    <!-- Buoy History activity -->
+    <string name="title_activity_buoy_history">Buoy History</string>
+    <string name="buoy_summary_mode_segment_title">Summary</string>
+    <string name="buoy_swell_mode_segment_title">Swell</string>
+    <string name="buoy_wind_mode_segment_title">Wind Wave</string>
 
     <!-- WaveWatch Charts activity -->
     <string name="title_activity_wavewatch_chart">NOAA Wave Watch III</string>

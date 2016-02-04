@@ -44,8 +44,8 @@
                 android:value=".views.MainActivity" />
         </activity>
         <activity
-            android:name=".views.AlternateCameraActivity"
-            android:label="@string/title_activity_alternate_cameras"
+            android:name=".views.BuoyHistoryActivity"
+            android:label="@string/title_activity_buoy_history"
             android:parentActivityName=".views.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.HackWindsMaterial">
@@ -54,10 +54,10 @@
                 android:value=".views.MainActivity" />
         </activity>
         <activity
-            android:name=".views.AdditionalBuoyPlotsActivity"
+            android:name=".views.AlternateCameraActivity"
             android:label="@string/title_activity_alternate_cameras"
             android:parentActivityName=".views.MainActivity"
-            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.HackWindsMaterial">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -75,7 +75,7 @@
         </activity>
         <activity
             android:name="com.nucc.hackwinds.views.VideoPlayerActivity"
-            android:label="@string/title_activity_additional_buoy_plots"
+            android:label="@string/title_activity_video_player"
             android:theme="@style/Theme.HackWindsMaterial"
             android:configChanges="orientation|screenSize">
         </activity>

@@ -211,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void setSpinnerBuoyLocation() {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        String buoyLocation = sharedPrefs.getString(SettingsActivity.BUOY_LOCATION_KEY, BuoyModel.BLOCK_ISLAND_LOCATION);
+        String buoyLocation = sharedPrefs.getString(SettingsActivity.BUOY_LOCATION_KEY, BuoyModel.MONTAUK_LOCATION);
         int index = 0;
         for (int i = 0; i < mLocationSpinner.getCount(); i++) {
             if (mLocationSpinner.getItemAtPosition(i).equals(buoyLocation)){
@@ -264,7 +264,7 @@ public class MainActivity extends AppCompatActivity {
                     return new ForecastFragment();
                 case 2:
                     // Then the Buoy Fragment
-                    return new BuoyHistoryFragment();
+                    return new BuoyFragment();
                 case 3:
                     // Lastly the Tide Fragment
                     return new TideFragment();

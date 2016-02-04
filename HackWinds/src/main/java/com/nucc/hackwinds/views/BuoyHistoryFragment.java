@@ -33,17 +33,7 @@ public class BuoyHistoryFragment extends ListFragment implements BuoyChangedList
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Set up the menu options
-        setHasOptionsMenu(true);
-
-        if (ReachabilityHelper.deviceHasInternetAccess(getActivity())) {
-            // Get the buoy model
-            mBuoyModel = BuoyModel.getInstance(getActivity());
-
-            // Set up the buoy listener
-            mBuoyModel.addBuoyChangedListener(this);
-
-        }
+        mBuoyModel = BuoyModel.getInstance(getActivity());
     }
 
     @Override
@@ -70,31 +60,9 @@ public class BuoyHistoryFragment extends ListFragment implements BuoyChangedList
             }
         });
 
-        return V;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
         buoyDataUpdated();
-    }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
-        menuInflater.inflate(R.menu.buoy_menu_options, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_buoy_plots:
-                startActivity(new Intent(getActivity(), AdditionalBuoyPlotsActivity.class));
-                break;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-        return true;
+        return V;
     }
 
     @Override
