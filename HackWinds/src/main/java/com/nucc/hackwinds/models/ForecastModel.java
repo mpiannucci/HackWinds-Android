@@ -102,7 +102,12 @@ public class ForecastModel {
         mForecastDataContainers.put(SECOND_BEACH_LOCATION, secondBeachData);
 
         // Initialize the current container from the settings
-        changeLocation();
+        // Get the current location value from the shared preferences
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences( mContext );
+        String location = sharedPrefs.getString( SettingsActivity.FORECAST_LOCATION_KEY, "Narragansett Town Beach" );
+
+        // Change the current location url
+        mCurrentContainer = mForecastDataContainers.get(location);
     }
 
     private void changeLocation() {

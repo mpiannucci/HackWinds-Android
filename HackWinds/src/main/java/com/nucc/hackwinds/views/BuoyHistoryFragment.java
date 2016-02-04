@@ -70,9 +70,14 @@ public class BuoyHistoryFragment extends ListFragment implements BuoyChangedList
             }
         });
 
-        mBuoyModel.fetchBuoyData();
-
         return V;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        buoyDataUpdated();
     }
 
     @Override
@@ -94,6 +99,10 @@ public class BuoyHistoryFragment extends ListFragment implements BuoyChangedList
 
     @Override
     public void buoyDataUpdated() {
+        if (mBuoyModel.getBuoyData().isEmpty()) {
+            return;
+        }
+
         // Update the data in the list adapter
         getActivity().runOnUiThread(new Runnable() {
             @Override

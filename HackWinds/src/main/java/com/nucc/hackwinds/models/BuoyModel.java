@@ -240,8 +240,10 @@ public class BuoyModel {
 
             if (!mCurrentContainer.buoyData.isEmpty()) {
                 // Send an update to the listeners cuz the data is already here
-                listener.latestBuoyFetchSuccess(getBuoyData().get(0));
-                return;
+                if (getBuoyData().get(0).waterTemperature != null) {
+                    listener.latestBuoyFetchSuccess(getBuoyData().get(0));
+                    return;
+                }
             }
 
             Ion.with(mContext).load(mCurrentContainer.createLatestReportOnlyURL()).asString().setCallback(new FutureCallback<String>() {

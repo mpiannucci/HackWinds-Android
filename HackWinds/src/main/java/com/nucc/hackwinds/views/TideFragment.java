@@ -47,6 +47,9 @@ public class TideFragment extends Fragment implements TideChangedListener, Lates
         if (ReachabilityHelper.deviceHasInternetAccess(getActivity())) {
             mTideModel = TideModel.getInstance(getActivity());
             mTideModel.addTideChangedListener(this);
+
+            // Fetch the data from the models
+            BuoyModel.getInstance(getActivity()).fetchLatestBuoyReadingForLocation(mDefaultBuoyLocation, this);
         }
     }
 
@@ -58,16 +61,14 @@ public class TideFragment extends Fragment implements TideChangedListener, Lates
         TextView buoyLocationTV = (TextView) V.findViewById(R.id.water_temp_text);
         buoyLocationTV.setText(mDefaultBuoyLocation);
 
-        // Fetch the data from the models
-        mTideModel.fetchTideData();
-        BuoyModel.getInstance(getActivity()).fetchLatestBuoyReadingForLocation(mDefaultBuoyLocation, this);
-
         return V;
     }
 
     @Override
     public void onResume() {
         super.onResume();
+
+        tideDataUpdated();
     }
 
     @Override
@@ -77,6 +78,10 @@ public class TideFragment extends Fragment implements TideChangedListener, Lates
 
     @Override
     public void tideDataUpdated() {
+        if (mTideModel.tides.isEmpty()) {
+            return;
+        }
+
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {

@@ -54,6 +54,7 @@ public class ForecastFragment extends ListFragment implements ForecastChangedLis
     public void onResume() {
         super.onResume();
 
+        forecastDataUpdated();
     }
 
     @Override
@@ -91,6 +92,10 @@ public class ForecastFragment extends ListFragment implements ForecastChangedLis
 
     @Override
     public void forecastDataUpdated() {
+        if (mForecastModel.getForecasts().isEmpty()) {
+            return;
+        }
+
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {

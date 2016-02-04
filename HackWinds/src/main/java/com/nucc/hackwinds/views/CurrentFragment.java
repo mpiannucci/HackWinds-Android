@@ -102,6 +102,7 @@ public class CurrentFragment extends ListFragment implements ForecastChangedList
     public void onResume() {
         super.onResume();
 
+        forecastDataUpdated();
         new FetchCameraLocationsTask().execute();
     }
 
@@ -129,6 +130,7 @@ public class CurrentFragment extends ListFragment implements ForecastChangedList
 
     @Override
     public void forecastDataUpdated() {
+
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -185,7 +187,6 @@ public class CurrentFragment extends ListFragment implements ForecastChangedList
                 CameraModel cameraModel = CameraModel.getInstance(getActivity());
                 cameraModel.fetchCameraURLs();
                 mCamera = cameraModel.cameraLocations.get("Narragansett").get("Warm Winds");
-                loadCameraImages();
             }
 
             // Return
@@ -196,6 +197,11 @@ public class CurrentFragment extends ListFragment implements ForecastChangedList
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
 
+            if (mCamera == null) {
+                return;
+            }
+
+            loadCameraImages();
         }
     }
 }
