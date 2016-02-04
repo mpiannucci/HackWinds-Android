@@ -93,6 +93,10 @@ public class TideModel {
             return false;
         }
 
+        if (!tides.isEmpty()) {
+            tides.clear();
+        }
+
         try {
             // Get the tide summary json object from the current json object
             JSONObject jsonObj = new JSONObject(rawData);

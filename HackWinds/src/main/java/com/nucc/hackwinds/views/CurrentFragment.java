@@ -26,6 +26,7 @@ import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.nucc.hackwinds.R;
 import com.nucc.hackwinds.adapters.ConditionArrayAdapter;
+import com.nucc.hackwinds.listeners.CameraChangedListener;
 import com.nucc.hackwinds.listeners.ForecastChangedListener;
 import com.nucc.hackwinds.types.Camera;
 import com.nucc.hackwinds.models.CameraModel;
@@ -37,10 +38,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 
-public class CurrentFragment extends ListFragment implements ForecastChangedListener {
+public class CurrentFragment extends ListFragment implements ForecastChangedListener, CameraChangedListener {
     // Initialize the other variables
     private ConditionArrayAdapter mConditionArrayAdapter;
     private Camera mCamera;
+    private CameraModel mCameraModel;
     private ForecastModel mForecastModel;
     private SliderLayout mCameraSliderLayout;
 
@@ -68,13 +70,10 @@ public class CurrentFragment extends ListFragment implements ForecastChangedList
 
         // Get the magicseaweed model instance
         mForecastModel = ForecastModel.getInstance(getActivity());
-
-        // Set the forecast data changed listener
         mForecastModel.addForecastChangedListener(this);
 
-        // TODO: Set the camera data updated listener
-
-        new FetchCameraLocationsTask().execute();
+        mCameraModel = CameraModel.getInstance(getActivity());
+        mCameraModel.addCameraChangedListener(this);
     }
 
     @Override
@@ -103,7 +102,7 @@ public class CurrentFragment extends ListFragment implements ForecastChangedList
         super.onResume();
 
         forecastDataUpdated();
-        new FetchCameraLocationsTask().execute();
+        cameraDataUpdated();
     }
 
     @Override
@@ -159,6 +158,28 @@ public class CurrentFragment extends ListFragment implements ForecastChangedList
         });
     }
 
+    @Override
+    public void cameraDataUpdated() {
+        if (mCameraModel.cameraCount < 1) {
+            return;
+        }
+
+        if (mCamera == null) {
+            mCamera = CameraModel.getInstance(getActivity()).cameraLocations.get("Narragansett").get("Warm Winds");
+        }
+
+        if (mCamera == null) {
+            return;
+        }
+
+        loadCameraImages();
+    }
+
+    @Override
+    public void cameraDataUpdateFailed() {
+
+    }
+
     private void loadCameraImages() {
         final int CAMERA_IMAGE_COUNT = 8;
 
@@ -175,33 +196,6 @@ public class CurrentFragment extends ListFragment implements ForecastChangedList
                     mCameraSliderLayout.addSlider(cameraSliderView);
                 }
             });
-        }
-    }
-
-    public class FetchCameraLocationsTask extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Void... arg0) {
-            // Get the conditions from the model
-            if (mCamera == null) {
-                CameraModel cameraModel = CameraModel.getInstance(getActivity());
-                cameraModel.fetchCameraURLs();
-                mCamera = cameraModel.cameraLocations.get("Narragansett").get("Warm Winds");
-            }
-
-            // Return
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-
-            if (mCamera == null) {
-                return;
-            }
-
-            loadCameraImages();
         }
     }
 }

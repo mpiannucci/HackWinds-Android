@@ -27,6 +27,7 @@ import java.util.ArrayList;
 public class TideFragment extends Fragment implements TideChangedListener, LatestBuoyFetchListener {
     private TideModel mTideModel;
     private String mDefaultBuoyLocation;
+    private String mWaterTemp;
 
     final private int[] mTideTypeViews = new int[]{R.id.upcomingTideType1,
                                                    R.id.upcomingTideType2,
@@ -69,6 +70,7 @@ public class TideFragment extends Fragment implements TideChangedListener, Lates
         super.onResume();
 
         tideDataUpdated();
+        latestBuoyFetchSuccess(null);
     }
 
     @Override
@@ -132,15 +134,30 @@ public class TideFragment extends Fragment implements TideChangedListener, Lates
 
     @Override
     public void latestBuoyFetchSuccess(final Buoy latestBuoy) {
+
+        if (mWaterTemp == null) {
+            if (latestBuoy == null) {
+                return;
+            }
+
+            if (latestBuoy.waterTemperature == null) {
+                return;
+            }
+
+            if (latestBuoy.waterTemperature.isEmpty()) {
+                return;
+            }
+
+            mWaterTemp = latestBuoy.waterTemperature;
+        }
+
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 // Update the water temperature from the latest buoy reading
                 TextView waterTemp = (TextView) getActivity().findViewById(R.id.water_temp_value);
-                if (latestBuoy != null) {
-                    String waterTempValue = latestBuoy.waterTemperature + " " + getResources().getString(R.string.water_temp_holder);
-                    waterTemp.setText(waterTempValue);
-                }
+                String waterTempValue = mWaterTemp + " " + getResources().getString(R.string.water_temp_holder);
+                waterTemp.setText(waterTempValue);
             }
         });
     }

@@ -4,7 +4,7 @@
     <style name="Theme.AlertDialog" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorPrimary">@color/hackwinds_blue</item>
         <item name="colorAccent">@color/hackwinds_blue</item>
-        <item name="colorPrimaryDark">@color/icon_blue</item>
+        <item name="colorPrimaryDark">@color/accent_blue</item>
     </style>
 
     <style name="Theme.MyApp" parent="Theme.AppCompat.Light">

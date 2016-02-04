@@ -187,6 +187,14 @@ public class ForecastModel {
             return false;
         }
 
+        if (!mCurrentContainer.conditions.isEmpty()) {
+            mCurrentContainer.conditions.clear();
+        }
+
+        if (!mCurrentContainer.forecasts.isEmpty()) {
+            mCurrentContainer.forecasts.clear();
+        }
+
         try {
             // Make a json array from the response string
             JSONArray jsonArr = new JSONArray( rawData );
