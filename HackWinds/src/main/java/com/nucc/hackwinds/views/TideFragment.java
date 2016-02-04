@@ -2,7 +2,6 @@ package com.nucc.hackwinds.views;
 
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -12,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.nucc.hackwinds.R;
-import com.nucc.hackwinds.listeners.BuoyChangedListener;
 import com.nucc.hackwinds.listeners.LatestBuoyFetchListener;
 import com.nucc.hackwinds.listeners.TideChangedListener;
 import com.nucc.hackwinds.types.Buoy;
@@ -20,8 +18,6 @@ import com.nucc.hackwinds.types.Tide;
 import com.nucc.hackwinds.models.BuoyModel;
 import com.nucc.hackwinds.models.TideModel;
 import com.nucc.hackwinds.utilities.ReachabilityHelper;
-
-import java.util.ArrayList;
 
 
 public class TideFragment extends Fragment implements TideChangedListener, LatestBuoyFetchListener {
@@ -93,11 +89,11 @@ public class TideFragment extends Fragment implements TideChangedListener, Lates
                 for (Tide thisTide : mTideModel.tides ) {
                     if (thisTide.isSunrise()) {
                         // Set the sunrise time that was found
-                        TextView sunriseTime = (TextView)getActivity().findViewById(R.id.sunriseTime);
+                        TextView sunriseTime = (TextView)getActivity().findViewById(R.id.sunrise_time);
                         sunriseTime.setText(thisTide.time);
                     } else if (thisTide.isSunset()) {
                         // Set the sunset time that was read
-                        TextView sunsetTime = (TextView)getActivity().findViewById(R.id.sunsetTime);
+                        TextView sunsetTime = (TextView)getActivity().findViewById(R.id.sunset_time);
                         sunsetTime.setText(thisTide.time);
                     } else if (thisTide.isTidalEvent()) {
                         // TODO: THERES A BUG HERE.. Yay we found a tide, now set the type (high or low) and the values

@@ -19,7 +19,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/sunTideHeader"
+                android:id="@+id/sun_tide_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/sun_tide_header"
@@ -48,7 +48,7 @@
                     style="@style/ForecastDataText" />
 
                 <TextView
-                    android:id="@+id/sunriseTime"
+                    android:id="@+id/sunrise_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/tide_time_holder"
@@ -64,7 +64,7 @@
                 android:orientation="horizontal" >
 
                 <TextView
-                    android:id="@+id/sunsetText"
+                    android:id="@+id/sunset_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/sunset"
@@ -74,7 +74,7 @@
                     style="@style/ForecastDataText" />
 
                 <TextView
-                    android:id="@+id/sunsetTime"
+                    android:id="@+id/sunset_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/tide_time_holder"

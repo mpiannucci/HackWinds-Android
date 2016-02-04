@@ -32,7 +32,7 @@
     <string name="action_model_forecast">View Model</string>
 
     <!-- Buoy Page -->
-
+    <string name="latest_buoy_card_title">Latest Buoy Data</string>
 
     <!-- Tide Page -->
     <string name="low_tide">Low Tide</string>
