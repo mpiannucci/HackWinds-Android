@@ -91,7 +91,7 @@ ADDED from AndroidManifest.xml:36:9
 		ADDED from AndroidManifest.xml:41:13
 	android:name
 		ADDED from AndroidManifest.xml:37:13
-activity#com.nucc.hackwinds.views.AlternateCameraActivity
+activity#com.nucc.hackwinds.views.BuoyHistoryActivity
 ADDED from AndroidManifest.xml:46:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:50:13
@@ -103,14 +103,14 @@ ADDED from AndroidManifest.xml:46:9
 		ADDED from AndroidManifest.xml:51:13
 	android:name
 		ADDED from AndroidManifest.xml:47:13
-activity#com.nucc.hackwinds.views.AdditionalBuoyPlotsActivity
+activity#com.nucc.hackwinds.views.AlternateCameraActivity
 ADDED from AndroidManifest.xml:56:9
+	android:screenOrientation
+		ADDED from AndroidManifest.xml:60:13
 	android:label
 		ADDED from AndroidManifest.xml:58:13
 	android:parentActivityName
 		ADDED from AndroidManifest.xml:59:13
-	android:configChanges
-		ADDED from AndroidManifest.xml:60:13
 	android:theme
 		ADDED from AndroidManifest.xml:61:13
 	android:name

@@ -5,9 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
@@ -36,6 +33,7 @@ import com.nucc.hackwinds.utilities.ReachabilityHelper;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
 
 public class CurrentFragment extends ListFragment implements ForecastChangedListener, CameraChangedListener {
@@ -187,7 +185,7 @@ public class CurrentFragment extends ListFragment implements ForecastChangedList
         mCameraSliderLayout.removeAllSliders();
 
         for (int i = 1; i < CAMERA_IMAGE_COUNT+1; i++) {
-            String cameraURL = mCamera.imageURL.replace("1.jpg", String.format("%d.jpg", i));
+            String cameraURL = mCamera.imageURL.replace("1.jpg", String.format(Locale.US, "%d.jpg", i));
             Ion.with(getActivity()).load(cameraURL).asBitmap().setCallback(new FutureCallback<Bitmap>() {
                 @Override
                 public void onCompleted(Exception e, Bitmap result) {
