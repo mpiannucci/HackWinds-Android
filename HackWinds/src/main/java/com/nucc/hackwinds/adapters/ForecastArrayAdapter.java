@@ -74,11 +74,11 @@ public class ForecastArrayAdapter extends ArrayAdapter<Forecast> {
 
             // Set the view holder
             ViewHolder viewHolder = new ViewHolder();
-            viewHolder.dayTV = (TextView) rowView.findViewById(R.id.forecastHeader);
-            viewHolder.morningHeaderTV = (TextView) rowView.findViewById(R.id.forecastMorningHeader);
-            viewHolder.morningDataTV = (TextView) rowView.findViewById(R.id.forecastMorningData);
-            viewHolder.afternoonHeaderTV = (TextView) rowView.findViewById(R.id.forecastAfternoonHeader);
-            viewHolder.afternoonDataTV = (TextView) rowView.findViewById(R.id.forecastAfternoonData);
+            viewHolder.dayTV = (TextView) rowView.findViewById(R.id.forecast_header);
+            viewHolder.morningHeaderTV = (TextView) rowView.findViewById(R.id.forecast_morning_header);
+            viewHolder.morningDataTV = (TextView) rowView.findViewById(R.id.forecast_morning_data);
+            viewHolder.afternoonHeaderTV = (TextView) rowView.findViewById(R.id.forecast_afternoon_header);
+            viewHolder.afternoonDataTV = (TextView) rowView.findViewById(R.id.forecast_afternoon_data);
 
             // Set the tag so the views can be recycled
             rowView.setTag(viewHolder);

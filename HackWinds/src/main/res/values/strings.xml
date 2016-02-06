@@ -33,6 +33,8 @@
 
     <!-- Buoy Page -->
     <string name="latest_buoy_card_title">Latest Buoy Data</string>
+    <string name="buoy_component_header">Components</string>
+    <string name="latest_buoy_spectra_title">Wave Spectra</string>
 
     <!-- Tide Page -->
     <string name="low_tide">Low Tide</string>

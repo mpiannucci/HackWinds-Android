@@ -19,7 +19,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/forecastHeader"
+                android:id="@+id/forecast_header"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="@string/loading_text"
@@ -34,14 +34,14 @@
                 android:background="@color/light_grey"/>
 
             <TextView
-                android:id="@+id/forecastMorningHeader"
+                android:id="@+id/forecast_morning_header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/morning_header"
                 style="@style/ForecastTimeOfDay" />
 
             <TextView
-                android:id="@+id/forecastMorningData"
+                android:id="@+id/forecast_morning_data"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/loading_text"
@@ -49,14 +49,14 @@
                 style="@style/ForecastDataText" />
 
             <TextView
-                android:id="@+id/forecastAfternoonHeader"
+                android:id="@+id/forecast_afternoon_header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/afternoon_header"
                 style="@style/ForecastTimeOfDay" />
 
             <TextView
-                android:id="@+id/forecastAfternoonData"
+                android:id="@+id/forecast_afternoon_data"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/loading_text"

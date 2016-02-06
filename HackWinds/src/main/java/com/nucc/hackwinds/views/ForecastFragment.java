@@ -1,7 +1,6 @@
 package com.nucc.hackwinds.views;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
@@ -83,7 +82,7 @@ public class ForecastFragment extends ListFragment implements ForecastChangedLis
         intent.putExtra("dayIndex", position);
 
         // Pass the name of the day so we can set the toolbar
-        TextView dayView = (TextView) v.findViewById(R.id.forecastHeader);
+        TextView dayView = (TextView) v.findViewById(R.id.forecast_header);
         intent.putExtra("dayName", (String)dayView.getText());
 
         // Start the detailed forecast intent
