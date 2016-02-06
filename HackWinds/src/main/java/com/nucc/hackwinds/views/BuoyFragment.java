@@ -1,7 +1,6 @@
 package com.nucc.hackwinds.views;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,14 +12,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.nucc.hackwinds.R;
 import com.nucc.hackwinds.listeners.BuoyChangedListener;
 import com.nucc.hackwinds.models.BuoyModel;
 import com.nucc.hackwinds.types.Buoy;
-
-import org.w3c.dom.Text;
 
 public class BuoyFragment extends Fragment implements BuoyChangedListener{
 
