@@ -94,7 +94,7 @@ public class ForecastModel {
 
                         // Parse out the forecasts for the summaries
                         createDailyForecasts();
-                        
+
                         for(ForecastChangedListener listener : mForecastChangedListeners) {
                             if (listener != null) {
                                 listener.forecastDataUpdated();
