@@ -84,6 +84,19 @@ public class ForecastArrayAdapter extends ArrayAdapter<ForecastDailySummary> {
         String day = getContext().getResources().getStringArray(R.array.daysOfTheWeek)[(((currentDay -1) + position)%7)];
         holder.dayTV.setText(day);
 
+        if (thisDay.morningWindCompassDirection.equals("")) {
+            holder.morningHeaderTV.setVisibility(View.GONE);
+            holder.morningDataTV.setVisibility(View.GONE);
+        } else if (thisDay.afternoonWindCompassDirection.equals("")) {
+            holder.afternoonHeaderTV.setVisibility(View.GONE);
+            holder.afternoonDataTV.setVisibility(View.GONE);
+        } else {
+            holder.morningHeaderTV.setVisibility(View.VISIBLE);
+            holder.morningDataTV.setVisibility(View.VISIBLE);
+            holder.afternoonHeaderTV.setVisibility(View.VISIBLE);
+            holder.afternoonDataTV.setVisibility(View.VISIBLE);
+        }
+
         // Set the morning and afternoon data
         holder.morningDataTV.setText(String.format(Locale.US, "%d - %d feet, Wind %s %d mph", (int)thisDay.morningMinimumWaveHeight,
                 (int)thisDay.morningMaximumWaveHeight, thisDay.morningWindCompassDirection, (int)thisDay.morningWindSpeed));
