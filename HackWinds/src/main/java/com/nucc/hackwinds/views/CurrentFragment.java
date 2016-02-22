@@ -28,7 +28,7 @@ import com.nucc.hackwinds.listeners.ForecastChangedListener;
 import com.nucc.hackwinds.types.Camera;
 import com.nucc.hackwinds.models.CameraModel;
 import com.nucc.hackwinds.models.ForecastModel;
-import com.nucc.hackwinds.types.Condition;
+import com.nucc.hackwinds.types.Forecast;
 import com.nucc.hackwinds.utilities.ReachabilityHelper;
 
 import java.util.ArrayList;
@@ -133,11 +133,11 @@ public class CurrentFragment extends ListFragment implements ForecastChangedList
             public void run() {
                 // Set the condition adapter for the list
                 if (mConditionArrayAdapter == null) {
-                    ArrayList<Condition> conditions = mForecastModel.getConditionsForIndex(0);
+                    ArrayList<Forecast> conditions = mForecastModel.getForecastsForDay(0);
                     mConditionArrayAdapter = new ConditionArrayAdapter(getActivity(), conditions);
                     setListAdapter(mConditionArrayAdapter);
                 } else {
-                    ArrayList<Condition> conditions = mForecastModel.getConditionsForIndex(0);
+                    ArrayList<Forecast> conditions = mForecastModel.getForecastsForDay(0);
                     mConditionArrayAdapter.setConditonData(conditions);
                 }
             }

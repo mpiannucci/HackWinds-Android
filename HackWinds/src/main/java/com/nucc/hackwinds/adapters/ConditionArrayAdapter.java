@@ -10,14 +10,14 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.nucc.hackwinds.types.Condition;
 import com.nucc.hackwinds.R;
+import com.nucc.hackwinds.types.Forecast;
 
 import java.util.ArrayList;
 
-public class ConditionArrayAdapter extends ArrayAdapter<Condition> {
+public class ConditionArrayAdapter extends ArrayAdapter<Forecast> {
     private final Context context;
-    public ArrayList<Condition> values;
+    public ArrayList<Forecast> values;
 
     // Class to hold view IDs so they can be recycled
     static class ViewHolder {
@@ -28,13 +28,13 @@ public class ConditionArrayAdapter extends ArrayAdapter<Condition> {
         public int position;
     }
 
-    public ConditionArrayAdapter(Context ctx, ArrayList<Condition> vals) {
+    public ConditionArrayAdapter(Context ctx, ArrayList<Forecast> vals) {
         super(ctx, R.layout.current_item, vals);
         this.context = ctx;
         this.values = vals;
     }
 
-    public void setConditonData(ArrayList<Condition> newValues) {
+    public void setConditonData(ArrayList<Forecast> newValues) {
         this.values = newValues;
         this.notifyDataSetChanged();
     }
@@ -90,13 +90,13 @@ public class ConditionArrayAdapter extends ArrayAdapter<Condition> {
             holder.swellTV.setTextColor(ContextCompat.getColor(context, R.color.hackwinds_blue));
         } else {
             // Get the data for the position in the list
-            Condition condition = values.get(position - 1);
+            Forecast condition = values.get(position - 1);
 
             // Set the textview for all of the data
-            holder.dateTV.setText(condition.date);
-            holder.breakTV.setText(condition.minBreakHeight + " - " + condition.maxBreakHeight);
-            holder.windTV.setText(condition.windDirection + " " + condition.windSpeed);
-            holder.swellTV.setText(condition.swellDirection + " " + condition.swellHeight + " ft @ " + condition.swellPeriod + " s");
+            holder.dateTV.setText(condition.time);
+            holder.breakTV.setText(String.valueOf((int)condition.minimumBreakingHeight) + " - " + String.valueOf((int)condition.maximumBreakingHeight));
+            holder.windTV.setText(condition.windCompassDirection + " " + String.valueOf((int)condition.windSpeed));
+            holder.swellTV.setText(condition.primarySwellComponent.getSwellSummary());
 
             // Make sure the text is normal and not bold
             holder.dateTV.setTypeface(null, Typeface.NORMAL);

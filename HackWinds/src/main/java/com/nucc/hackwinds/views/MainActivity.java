@@ -55,29 +55,11 @@ public class MainActivity extends AppCompatActivity {
         String defaultBuoyLocation = sharedPrefs.getString(SettingsActivity.DEFAULT_BUOY_LOCATION_KEY, BuoyModel.MONTAUK_LOCATION);
         sharedPrefs.edit().putString(SettingsActivity.BUOY_LOCATION_KEY, defaultBuoyLocation).apply();
 
-        // Create a listener so the user can update the location from the settings
-        mSharedPrefsChangedListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
-            @Override
-            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                if ( !key.equals( SettingsActivity.FORECAST_LOCATION_KEY ) ) {
-                    return;
-                }
-
-                int currentPage = mViewPager.getCurrentItem();
-                String currentPageTitle = String.valueOf(mAdapter.getPageTitle(currentPage));
-                if (currentPageTitle.equals("LIVE") || currentPageTitle.equals("FORECAST")) {
-                    setSpinnerForecastLocation();
-                }
-            }
-        };
-        sharedPrefs.registerOnSharedPreferenceChangeListener(mSharedPrefsChangedListener);
-
         // Set up the spinner locations
         initLocationArrays();
         mLocationAdapter = new LocationArrayAdapter(this, mForecastLocations);
         mLocationSpinner = (Spinner) findViewById(R.id.navigation_spinner);
         mLocationSpinner.setAdapter(mLocationAdapter);
-        setSpinnerForecastLocation();
         mLocationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
@@ -135,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
                 if (title.equals("LIVE") || title.equals("FORECAST")) {
                     mLocationAdapter.changeLocations(mForecastLocations);
                     mLocationAdapter.notifyDataSetChanged();
-                    setSpinnerForecastLocation();
+                    mLocationSpinner.setSelection(0);
                 } else if (title.equals("BUOYS")) {
                     mLocationAdapter.changeLocations(mBuoyLocations);
                     mLocationAdapter.notifyDataSetChanged();
@@ -180,10 +162,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void initLocationArrays() {
         mForecastLocations = new ArrayList<>();
-        mForecastLocations.add("Narragansett Town Beach");
-        mForecastLocations.add("Point Judith Lighthouse");
-        mForecastLocations.add("Matunuck");
-        mForecastLocations.add("Second Beach");
+        mForecastLocations.add("Narragansett");
 
         mBuoyLocations = new ArrayList<>();
         mBuoyLocations.add("Block Island");
@@ -192,21 +171,6 @@ public class MainActivity extends AppCompatActivity {
 
         mTideLocation = new ArrayList<>();
         mTideLocation.add("Point Judith Harbor");
-    }
-
-    public void setSpinnerForecastLocation() {
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        String forecastLocation = sharedPrefs.getString(SettingsActivity.FORECAST_LOCATION_KEY, ForecastModel.TOWN_BEACH_LOCATION);
-        int index = 0;
-        for (int i = 0; i < mLocationSpinner.getCount(); i++) {
-            if (mLocationSpinner.getItemAtPosition(i).equals(forecastLocation)){
-                index = i;
-                break;
-            }
-        }
-
-        // Set the spinner to the correct index
-        mLocationSpinner.setSelection(index);
     }
 
     public void setSpinnerBuoyLocation() {

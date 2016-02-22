@@ -91,7 +91,7 @@ public class ForecastFragment extends ListFragment implements ForecastChangedLis
 
     @Override
     public void forecastDataUpdated() {
-        if (mForecastModel.getForecasts().isEmpty()) {
+        if (mForecastModel.dailyForecasts.isEmpty()) {
             return;
         }
 
@@ -100,10 +100,10 @@ public class ForecastFragment extends ListFragment implements ForecastChangedLis
             public void run() {
                 // Set the forecast adapter to the ListView
                 if (mForecastArrayAdapter == null) {
-                    mForecastArrayAdapter = new ForecastArrayAdapter(getActivity(), mForecastModel.getForecasts());
+                    mForecastArrayAdapter = new ForecastArrayAdapter(getActivity(), mForecastModel.dailyForecasts);
                     setListAdapter(mForecastArrayAdapter);
                 } else {
-                    mForecastArrayAdapter.setForecastData(mForecastModel.getForecasts());
+                    mForecastArrayAdapter.setForecastData(mForecastModel.dailyForecasts);
                 }
             }
         });

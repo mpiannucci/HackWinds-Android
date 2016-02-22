@@ -11,15 +11,17 @@ import android.widget.TextView;
 
 import com.nucc.hackwinds.types.Forecast;
 import com.nucc.hackwinds.R;
+import com.nucc.hackwinds.types.ForecastDailySummary;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
-public class ForecastArrayAdapter extends ArrayAdapter<Forecast> {
+public class ForecastArrayAdapter extends ArrayAdapter<ForecastDailySummary> {
     private final Context context;
     private final int currentDay;
 
-    public ArrayList<Pair<Forecast, Forecast>> values;
+    public ArrayList<ForecastDailySummary> values;
 
     // View holder class so views can be recycled
     static class ViewHolder {
@@ -30,28 +32,18 @@ public class ForecastArrayAdapter extends ArrayAdapter<Forecast> {
         public TextView afternoonDataTV;
     }
 
-    public ForecastArrayAdapter(Context ctx, ArrayList<Forecast> vals) {
+    public ForecastArrayAdapter(Context ctx, ArrayList<ForecastDailySummary> vals) {
         super(ctx, R.layout.forecast_item, vals);
         this.context = ctx;
 
-        ArrayList<Pair<Forecast, Forecast>> forecasts = new ArrayList<>();
-        for (int i = 0; i < 10; i += 2) {
-            Pair<Forecast, Forecast> thisDay = new Pair <> (vals.get(i), vals.get(i+1));
-            forecasts.add(thisDay);
-        }
-        this.values = forecasts;
+        this.values = vals;
 
         Calendar calendar = Calendar.getInstance();
         this.currentDay = calendar.get(Calendar.DAY_OF_WEEK);
     }
 
-    public void setForecastData(ArrayList<Forecast> newValues) {
-        ArrayList<Pair<Forecast, Forecast>> forecasts = new ArrayList<>();
-        for (int i = 0; i < 10; i += 2) {
-            Pair<Forecast, Forecast> thisDay = new Pair <> (newValues.get(i), newValues.get(i+1));
-            forecasts.add(thisDay);
-        }
-        this.values = forecasts;
+    public void setForecastData(ArrayList<ForecastDailySummary> newValues) {
+        this.values = newValues;
         this.notifyDataSetChanged();
     }
 
@@ -85,7 +77,7 @@ public class ForecastArrayAdapter extends ArrayAdapter<Forecast> {
         }
 
         // Get the forecast object and the view holder
-        Pair<Forecast, Forecast> thisDay = values.get(position);
+        ForecastDailySummary thisDay = values.get(position);
         ViewHolder holder = (ViewHolder) rowView.getTag();
 
         // Set the day text view
@@ -93,20 +85,19 @@ public class ForecastArrayAdapter extends ArrayAdapter<Forecast> {
         holder.dayTV.setText(day);
 
         // Set the morning and afternoon data
-        holder.morningDataTV.setText(String.format("%s - %s feet, Wind %s %s mph", thisDay.first.minBreakHeight,
-                thisDay.first.maxBreakHeight, thisDay.first.windSpeed, thisDay.first.windDirection));
-        holder.afternoonDataTV.setText(String.format("%s - %s feet, Wind %s %s mph", thisDay.second.minBreakHeight,
-                thisDay.second.maxBreakHeight, thisDay.second.windSpeed, thisDay.second.windDirection));
+        holder.morningDataTV.setText(String.format(Locale.US, "%d - %d feet, Wind %s %d mph", (int)thisDay.morningMinimumWaveHeight,
+                (int)thisDay.morningMaximumWaveHeight, thisDay.morningWindCompassDirection, (int)thisDay.morningWindSpeed));
+        holder.afternoonDataTV.setText(String.format(Locale.US, "%d - %d feet, Wind %s %d mph", (int)thisDay.afternoonMinimumWaveHeight, (int)thisDay.afternoonMaximumWaveHeight, thisDay.afternoonWindCompassDirection, (int)thisDay.afternoonWindSpeed));
 
         // Set the color of the time of day header based on the swell
-        if (Double.valueOf(thisDay.first.minBreakHeight) > 1.9) {
-            if (thisDay.first.windDirection.equals("WSW") ||
-                    thisDay.first.windDirection.equals("W") ||
-                    thisDay.first.windDirection.equals("WNW") ||
-                    thisDay.first.windDirection.equals("NW") ||
-                    thisDay.first.windDirection.equals("N")) {
+        if (thisDay.morningMinimumWaveHeight > 1.9) {
+            if (thisDay.morningWindCompassDirection.equals("WSW") ||
+                    thisDay.morningWindCompassDirection.equals("W") ||
+                    thisDay.morningWindCompassDirection.equals("WNW") ||
+                    thisDay.morningWindCompassDirection.equals("NW") ||
+                    thisDay.morningWindCompassDirection.equals("N")) {
                 holder.morningHeaderTV.setTextColor(ContextCompat.getColor(context, R.color.forecast_green));
-            } else if (Double.valueOf(thisDay.first.windSpeed) < 8.0) {
+            } else if (thisDay.morningWindSpeed < 8.0) {
                 holder.morningHeaderTV.setTextColor(ContextCompat.getColor(context, R.color.forecast_green));
             } else {
                 holder.morningHeaderTV.setTextColor(ContextCompat.getColor(context, R.color.forecast_yellow));
@@ -115,14 +106,14 @@ public class ForecastArrayAdapter extends ArrayAdapter<Forecast> {
             holder.morningHeaderTV.setTextColor(ContextCompat.getColor(context, R.color.forecast_red));
         }
 
-        if (Double.valueOf(thisDay.second.minBreakHeight) > 1.9) {
-            if (thisDay.second.windDirection.equals("WSW") ||
-                    thisDay.second.windDirection.equals("W") ||
-                    thisDay.second.windDirection.equals("WNW") ||
-                    thisDay.second.windDirection.equals("NW") ||
-                    thisDay.second.windDirection.equals("N")) {
+        if (thisDay.afternoonMinimumWaveHeight > 1.9) {
+            if (thisDay.afternoonWindCompassDirection.equals("WSW") ||
+                    thisDay.afternoonWindCompassDirection.equals("W") ||
+                    thisDay.afternoonWindCompassDirection.equals("WNW") ||
+                    thisDay.afternoonWindCompassDirection.equals("NW") ||
+                    thisDay.afternoonWindCompassDirection.equals("N")) {
                 holder.afternoonHeaderTV.setTextColor(ContextCompat.getColor(context, R.color.forecast_green));
-            } else if (Double.valueOf(thisDay.second.windSpeed) < 8.0) {
+            } else if (thisDay.afternoonWindSpeed < 8.0) {
                 holder.afternoonHeaderTV.setTextColor(ContextCompat.getColor(context, R.color.forecast_green));
             } else {
                 holder.afternoonHeaderTV.setTextColor(ContextCompat.getColor(context, R.color.forecast_yellow));

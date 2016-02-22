@@ -25,7 +25,7 @@ public class ForecastModel {
     public String windModelRun;
     public ArrayList<Forecast> forecasts;
     public ArrayList<ForecastDailySummary> dailyForecasts;
-    public final int FORECAST_DATA_COUNT = 61;
+    public final int FORECAST_DATA_COUNT = 60;
 
     // Private Member variables
     private Context mContext;
@@ -58,6 +58,8 @@ public class ForecastModel {
             dayIndices[i] = -1;
         }
         dayCount = 0;
+
+        fetchForecastData();
     }
 
     public void addForecastChangedListener( ForecastChangedListener forecastListener ) {

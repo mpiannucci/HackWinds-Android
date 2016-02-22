@@ -1,16 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="@string/pref_forecast_location_group_title" >
-        <ListPreference
-            android:title="@string/pref_change_forecast_title"
-            android:summary="Current Location"
-            android:key="forecastLocation"
-            android:entries="@array/mswForecastLocations"
-            android:entryValues="@array/mswForecastLocations"
-            android:defaultValue="Narragansett Town Beach"/>
-    </PreferenceCategory>
-
     <PreferenceCategory android:title="@string/pref_default_buoy_location_group_title" >
         <ListPreference
             android:title="@string/pref_change_default_buoy_title"

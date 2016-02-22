@@ -16,10 +16,10 @@ import android.widget.RadioGroup;
 
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
-import com.nucc.hackwinds.types.Condition;
 import com.nucc.hackwinds.R;
 import com.nucc.hackwinds.adapters.ConditionArrayAdapter;
 import com.nucc.hackwinds.models.ForecastModel;
+import com.nucc.hackwinds.types.Forecast;
 import com.nucc.hackwinds.utilities.ReachabilityHelper;
 
 import java.util.ArrayList;
@@ -41,7 +41,7 @@ public class DetailedForecastFragment extends ListFragment implements SegmentedG
     private AnimationDrawable mChartAnimation;
     private FutureCallback<Bitmap> mChartLoadCallback;
     private ForecastModel mForecastModel;
-    private ArrayList<Condition> mDayConditions;
+    private ArrayList<Forecast> mDayConditions;
     private ConditionArrayAdapter mConditionArrayAdapter;
 
     @Override
@@ -63,7 +63,7 @@ public class DetailedForecastFragment extends ListFragment implements SegmentedG
 
         // Get the condition model for the given day
         mDayIndex = getArguments().getInt("dayIndex");
-        mDayConditions = mForecastModel.getConditionsForIndex(mDayIndex);
+        mDayConditions = mForecastModel.getForecastsForDay(mDayIndex);
         mConditionArrayAdapter = new ConditionArrayAdapter(getActivity(), mDayConditions);
         setListAdapter(mConditionArrayAdapter);
 
@@ -186,19 +186,19 @@ public class DetailedForecastFragment extends ListFragment implements SegmentedG
     }
 
     public void getChartImageForIndex(ForecastChartType forecastChartType, int index) {
-        switch(forecastChartType) {
-            case SWELL:
-                Ion.with(getActivity()).load(mDayConditions.get(index).swellChartURL).asBitmap().setCallback(mChartLoadCallback);
-                break;
-            case WIND:
-                Ion.with(getActivity()).load(mDayConditions.get(index).windChartURL).asBitmap().setCallback(mChartLoadCallback);
-                break;
-            case PERIOD:
-                Ion.with(getActivity()).load(mDayConditions.get(index).periodChartURL).asBitmap().setCallback(mChartLoadCallback);
-                break;
-            default:
-                break;
-        }
+//        switch(forecastChartType) {
+//            case SWELL:
+//                Ion.with(getActivity()).load(mDayConditions.get(index).swellChartURL).asBitmap().setCallback(mChartLoadCallback);
+//                break;
+//            case WIND:
+//                Ion.with(getActivity()).load(mDayConditions.get(index).windChartURL).asBitmap().setCallback(mChartLoadCallback);
+//                break;
+//            case PERIOD:
+//                Ion.with(getActivity()).load(mDayConditions.get(index).periodChartURL).asBitmap().setCallback(mChartLoadCallback);
+//                break;
+//            default:
+//                break;
+//        }
     }
 
 }

@@ -64,10 +64,6 @@ public class SettingsActivity extends AppCompatActivity {
             // Get the shared preferences
             SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
 
-            // Set the summary of the location preference to be the current location
-            Preference forecastLocationPref = findPreference(FORECAST_LOCATION_KEY);
-            forecastLocationPref.setSummary(sharedPrefs.getString(FORECAST_LOCATION_KEY, getResources().getStringArray(R.array.mswForecastLocations)[0]));
-
             // Set the summary of the buoy preference to be the current location
             Preference defaultBuoyLocationPref = findPreference(DEFAULT_BUOY_LOCATION_KEY);
             defaultBuoyLocationPref.setSummary(sharedPrefs.getString(DEFAULT_BUOY_LOCATION_KEY, getResources().getStringArray(R.array.buoyLocations)[1]));
@@ -144,11 +140,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-            if (key.equals(FORECAST_LOCATION_KEY)) {
-                // If the location was changed set the summary to the new location
-                Preference forecastLocationPref = findPreference(key);
-                forecastLocationPref.setSummary(sharedPreferences.getString(key, getResources().getStringArray(R.array.mswForecastLocations)[0]));
-            } else if (key.equals(DEFAULT_BUOY_LOCATION_KEY)) {
+            if (key.equals(DEFAULT_BUOY_LOCATION_KEY)) {
                 Preference defaultBuoyLocationPref = findPreference(key);
                 defaultBuoyLocationPref.setSummary(sharedPreferences.getString(key, getResources().getStringArray(R.array.buoyLocations)[1]));
             }
