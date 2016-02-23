@@ -259,46 +259,51 @@ public class ForecastModel {
 
                 if (dailyForecasts.size() == 0) {
                     if (dailyForecastData.size() >= 6) {
-                        newSummary.morningMinimumWaveHeight = (int)(dailyForecastData.get(0).minimumBreakingHeight + dailyForecastData.get(1).minimumBreakingHeight) / 2;
-                        newSummary.morningMaximumWaveHeight = (int)(dailyForecastData.get(0).maximumBreakingHeight + dailyForecastData.get(1).maximumBreakingHeight) / 2;
+                        newSummary.morningMinimumWaveHeight = (dailyForecastData.get(0).minimumBreakingHeight + dailyForecastData.get(1).minimumBreakingHeight) / 2;
+                        newSummary.morningMaximumWaveHeight = (dailyForecastData.get(0).maximumBreakingHeight + dailyForecastData.get(1).maximumBreakingHeight) / 2;
                         newSummary.morningWindSpeed = dailyForecastData.get(1).windSpeed;
                         newSummary.morningWindCompassDirection = dailyForecastData.get(1).windCompassDirection;
 
-                        newSummary.afternoonMinimumWaveHeight = (int)(dailyForecastData.get(2).minimumBreakingHeight + dailyForecastData.get(3).minimumBreakingHeight) / 2;
-                        newSummary.afternoonMaximumWaveHeight = (int)(dailyForecastData.get(2).maximumBreakingHeight + dailyForecastData.get(3).maximumBreakingHeight) / 2;
+                        newSummary.afternoonMinimumWaveHeight = (dailyForecastData.get(2).minimumBreakingHeight + dailyForecastData.get(3).minimumBreakingHeight) / 2;
+                        newSummary.afternoonMaximumWaveHeight = (dailyForecastData.get(2).maximumBreakingHeight + dailyForecastData.get(3).maximumBreakingHeight) / 2;
                         newSummary.afternoonWindSpeed = dailyForecastData.get(3).windSpeed;
                         newSummary.afternoonWindCompassDirection = dailyForecastData.get(3).windCompassDirection;
 
                     } else if (dailyForecastData.size() >= 4) {
-                        newSummary.afternoonMinimumWaveHeight = (int)(dailyForecastData.get(1).minimumBreakingHeight + dailyForecastData.get(2).minimumBreakingHeight + dailyForecastData.get(3).minimumBreakingHeight) / 3;
-                        newSummary.afternoonMaximumWaveHeight = (int)(dailyForecastData.get(1).maximumBreakingHeight + dailyForecastData.get(3).maximumBreakingHeight + dailyForecastData.get(3).maximumBreakingHeight) / 3;
+                        newSummary.afternoonMinimumWaveHeight = (dailyForecastData.get(1).minimumBreakingHeight + dailyForecastData.get(2).minimumBreakingHeight + dailyForecastData.get(3).minimumBreakingHeight) / 3;
+                        newSummary.afternoonMaximumWaveHeight = (dailyForecastData.get(1).maximumBreakingHeight + dailyForecastData.get(3).maximumBreakingHeight + dailyForecastData.get(3).maximumBreakingHeight) / 3;
                         newSummary.afternoonWindSpeed = dailyForecastData.get(2).windSpeed;
                         newSummary.afternoonWindCompassDirection = dailyForecastData.get(2).windCompassDirection;
+                    } else if (dailyForecastData.size() >= 2) {
+                        newSummary.morningMinimumWaveHeight = dailyForecastData.get(1).minimumBreakingHeight;
+                        newSummary.morningMaximumWaveHeight = dailyForecastData.get(1).maximumBreakingHeight;
+                        newSummary.morningWindSpeed = dailyForecastData.get(1).windSpeed;
+                        newSummary.morningWindCompassDirection = dailyForecastData.get(1).windCompassDirection;
                     }
                 } else {
                     if (dailyForecastData.size() >= 4) {
 
-                        newSummary.morningMinimumWaveHeight = (int)(dailyForecastData.get(1).minimumBreakingHeight + dailyForecastData.get(2).minimumBreakingHeight + dailyForecastData.get(3).minimumBreakingHeight) / 3;
-                        newSummary.morningMaximumWaveHeight = (int)(dailyForecastData.get(1).maximumBreakingHeight + dailyForecastData.get(3).maximumBreakingHeight + dailyForecastData.get(3).maximumBreakingHeight) / 3;
+                        newSummary.morningMinimumWaveHeight = (dailyForecastData.get(1).minimumBreakingHeight + dailyForecastData.get(2).minimumBreakingHeight + dailyForecastData.get(3).minimumBreakingHeight) / 3;
+                        newSummary.morningMaximumWaveHeight = (dailyForecastData.get(1).maximumBreakingHeight + dailyForecastData.get(3).maximumBreakingHeight + dailyForecastData.get(3).maximumBreakingHeight) / 3;
                         newSummary.morningWindSpeed = dailyForecastData.get(2).windSpeed;
                         newSummary.morningWindCompassDirection = dailyForecastData.get(2).windCompassDirection;
 
                         if (dailyForecastData.size() >= 6) {
-                            newSummary.afternoonMinimumWaveHeight = (int)(dailyForecastData.get(4).minimumBreakingHeight + dailyForecastData.get(5).minimumBreakingHeight) / 2;
-                            newSummary.afternoonMaximumWaveHeight = (int)(dailyForecastData.get(4).maximumBreakingHeight + dailyForecastData.get(5).maximumBreakingHeight) / 2;
+                            newSummary.afternoonMinimumWaveHeight = (dailyForecastData.get(4).minimumBreakingHeight + dailyForecastData.get(5).minimumBreakingHeight) / 2;
+                            newSummary.afternoonMaximumWaveHeight = (dailyForecastData.get(4).maximumBreakingHeight + dailyForecastData.get(5).maximumBreakingHeight) / 2;
                             newSummary.afternoonWindSpeed = dailyForecastData.get(5).windSpeed;
                             newSummary.afternoonWindCompassDirection = dailyForecastData.get(5).windCompassDirection;
                         }
                     }
                 }
             } else {
-                newSummary.morningMinimumWaveHeight = (int)(dailyForecastData.get(1).minimumBreakingHeight + dailyForecastData.get(2).minimumBreakingHeight + dailyForecastData.get(3).minimumBreakingHeight) / 3;
-                newSummary.morningMaximumWaveHeight = (int)(dailyForecastData.get(1).maximumBreakingHeight + dailyForecastData.get(3).maximumBreakingHeight + dailyForecastData.get(3).maximumBreakingHeight) / 3;
+                newSummary.morningMinimumWaveHeight = (dailyForecastData.get(1).minimumBreakingHeight + dailyForecastData.get(2).minimumBreakingHeight + dailyForecastData.get(3).minimumBreakingHeight) / 3;
+                newSummary.morningMaximumWaveHeight = (dailyForecastData.get(1).maximumBreakingHeight + dailyForecastData.get(3).maximumBreakingHeight + dailyForecastData.get(3).maximumBreakingHeight) / 3;
                 newSummary.morningWindSpeed = dailyForecastData.get(2).windSpeed;
                 newSummary.morningWindCompassDirection = dailyForecastData.get(2).windCompassDirection;
 
-                newSummary.afternoonMinimumWaveHeight = (int)(dailyForecastData.get(4).minimumBreakingHeight + dailyForecastData.get(5).minimumBreakingHeight + dailyForecastData.get(6).minimumBreakingHeight) / 3;
-                newSummary.afternoonMaximumWaveHeight = (int)(dailyForecastData.get(4).maximumBreakingHeight + dailyForecastData.get(5).maximumBreakingHeight + dailyForecastData.get(6).maximumBreakingHeight) / 3;
+                newSummary.afternoonMinimumWaveHeight = (dailyForecastData.get(4).minimumBreakingHeight + dailyForecastData.get(5).minimumBreakingHeight + dailyForecastData.get(6).minimumBreakingHeight) / 3;
+                newSummary.afternoonMaximumWaveHeight = (dailyForecastData.get(4).maximumBreakingHeight + dailyForecastData.get(5).maximumBreakingHeight + dailyForecastData.get(6).maximumBreakingHeight) / 3;
                 newSummary.afternoonWindSpeed = dailyForecastData.get(5).windSpeed;
                 newSummary.afternoonWindCompassDirection = dailyForecastData.get(5).windCompassDirection;
             }
