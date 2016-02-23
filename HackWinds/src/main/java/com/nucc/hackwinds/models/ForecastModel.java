@@ -178,6 +178,7 @@ public class ForecastModel {
             // Get alllllll of the forecast data!
             JSONArray forecastJsonAray = jsonObj.getJSONArray("ForecastData");
             dayCount = 0;
+            int forecastOffset = 0;
             for (int i = 0; i < FORECAST_DATA_COUNT; i++) {
                 Forecast newForecast = new Forecast();
 
@@ -188,6 +189,7 @@ public class ForecastModel {
                 newForecast.time = rawForecast.getString("Time");
                 if ((i == 0) && (newForecast.time.equals("07 PM") || (newForecast.time.equals("08 PM")))) {
                     i += 1;
+                    forecastOffset = 2;
                     continue;
                 }
 
@@ -219,10 +221,10 @@ public class ForecastModel {
                 newForecast.tertiarySwellComponent = tertiarySwell;
 
                 if (newForecast.time.equals("01 AM") || newForecast.time.equals("02 AM")) {
-                    dayIndices[dayCount] = i;
+                    dayIndices[dayCount] = i - forecastOffset;
                     dayCount++;
                 } else if (forecasts.size() == 0) {
-                    dayIndices[dayCount] = i;
+                    dayIndices[dayCount] = i - forecastOffset;
                     dayCount++;
                 }
 
