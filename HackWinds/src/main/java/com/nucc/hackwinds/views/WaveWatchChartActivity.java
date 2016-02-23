@@ -241,6 +241,12 @@ public class WaveWatchChartActivity extends AppCompatActivity implements Segment
         mChartLoadCallback = new FutureCallback<Bitmap>() {
             @Override
             public void onCompleted(Exception e, Bitmap result) {
+                if (result == null) {
+                    ImageView chartImage = (ImageView) findViewById(R.id.wavewatch_chart_image);
+                    chartImage.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.photo_loading_error));
+                    return;
+                }
+
                 BitmapDrawable chartFrame = new BitmapDrawable(getResources(), result);
                 mChartAnimation.addFrame(chartFrame, mAnimationDuration);
 
