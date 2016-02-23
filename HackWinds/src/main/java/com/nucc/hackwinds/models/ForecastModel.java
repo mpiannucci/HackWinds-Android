@@ -139,6 +139,18 @@ public class ForecastModel {
         return new ArrayList<>(forecasts.subList(startIndex, endIndex));
     }
 
+    public int getDayForecastStartingIndex(int day) {
+        if (day < 8) {
+            return dayIndices[day];
+        } else {
+            return 0;
+        }
+    }
+
+    public int getDayCount() {
+        return dayCount;
+    }
+
     private boolean parseForecasts(String rawData) {
         // Get the raw data
         if (rawData == null) {

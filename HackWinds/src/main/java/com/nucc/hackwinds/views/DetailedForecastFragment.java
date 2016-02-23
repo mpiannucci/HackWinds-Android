@@ -23,15 +23,17 @@ import com.nucc.hackwinds.types.Forecast;
 import com.nucc.hackwinds.utilities.ReachabilityHelper;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import info.hoang8f.android.segmented.SegmentedGroup;
 
 
 public class DetailedForecastFragment extends ListFragment implements SegmentedGroup.OnCheckedChangeListener {
     private final int ANIMATION_DURATION = 500;
+    private final int WAVE_WATCH_HOUR_STEP = 3;
 
     private enum ForecastChartType {
-        SWELL,
+        WAVES,
         WIND,
         PERIOD
     }
@@ -163,7 +165,7 @@ public class DetailedForecastFragment extends ListFragment implements SegmentedG
     public void onCheckedChanged(RadioGroup radioGroup, int index) {
         // Start loading the new images.
         if (index == R.id.forecast_swell_segment_button) {
-            mCurrentForecastChartType = ForecastChartType.SWELL;
+            mCurrentForecastChartType = ForecastChartType.WAVES;
         } else if (index == R.id.forecast_wind_segment_button) {
             mCurrentForecastChartType = ForecastChartType.WIND;
         } else if (index == R.id.forecast_period_segment_button) {
@@ -186,19 +188,35 @@ public class DetailedForecastFragment extends ListFragment implements SegmentedG
     }
 
     public void getChartImageForIndex(ForecastChartType forecastChartType, int index) {
-//        switch(forecastChartType) {
-//            case SWELL:
-//                Ion.with(getActivity()).load(mDayConditions.get(index).swellChartURL).asBitmap().setCallback(mChartLoadCallback);
-//                break;
-//            case WIND:
-//                Ion.with(getActivity()).load(mDayConditions.get(index).windChartURL).asBitmap().setCallback(mChartLoadCallback);
-//                break;
-//            case PERIOD:
-//                Ion.with(getActivity()).load(mDayConditions.get(index).periodChartURL).asBitmap().setCallback(mChartLoadCallback);
-//                break;
-//            default:
-//                break;
-//        }
+        final String BASE_URL = "http://polar.ncep.noaa.gov/waves/WEB/multi_1.latest_run/plots/US_eastcoast.%s.%s%03dh.png";
+        final String PAST_HOUR_TIME_PREFIX = "h";
+        final String FUTURE_HOUR_TIME_PREFIX = "f";
+
+        // Format the url for the next image load
+        final String chartTimePrefix;
+        if ((index == 0) && (mDayIndex == 0)) {
+            chartTimePrefix = PAST_HOUR_TIME_PREFIX;
+        } else {
+            chartTimePrefix = FUTURE_HOUR_TIME_PREFIX;
+        }
+        final String chartTypePrefix = getChartURLPrefix(forecastChartType);
+        final String nextImageURL = String.format(Locale.US, BASE_URL, chartTypePrefix, chartTimePrefix, (mForecastModel.getDayForecastStartingIndex(mDayIndex) + index) * WAVE_WATCH_HOUR_STEP);
+
+        // Load the next image
+        Ion.with(this).load(nextImageURL).asBitmap().setCallback(mChartLoadCallback);
+    }
+
+    private String getChartURLPrefix(ForecastChartType forecastChartType) {
+        switch (forecastChartType) {
+            case WAVES:
+                return "hs";
+            case PERIOD:
+                return "tp_sw1";
+            case WIND:
+                return "u10";
+            default:
+                return "";
+        }
     }
 
 }
