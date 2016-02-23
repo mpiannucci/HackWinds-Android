@@ -33,4 +33,11 @@ public class Forecast {
 
         return String.format(Locale.US, "%d:00", hour);
     }
+
+    public String timeStringNoZero() {
+        if (time.startsWith("0")) {
+            return time.substring(1);
+        }
+        return time;
+    }
 }

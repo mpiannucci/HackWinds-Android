@@ -97,7 +97,7 @@ public class ConditionArrayAdapter extends ArrayAdapter<Forecast> {
             if (DateFormat.is24HourFormat(context)) {
                 holder.dateTV.setText(condition.timeForTwentyFourHourFormat());
             } else {
-                holder.dateTV.setText(condition.time);
+                holder.dateTV.setText(condition.timeStringNoZero());
             }
             holder.breakTV.setText(String.valueOf((int)condition.minimumBreakingHeight) + " - " + String.valueOf((int)condition.maximumBreakingHeight));
             holder.windTV.setText(condition.windCompassDirection + " " + String.valueOf((int)condition.windSpeed));
