@@ -113,7 +113,8 @@ public class DetailedForecastFragment extends ListFragment implements SegmentedG
         mChartLoadCallback = new FutureCallback<Bitmap>() {
             @Override
             public void onCompleted(Exception e, Bitmap result) {
-                BitmapDrawable chartFrame = new BitmapDrawable(getResources(), result);
+                Bitmap croppedBitmap = Bitmap.createBitmap(result, 60, 50, 350, 250);
+                BitmapDrawable chartFrame = new BitmapDrawable(getResources(), croppedBitmap);
                 mChartAnimation.addFrame(chartFrame, ANIMATION_DURATION);
 
                 int nFrames = mChartAnimation.getNumberOfFrames();

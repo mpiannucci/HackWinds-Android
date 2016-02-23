@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.text.format.DateFormat;
 
 import com.nucc.hackwinds.R;
 import com.nucc.hackwinds.types.Forecast;
@@ -93,7 +94,11 @@ public class ConditionArrayAdapter extends ArrayAdapter<Forecast> {
             Forecast condition = values.get(position - 1);
 
             // Set the textview for all of the data
-            holder.dateTV.setText(condition.time);
+            if (DateFormat.is24HourFormat(context)) {
+                holder.dateTV.setText(condition.timeForTwentyFourHourFormat());
+            } else {
+                holder.dateTV.setText(condition.time);
+            }
             holder.breakTV.setText(String.valueOf((int)condition.minimumBreakingHeight) + " - " + String.valueOf((int)condition.maximumBreakingHeight));
             holder.windTV.setText(condition.windCompassDirection + " " + String.valueOf((int)condition.windSpeed));
             holder.swellTV.setText(condition.primarySwellComponent.getSwellSummary());

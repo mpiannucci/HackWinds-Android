@@ -116,7 +116,7 @@ public class ForecastModel {
 
     public ArrayList<Forecast> getForecastsForDay( int day ) {
         // Return the array of conditions
-        if (forecasts.size() != FORECAST_DATA_COUNT) {
+        if (forecasts.size() == 0) {
             return null;
         }
 
@@ -125,6 +125,10 @@ public class ForecastModel {
 
         if (day < 8) {
             startIndex = dayIndices[day];
+        }
+
+        if (startIndex == -1) {
+            return null;
         }
 
         if (day < 7) {
@@ -182,6 +186,11 @@ public class ForecastModel {
 
                 newForecast.date = rawForecast.getString("Date");
                 newForecast.time = rawForecast.getString("Time");
+                if ((i == 0) && (newForecast.time.equals("07 PM") || (newForecast.time.equals("08 PM")))) {
+                    i += 1;
+                    continue;
+                }
+
                 newForecast.minimumBreakingHeight = rawForecast.getDouble("MinimumBreakingHeight");
                 newForecast.maximumBreakingHeight = rawForecast.getDouble("MaximumBreakingHeight");
                 newForecast.windSpeed = rawForecast.getDouble("WindSpeed");
@@ -258,7 +267,7 @@ public class ForecastModel {
                         newSummary.afternoonWindSpeed = dailyForecastData.get(3).windSpeed;
                         newSummary.afternoonWindCompassDirection = dailyForecastData.get(3).windCompassDirection;
 
-                    } else {
+                    } else if (dailyForecastData.size() >= 4) {
                         newSummary.afternoonMinimumWaveHeight = (int)(dailyForecastData.get(1).minimumBreakingHeight + dailyForecastData.get(2).minimumBreakingHeight + dailyForecastData.get(3).minimumBreakingHeight) / 3;
                         newSummary.afternoonMaximumWaveHeight = (int)(dailyForecastData.get(1).maximumBreakingHeight + dailyForecastData.get(3).maximumBreakingHeight + dailyForecastData.get(3).maximumBreakingHeight) / 3;
                         newSummary.afternoonWindSpeed = dailyForecastData.get(2).windSpeed;

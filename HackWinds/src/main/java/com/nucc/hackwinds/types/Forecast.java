@@ -1,5 +1,7 @@
 package com.nucc.hackwinds.types;
 
+import java.util.Locale;
+
 public class Forecast {
 
     public String date;
@@ -15,5 +17,20 @@ public class Forecast {
 
     public Forecast() {
 
+    }
+
+    public String timeForTwentyFourHourFormat() {
+        int hour = Integer.valueOf(time.substring(0, 2));
+        String ampm = time.substring(3,time.length());
+
+        if (hour == 12) {
+            if (ampm.equals("AM")) {
+                hour = 0;
+            }
+        } else if (ampm.equals("PM")) {
+            hour += 12;
+        }
+
+        return String.format(Locale.US, "%d:00", hour);
     }
 }
