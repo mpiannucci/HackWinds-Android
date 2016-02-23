@@ -116,6 +116,7 @@ public class DetailedForecastFragment extends ListFragment implements SegmentedG
                 if (result == null) {
                     ImageView chartImage = (ImageView) getActivity().findViewById(R.id.forecast_chart_image);
                     chartImage.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.photo_loading_error));
+                    chartImage.setScaleType(ImageView.ScaleType.FIT_CENTER);
                     return;
                 }
 
