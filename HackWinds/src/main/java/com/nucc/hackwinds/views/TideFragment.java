@@ -158,11 +158,15 @@ public class TideFragment extends Fragment implements TideChangedListener, Lates
             public void run() {
                 // Update the water temperature from the latest buoy reading
                 TextView buoyLocationTV = (TextView) getActivity().findViewById(R.id.water_temp_text);
-                buoyLocationTV.setText(mDefaultBuoyLocation);
+                if (buoyLocationTV != null) {
+                    buoyLocationTV.setText(mDefaultBuoyLocation);
+                }
 
                 TextView waterTemp = (TextView) getActivity().findViewById(R.id.water_temp_value);
-                String waterTempValue = mWaterTemp + " " + getResources().getString(R.string.water_temp_holder);
-                waterTemp.setText(waterTempValue);
+                if (waterTemp != null) {
+                    String waterTempValue = mWaterTemp + " " + getResources().getString(R.string.water_temp_holder);
+                    waterTemp.setText(waterTempValue);
+                }
             }
         });
     }

@@ -18,6 +18,8 @@ import com.nucc.hackwinds.listeners.BuoyChangedListener;
 import com.nucc.hackwinds.models.BuoyModel;
 import com.nucc.hackwinds.types.Buoy;
 
+import java.util.Locale;
+
 public class BuoyFragment extends Fragment implements BuoyChangedListener{
 
     private BuoyModel mBuoyModel;
@@ -82,19 +84,30 @@ public class BuoyFragment extends Fragment implements BuoyChangedListener{
             @Override
             public void run() {
                 TextView currentBuoyStatus = (TextView)getActivity().findViewById(R.id.buoy_current_reading);
-                currentBuoyStatus.setText(buoy.getPrimarySwellText());
+                if (currentBuoyStatus != null) {
+                    currentBuoyStatus.setText(buoy.getPrimarySwellText());
+                }
 
                 TextView currentPrimaryStatus = (TextView)getActivity().findViewById(R.id.buoy_primary_reading);
-                currentPrimaryStatus.setText(buoy.getPrimarySwellText());
+                if (currentPrimaryStatus != null) {
+                    currentPrimaryStatus.setText(buoy.getPrimarySwellText());
+                }
 
                 TextView currentSecondaryStatus = (TextView)getActivity().findViewById(R.id.buoy_secondary_reading);
-                currentSecondaryStatus.setText(buoy.getSecondarySwellText());
+                if (currentSecondaryStatus != null) {
+                    currentSecondaryStatus.setText(buoy.getSecondarySwellText());
+                }
 
                 TextView latestBuoyReadingTime = (TextView)getActivity().findViewById(R.id.buoy_time_reading);
-                latestBuoyReadingTime.setText("Buoy Reported at " + buoy.time);
+                if (latestBuoyReadingTime != null) {
+                    String buoyReport = String.format(Locale.US, "Buoy reported at %s", buoy.time);
+                    latestBuoyReadingTime.setText(buoyReport);
+                }
 
                 ImageView latestWaveSpectraImage = (ImageView)getActivity().findViewById(R.id.latest_buoy_spectra_plot);
-                Ion.with(getActivity()).load(mBuoyModel.getSpectraPlotURL()).intoImageView(latestWaveSpectraImage);
+                if (latestWaveSpectraImage != null) {
+                    Ion.with(getActivity()).load(mBuoyModel.getSpectraPlotURL()).intoImageView(latestWaveSpectraImage);
+                }
             }
         });
     }
