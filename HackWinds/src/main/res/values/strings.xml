@@ -67,9 +67,9 @@
     <string name="pref_review_title">Review on Google Play</string>
     <string name="pref_review_summary">If you like the app, please give it a good review on Google Play</string>
     <string name="discalimer_message">I do not own or claim to own neither the wave camera images or
-        the forecast information displayed in this app. This app is simply an interface to make checking
+        the tide information displayed in this app. This app is simply an interface to make checking
         the waves easier for surfers when using a phone. I am specifically operating within the user licensing
-        for the MagicSeaweed and Wunderground API\'s.</string>
+        for the Wunderground and WarmWinds API\'s.</string>
 
     <!-- Detailed Forecast activity -->
     <string name="title_activity_detailed_forecast">DetailedForecastActivity</string>
