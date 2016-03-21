@@ -1,13 +1,12 @@
 package com.nucc.hackwinds.views;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.TextView;
 
 import com.nucc.hackwinds.R;
@@ -39,13 +38,15 @@ public class TideFragment extends Fragment implements TideChangedListener, Lates
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (ReachabilityHelper.deviceHasInternetAccess(getActivity())) {
-            mTideModel = TideModel.getInstance(getActivity());
-            mTideModel.addTideChangedListener(this);
+        // Set up the menu options
+        setHasOptionsMenu(true);
 
-            reloadWaterTemperature();
+        mTideModel = TideModel.getInstance(getActivity());
+        mTideModel.addTideChangedListener(this);
 
-            mSharedPreferencesListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+        reloadWaterTemperature();
+
+        mSharedPreferencesListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
                 @Override
                 public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
                     if (key.equals(SettingsActivity.DEFAULT_BUOY_LOCATION_KEY)) {
@@ -54,9 +55,8 @@ public class TideFragment extends Fragment implements TideChangedListener, Lates
                 }
             };
 
-            SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
-            sharedPrefs.registerOnSharedPreferenceChangeListener(mSharedPreferencesListener);
-        }
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+        sharedPrefs.registerOnSharedPreferenceChangeListener(mSharedPreferencesListener);
     }
 
     @Override
@@ -65,6 +65,23 @@ public class TideFragment extends Fragment implements TideChangedListener, Lates
         View V = inflater.inflate(R.layout.tide_fragment, container, false);
 
         return V;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+        menuInflater.inflate(R.menu.tide_menu_options, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_tide_schedule:
+                startActivity(new Intent(getActivity(), BuoyHistoryActivity.class));
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+        return true;
     }
 
     @Override

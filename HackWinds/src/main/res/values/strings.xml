@@ -49,6 +49,7 @@
     <string name="water_temp_header">Water Temperature</string>
     <string name="bi_water_temp_location">Block Island</string>
     <string name="water_temp_holder">&#xb0;F</string>
+    <string name="action_tide_schedule">Tide Schedule</string>
 
     <!-- Settings Page -->
     <string name="title_activity_settings">Settings</string>
