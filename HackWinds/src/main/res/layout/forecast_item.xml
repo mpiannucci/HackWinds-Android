@@ -24,14 +24,14 @@
                 android:layout_height="match_parent"
                 android:text="@string/loading_text"
                 android:layout_marginBottom="5dp"
-                style="@style/HeaderText" />
+                style="@style/LargeHeaderText" />
 
             <TextView
                 android:id="@+id/forecast_morning_header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/morning_header"
-                style="@style/ForecastTimeOfDay" />
+                style="@style/ForecastTimeOfDayText" />
 
             <TextView
                 android:id="@+id/forecast_morning_data"
@@ -46,7 +46,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/afternoon_header"
-                style="@style/ForecastTimeOfDay" />
+                style="@style/ForecastTimeOfDayText" />
 
             <TextView
                 android:id="@+id/forecast_afternoon_data"

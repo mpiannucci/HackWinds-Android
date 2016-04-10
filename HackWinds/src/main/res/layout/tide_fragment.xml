@@ -14,10 +14,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <include layout="@layout/current_tide_card"/>
-
-            <include layout="@layout/upcoming_tide_card"/>
-
             <include layout="@layout/sun_tide_card"/>
 
             <include layout="@layout/water_temp_card"/>

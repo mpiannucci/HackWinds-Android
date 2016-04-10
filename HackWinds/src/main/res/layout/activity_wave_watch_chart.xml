@@ -110,7 +110,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                style="@style/DescriptionText"
+                style="@style/WaveWatchOptionText"
                 android:text="@string/wavewatch_animation_speed_title"/>
 
             <SeekBar
@@ -130,7 +130,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.2"
-                    style="@style/DescriptionText"
+                    style="@style/WaveWatchOptionText"
                     android:text="@string/wavewatch_manual_control_title"/>
 
                 <Switch
@@ -170,7 +170,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:layout_weight="0.9"
-                    style="@style/ForecastTimeOfDay"
+                    style="@style/ForecastTimeOfDayText"
                     android:textColor="@color/black"
                     android:gravity="center_horizontal"
                     android:layout_gravity="center_vertical"/>

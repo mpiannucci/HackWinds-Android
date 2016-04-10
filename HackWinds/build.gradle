@@ -31,6 +31,7 @@ android {
 
 repositories {
     mavenCentral()
+    maven { url "https://jitpack.io" }
 }
 
 dependencies {
@@ -44,5 +45,6 @@ dependencies {
     compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
     compile 'com.squareup.picasso:picasso:2.3.2'
     compile 'com.nineoldandroids:library:2.4.0'
+    compile 'com.github.PhilJay:MPAndroidChart:v2.2.4'
     compile project(':AndroidImageSlider')
 }

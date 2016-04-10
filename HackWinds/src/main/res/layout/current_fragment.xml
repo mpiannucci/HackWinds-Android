@@ -39,7 +39,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start|center_vertical"
-                style="@style/HeaderText"
+                style="@style/LargeHeaderText"
                 android:textColor="@color/numix_grey" />
 
             <ListView

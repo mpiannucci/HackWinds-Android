@@ -21,7 +21,7 @@
                 android:layout_gravity="start|center_vertical"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                style="@style/DataText"
+                style="@style/TableDataText"
                 android:text="@string/loading_text"
                 android:layout_weight="1" />  
 
@@ -30,7 +30,7 @@
                 android:layout_gravity="start|center_vertical"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                style="@style/DataText"
+                style="@style/TableDataText"
                 android:text="@string/loading_text"
                 android:layout_weight="1" />
 
@@ -39,7 +39,7 @@
                 android:layout_gravity="start|center_vertical"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                style="@style/DataText"
+                style="@style/TableDataText"
                 android:text="@string/loading_text"
                 android:layout_weight="1" />
 
@@ -48,7 +48,7 @@
                 android:layout_gravity="start|center_vertical"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                style="@style/DataText"
+                style="@style/TableDataText"
                 android:text="@string/loading_text"
                 android:layout_weight="0.8" />
         </LinearLayout>
