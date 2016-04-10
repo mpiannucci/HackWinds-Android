@@ -14,8 +14,10 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Array;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.TimeZone;
 
 public class TideModel {
@@ -110,8 +112,8 @@ public class TideModel {
             // Get the tide summary json object from the current json object
             JSONObject jsonObj = new JSONObject(rawData);
             JSONArray tideSummary = jsonObj.getJSONObject("tide").getJSONArray("tideSummary");
-            int currentDayCount = 0;
-            int dayCount = 0;
+            int currentDayDataCount = 0;
+            dayCount = 0;
             String currentDay = "";
             for (int i = 0; i < tideSummary.length(); i++) {
 
@@ -122,6 +124,9 @@ public class TideModel {
                 String type = tideJSONObject.getJSONObject("data").getString("type");
                 String height = tideJSONObject.getJSONObject("data").getString("height");
 
+                // Just a day formatter
+                SimpleDateFormat dayFormatter = new SimpleDateFormat("EEEE", Locale.US);
+
                 // Append the data to the current tide object adn increment the data count
                 if (Tide.isValidEvent(type)) {
 
@@ -130,6 +135,7 @@ public class TideModel {
 
                     // Set all of the tidal members
                     thisTide.timestamp = new Date(epoch * 1000L);
+                    thisTide.day = dayFormatter.format(thisTide.timestamp);
                     thisTide.eventType = type;
                     thisTide.height = height;
                     thisTide.heightValue = Double.valueOf(height.split(" ")[0]);
@@ -137,9 +143,24 @@ public class TideModel {
                     // Add the tide to the vector
                     tides.add(thisTide);
 
+                    if (!currentDay.equals(thisTide.day)) {
+                        dayCount++;
+                        currentDay = thisTide.day;
+                        mDayIds.add(currentDay);
 
+                        if (dayCount != 1) {
+                            mDayDataCounts.add(currentDayDataCount);
+                            currentDayDataCount = 0;
+                        }
+                    }
+
+                    if (!thisTide.isTidalEvent()) {
+                        otherEvents.add(thisTide);
+                    }
+                    currentDayDataCount++;
                 }
             }
+            mDayDataCounts.add(currentDayDataCount);
         } catch (JSONException e) {
             e.printStackTrace();
             return false;

@@ -12,6 +12,7 @@ public class Tide {
     public static final String SUNSET_TAG = "Sunset";
 
     public Date timestamp;
+    public String day;
     public String eventType;
     public String height;
     public double heightValue;
