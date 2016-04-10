@@ -1,5 +1,9 @@
 package com.nucc.hackwinds.types;
 
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class Tide {
 
     public static final String LOW_TIDE_TAG = "Low Tide";
@@ -7,9 +11,10 @@ public class Tide {
     public static final String SUNRISE_TAG = "Sunrise";
     public static final String SUNSET_TAG = "Sunset";
 
-    public String time;
+    public Date timestamp;
     public String eventType;
     public String height;
+    public double heightValue;
 
     public Tide() {
     }
@@ -36,6 +41,11 @@ public class Tide {
 
     public boolean isTidalEvent() {
         return isHighTide() || isLowTide();
+    }
+
+    public String getTimeString() {
+        DateFormat dateFormat = DateFormat.getTimeInstance(DateFormat.SHORT, Locale.US);
+        return dateFormat.format(timestamp);
     }
 
     public static boolean isValidEvent(String event) {

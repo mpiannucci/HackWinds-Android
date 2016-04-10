@@ -12,15 +12,24 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
+import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.TimeZone;
 
 public class TideModel {
     // Member variables
     public ArrayList<Tide> tides;
+    public ArrayList<Tide> otherEvents;
+    public int dayCount;
     private Context mContext;
 
     private static TideModel mInstance;
     private ArrayList<TideChangedListener> mTideChangedListeners;
+
+    private ArrayList<String> mDayIds;
+    private ArrayList<Integer> mDayDataCounts;
 
     public static TideModel getInstance(Context context) {
         if (mInstance == null) {
@@ -101,17 +110,17 @@ public class TideModel {
             // Get the tide summary json object from the current json object
             JSONObject jsonObj = new JSONObject(rawData);
             JSONArray tideSummary = jsonObj.getJSONObject("tide").getJSONArray("tideSummary");
-            int dataCount = 0;
-            int objectCount = 0;
-            while (dataCount < 6) {
+            int currentDayCount = 0;
+            int dayCount = 0;
+            String currentDay = "";
+            for (int i = 0; i < tideSummary.length(); i++) {
 
                 // Get the day and time
-                JSONObject tideJSONObject = tideSummary.getJSONObject(objectCount);
-                String hour = tideJSONObject.getJSONObject("date").getString("hour");
-                String min = tideJSONObject.getJSONObject("date").getString("min");
+                JSONObject tideJSONObject = tideSummary.getJSONObject(i);
+                long epoch = tideJSONObject.getJSONObject("date").getLong("epoch");
+                String day = tideJSONObject.getJSONObject("date").getString("mday");
                 String type = tideJSONObject.getJSONObject("data").getString("type");
                 String height = tideJSONObject.getJSONObject("data").getString("height");
-                String ampm = "";
 
                 // Append the data to the current tide object adn increment the data count
                 if (Tide.isValidEvent(type)) {
@@ -119,35 +128,17 @@ public class TideModel {
                     // Create a new tide object
                     Tide thisTide = new Tide();
 
-                    if (!DateFormat.is24HourFormat(mContext)) {
-                        // Get the correct am or pm stamp
-                        if (Integer.parseInt(hour) < 12) {
-                            ampm = "am";
-                        } else {
-                            ampm = "pm";
-                        }
-
-                        // Convert the hour to be in 12 hour format
-                        int convertedHour = Integer.parseInt(hour) % 12;
-                        if (convertedHour == 0) {
-                            convertedHour = 12;
-                        }
-                        hour = String.valueOf(convertedHour);
-                    }
-
                     // Set all of the tidal members
-                    thisTide.time = hour + ":" + min + " " + ampm;
+                    thisTide.timestamp = new Date(epoch * 1000L);
                     thisTide.eventType = type;
                     thisTide.height = height;
+                    thisTide.heightValue = Double.valueOf(height.split(" ")[0]);
 
                     // Add the tide to the vector
                     tides.add(thisTide);
 
-                    // Increment the data count
-                    dataCount++;
+
                 }
-                // Increase the object count
-                objectCount++;
             }
         } catch (JSONException e) {
             e.printStackTrace();
