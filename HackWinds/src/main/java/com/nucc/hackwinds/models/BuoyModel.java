@@ -29,6 +29,7 @@ public class BuoyModel {
     final public static String BLOCK_ISLAND_LOCATION = "Block Island";
     final public static String MONTAUK_LOCATION = "Montauk";
     final public static String NANTUCKET_LOCATION = "Nantucket";
+    final public static String NEWPORT_LOCATION = "Newport";
 
     // Public data modes
     final public static String SUMMARY_DATA_MODE = "Summary";
@@ -94,9 +95,10 @@ public class BuoyModel {
     }
 
     private void initBuoyContainers() {
-        final int BLOCK_ISLAND_BUOY_ID = 44097;
-        final int MONTAUK_BUOY_ID = 44017;
-        final int NANTUCKET_BUOY_ID = 44008;
+        final String BLOCK_ISLAND_BUOY_ID = "44097";
+        final String MONTAUK_BUOY_ID = "44017";
+        final String NANTUCKET_BUOY_ID = "44008";
+        final String NEWPORT_BUOY_ID = "nwpr1";
 
         // Initialize the buoy dictionary
         mBuoyDataContainers = new HashMap<>();
@@ -112,6 +114,10 @@ public class BuoyModel {
         // Nantucket
         BuoyDataContainer ackContainer = new BuoyDataContainer(NANTUCKET_BUOY_ID);
         mBuoyDataContainers.put(NANTUCKET_LOCATION, ackContainer);
+
+        // Newport
+        BuoyDataContainer nwpContainer = new BuoyDataContainer(NEWPORT_BUOY_ID);
+        mBuoyDataContainers.put(NEWPORT_LOCATION, nwpContainer);
 
         // Initialize to the default location
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
