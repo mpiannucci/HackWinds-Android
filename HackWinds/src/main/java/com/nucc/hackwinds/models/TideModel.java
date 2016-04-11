@@ -44,7 +44,12 @@ public class TideModel {
         // Initialize tide array
         mContext = context;
         tides = new ArrayList<>();
+        otherEvents = new ArrayList<>();
         mTideChangedListeners = new ArrayList<>();
+
+        // Some day metadata
+        mDayIds = new ArrayList<>();
+        mDayDataCounts = new ArrayList<>();
     }
 
     public void addTideChangedListener(TideChangedListener listener) {
@@ -137,8 +142,10 @@ public class TideModel {
                     thisTide.timestamp = new Date(epoch * 1000L);
                     thisTide.day = dayFormatter.format(thisTide.timestamp);
                     thisTide.eventType = type;
-                    thisTide.height = height;
-                    thisTide.heightValue = Double.valueOf(height.split(" ")[0]);
+                    if (thisTide.isTidalEvent()) {
+                        thisTide.height = height;
+                        thisTide.heightValue = Double.valueOf(height.split(" ")[0]);
+                    }
 
                     // Add the tide to the vector
                     tides.add(thisTide);
