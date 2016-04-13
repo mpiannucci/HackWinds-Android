@@ -100,7 +100,7 @@ public class BuoyFragment extends Fragment implements BuoyChangedListener{
 
                 TextView latestBuoyReadingTime = (TextView)getActivity().findViewById(R.id.buoy_time_reading);
                 if (latestBuoyReadingTime != null) {
-                    String buoyReport = String.format(Locale.US, "Buoy reported at %s", buoy.time);
+                    String buoyReport = String.format(Locale.US, "Buoy reported at %s %s", buoy.timeString(), buoy.dateString());
                     latestBuoyReadingTime.setText(buoyReport);
                 }
 

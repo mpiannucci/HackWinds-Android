@@ -22,7 +22,7 @@ public class BuoyDataContainer {
     }
 
     public String createLatestReportOnlyURL() {
-        final String BASE_LATEST_REPORT_URL = "http://www.ndbc.noaa.gov/get_observation_as_xml.php?station=%s";
+        final String BASE_LATEST_REPORT_URL = "http://www.ndbc.noaa.gov/data/latest_obs/%s.txt";
         return String.format(Locale.US, BASE_LATEST_REPORT_URL, buoyID);
     }
 

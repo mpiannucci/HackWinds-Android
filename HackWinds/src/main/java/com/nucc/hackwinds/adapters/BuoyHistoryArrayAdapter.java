@@ -91,7 +91,7 @@ public class BuoyHistoryArrayAdapter extends ArrayAdapter<Buoy> {
             Buoy buoy = values.get(position-1);
 
             // Set the data into the text views
-            holder.timeTV.setText(buoy.time);
+            holder.timeTV.setText(buoy.timeString());
 
             if (dataMode.equals(BuoyModel.SUMMARY_DATA_MODE)) {
                 holder.wvhtTV.setText(buoy.significantWaveHeight);

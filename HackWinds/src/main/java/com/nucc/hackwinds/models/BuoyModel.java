@@ -3,7 +3,6 @@ package com.nucc.hackwinds.models;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.text.format.DateFormat;
 
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
@@ -11,16 +10,16 @@ import com.nucc.hackwinds.listeners.BuoyChangedListener;
 import com.nucc.hackwinds.listeners.LatestBuoyFetchListener;
 import com.nucc.hackwinds.types.Buoy;
 import com.nucc.hackwinds.types.BuoyDataContainer;
-import com.nucc.hackwinds.utilities.LatestBuoyXMLParser;
 import com.nucc.hackwinds.views.SettingsActivity;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
@@ -294,6 +293,9 @@ public class BuoyModel {
         // Constants for parsing buoy data
         final int DATA_HEADER_LENGTH = 30;
         final int DATA_LINE_LEN = 15;
+        final int YEAR_OFFSET = 0;
+        final int MONTH_OFFSET = 1;
+        final int DAY_OFFSET = 2;
         final int HOUR_OFFSET = 3;
         final int MINUTE_OFFSET = 4;
         final int SIGNIFICANT_WAVE_HEIGHT_OFFSET = 5;
@@ -320,14 +322,19 @@ public class BuoyModel {
                 return false;
             }
 
-            if (buoy.time == null) {
-                // Get the original hor timestamp from the buoy report
-                int originalHour = (int) (Integer.valueOf(data[baseOffset + HOUR_OFFSET]) + mTimeOffset);
-                int convertedHour = getCorrectedHourValue(originalHour);
-
-                // Set the time member
-                String min = data[baseOffset + MINUTE_OFFSET];
-                buoy.time = String.format(Locale.US, "%d:%s", convertedHour, min);
+            // Time
+            String yearVal = data[baseOffset + YEAR_OFFSET];
+            String monthVal = data[baseOffset + MONTH_OFFSET];
+            String dayVal = data[baseOffset + DAY_OFFSET];
+            String hourVal = data[baseOffset + HOUR_OFFSET];
+            String minuteVal = data[baseOffset + MINUTE_OFFSET];
+            String fullDateString = String.format(Locale.US, "%s-%s-%s %s:%s UTC", dayVal, monthVal, yearVal, hourVal, minuteVal);
+            SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy HH:mm ZZZ");
+            try {
+                buoy.timestamp = dateFormatter.parse(fullDateString);
+            } catch (ParseException e) {
+                e.printStackTrace();
+                return false;
             }
 
             // Wave Height
@@ -344,7 +351,7 @@ public class BuoyModel {
 
             // Steepness
             buoy.steepness = data[baseOffset + WAVE_STEEPNESS_OFFSET];
-            buoy.interpolateDominantPeriod();
+            buoy.interpolateDominantPeriodWithDirection();
 
             // Directions
             buoy.swellDirection = data[baseOffset + SWELL_DIRECTION_OFFSET];
@@ -362,33 +369,79 @@ public class BuoyModel {
         return true;
     }
 
-    private Buoy parseLatestBuoyData(String rawXML) {
-        try {
-            return LatestBuoyXMLParser.parseLatestBuoy(rawXML);
-        } catch (Exception e) {
+    private Buoy parseLatestBuoyData(String rawData) {
+        if (rawData == null) {
             return null;
         }
-    }
 
-    private int getCorrectedHourValue(int rawHour) {
-        int convertedHour;
+        String[] rawDataLines = rawData.split("\n");
+        if (rawDataLines == null) {
+            return null;
+        } else if (rawDataLines.length < 6) {
+            return null;
+        }
 
-        // Get the daylight adjusted hour for the east coast and adjust for system 24 hours
-        if (DateFormat.is24HourFormat(mContext)) {
-            convertedHour = (rawHour + 24) % 24;
-            if (convertedHour == 0) {
-                if ((rawHour + mTimeOffset) > 0) {
-                    convertedHour = 12;
-                }
+        // New Buoy object
+        Buoy latestBuoy = new Buoy();
+
+        // Start with the time
+        String rawDateTime = rawDataLines[4];
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("HHmm ZZZ MM/dd/yy");
+        try {
+            latestBuoy.timestamp = dateFormatter.parse(rawDateTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        boolean swellPeriodParsed = false;
+        boolean swellDirectionParsed = false;
+        for (int i = 5; i < rawDataLines.length; i++) {
+            String[] components = rawDataLines[i].split(":");
+            if (components == null) {
+                continue;
+            } else if (components.length < 2) {
+                continue;
             }
-        } else {
-            convertedHour = (rawHour + 12) % 12;
-            if (convertedHour == 0) {
-                convertedHour = 12;
+
+            String var = components[0];
+            String val = components[1];
+            if (var.equals("Water Temp")) {
+                latestBuoy.waterTemperature = val.split("\\s")[1];
+            } else if (var.equals("Seas")) {
+                latestBuoy.significantWaveHeight = val.split("\\s")[1];
+            } else if (var.equals("Peak Period")) {
+                latestBuoy.dominantPeriod = val.split("\\s")[1];
+            } else if (var.equals("Swell")) {
+                latestBuoy.swellWaveHeight = val.split("\\s")[1];
+                if (latestBuoy.swellWaveHeight.equals("0.0")) {
+                    swellPeriodParsed = true;
+                    swellDirectionParsed = true;
+                }
+            } else if (var.equals("Wind Wave")) {
+                latestBuoy.windWaveHeight = val.split("\\s")[1];
+            } else if (var.equals("Period")) {
+                String periodVal = val.split("\\s")[1];
+                if (!swellPeriodParsed) {
+                    latestBuoy.swellPeriod = periodVal;
+                    swellPeriodParsed = true;
+                } else {
+                    latestBuoy.windWavePeriod = periodVal;
+                }
+            } else if (var.equals("Direction")) {
+                if (!swellDirectionParsed) {
+                    latestBuoy.swellDirection = val.replace(" ", "");
+                    swellDirectionParsed = true;
+                } else {
+                    latestBuoy.windWaveDirection = val.replace(" ", "");
+                }
             }
         }
 
-        return convertedHour;
+        // Find the wave direction
+        latestBuoy.interpolateMeanWaveDirection();
+
+        return latestBuoy;
     }
 
     private double convertMeterToFoot(double meterValue) {

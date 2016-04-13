@@ -2,6 +2,7 @@ package com.nucc.hackwinds.views;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -21,9 +22,9 @@ import com.nucc.hackwinds.models.TideModel;
 
 public class TideFragment extends Fragment implements TideChangedListener, LatestBuoyFetchListener {
     private TideModel mTideModel;
-    private String mDefaultBuoyLocation;
+    private String mBuoyLocation = BuoyModel.NEWPORT_LOCATION;
     private String mWaterTemp;
-    private SharedPreferences.OnSharedPreferenceChangeListener mSharedPreferencesListener;
+    private boolean mBuoyFailed = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,18 +37,6 @@ public class TideFragment extends Fragment implements TideChangedListener, Lates
         mTideModel.addTideChangedListener(this);
 
         reloadWaterTemperature();
-
-        mSharedPreferencesListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
-                @Override
-                public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                    if (key.equals(SettingsActivity.DEFAULT_BUOY_LOCATION_KEY)) {
-                        reloadWaterTemperature();
-                    }
-                }
-            };
-
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
-        sharedPrefs.registerOnSharedPreferenceChangeListener(mSharedPreferencesListener);
     }
 
     @Override
@@ -183,7 +172,7 @@ public class TideFragment extends Fragment implements TideChangedListener, Lates
                 // Update the water temperature from the latest buoy reading
                 TextView buoyLocationTV = (TextView) getActivity().findViewById(R.id.water_temp_location);
                 if (buoyLocationTV != null) {
-                    buoyLocationTV.setText(mDefaultBuoyLocation);
+                    buoyLocationTV.setText(mBuoyLocation);
                 }
 
                 TextView waterTemp = (TextView) getActivity().findViewById(R.id.water_temp_value);
@@ -191,20 +180,44 @@ public class TideFragment extends Fragment implements TideChangedListener, Lates
                     String waterTempValue = mWaterTemp + " " + getResources().getString(R.string.water_temp_holder);
                     waterTemp.setText(waterTempValue);
                 }
+
+                ImageView waterTempIcon = (ImageView) getActivity().findViewById(R.id.water_temp_icon);
+
+                int tempColorTint = getResources().getColor(android.R.color.holo_purple);
+                double waterTempValueD = Double.valueOf(mWaterTemp);
+                if (waterTempValueD < 43) {
+                    // Its purple do nothing
+                } else if (waterTempValueD < 50) {
+                    tempColorTint = getResources().getColor(R.color.accent_blue);
+                } else if (waterTempValueD < 60) {
+                    tempColorTint = getResources().getColor(android.R.color.holo_green_dark);
+                } else if (waterTempValueD < 70) {
+                    tempColorTint = getResources().getColor(android.R.color.holo_orange_dark);
+                } else {
+                    tempColorTint = getResources().getColor(android.R.color.holo_red_dark);
+                }
+
+                if (waterTempIcon != null) {
+                    waterTempIcon.setColorFilter(tempColorTint);
+                }
             }
         });
     }
 
     @Override
     public void latestBuoyFetchFailed() {
-        // For now do nothing
+        if (!mBuoyFailed) {
+            mBuoyFailed = true;
+            reloadWaterTemperature();
+        }
     }
 
     public void reloadWaterTemperature() {
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
-        mDefaultBuoyLocation = sharedPrefs.getString(SettingsActivity.DEFAULT_BUOY_LOCATION_KEY, BuoyModel.MONTAUK_LOCATION);
-
+        if (mBuoyFailed) {
+            SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+            mBuoyLocation = sharedPrefs.getString(SettingsActivity.DEFAULT_BUOY_LOCATION_KEY, BuoyModel.MONTAUK_LOCATION);
+        }
         // Fetch the data from the models
-        BuoyModel.getInstance(getActivity()).fetchLatestBuoyReadingForLocation(mDefaultBuoyLocation, this);
+        BuoyModel.getInstance(getActivity()).fetchLatestBuoyReadingForLocation(mBuoyLocation, this);
     }
 }
