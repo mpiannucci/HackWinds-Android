@@ -160,5 +160,3 @@ uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
 ADDED from HackWinds-Android:AndroidImageSlider:unspecified:12:5
 	android:name
 		ADDED from HackWinds-Android:AndroidImageSlider:unspecified:12:22
-android:uses-permission#android.permission.READ_EXTERNAL_STORAGE
-IMPLIED from AndroidManifest.xml:2:1 reason: com.daimajia.slider.library requested WRITE_EXTERNAL_STORAGE
