@@ -351,12 +351,14 @@ public class BuoyModel {
 
             // Steepness
             buoy.steepness = data[baseOffset + WAVE_STEEPNESS_OFFSET];
-            buoy.interpolateDominantPeriodWithDirection();
 
             // Directions
             buoy.swellDirection = data[baseOffset + SWELL_DIRECTION_OFFSET];
             buoy.windWaveDirection = data[baseOffset + WIND_WAVE_DIRECTION_OFFSET];
             buoy.meanDirection = Buoy.getCompassDirection(data[baseOffset + MEAN_WAVE_DIRECTION]);
+
+            // Interpolate the Dominant Period
+            buoy.interpolateDominantPeriodWithDirection();
 
             // Increment the buoy data count
             dataCount++;
