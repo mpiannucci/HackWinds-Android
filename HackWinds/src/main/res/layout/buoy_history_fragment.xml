@@ -3,7 +3,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/cardview_light_background">
+    android:background="@color/material_background">
 
     <info.hoang8f.android.segmented.SegmentedGroup
         android:id="@+id/buoy_segmented_group"
@@ -44,9 +44,9 @@
 
     <ListView
         android:id="@android:id/list"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:dividerHeight="1dp"
-        android:divider="@color/light_grey" />
+        android:divider="@color/material_background" />
 
 </LinearLayout>
