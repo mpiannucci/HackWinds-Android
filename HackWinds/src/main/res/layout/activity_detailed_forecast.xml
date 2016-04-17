@@ -1,12 +1,12 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.nucc.hackwinds.views.DetailedForecastActivity">
 
     <android.support.v7.widget.Toolbar
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/toolbar"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         android:layout_width="match_parent"
@@ -18,10 +18,27 @@
         app:title="@string/detailed_forecast_toolbar_title_holder"
         />
 
-    <FrameLayout
-        android:id="@+id/content_frame"
-        android:layout_below="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+    <com.astuetz.PagerSlidingTabStrip
+            android:id="@+id/buoy_mode_tabs"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:pstsPaddingMiddle="false"
+            app:pstsShouldExpand="true"/>
 
-</RelativeLayout>
+    <android.support.v4.view.ViewPager
+            android:id="@+id/buoy_history_pager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.75"
+            tools:context=".views.DetailedForecastActivity"/>
+
+    <ListView
+            android:id="@android:id/list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:dividerHeight="1dp"
+            android:divider="@color/material_background" />
+
+</LinearLayout>

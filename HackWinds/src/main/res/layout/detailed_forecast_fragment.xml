@@ -1,53 +1,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:background="@color/material_background"
               tools:context="com.nucc.hackwinds.views.DetailedForecastFragment">
-
-    <info.hoang8f.android.segmented.SegmentedGroup
-            android:id="@+id/forecast_segment_group"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:orientation="horizontal">
-
-        <RadioButton
-                android:id="@+id/forecast_swell_segment_button"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/swell_chart_segment"
-                android:layout_weight="1"
-                style="@style/RadioButton"/>
-
-        <RadioButton
-                android:id="@+id/forecast_wind_segment_button"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/wind_chart_segment"
-                style="@style/RadioButton"/>
-
-        <RadioButton
-                android:id="@+id/forecast_period_segment_button"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/period_chart_segment"
-                style="@style/RadioButton"/>
-    </info.hoang8f.android.segmented.SegmentedGroup>
-
-    <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.75"
-            android:background="@color/light_grey">
 
         <FrameLayout
                 android:layout_width="match_parent"
@@ -69,22 +26,5 @@
                     android:layout_gravity="center_horizontal|center_vertical"/>
 
         </FrameLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-            android:layout_height="0dp"
-            android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:layout_weight="1">
-
-        <ListView
-                android:id="@android:id/list"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:dividerHeight="0dp"
-                android:divider="@color/material_background"/>
-
-    </LinearLayout>
 
 </LinearLayout>

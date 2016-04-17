@@ -28,33 +28,28 @@ import java.util.Locale;
 import info.hoang8f.android.segmented.SegmentedGroup;
 
 
-public class DetailedForecastFragment extends ListFragment implements SegmentedGroup.OnCheckedChangeListener {
+public class DetailedForecastFragment extends ListFragment {
     private final int ANIMATION_DURATION = 500;
     private final int WAVE_WATCH_HOUR_STEP = 3;
 
-    private enum ForecastChartType {
+    public enum ForecastChartType {
         WAVES,
         WIND,
         PERIOD
     }
+    public ForecastChartType chartType;
+
+    private ForecastModel mForecastModel;
 
     private int mDayIndex;
-    private ForecastChartType mCurrentForecastChartType;
     private AnimationDrawable mChartAnimation;
     private FutureCallback<Bitmap> mChartLoadCallback;
-    private ForecastModel mForecastModel;
-    private ArrayList<Forecast> mDayConditions;
-    private ConditionArrayAdapter mConditionArrayAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Get the condition model
-        if (ReachabilityHelper.deviceHasInternetAccess(getActivity())) {
-            // Get the buoy model
-            mForecastModel = ForecastModel.getInstance(getActivity());
-        }
+        mForecastModel = ForecastModel.getInstance(getActivity());
     }
 
     @Override
@@ -65,16 +60,6 @@ public class DetailedForecastFragment extends ListFragment implements SegmentedG
 
         // Get the condition model for the given day
         mDayIndex = getArguments().getInt("dayIndex");
-        mDayConditions = mForecastModel.getForecastsForDay(mDayIndex);
-        mConditionArrayAdapter = new ConditionArrayAdapter(getActivity(), mDayConditions);
-        setListAdapter(mConditionArrayAdapter);
-
-        // Get the Segmented widget
-        SegmentedGroup chartTypeGroup = (SegmentedGroup) V.findViewById(R.id.forecast_segment_group);
-        chartTypeGroup.setOnCheckedChangeListener(this);
-
-        // Set the tint color of the segmented group
-        chartTypeGroup.setTintColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.hackwinds_blue));
 
         // Hide the play button
         ImageView chartPlayButton = (ImageView) V.findViewById(R.id.forecast_animate_play_button);
@@ -142,7 +127,7 @@ public class DetailedForecastFragment extends ListFragment implements SegmentedG
 
                 if (nFrames < 6) {
                     // Load the next image
-                    getChartImageForIndex(mCurrentForecastChartType, nFrames);
+                    getChartImageForIndex(chartType, nFrames);
                 }
             }
         };
@@ -154,9 +139,7 @@ public class DetailedForecastFragment extends ListFragment implements SegmentedG
     public void onResume() {
         super.onResume();
 
-        // Show the swell chart when the fragment is launched
-        RadioButton swellButton = (RadioButton) getActivity().findViewById(R.id.forecast_swell_segment_button);
-        swellButton.setChecked(true);
+        loadImages();
     }
 
     @Override
@@ -169,18 +152,7 @@ public class DetailedForecastFragment extends ListFragment implements SegmentedG
         }
     }
 
-    @Override
-    public void onCheckedChanged(RadioGroup radioGroup, int index) {
-        // Start loading the new images.
-        if (index == R.id.forecast_swell_segment_button) {
-            mCurrentForecastChartType = ForecastChartType.WAVES;
-        } else if (index == R.id.forecast_wind_segment_button) {
-            mCurrentForecastChartType = ForecastChartType.WIND;
-        } else if (index == R.id.forecast_period_segment_button) {
-            mCurrentForecastChartType = ForecastChartType.PERIOD;
-        } else {
-            return;
-        }
+    public void loadImages() {
 
         if (mChartAnimation.isRunning()) {
             mChartAnimation.stop();
@@ -192,7 +164,7 @@ public class DetailedForecastFragment extends ListFragment implements SegmentedG
         // Reset the chart animation object
         mChartAnimation = new AnimationDrawable();
         mChartAnimation.setOneShot(false);
-        getChartImageForIndex(mCurrentForecastChartType, 0);
+        getChartImageForIndex(chartType, 0);
     }
 
     public void getChartImageForIndex(ForecastChartType forecastChartType, int index) {

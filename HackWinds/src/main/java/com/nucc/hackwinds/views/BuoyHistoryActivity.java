@@ -40,7 +40,7 @@ public class BuoyHistoryActivity extends AppCompatActivity {
         mToolbar.setTitle(buoyLocation);
         setSupportActionBar(mToolbar);
 
-        // Create and set the buoy pager adapter
+        // Create and set the new pager adapter
         mViewPager = (ViewPager) findViewById(R.id.buoy_history_pager);
         mSlidingTabStrip = (PagerSlidingTabStrip) findViewById(R.id.buoy_mode_tabs);
         mAdapter = new BuoyPagerAdapter(getSupportFragmentManager());
