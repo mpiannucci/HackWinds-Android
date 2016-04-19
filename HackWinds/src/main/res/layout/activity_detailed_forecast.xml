@@ -19,7 +19,7 @@
         />
 
     <com.astuetz.PagerSlidingTabStrip
-            android:id="@+id/buoy_mode_tabs"
+            android:id="@+id/chart_mode_tabs"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
@@ -27,14 +27,14 @@
             app:pstsShouldExpand="true"/>
 
     <android.support.v4.view.ViewPager
-            android:id="@+id/buoy_history_pager"
+            android:id="@+id/chart_type_pager"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.75"
             tools:context=".views.DetailedForecastActivity"/>
 
     <ListView
-            android:id="@android:id/list"
+            android:id="@+id/detailed_condition_list"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"

@@ -10,14 +10,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import android.widget.ListView;
 import com.astuetz.PagerSlidingTabStrip;
 import com.nucc.hackwinds.R;
 import com.nucc.hackwinds.adapters.ConditionArrayAdapter;
-import com.nucc.hackwinds.models.BuoyModel;
 import com.nucc.hackwinds.models.ForecastModel;
 import com.nucc.hackwinds.types.Forecast;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 
@@ -27,12 +28,13 @@ public class DetailedForecastActivity extends AppCompatActivity {
     private Toolbar mToolbar;
     private ViewPager mViewPager;
     private PagerSlidingTabStrip mSlidingTabStrip;
-    private BuoyHistoryActivity.BuoyPagerAdapter mAdapter;
+    private DetailedForecastPagerAdapter mAdapter;
 
     // Forecast values
     private ForecastModel mForecastModel;
     private ArrayList<Forecast> mDayConditions;
     private ConditionArrayAdapter mConditionArrayAdapter;
+    private int dayIndex = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,18 +44,28 @@ public class DetailedForecastActivity extends AppCompatActivity {
         // Get the day name to set the toolbar title
         String dayName = getIntent().getExtras().getString("dayName");
 
+        // Get the day index
+        dayIndex = getIntent().getExtras().getInt("dayIndex");
+
         // Set up the toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(dayName);
         setSupportActionBar(toolbar);
 
-        // Create a new DetailedForecast Widget with the day index as a bundle
-        Bundle bundle = new Bundle();
-        bundle.putInt("dayIndex", getIntent().getExtras().getInt("dayIndex"));
-        DetailedForecastFragment detailedFragment = new DetailedForecastFragment();
-        detailedFragment.setArguments(bundle);
+        // Create and set the new pager adapter
+        mViewPager = (ViewPager) findViewById(R.id.chart_type_pager);
+        mSlidingTabStrip = (PagerSlidingTabStrip) findViewById(R.id.chart_mode_tabs);
+        mAdapter = new DetailedForecastPagerAdapter(getSupportFragmentManager());
+        mViewPager.setOffscreenPageLimit(1);
+        mViewPager.setAdapter(mAdapter);
+        mSlidingTabStrip.setViewPager(mViewPager);
 
-        // TODO: All the view pager stuff
+        // Get the forecast model and set up the condition list
+        mForecastModel = ForecastModel.getInstance(this);
+        mDayConditions = mForecastModel.getForecastsForDay(dayIndex);
+        mConditionArrayAdapter = new ConditionArrayAdapter(this, mDayConditions);
+        ListView conditionList = (ListView) findViewById(R.id.detailed_condition_list);
+        conditionList.setAdapter(mConditionArrayAdapter);
     }
 
     @Override
@@ -85,10 +97,8 @@ public class DetailedForecastActivity extends AppCompatActivity {
                 case 0:
                     return getString(R.string.wavewatch_wave_height_title).toUpperCase(l);
                 case 1:
-                    return getString(R.string.wavewatch_swell_title).toUpperCase(l);
-                case 2:
                     return getString(R.string.wavewatch_wind_title).toUpperCase(l);
-                case 3:
+                case 2:
                     return getString(R.string.wavewatch_period_title).toUpperCase(l);
                 default:
                     return null;
@@ -97,8 +107,8 @@ public class DetailedForecastActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            // We have 3 buoy data modes
-            return 4;
+            // We have 3 chart data modes
+            return 3;
         }
 
         @Override
@@ -106,16 +116,22 @@ public class DetailedForecastActivity extends AppCompatActivity {
             switch (position) {
                 case 0:
                     // Wave Height data mode
-                    return null;
+                    DetailedForecastChartFragment waveChartFragment = new DetailedForecastChartFragment();
+                    waveChartFragment.setChartType(DetailedForecastChartFragment.ForecastChartType.WAVES);
+                    waveChartFragment.setDayIndex(dayIndex);
+                    return waveChartFragment;
                 case 1:
-                    // Swell data mode
-                    return null;
-                case 2:
                     // Wind data mode
-                    return null;
-                case 3:
-                    // Period mode
-                    return null;
+                    DetailedForecastChartFragment windChartFragment = new DetailedForecastChartFragment();
+                    windChartFragment.setChartType(DetailedForecastChartFragment.ForecastChartType.WIND);
+                    windChartFragment.setDayIndex(dayIndex);
+                    return windChartFragment;
+                case 2:
+                    // Period data mode
+                    DetailedForecastChartFragment periodChartFragment = new DetailedForecastChartFragment();
+                    periodChartFragment.setChartType(DetailedForecastChartFragment.ForecastChartType.PERIOD);
+                    periodChartFragment.setDayIndex(dayIndex);
+                    return periodChartFragment;
                 default:
                     return null;
             }
