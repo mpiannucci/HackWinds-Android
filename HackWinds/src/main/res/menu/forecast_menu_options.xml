@@ -2,10 +2,4 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto" >
 
-    <item
-        android:id="@+id/action_model_forecast"
-        android:icon="@drawable/ic_track_changes_white_24dp"
-        android:title="@string/action_model_forecast"
-        app:showAsAction="always" />
-
 </menu>

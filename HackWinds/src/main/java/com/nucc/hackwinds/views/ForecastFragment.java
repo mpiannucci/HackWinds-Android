@@ -64,10 +64,6 @@ public class ForecastFragment extends ListFragment implements ForecastChangedLis
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_model_forecast:
-                // Launch Model activity
-                startActivity(new Intent(getActivity(), WaveWatchChartActivity.class));
-                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
