@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:background="@color/material_background"
+              tools:context=".views.AtlanticForecastChartFragment">
+
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <LinearLayout
+                android:id="@+id/wavewatch_main_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/light_grey">
+
+                    <ImageView
+                            android:id="@+id/wavewatch_chart_image"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/photo_loading_holder"
+                            android:scaleType="fitXY"
+                            android:adjustViewBounds="true"/>
+
+                    <ImageView
+                            android:id="@+id/wavewatch_animate_play_button"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_av_play_over_video_big"
+                            android:layout_gravity="center_horizontal|center_vertical" />
+
+                </FrameLayout>
+
+            </LinearLayout>
+
+            <TextView
+                    android:id="@+id/wavewatch_animation_speed_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    style="@style/WaveWatchOptionText"
+                    android:text="@string/wavewatch_animation_speed_title"/>
+
+            <SeekBar
+                    android:id="@+id/wavewatch_animation_speed_slider"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="10" />
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="horizontal">
+
+                <TextView
+                        android:id="@+id/wavewatch_manual_control_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.2"
+                        style="@style/WaveWatchOptionText"
+                        android:text="@string/wavewatch_manual_control_title"/>
+
+                <Switch
+                        android:id="@+id/wavewatch_manual_control_switch"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.8"
+                        android:checked="true"
+                        />
+
+            </LinearLayout>
+
+            <LinearLayout
+                    android:id="@+id/wavewatch_media_control_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="horizontal">
+
+                <ImageButton
+                        android:id="@+id/wavewatch_previous_day_chart_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:src="@drawable/ic_fast_rewind_black_36dp"/>
+
+                <ImageButton
+                        android:id="@+id/wavewatch_previous_chart_image_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:src="@drawable/ic_chevron_left_black_36dp"/>
+
+                <TextView
+                        android:id="@+id/wavewatch_current_hour"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:layout_weight="0.9"
+                        style="@style/ForecastTimeOfDayText"
+                        android:textColor="@color/black"
+                        android:gravity="center_horizontal"
+                        android:layout_gravity="center_vertical"/>
+
+                <ImageButton
+                        android:id="@+id/wavewatch_next_chart_image_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:src="@drawable/ic_chevron_right_black_36dp"/>
+
+                <ImageButton
+                        android:id="@+id/wavewatch_next_day_chart_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:src="@drawable/ic_fast_forward_black_36dp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
