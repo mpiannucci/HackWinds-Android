@@ -11,6 +11,9 @@ import android.view.*;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.nucc.hackwinds.R;
 import com.nucc.hackwinds.listeners.LatestBuoyFetchListener;
 import com.nucc.hackwinds.listeners.TideChangedListener;
@@ -43,6 +46,36 @@ public class TideFragment extends Fragment implements TideChangedListener, Lates
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View V = inflater.inflate(R.layout.tide_fragment, container, false);
+
+        // Setup the tide chart
+        LineChart tideChart = (LineChart) V.findViewById(R.id.tide_chart);
+        tideChart.setDrawBorders(false);
+        tideChart.setDescription("");
+        tideChart.setPinchZoom(false);
+        tideChart.setDoubleTapToZoomEnabled(false);
+        tideChart.setDrawMarkerViews(false);
+        tideChart.setTouchEnabled(false);
+
+        // X Axis
+        XAxis xAxis = tideChart.getXAxis();
+        xAxis.setDrawGridLines(false);
+        xAxis.setDrawAxisLine(false);
+        xAxis.setDrawLabels(false);
+
+        // Y Axis
+        YAxis leftYAxis = tideChart.getAxisLeft();
+        YAxis rightYAxis = tideChart.getAxisRight();
+        leftYAxis.setDrawGridLines(false);
+        rightYAxis.setDrawGridLines(false);
+        leftYAxis.setDrawAxisLine(false);
+        rightYAxis.setDrawAxisLine(false);
+        leftYAxis.setDrawLabels(false);
+        rightYAxis.setDrawLabels(false);
+        leftYAxis.setDrawZeroLine(false);
+        rightYAxis.setDrawZeroLine(false);
+
+        // Legend
+        tideChart.getLegend().setEnabled(false);
 
         return V;
     }
@@ -86,58 +119,8 @@ public class TideFragment extends Fragment implements TideChangedListener, Lates
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (mTideModel.otherEvents.size() < 2) {
-                    return;
-                }
-
-                // For now there are always two events so no need for a list. Get all of the views!!
-                TextView firstEventTypeText = (TextView) getActivity().findViewById(R.id.sun_first_event_type);
-                if (firstEventTypeText == null) {
-                    return;
-                }
-                TextView firstEventTimeText = (TextView) getActivity().findViewById(R.id.sun_first_event_time);
-                if (firstEventTimeText == null) {
-                    return;
-                }
-                ImageView firstEventIcon = (ImageView) getActivity().findViewById(R.id.sun_first_icon);
-                if (firstEventIcon == null) {
-                    return;
-                }
-                TextView secondEventTypeText = (TextView) getActivity().findViewById(R.id.sun_second_event_type);
-                if (secondEventTypeText == null) {
-                    return;
-                }
-                TextView secondEventTimeText = (TextView) getActivity().findViewById(R.id.sun_second_event_time);
-                if (secondEventTimeText == null) {
-                    return;
-                }
-                ImageView secondEventIcon = (ImageView) getActivity().findViewById(R.id.sun_second_icon);
-                if (secondEventIcon == null) {
-                    return;
-                }
-
-                Drawable sunriseDrawable = getResources().getDrawable(R.drawable.ic_brightness_high_white_36dp);
-                Drawable sunsetDrawable = getResources().getDrawable(R.drawable.ic_brightness_low_white_36dp);
-
-                // Fill the data!
-                Tide firstEvent = mTideModel.otherEvents.get(0);
-                firstEventTypeText.setText(firstEvent.eventType);
-                firstEventTimeText.setText(firstEvent.getTimeString());
-                if (firstEvent.isSunrise()) {
-                    firstEventIcon.setImageDrawable(sunriseDrawable);
-                } else {
-                    firstEventIcon.setImageDrawable(sunsetDrawable);
-                }
-
-                Tide secondEvent = mTideModel.otherEvents.get(1);
-                secondEventTypeText.setText(secondEvent.eventType);
-                secondEventTimeText.setText(secondEvent.getTimeString());
-                if (secondEvent.isSunrise()) {
-                    secondEventIcon.setImageDrawable(sunriseDrawable);
-                } else {
-                    secondEventIcon.setImageDrawable(sunsetDrawable);
-                }
-
+                updateTideChart();
+                updateOtherEventCard();
             }
         });
     }
@@ -169,37 +152,7 @@ public class TideFragment extends Fragment implements TideChangedListener, Lates
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                // Update the water temperature from the latest buoy reading
-                TextView buoyLocationTV = (TextView) getActivity().findViewById(R.id.water_temp_location);
-                if (buoyLocationTV != null) {
-                    buoyLocationTV.setText(mBuoyLocation);
-                }
-
-                TextView waterTemp = (TextView) getActivity().findViewById(R.id.water_temp_value);
-                if (waterTemp != null) {
-                    String waterTempValue = mWaterTemp + " " + getResources().getString(R.string.water_temp_holder);
-                    waterTemp.setText(waterTempValue);
-                }
-
-                ImageView waterTempIcon = (ImageView) getActivity().findViewById(R.id.water_temp_icon);
-
-                int tempColorTint = getResources().getColor(android.R.color.holo_purple);
-                double waterTempValueD = Double.valueOf(mWaterTemp);
-                if (waterTempValueD < 43) {
-                    // Its purple do nothing
-                } else if (waterTempValueD < 50) {
-                    tempColorTint = getResources().getColor(R.color.accent_blue);
-                } else if (waterTempValueD < 60) {
-                    tempColorTint = getResources().getColor(android.R.color.holo_green_dark);
-                } else if (waterTempValueD < 70) {
-                    tempColorTint = getResources().getColor(android.R.color.holo_orange_dark);
-                } else {
-                    tempColorTint = getResources().getColor(android.R.color.holo_red_dark);
-                }
-
-                if (waterTempIcon != null) {
-                    waterTempIcon.setColorFilter(tempColorTint);
-                }
+                updateWaterTempCard();
             }
         });
     }
@@ -219,5 +172,97 @@ public class TideFragment extends Fragment implements TideChangedListener, Lates
         }
         // Fetch the data from the models
         BuoyModel.getInstance(getActivity()).fetchLatestBuoyReadingForLocation(mBuoyLocation, this);
+    }
+
+    public void updateTideChart() {
+        // TODO
+    }
+
+    public void updateOtherEventCard() {
+        if (mTideModel.otherEvents.size() < 2) {
+            return;
+        }
+
+        // For now there are always two events so no need for a list. Get all of the views!!
+        TextView firstEventTypeText = (TextView) getActivity().findViewById(R.id.sun_first_event_type);
+        if (firstEventTypeText == null) {
+            return;
+        }
+        TextView firstEventTimeText = (TextView) getActivity().findViewById(R.id.sun_first_event_time);
+        if (firstEventTimeText == null) {
+            return;
+        }
+        ImageView firstEventIcon = (ImageView) getActivity().findViewById(R.id.sun_first_icon);
+        if (firstEventIcon == null) {
+            return;
+        }
+        TextView secondEventTypeText = (TextView) getActivity().findViewById(R.id.sun_second_event_type);
+        if (secondEventTypeText == null) {
+            return;
+        }
+        TextView secondEventTimeText = (TextView) getActivity().findViewById(R.id.sun_second_event_time);
+        if (secondEventTimeText == null) {
+            return;
+        }
+        ImageView secondEventIcon = (ImageView) getActivity().findViewById(R.id.sun_second_icon);
+        if (secondEventIcon == null) {
+            return;
+        }
+
+        Drawable sunriseDrawable = getResources().getDrawable(R.drawable.ic_brightness_high_white_36dp);
+        Drawable sunsetDrawable = getResources().getDrawable(R.drawable.ic_brightness_low_white_36dp);
+
+        // Fill the data!
+        Tide firstEvent = mTideModel.otherEvents.get(0);
+        firstEventTypeText.setText(firstEvent.eventType);
+        firstEventTimeText.setText(firstEvent.getTimeString());
+        if (firstEvent.isSunrise()) {
+            firstEventIcon.setImageDrawable(sunriseDrawable);
+        } else {
+            firstEventIcon.setImageDrawable(sunsetDrawable);
+        }
+
+        Tide secondEvent = mTideModel.otherEvents.get(1);
+        secondEventTypeText.setText(secondEvent.eventType);
+        secondEventTimeText.setText(secondEvent.getTimeString());
+        if (secondEvent.isSunrise()) {
+            secondEventIcon.setImageDrawable(sunriseDrawable);
+        } else {
+            secondEventIcon.setImageDrawable(sunsetDrawable);
+        }
+    }
+
+    public void updateWaterTempCard() {
+        // Update the water temperature from the latest buoy reading
+        TextView buoyLocationTV = (TextView) getActivity().findViewById(R.id.water_temp_location);
+        if (buoyLocationTV != null) {
+            buoyLocationTV.setText(mBuoyLocation);
+        }
+
+        TextView waterTemp = (TextView) getActivity().findViewById(R.id.water_temp_value);
+        if (waterTemp != null) {
+            String waterTempValue = mWaterTemp + " " + getResources().getString(R.string.water_temp_holder);
+            waterTemp.setText(waterTempValue);
+        }
+
+        ImageView waterTempIcon = (ImageView) getActivity().findViewById(R.id.water_temp_icon);
+
+        int tempColorTint = getResources().getColor(android.R.color.holo_purple);
+        double waterTempValueD = Double.valueOf(mWaterTemp);
+        if (waterTempValueD < 43) {
+            // Its purple do nothing
+        } else if (waterTempValueD < 50) {
+            tempColorTint = getResources().getColor(R.color.accent_blue);
+        } else if (waterTempValueD < 60) {
+            tempColorTint = getResources().getColor(android.R.color.holo_green_dark);
+        } else if (waterTempValueD < 70) {
+            tempColorTint = getResources().getColor(android.R.color.holo_orange_dark);
+        } else {
+            tempColorTint = getResources().getColor(android.R.color.holo_red_dark);
+        }
+
+        if (waterTempIcon != null) {
+            waterTempIcon.setColorFilter(tempColorTint);
+        }
     }
 }

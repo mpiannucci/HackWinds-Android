@@ -28,7 +28,6 @@
                     android:id="@+id/forecast_header"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="@string/loading_text"
                     android:layout_marginBottom="8dp"
                     style="@style/CardHeaderText"/>
 
@@ -44,7 +43,6 @@
                     android:id="@+id/forecast_morning_data"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/loading_text"
                     android:layout_marginBottom="4dp"
                     style="@style/ForecastDataText"/>
 
@@ -60,9 +58,7 @@
                     android:id="@+id/forecast_afternoon_data"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/loading_text"
                     style="@style/ForecastDataText"/>
-
         </LinearLayout>
     </android.support.v7.widget.CardView>
 </FrameLayout>
