@@ -12,10 +12,10 @@
         <LinearLayout
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:layout_marginLeft="6dp"
-            android:layout_marginRight="6dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
             android:orientation="vertical">
 
             <TextView
@@ -23,13 +23,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="@string/loading_text"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="8dp"
                 style="@style/LargeHeaderText" />
 
             <TextView
                 android:id="@+id/forecast_morning_header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
                 android:text="@string/morning_header"
                 style="@style/ForecastTimeOfDayText" />
 
@@ -38,13 +39,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/loading_text"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="4dp"
                 style="@style/ForecastDataText" />
 
             <TextView
                 android:id="@+id/forecast_afternoon_header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
                 android:text="@string/afternoon_header"
                 style="@style/ForecastTimeOfDayText" />
 

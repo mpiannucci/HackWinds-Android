@@ -23,10 +23,10 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="6dp"
-                    android:layout_marginRight="6dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
                     android:orientation="vertical">
 
                     <TextView
@@ -35,7 +35,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/latest_buoy_card_title"
                         android:layout_gravity="start|center_vertical"
-                        android:layout_marginBottom="5dp"
+                        android:layout_marginBottom="8dp"
                         style="@style/CardHeaderText" />
 
                     <com.nucc.hackwinds.utilities.AutoResizeTextView
@@ -43,7 +43,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:text="@string/loading_text"
-                        android:layout_marginBottom="5dp"
+                        android:layout_marginBottom="4dp"
                         android:maxLines="1"
                         style="@style/LargeHeaderText" />
 
@@ -52,7 +52,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:text="@string/buoy_component_header"
-                        android:layout_marginBottom="5dp"
+                        android:layout_marginBottom="4dp"
                         style="@style/BuoyComponentHeader" />
 
                     <TextView
@@ -88,10 +88,10 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="6dp"
-                    android:layout_marginRight="6dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
                     android:orientation="vertical">
 
                     <TextView
@@ -100,7 +100,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/latest_buoy_spectra_title"
                         android:layout_gravity="start|center_vertical"
-                        android:layout_marginBottom="5dp"
+                        android:layout_marginBottom="8dp"
                         style="@style/CardHeaderText" />
 
                     <ImageView
