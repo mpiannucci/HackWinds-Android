@@ -12,7 +12,8 @@
             android:layout_marginTop="@dimen/card_margin_vertical"
             android:layout_marginLeft="@dimen/card_margin_horizontal"
             android:layout_marginRight="@dimen/card_margin_horizontal"
-            card_view:cardCornerRadius="0dp">
+            card_view:cardCornerRadius="0dp"
+            android:foreground="?android:attr/selectableItemBackground">
 
         <LinearLayout
                 android:layout_height="wrap_content"
