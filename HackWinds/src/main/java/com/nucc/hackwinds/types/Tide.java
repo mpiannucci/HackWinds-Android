@@ -15,7 +15,7 @@ public class Tide {
     public String day;
     public String eventType;
     public String height;
-    public double heightValue;
+    public float heightValue;
 
     public Tide() {
     }

@@ -6,7 +6,7 @@
 
     <ScrollView
         android:id="@+id/tideScrollView"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
         <LinearLayout
@@ -17,7 +17,7 @@
             <com.github.mikephil.charting.charts.LineChart
                     android:id="@+id/tide_chart"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="200dp"/>
 
             <include layout="@layout/sun_tide_card"/>
 

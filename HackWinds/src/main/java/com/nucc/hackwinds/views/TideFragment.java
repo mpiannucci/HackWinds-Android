@@ -12,8 +12,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.ChartData;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.nucc.hackwinds.R;
 import com.nucc.hackwinds.listeners.LatestBuoyFetchListener;
 import com.nucc.hackwinds.listeners.TideChangedListener;
@@ -21,6 +26,9 @@ import com.nucc.hackwinds.types.Buoy;
 import com.nucc.hackwinds.types.Tide;
 import com.nucc.hackwinds.models.BuoyModel;
 import com.nucc.hackwinds.models.TideModel;
+
+import java.util.ArrayList;
+import java.util.Calendar;
 
 
 public class TideFragment extends Fragment implements TideChangedListener, LatestBuoyFetchListener {
@@ -175,7 +183,166 @@ public class TideFragment extends Fragment implements TideChangedListener, Lates
     }
 
     public void updateTideChart() {
-        // TODO
+        if (mTideModel.tides.size() < 5) {
+            return;
+        }
+
+        LineChart tideChart = (LineChart) getActivity().findViewById(R.id.tide_chart);
+        if (tideChart == null) {
+            return;
+        }
+
+        float min = 0;
+        float max = 0;
+        int firstIndex = 0;
+        boolean highFirst = false;
+        int prevIndex = 0;
+        int tideCount = 0;
+        int index = 0;
+
+        Calendar c = Calendar.getInstance();
+        long currentHourSeconds = ((c.getTimeInMillis()/1000) / 3600) * 3600;
+
+        ArrayList<Entry> dataEntries = new ArrayList<>();
+
+        // Create the first entry to hold its spot
+        Entry firstEntry = new Entry(0, -1);
+        dataEntries.add(firstEntry);
+
+        while (tideCount < 5) {
+            if (index > mTideModel.tides.size()) {
+                return;
+            }
+
+            Tide thisTide = mTideModel.tides.get(index);
+            index++;
+
+            if (thisTide == null) {
+                continue;
+            }
+
+            if (!thisTide.isTidalEvent()) {
+                continue;
+            }
+
+            int xIndex = 0;
+            if (tideCount == 0) {
+                long interval = currentHourSeconds - (thisTide.timestamp.getTime()/1000);
+                firstIndex = (int)(Math.abs(interval / (60*60)));
+                xIndex = firstIndex;
+
+                if (thisTide.isHighTide()) {
+                    highFirst = true;
+                } else {
+                    highFirst = false;
+                }
+            } else {
+                xIndex = prevIndex + 6;
+            }
+
+            float value = thisTide.heightValue;
+            if (value < 0) {
+                value = 0.01f;
+            }
+
+            if (tideCount < 2) {
+                if (thisTide.isHighTide()) {
+                    max = value;
+                } else {
+                    min = value;
+                }
+            }
+
+            if (xIndex != 0) {
+                Entry thisEntry = new Entry(value, xIndex);
+                dataEntries.add(thisEntry);
+            } else {
+                firstEntry.setVal(value);
+            }
+
+            if (xIndex < 24 || tideCount < 4) {
+                LimitLine tideLimit = new LimitLine(xIndex, thisTide.getTimeString());
+                if (xIndex > 16) {
+                    tideLimit.setLineColor(getResources().getColor(R.color.hackwinds_blue));
+                    tideLimit.setLabelPosition(LimitLine.LimitLabelPosition.LEFT_TOP);
+                } else {
+                    tideLimit.setLineColor(Color.WHITE);
+                    tideLimit.setTextColor(Color.WHITE);
+                    tideLimit.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_BOTTOM);
+                }
+                tideChart.getXAxis().addLimitLine(tideLimit);
+            }
+            prevIndex = xIndex;
+            tideCount++;
+        }
+
+        float amplitude = max - min;
+        if (firstIndex != 0) {
+            if (firstIndex == 6) {
+                LimitLine tideLimit = new LimitLine(0);
+                tideLimit.setLineColor(Color.WHITE);
+                tideLimit.setTextColor(Color.WHITE);
+                tideLimit.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_BOTTOM);
+                firstEntry.setXIndex(0);
+                if (highFirst) {
+                    firstEntry.setVal(min);
+                    tideLimit.setLabel("Low Tide");
+                } else {
+                    firstEntry.setVal(max);
+                    tideLimit.setLabel("High Tide");
+                }
+                tideChart.getXAxis().addLimitLine(tideLimit);
+            } else {
+                if (highFirst) {
+                    float approxMax = (float) (max - (amplitude * ((float)(firstIndex + 1) / 6.0)));
+                    if (approxMax < 0) {
+                        approxMax = 0.01f;
+                    }
+                    firstEntry.setVal(approxMax);
+                } else {
+                    float approxMin = (float)((amplitude * (((float)firstIndex + 1) / 6.0)) + min);
+                    if (approxMin < 0) {
+                        approxMin = 0.01f;
+                    }
+                    firstEntry.setVal(approxMin);
+                }
+            }
+        } else {
+            firstEntry.setXIndex(0);
+        }
+
+        ArrayList<String> xVals = new ArrayList<>();
+        for (int i = 0; i < prevIndex; i++) {
+            xVals.add("");
+        }
+
+        LineDataSet dataSet = new LineDataSet(dataEntries, "Tide Heights");
+        dataSet.setDrawCircles(true);
+        dataSet.setCircleColor(getResources().getColor(android.R.color.holo_orange_dark));
+        dataSet.setColor(getResources().getColor(R.color.hackwinds_blue));
+        dataSet.setFillColor(getResources().getColor(R.color.hackwinds_blue));
+        dataSet.setFillAlpha(255);
+        dataSet.setDrawFilled(true);
+        dataSet.setLineWidth(2.0f);
+        dataSet.setDrawCubic(true);
+
+        LineData chartData = new LineData(xVals, dataSet);
+        chartData.setDrawValues(false);
+
+        // Draw a limit line at now
+        LimitLine nowLimit = new LimitLine(0);
+        nowLimit.setLabel("Now");
+        nowLimit.setLineColor(Color.BLUE);
+        nowLimit.setLineWidth(4.0f);
+        tideChart.getXAxis().addLimitLine(nowLimit);
+
+        // Adjust y axis'
+        tideChart.getAxisLeft().setAxisMaxValue(amplitude*1.6f);
+        tideChart.getAxisRight().setAxisMaxValue(amplitude*1.6f);
+        tideChart.getAxisLeft().setAxisMinValue(min - 1.0f);
+        tideChart.getAxisRight().setAxisMinValue(min - 1.0f);
+
+        tideChart.setData(chartData);
     }
 
     public void updateOtherEventCard() {

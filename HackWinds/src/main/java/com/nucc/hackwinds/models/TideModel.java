@@ -144,7 +144,7 @@ public class TideModel {
                     thisTide.eventType = type;
                     if (thisTide.isTidalEvent()) {
                         thisTide.height = height;
-                        thisTide.heightValue = Double.valueOf(height.split(" ")[0]);
+                        thisTide.heightValue = Float.valueOf(height.split(" ")[0]);
                     }
 
                     // Add the tide to the vector
