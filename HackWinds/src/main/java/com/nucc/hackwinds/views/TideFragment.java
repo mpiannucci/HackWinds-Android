@@ -99,7 +99,7 @@ public class TideFragment extends Fragment implements TideChangedListener, Lates
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_tide_schedule:
-                startActivity(new Intent(getActivity(), BuoyHistoryActivity.class));
+                startActivity(new Intent(getActivity(), TideScheduleActivity.class));
                 break;
             default:
                 return super.onOptionsItemSelected(item);

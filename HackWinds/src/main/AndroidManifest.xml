@@ -54,6 +54,16 @@
                 android:value=".views.MainActivity" />
         </activity>
         <activity
+                android:name=".views.TideScheduleActivity"
+                android:label="@string/title_activity_tide_schedule"
+                android:parentActivityName=".views.MainActivity"
+                android:screenOrientation="portrait"
+                android:theme="@style/Theme.HackWindsMaterial">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".views.MainActivity" />
+        </activity>
+        <activity
             android:name=".views.AlternateCameraActivity"
             android:label="@string/title_activity_alternate_cameras"
             android:parentActivityName=".views.MainActivity"

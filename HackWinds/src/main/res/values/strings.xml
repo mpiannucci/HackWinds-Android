@@ -94,6 +94,9 @@
     <string name="buoy_swell_mode_segment_title">Swell</string>
     <string name="buoy_wind_mode_segment_title">Wind Wave</string>
 
+    <!-- Tide Schedule activity -->
+    <string name="title_activity_tide_schedule">Tide Schedule</string>
+
     <!-- WaveWatch Charts activity -->
     <string name="title_activity_wavewatch_chart">NOAA Wave Watch III</string>
     <string name="wavewatch_wave_height_title">Waves</string>
