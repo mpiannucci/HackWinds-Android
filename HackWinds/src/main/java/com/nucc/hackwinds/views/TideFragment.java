@@ -19,6 +19,7 @@ import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.utils.Utils;
 import com.nucc.hackwinds.R;
 import com.nucc.hackwinds.listeners.LatestBuoyFetchListener;
 import com.nucc.hackwinds.listeners.TideChangedListener;
@@ -63,6 +64,7 @@ public class TideFragment extends Fragment implements TideChangedListener, Lates
         tideChart.setDoubleTapToZoomEnabled(false);
         tideChart.setDrawMarkerViews(false);
         tideChart.setTouchEnabled(false);
+        tideChart.setViewPortOffsets(0f, 0f, 0f, 0f);
 
         // X Axis
         XAxis xAxis = tideChart.getXAxis();
@@ -262,6 +264,8 @@ public class TideFragment extends Fragment implements TideChangedListener, Lates
 
             if (xIndex < 24 || tideCount < 4) {
                 LimitLine tideLimit = new LimitLine(xIndex, thisTide.getTimeString());
+                tideLimit.setTextSize(14);
+                tideLimit.setLineWidth(2);
                 if (xIndex > 16) {
                     tideLimit.setLineColor(getResources().getColor(R.color.hackwinds_blue));
                     tideLimit.setLabelPosition(LimitLine.LimitLabelPosition.LEFT_TOP);
@@ -282,6 +286,8 @@ public class TideFragment extends Fragment implements TideChangedListener, Lates
                 LimitLine tideLimit = new LimitLine(0);
                 tideLimit.setLineColor(Color.WHITE);
                 tideLimit.setTextColor(Color.WHITE);
+                tideLimit.setTextSize(14);
+                tideLimit.setLineWidth(7);
                 tideLimit.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_BOTTOM);
                 firstEntry.setXIndex(0);
                 if (highFirst) {
@@ -332,8 +338,9 @@ public class TideFragment extends Fragment implements TideChangedListener, Lates
         // Draw a limit line at now
         LimitLine nowLimit = new LimitLine(0);
         nowLimit.setLabel("Now");
+        nowLimit.setTextSize(14);
         nowLimit.setLineColor(Color.BLUE);
-        nowLimit.setLineWidth(4.0f);
+        nowLimit.setLineWidth(7.0f);
         tideChart.getXAxis().addLimitLine(nowLimit);
 
         // Adjust y axis'

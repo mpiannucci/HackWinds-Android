@@ -43,7 +43,7 @@
     <string name="sunset">Sunset</string>
     <string name="tide_event_holder">Tide Event</string>
     <string name="current_tide_header">Right Now</string>
-    <string name="upcoming_tide_header">Upcoming</string>
+    <string name="upcoming_tide_header">Upcoming Tides</string>
     <string name="sun_tide_header">Other Upcoming Events</string>
     <string name="tide_time_holder">00:00</string>
     <string name="water_temp_header">Water Temperature</string>
