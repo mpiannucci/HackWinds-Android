@@ -194,6 +194,13 @@ public class TideFragment extends Fragment implements TideChangedListener, Lates
             return;
         }
 
+        // Get some colors
+        int backgroundGrey = getResources().getColor(R.color.material_background);
+        int hackWindsBlue = getResources().getColor(R.color.hackwinds_blue);
+        int alternateBlue = getResources().getColor(R.color.accent_blue);
+        int holoOrange = getResources().getColor(android.R.color.holo_orange_dark);
+
+        // Some variables for introspection
         float min = 0;
         float max = 0;
         int firstIndex = 0;
@@ -264,14 +271,14 @@ public class TideFragment extends Fragment implements TideChangedListener, Lates
 
             if (xIndex < 24 || tideCount < 4) {
                 LimitLine tideLimit = new LimitLine(xIndex, thisTide.getTimeString());
-                tideLimit.setTextSize(14);
+                tideLimit.setTextSize(16);
                 tideLimit.setLineWidth(2);
                 if (xIndex > 16) {
-                    tideLimit.setLineColor(getResources().getColor(R.color.hackwinds_blue));
+                    tideLimit.setLineColor(hackWindsBlue);
                     tideLimit.setLabelPosition(LimitLine.LimitLabelPosition.LEFT_TOP);
                 } else {
-                    tideLimit.setLineColor(Color.WHITE);
-                    tideLimit.setTextColor(Color.WHITE);
+                    tideLimit.setLineColor(backgroundGrey);
+                    tideLimit.setTextColor(backgroundGrey);
                     tideLimit.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_BOTTOM);
                 }
                 tideChart.getXAxis().addLimitLine(tideLimit);
@@ -284,9 +291,9 @@ public class TideFragment extends Fragment implements TideChangedListener, Lates
         if (firstIndex != 0) {
             if (firstIndex == 6) {
                 LimitLine tideLimit = new LimitLine(0);
-                tideLimit.setLineColor(Color.WHITE);
-                tideLimit.setTextColor(Color.WHITE);
-                tideLimit.setTextSize(14);
+                tideLimit.setLineColor(backgroundGrey);
+                tideLimit.setTextColor(backgroundGrey);
+                tideLimit.setTextSize(16);
                 tideLimit.setLineWidth(7);
                 tideLimit.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_BOTTOM);
                 firstEntry.setXIndex(0);
@@ -323,10 +330,12 @@ public class TideFragment extends Fragment implements TideChangedListener, Lates
         }
 
         LineDataSet dataSet = new LineDataSet(dataEntries, "Tide Heights");
-        dataSet.setDrawCircles(true);
-        dataSet.setCircleColor(getResources().getColor(android.R.color.holo_orange_dark));
-        dataSet.setColor(getResources().getColor(R.color.hackwinds_blue));
-        dataSet.setFillColor(getResources().getColor(R.color.hackwinds_blue));
+        dataSet.setDrawCircles(false);
+        dataSet.setCircleColor(holoOrange);
+        dataSet.setCircleColorHole(holoOrange);
+        dataSet.setCircleRadius(8.0f);
+        dataSet.setColor(hackWindsBlue);
+        dataSet.setFillColor(hackWindsBlue);
         dataSet.setFillAlpha(255);
         dataSet.setDrawFilled(true);
         dataSet.setLineWidth(2.0f);
@@ -338,8 +347,8 @@ public class TideFragment extends Fragment implements TideChangedListener, Lates
         // Draw a limit line at now
         LimitLine nowLimit = new LimitLine(0);
         nowLimit.setLabel("Now");
-        nowLimit.setTextSize(14);
-        nowLimit.setLineColor(Color.BLUE);
+        nowLimit.setTextSize(16);
+        nowLimit.setLineColor(alternateBlue);
         nowLimit.setLineWidth(7.0f);
         tideChart.getXAxis().addLimitLine(nowLimit);
 
