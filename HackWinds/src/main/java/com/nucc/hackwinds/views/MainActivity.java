@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         initLocationArrays();
         mLocationAdapter = new LocationArrayAdapter(this, mForecastLocations);
         mLocationSpinner = (Spinner) findViewById(R.id.navigation_spinner);
+        mLocationSpinner.setEnabled(false);
         mLocationSpinner.setAdapter(mLocationAdapter);
         mLocationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
@@ -118,14 +119,17 @@ public class MainActivity extends AppCompatActivity {
                     mLocationAdapter.changeLocations(mForecastLocations);
                     mLocationAdapter.notifyDataSetChanged();
                     mLocationSpinner.setSelection(0);
+                    mLocationSpinner.setEnabled(false);
                 } else if (title.equals("BUOYS")) {
                     mLocationAdapter.changeLocations(mBuoyLocations);
                     mLocationAdapter.notifyDataSetChanged();
                     setSpinnerBuoyLocation();
+                    mLocationSpinner.setEnabled(true);
                 } else if (title.equals("TIDE")) {
                     mLocationAdapter.changeLocations(mTideLocation);
                     mLocationAdapter.notifyDataSetChanged();
                     mLocationSpinner.setSelection(0);
+                    mLocationSpinner.setEnabled(false);
                 }
             }
 

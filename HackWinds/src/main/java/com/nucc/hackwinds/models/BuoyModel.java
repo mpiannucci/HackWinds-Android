@@ -138,6 +138,8 @@ public class BuoyModel {
     public void forceChangeLocation(String location) {
         mCurrentContainer = mBuoyDataContainers.get(location);
         mCurrentLocation = location;
+
+        fetchBuoyData();
     }
 
     public void fetchBuoyData() {
