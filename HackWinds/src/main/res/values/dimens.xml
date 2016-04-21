@@ -4,7 +4,10 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+    <!-- Card Views -->
     <dimen name="card_margin_horizontal">-3dp</dimen>
     <dimen name="card_margin_vertical">4dp</dimen>
+    <dimen name="card_header_bottom_margin">8dp</dimen>
+    <dimen name="card_padding">16dp</dimen>
 
 </resources>

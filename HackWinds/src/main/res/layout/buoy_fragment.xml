@@ -28,10 +28,10 @@
                 <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:paddingLeft="16dp"
-                        android:paddingRight="16dp"
-                        android:paddingTop="16dp"
-                        android:paddingBottom="16dp"
+                        android:paddingLeft="@dimen/card_padding"
+                        android:paddingRight="@dimen/card_padding"
+                        android:paddingTop="@dimen/card_padding"
+                        android:paddingBottom="@dimen/card_padding"
                         android:orientation="vertical">
 
                     <TextView
@@ -40,7 +40,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/latest_buoy_card_title"
                             android:layout_gravity="start|center_vertical"
-                            android:layout_marginBottom="8dp"
+                            android:layout_marginBottom="@dimen/card_header_bottom_margin"
                             style="@style/CardHeaderText"/>
 
                     <com.nucc.hackwinds.utilities.AutoResizeTextView
@@ -98,10 +98,7 @@
                 <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:paddingLeft="16dp"
-                        android:paddingRight="16dp"
-                        android:paddingTop="16dp"
-                        android:paddingBottom="16dp"
+                        android:paddingTop="@dimen/card_padding"
                         android:orientation="vertical">
 
                     <TextView
@@ -110,7 +107,9 @@
                             android:layout_height="wrap_content"
                             android:text="@string/latest_buoy_spectra_title"
                             android:layout_gravity="start|center_vertical"
-                            android:layout_marginBottom="8dp"
+                            android:layout_marginBottom="@dimen/card_header_bottom_margin"
+                            android:paddingLeft="@dimen/card_padding"
+                            android:paddingRight="@dimen/card_padding"
                             style="@style/CardHeaderText"/>
 
                     <ImageView
