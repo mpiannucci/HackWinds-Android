@@ -5,7 +5,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
 import com.nucc.hackwinds.R;
+import com.nucc.hackwinds.adapters.TideScheduleArrayAdapter;
+import com.nucc.hackwinds.models.TideModel;
+import com.nucc.hackwinds.types.Tide;
+
+import java.util.ArrayList;
 
 /**
  * Created by matthew on 4/21/16.
@@ -21,6 +27,11 @@ public class TideScheduleActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // Set up the tide list
+        ArrayList<Tide> tides = TideModel.getInstance(this).tides;
+        TideScheduleArrayAdapter tideAdapter = new TideScheduleArrayAdapter(this, tides);
+        ListView tideScheduleList = (ListView) findViewById(R.id.tide_schedule_list);
+        tideScheduleList.setAdapter(tideAdapter);
     }
 
     @Override

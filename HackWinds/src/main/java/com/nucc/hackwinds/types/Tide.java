@@ -10,6 +10,7 @@ public class Tide {
     public static final String HIGH_TIDE_TAG = "High Tide";
     public static final String SUNRISE_TAG = "Sunrise";
     public static final String SUNSET_TAG = "Sunset";
+    public static final String DAY_TAG = "DAY_ITEM";
 
     public Date timestamp;
     public String day;
@@ -42,6 +43,10 @@ public class Tide {
 
     public boolean isTidalEvent() {
         return isHighTide() || isLowTide();
+    }
+
+    public boolean isDayItem() {
+        return eventType.equals(DAY_TAG);
     }
 
     public String getTimeString() {

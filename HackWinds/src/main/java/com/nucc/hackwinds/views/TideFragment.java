@@ -194,6 +194,8 @@ public class TideFragment extends Fragment implements TideChangedListener, Lates
             return;
         }
 
+        tideChart.clear();
+
         // Get some colors
         int backgroundGrey = getResources().getColor(R.color.material_background);
         int hackWindsBlue = getResources().getColor(R.color.hackwinds_blue);

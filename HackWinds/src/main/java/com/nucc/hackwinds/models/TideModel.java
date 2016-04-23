@@ -46,10 +46,6 @@ public class TideModel {
         tides = new ArrayList<>();
         otherEvents = new ArrayList<>();
         mTideChangedListeners = new ArrayList<>();
-
-        // Some day metadata
-        mDayIds = new ArrayList<>();
-        mDayDataCounts = new ArrayList<>();
     }
 
     public void addTideChangedListener(TideChangedListener listener) {
@@ -147,27 +143,24 @@ public class TideModel {
                         thisTide.heightValue = Float.valueOf(height.split(" ")[0]);
                     }
 
-                    // Add the tide to the vector
-                    tides.add(thisTide);
-
                     if (!currentDay.equals(thisTide.day)) {
                         dayCount++;
                         currentDay = thisTide.day;
-                        mDayIds.add(currentDay);
 
-                        if (dayCount != 1) {
-                            mDayDataCounts.add(currentDayDataCount);
-                            currentDayDataCount = 0;
-                        }
+                        Tide dayTide = new Tide();
+                        dayTide.day = currentDay;
+                        dayTide.eventType = Tide.DAY_TAG;
+                        tides.add(dayTide);
                     }
+
+                    // Add the tide to the vector
+                    tides.add(thisTide);
 
                     if (!thisTide.isTidalEvent()) {
                         otherEvents.add(thisTide);
                     }
-                    currentDayDataCount++;
                 }
             }
-            mDayDataCounts.add(currentDayDataCount);
         } catch (JSONException e) {
             e.printStackTrace();
             return false;
