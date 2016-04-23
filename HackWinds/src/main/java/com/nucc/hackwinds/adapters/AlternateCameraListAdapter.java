@@ -76,19 +76,19 @@ public class AlternateCameraListAdapter extends BaseAdapter implements ListAdapt
         return position * 4;
     }
 
-    public boolean isSection(int position) {
+    public boolean isHeaderItem(int position) {
         return cameraLocations.get(position).isSection;
     }
 
-    public String getSectionForPosition(int position) {
-        if (isSection(position)) {
+    public String getHeaderTitle(int position) {
+        if (isHeaderItem(position)) {
             // It has no parent section
             return "";
         }
 
         int prevPosition = position;
         while (prevPosition >= 0) {
-            if (isSection(prevPosition)) {
+            if (isHeaderItem(prevPosition)) {
                 // Yayy we found the section
                 return getItem(prevPosition);
             }
@@ -110,7 +110,7 @@ public class AlternateCameraListAdapter extends BaseAdapter implements ListAdapt
 
             ViewHolder viewHolder = new ViewHolder();
             viewHolder.position = position;
-            if (isSection(position)) {
+            if (isHeaderItem(position)) {
                 rowView = inflater.inflate(R.layout.alternate_camera_list_section, parent, false);
                 viewHolder.locationTV = (TextView) rowView.findViewById(R.id.alternateCameraSectionText);
                 rowView.setEnabled(false);

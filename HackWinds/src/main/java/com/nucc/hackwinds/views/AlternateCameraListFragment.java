@@ -47,7 +47,7 @@ public class AlternateCameraListFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         String camera = mAlternateCameraListAdapter.getItem(position);
-        String location = mAlternateCameraListAdapter.getSectionForPosition(position);
+        String location = mAlternateCameraListAdapter.getHeaderTitle(position);
 
         IsoCameraFragment cameraFragment = new IsoCameraFragment();
         cameraFragment.setCamera(location, camera);
