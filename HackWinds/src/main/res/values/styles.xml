@@ -72,13 +72,25 @@
         <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
+    <style name="TideListEventText">
+        <item name="android:textColor">@color/material_grey_800</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+
+    <style name="TideListTimeText">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:fontFamily">sans-serif-bold</item>
+    </style>
+
     <style name="CardHeaderText">
         <item name="android:textColor">@android:color/black</item>
         <item name="android:textSize">24sp</item>
         <item name="android:fontFamily">sans-serif-bold</item>
     </style>
 
-    <style name="AlternateCameraListSection">
+    <style name="ListSectionHeader">
         <item name="android:textColor">@color/hackwinds_blue</item>
         <item name="android:textSize">16sp</item>
         <item name="android:fontFamily">sans-serif-medium</item>

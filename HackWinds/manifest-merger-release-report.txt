@@ -22,15 +22,19 @@ ADDED from AndroidManifest.xml:6:5
 		ADDED from AndroidManifest.xml:6:22
 application
 ADDED from AndroidManifest.xml:8:5
-MERGED from com.android.support:support-v4:23.0.0:22:5
-MERGED from com.android.support:appcompat-v7:23.0.0:22:5
-MERGED from com.android.support:support-v4:23.0.0:22:5
+MERGED from com.android.support:support-v4:23.0.1:22:5
+MERGED from com.android.support:appcompat-v7:23.0.1:22:5
+MERGED from com.android.support:support-v4:23.0.1:22:5
 MERGED from com.android.support:cardview-v7:23.0.0:22:5
+MERGED from com.android.support:design:23.0.1:22:5
+MERGED from com.android.support:support-v4:23.0.1:22:5
+MERGED from com.android.support:appcompat-v7:23.0.1:22:5
+MERGED from com.android.support:support-v4:23.0.1:22:5
 MERGED from com.jpardogo.materialtabstrip:library:1.0.6:9:5
-MERGED from com.android.support:support-v4:23.0.0:22:5
-MERGED from com.android.support:appcompat-v7:23.0.0:22:5
-MERGED from com.android.support:support-v4:23.0.0:22:5
-MERGED from com.android.support:support-v4:23.0.0:22:5
+MERGED from com.android.support:support-v4:23.0.1:22:5
+MERGED from com.android.support:appcompat-v7:23.0.1:22:5
+MERGED from com.android.support:support-v4:23.0.1:22:5
+MERGED from com.android.support:support-v4:23.0.1:22:5
 	android:label
 		ADDED from AndroidManifest.xml:11:9
 	android:allowBackup
@@ -103,28 +107,28 @@ ADDED from AndroidManifest.xml:46:9
 		ADDED from AndroidManifest.xml:51:13
 	android:name
 		ADDED from AndroidManifest.xml:47:13
-activity#com.nucc.hackwinds.views.AlternateCameraActivity
+activity#com.nucc.hackwinds.views.TideScheduleActivity
 ADDED from AndroidManifest.xml:56:9
 	android:screenOrientation
-		ADDED from AndroidManifest.xml:60:13
+		ADDED from AndroidManifest.xml:60:17
 	android:label
-		ADDED from AndroidManifest.xml:58:13
+		ADDED from AndroidManifest.xml:58:17
 	android:parentActivityName
-		ADDED from AndroidManifest.xml:59:13
+		ADDED from AndroidManifest.xml:59:17
 	android:theme
-		ADDED from AndroidManifest.xml:61:13
+		ADDED from AndroidManifest.xml:61:17
 	android:name
-		ADDED from AndroidManifest.xml:57:13
-activity#com.nucc.hackwinds.views.WaveWatchChartActivity
+		ADDED from AndroidManifest.xml:57:17
+activity#com.nucc.hackwinds.views.AlternateCameraActivity
 ADDED from AndroidManifest.xml:66:9
+	android:screenOrientation
+		ADDED from AndroidManifest.xml:70:13
 	android:label
 		ADDED from AndroidManifest.xml:68:13
 	android:parentActivityName
 		ADDED from AndroidManifest.xml:69:13
-	android:configChanges
-		ADDED from AndroidManifest.xml:71:13
 	android:theme
-		ADDED from AndroidManifest.xml:70:13
+		ADDED from AndroidManifest.xml:71:13
 	android:name
 		ADDED from AndroidManifest.xml:67:13
 activity#com.nucc.hackwinds.views.VideoPlayerActivity
@@ -139,17 +143,21 @@ ADDED from AndroidManifest.xml:76:9
 		ADDED from AndroidManifest.xml:77:13
 uses-sdk
 INJECTED from AndroidManifest.xml:0:0 reason: use-sdk injection requested
-MERGED from com.android.support:support-v4:23.0.0:20:5
-MERGED from com.android.support:appcompat-v7:23.0.0:20:5
-MERGED from com.android.support:support-v4:23.0.0:20:5
+MERGED from com.android.support:support-v4:23.0.1:20:5
+MERGED from com.android.support:appcompat-v7:23.0.1:20:5
+MERGED from com.android.support:support-v4:23.0.1:20:5
 MERGED from com.android.support:cardview-v7:23.0.0:20:5
+MERGED from com.android.support:design:23.0.1:20:5
+MERGED from com.android.support:support-v4:23.0.1:20:5
+MERGED from com.android.support:appcompat-v7:23.0.1:20:5
+MERGED from com.android.support:support-v4:23.0.1:20:5
 MERGED from info.hoang8f:android-segmented:1.0.2:3:5
 MERGED from com.jpardogo.materialtabstrip:library:1.0.6:5:5
-MERGED from com.android.support:support-v4:23.0.0:20:5
+MERGED from com.android.support:support-v4:23.0.1:20:5
 MERGED from HackWinds-Android:AndroidImageSlider:unspecified:7:5
-MERGED from com.android.support:appcompat-v7:23.0.0:20:5
-MERGED from com.android.support:support-v4:23.0.0:20:5
-MERGED from com.android.support:support-v4:23.0.0:20:5
+MERGED from com.android.support:appcompat-v7:23.0.1:20:5
+MERGED from com.android.support:support-v4:23.0.1:20:5
+MERGED from com.android.support:support-v4:23.0.1:20:5
 	android:targetSdkVersion
 		INJECTED from AndroidManifest.xml:0:0
 		INJECTED from AndroidManifest.xml:0:0
