@@ -14,9 +14,6 @@ android {
     signingConfigs {
         release {
             storeFile file("/home/matthew/GDrive/Development/Android/hackWinds/hackWindsKeyStore")
-            storePassword "erfer1"
-            keyAlias "rhodysurf"
-            keyPassword "erfer1"
         }
     }
 
