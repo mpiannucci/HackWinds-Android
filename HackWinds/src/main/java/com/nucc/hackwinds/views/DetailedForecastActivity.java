@@ -16,6 +16,7 @@ import com.nucc.hackwinds.R;
 import com.nucc.hackwinds.adapters.ConditionArrayAdapter;
 import com.nucc.hackwinds.models.ForecastModel;
 import com.nucc.hackwinds.types.Forecast;
+import com.nucc.hackwinds.utilities.WrappableViewPager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +54,7 @@ public class DetailedForecastActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // Create and set the new pager adapter
-        mViewPager = (ViewPager) findViewById(R.id.chart_type_pager);
+        mViewPager = (WrappableViewPager) findViewById(R.id.chart_type_pager);
         mSlidingTabStrip = (PagerSlidingTabStrip) findViewById(R.id.chart_mode_tabs);
         mAdapter = new DetailedForecastPagerAdapter(getSupportFragmentManager());
         mViewPager.setOffscreenPageLimit(1);
