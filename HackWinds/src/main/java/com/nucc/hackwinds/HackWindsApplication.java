@@ -12,10 +12,5 @@ public class HackWindsApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
-        ForecastModel.getInstance(this).fetchForecastData();
-        BuoyModel.getInstance(this).fetchBuoyData();
-        TideModel.getInstance(this).fetchTideData();
-        CameraModel.getInstance(this).fetchCameraURLs();
     }
 }

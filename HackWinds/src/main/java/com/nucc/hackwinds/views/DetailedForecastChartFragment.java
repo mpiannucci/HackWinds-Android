@@ -95,7 +95,7 @@ public class DetailedForecastChartFragment extends Fragment {
                     return;
                 }
 
-                Bitmap croppedBitmap = Bitmap.createBitmap(result, 60, 50, 350, 225);
+                Bitmap croppedBitmap = Bitmap.createBitmap(result, 60, 50, 350, 180);
                 BitmapDrawable chartFrame = new BitmapDrawable(getResources(), croppedBitmap);
                 mChartAnimation.addFrame(chartFrame, ANIMATION_DURATION);
 

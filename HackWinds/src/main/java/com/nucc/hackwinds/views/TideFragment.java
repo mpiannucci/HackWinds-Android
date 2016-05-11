@@ -47,8 +47,6 @@ public class TideFragment extends Fragment implements TideChangedListener, Lates
 
         mTideModel = TideModel.getInstance(getActivity());
         mTideModel.addTideChangedListener(this);
-
-        reloadWaterTemperature();
     }
 
     @Override
@@ -112,7 +110,7 @@ public class TideFragment extends Fragment implements TideChangedListener, Lates
         super.onResume();
 
         tideDataUpdated();
-        latestBuoyFetchSuccess(null);
+        reloadWaterTemperature();
     }
 
     @Override
@@ -143,10 +141,11 @@ public class TideFragment extends Fragment implements TideChangedListener, Lates
     @Override
     public void latestBuoyFetchSuccess(final Buoy latestBuoy) {
 
+        if (latestBuoy == null) {
+            return;
+        }
+
         if (mWaterTemp == null) {
-            if (latestBuoy == null) {
-                return;
-            }
 
             if (latestBuoy.waterTemperature == null) {
                 return;
@@ -185,6 +184,12 @@ public class TideFragment extends Fragment implements TideChangedListener, Lates
     }
 
     public void updateTideChart() {
+        if (mTideModel == null) {
+            return;
+        } else if (mTideModel.tides == null) {
+            return;
+        }
+
         if (mTideModel.tides.size() < 5) {
             return;
         }

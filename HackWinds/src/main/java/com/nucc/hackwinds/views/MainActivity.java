@@ -23,7 +23,9 @@ import com.astuetz.PagerSlidingTabStrip;
 import com.nucc.hackwinds.R;
 import com.nucc.hackwinds.adapters.LocationArrayAdapter;
 import com.nucc.hackwinds.models.BuoyModel;
+import com.nucc.hackwinds.models.CameraModel;
 import com.nucc.hackwinds.models.ForecastModel;
+import com.nucc.hackwinds.models.TideModel;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 public class MainActivity extends AppCompatActivity {
@@ -162,6 +164,16 @@ public class MainActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
         return true;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        ForecastModel.getInstance(this).fetchForecastData();
+        BuoyModel.getInstance(this).fetchBuoyData();
+        TideModel.getInstance(this).fetchTideData();
+        CameraModel.getInstance(this).fetchCameraURLs();
     }
 
     public void initLocationArrays() {
