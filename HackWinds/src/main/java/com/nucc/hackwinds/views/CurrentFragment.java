@@ -181,6 +181,10 @@ public class CurrentFragment extends ListFragment implements ForecastChangedList
     private void loadCameraImages() {
         final int CAMERA_IMAGE_COUNT = 8;
 
+        if (mCameraSliderLayout == null) {
+            return;
+        }
+
         mCameraSliderLayout.stopAutoCycle();
         mCameraSliderLayout.removeAllSliders();
 
