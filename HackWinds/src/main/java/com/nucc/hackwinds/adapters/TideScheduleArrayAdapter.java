@@ -108,12 +108,12 @@ public class TideScheduleArrayAdapter extends ArrayAdapter<Tide> {
                 Tide dataTide = mTides.get(position);
 
                 // Set the tide data
+                tideViewHolder.tideEventTimeTV.setText(dataTide.getTimeString());
                 if (dataTide.isTidalEvent()) {
-                    tideViewHolder.tideEventTimeTV.setText(dataTide.getTimeString() + ": " + dataTide.height);
+                    tideViewHolder.tideEventTypeTV.setText(dataTide.eventType + ": " + dataTide.height);
                 } else {
-                    tideViewHolder.tideEventTimeTV.setText(dataTide.getTimeString());
+                    tideViewHolder.tideEventTypeTV.setText(dataTide.eventType);
                 }
-                tideViewHolder.tideEventTypeTV.setText(dataTide.eventType);
 
                 // Set the correct icon
                 if (dataTide.isHighTide()) {
