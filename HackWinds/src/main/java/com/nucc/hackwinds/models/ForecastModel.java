@@ -13,6 +13,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
@@ -75,15 +76,24 @@ public class ForecastModel {
     }
 
     void checkForUpdate() {
+        if (mLastFetchDate == null) {
+            return;
+        }
+
+        if (forecasts == null) {
+            return;
+        }
+
         if (forecasts.size() < 1) {
             return;
         }
 
         Date now = new Date();
-
-        // TODO: Only refresh if past an update time
-        resetData();
-
+        long rawTimeDiff = now.getTime() - mLastFetchDate.getTime();
+        int hourDiff = (int) TimeUnit.MILLISECONDS.toHours(rawTimeDiff);
+        if (hourDiff > 6) {
+            resetData();
+        }
     }
 
     public void fetchForecastData() {
@@ -195,6 +205,15 @@ public class ForecastModel {
             locationName = jsonObj.getString("LocationName");
             waveModelName = jsonObj.getJSONObject("WaveModel").getString("Description");
             waveModelRun = jsonObj.getJSONObject("WaveModel").getString("ModelRun");
+
+            // We need to save the model run for later so we can check for updates
+            SimpleDateFormat formatter = new SimpleDateFormat("EEEE MMMM  d, yyyy HHZ");
+            try {
+                mLastFetchDate = formatter.parse(waveModelRun.replaceAll("z$", "+0000"));
+            } catch (Exception e) {
+                return false;
+            }
+
             windModelName = jsonObj.getJSONObject("WindModel").getString("Description");
             windModelRun = jsonObj.getJSONObject("WindModel").getString("ModelRun");
 

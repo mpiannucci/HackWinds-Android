@@ -104,7 +104,6 @@ public class BuoyModel {
 
         // Block Island
         BuoyDataContainer biContainer = new BuoyDataContainer(BLOCK_ISLAND_BUOY_ID);
-        biContainer.updateInterval = 30;
         mBuoyDataContainers.put(BLOCK_ISLAND_LOCATION, biContainer);
 
         // Montauk

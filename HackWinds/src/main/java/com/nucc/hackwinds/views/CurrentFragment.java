@@ -79,13 +79,6 @@ public class CurrentFragment extends ListFragment implements ForecastChangedList
                              Bundle savedInstanceState) {
         View V = inflater.inflate(R.layout.current_fragment, container, false);
 
-        // Set the day header to the current day
-        TextView date = (TextView) V.findViewById(R.id.today_date_header);
-        Calendar calendar = Calendar.getInstance();
-        int day = calendar.get(Calendar.DAY_OF_WEEK);
-        String dayName = getResources().getStringArray(R.array.daysOfTheWeek)[day-1];
-        date.setText(dayName);
-
         // Find the image slider, and initialize it
         mCameraSliderLayout = (SliderLayout) V.findViewById(R.id.camera_image_slider);
         int hackWindsColor = Color.parseColor("#47A3FF");
@@ -131,6 +124,13 @@ public class CurrentFragment extends ListFragment implements ForecastChangedList
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                // Set the day header to the current day
+                TextView date = (TextView) getView().findViewById(R.id.today_date_header);
+                Calendar calendar = Calendar.getInstance();
+                int day = calendar.get(Calendar.DAY_OF_WEEK);
+                String dayName = getResources().getStringArray(R.array.daysOfTheWeek)[day-1];
+                date.setText(dayName);
+
                 // Set the condition adapter for the list
                 if (mConditionArrayAdapter == null) {
                     ArrayList<Forecast> conditions = mForecastModel.getForecastsForDay(0);
@@ -149,9 +149,7 @@ public class CurrentFragment extends ListFragment implements ForecastChangedList
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (mConditionArrayAdapter != null) {
-                    mConditionArrayAdapter.clear();
-                }
+                // For now do nothing
             }
         });
     }
