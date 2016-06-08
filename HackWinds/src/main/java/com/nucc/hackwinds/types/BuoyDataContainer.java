@@ -9,6 +9,7 @@ public class BuoyDataContainer {
 
     public String buoyID;
     public ArrayList<Buoy> buoyData;
+    public int updateInterval = 50;
 
     public BuoyDataContainer(String id) {
         buoyID = id;

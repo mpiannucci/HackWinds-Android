@@ -104,6 +104,7 @@ public class BuoyModel {
 
         // Block Island
         BuoyDataContainer biContainer = new BuoyDataContainer(BLOCK_ISLAND_BUOY_ID);
+        biContainer.updateInterval = 30;
         mBuoyDataContainers.put(BLOCK_ISLAND_LOCATION, biContainer);
 
         // Montauk
@@ -125,6 +126,11 @@ public class BuoyModel {
         mCurrentLocation = location;
     }
 
+    public void resetData() {
+        mBuoyDataContainers.clear();
+        initBuoyContainers();
+    }
+
     public void changeLocation() {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
         String location = sharedPrefs.getString(SettingsActivity.BUOY_LOCATION_KEY, MONTAUK_LOCATION);
@@ -142,8 +148,28 @@ public class BuoyModel {
         fetchBuoyData();
     }
 
+    public void checkForUpdate() {
+        if (mCurrentContainer.buoyData.size() < 1) {
+            return;
+        }
+
+        if (mCurrentContainer.buoyData.get(0).timestamp == null) {
+            return;
+        }
+
+        Date now = new Date();
+        long rawTimeDiff = now.getTime() - mCurrentContainer.buoyData.get(0).timestamp.getTime();
+        int minuteDiff = (int)TimeUnit.MILLISECONDS.toMinutes(rawTimeDiff);
+
+        if (mCurrentContainer.updateInterval < minuteDiff) {
+            resetData();
+        }
+    }
+
     public void fetchBuoyData() {
         synchronized (this) {
+            checkForUpdate();
+
             if (!mCurrentContainer.buoyData.isEmpty()) {
                 // Send an update to the listeners cuz the data is already here
                 for (BuoyChangedListener listener : mBuoyChangedListeners) {
@@ -191,6 +217,8 @@ public class BuoyModel {
 
     public void fetchLatestBuoyReading() {
         synchronized (this) {
+            checkForUpdate();
+
             if (!mCurrentContainer.buoyData.isEmpty()) {
                 // Send an update to the listeners cuz the data is already here
                 for (BuoyChangedListener listener : mBuoyChangedListeners) {
@@ -240,10 +268,11 @@ public class BuoyModel {
 
     public void fetchLatestBuoyReadingForLocation(String location, final LatestBuoyFetchListener listener) {
         synchronized (this) {
-
             // Change the location. Get the original first to change the location back.
             final String originalLocation = mCurrentLocation;
             forceChangeLocation(location);
+
+            checkForUpdate();
 
             if (!mCurrentContainer.buoyData.isEmpty()) {
                 // Send an update to the listeners cuz the data is already here

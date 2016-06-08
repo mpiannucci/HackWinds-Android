@@ -13,7 +13,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Date;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 public class ForecastModel {
 
@@ -33,6 +35,7 @@ public class ForecastModel {
     private ArrayList<ForecastChangedListener> mForecastChangedListeners;
     private int dayCount;
     private int dayIndices[];
+    private Date mLastFetchDate;
 
     public static ForecastModel getInstance( Context context ) {
         if ( mInstance == null ) {
@@ -62,12 +65,31 @@ public class ForecastModel {
         fetchForecastData();
     }
 
+    void resetData() {
+        forecasts.clear();
+        dailyForecasts.clear();
+    }
+
     public void addForecastChangedListener( ForecastChangedListener forecastListener ) {
         mForecastChangedListeners.add(forecastListener);
     }
 
+    void checkForUpdate() {
+        if (forecasts.size() < 1) {
+            return;
+        }
+
+        Date now = new Date();
+
+        // TODO: Only refresh if past an update time
+        resetData();
+
+    }
+
     public void fetchForecastData() {
         synchronized (this) {
+            checkForUpdate();
+
             if (!forecasts.isEmpty()) {
                 for(ForecastChangedListener listener : mForecastChangedListeners) {
                     if (listener != null) {
@@ -93,6 +115,7 @@ public class ForecastModel {
 
                     Boolean successfulParse = parseForecasts(result);
                     if (successfulParse) {
+                        mLastFetchDate = new Date();
 
                         // Parse out the forecasts for the summaries
                         createDailyForecasts();
