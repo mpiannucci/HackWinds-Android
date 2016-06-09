@@ -40,8 +40,6 @@ public class CurrentFragment extends ListFragment implements ForecastChangedList
     // Initialize the other variables
     private ConditionArrayAdapter mConditionArrayAdapter;
     private Camera mCamera;
-    private CameraModel mCameraModel;
-    private ForecastModel mForecastModel;
     private SliderLayout mCameraSliderLayout;
 
     @Override
@@ -66,12 +64,9 @@ public class CurrentFragment extends ListFragment implements ForecastChangedList
                     .show();
         }
 
-        // Get the magicseaweed model instance
-        mForecastModel = ForecastModel.getInstance(getActivity());
-        mForecastModel.addForecastChangedListener(this);
-
-        mCameraModel = CameraModel.getInstance(getActivity());
-        mCameraModel.addCameraChangedListener(this);
+        // Register the listeners
+        ForecastModel.getInstance(getActivity()).addForecastChangedListener(this);
+        CameraModel.getInstance(getActivity()).addCameraChangedListener(this);
     }
 
     @Override
@@ -125,19 +120,25 @@ public class CurrentFragment extends ListFragment implements ForecastChangedList
             @Override
             public void run() {
                 // Set the day header to the current day
-                TextView date = (TextView) getView().findViewById(R.id.today_date_header);
+                TextView date = (TextView) getActivity().findViewById(R.id.today_date_header);
+                if (date == null) {
+                    return;
+                }
                 Calendar calendar = Calendar.getInstance();
                 int day = calendar.get(Calendar.DAY_OF_WEEK);
                 String dayName = getResources().getStringArray(R.array.daysOfTheWeek)[day-1];
                 date.setText(dayName);
 
+                // Get the forecast model
+                ForecastModel forecastModel = ForecastModel.getInstance(getActivity());
+
                 // Set the condition adapter for the list
                 if (mConditionArrayAdapter == null) {
-                    ArrayList<Forecast> conditions = mForecastModel.getForecastsForDay(0);
+                    ArrayList<Forecast> conditions = forecastModel.getForecastsForDay(0);
                     mConditionArrayAdapter = new ConditionArrayAdapter(getActivity(), conditions);
                     setListAdapter(mConditionArrayAdapter);
                 } else {
-                    ArrayList<Forecast> conditions = mForecastModel.getForecastsForDay(0);
+                    ArrayList<Forecast> conditions = forecastModel.getForecastsForDay(0);
                     mConditionArrayAdapter.setConditonData(conditions);
                 }
             }
@@ -156,12 +157,15 @@ public class CurrentFragment extends ListFragment implements ForecastChangedList
 
     @Override
     public void cameraDataUpdated() {
-        if (mCameraModel.cameraCount < 1) {
+        // Get the camera model instance
+        CameraModel cameraModel = CameraModel.getInstance(getActivity());
+
+        if (cameraModel.cameraCount < 1) {
             return;
         }
 
         if (mCamera == null) {
-            mCamera = CameraModel.getInstance(getActivity()).cameraLocations.get("Narragansett").get("Warm Winds");
+            mCamera = cameraModel.cameraLocations.get("Narragansett").get("Warm Winds");
         }
 
         if (mCamera == null) {

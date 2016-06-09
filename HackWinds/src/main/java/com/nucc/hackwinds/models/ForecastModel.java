@@ -14,6 +14,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
@@ -91,7 +92,7 @@ public class ForecastModel {
         Date now = new Date();
         long rawTimeDiff = now.getTime() - mLastFetchDate.getTime();
         int hourDiff = (int) TimeUnit.MILLISECONDS.toHours(rawTimeDiff);
-        if (hourDiff > 6) {
+        if (hourDiff >= 6) {
             resetData();
         }
     }
@@ -125,8 +126,6 @@ public class ForecastModel {
 
                     Boolean successfulParse = parseForecasts(result);
                     if (successfulParse) {
-                        mLastFetchDate = new Date();
-
                         // Parse out the forecasts for the summaries
                         createDailyForecasts();
 
@@ -210,6 +209,12 @@ public class ForecastModel {
             SimpleDateFormat formatter = new SimpleDateFormat("EEEE MMMM  d, yyyy HHZ");
             try {
                 mLastFetchDate = formatter.parse(waveModelRun.replaceAll("z$", "+0000"));
+
+                // Add the hindcasting offset
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(mLastFetchDate);
+                calendar.add(Calendar.HOUR_OF_DAY, 5);
+                mLastFetchDate = calendar.getTime();
             } catch (Exception e) {
                 return false;
             }

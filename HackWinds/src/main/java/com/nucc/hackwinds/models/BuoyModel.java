@@ -126,8 +126,7 @@ public class BuoyModel {
     }
 
     public void resetData() {
-        mBuoyDataContainers.clear();
-        initBuoyContainers();
+        mCurrentContainer.buoyData.clear();
     }
 
     public void changeLocation() {
@@ -270,16 +269,6 @@ public class BuoyModel {
             // Change the location. Get the original first to change the location back.
             final String originalLocation = mCurrentLocation;
             forceChangeLocation(location);
-
-            checkForUpdate();
-
-            if (!mCurrentContainer.buoyData.isEmpty()) {
-                // Send an update to the listeners cuz the data is already here
-                if (getBuoyData().get(0).waterTemperature != null) {
-                    listener.latestBuoyFetchSuccess(getBuoyData().get(0));
-                    return;
-                }
-            }
 
             Ion.with(mContext).load(mCurrentContainer.createLatestReportOnlyURL()).asString().setCallback(new FutureCallback<String>() {
                 @Override
