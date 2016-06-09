@@ -60,6 +60,7 @@ public class CameraModel {
                         listener.cameraDataUpdated();
                     }
                 }
+                return;
             }
 
             final String HACKWINDS_API_URL = "https://mpiannucci.appspot.com/static/API/hackwinds_camera_locations_v3.json";
