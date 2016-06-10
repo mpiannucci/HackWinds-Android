@@ -206,7 +206,7 @@ public class ForecastModel {
             waveModelRun = jsonObj.getJSONObject("WaveModel").getString("ModelRun");
 
             // We need to save the model run for later so we can check for updates
-            SimpleDateFormat formatter = new SimpleDateFormat("EEEE MMMM  d, yyyy HHZ");
+            SimpleDateFormat formatter = new SimpleDateFormat("EEEE MMMM dd, yyyy HHZ");
             try {
                 mLastFetchDate = formatter.parse(waveModelRun.replaceAll("z$", "+0000"));
 
