@@ -19,7 +19,7 @@ import java.util.Locale;
 
 public class ForecastArrayAdapter extends ArrayAdapter<ForecastDailySummary> {
     private final Context context;
-    private final int currentDay;
+    private int currentDay;
 
     public ArrayList<ForecastDailySummary> values;
 
@@ -44,6 +44,8 @@ public class ForecastArrayAdapter extends ArrayAdapter<ForecastDailySummary> {
 
     public void setForecastData(ArrayList<ForecastDailySummary> newValues) {
         this.values = newValues;
+        Calendar calendar = Calendar.getInstance();
+        this.currentDay = calendar.get(Calendar.DAY_OF_WEEK);
         this.notifyDataSetChanged();
     }
 
@@ -81,7 +83,7 @@ public class ForecastArrayAdapter extends ArrayAdapter<ForecastDailySummary> {
         ViewHolder holder = (ViewHolder) rowView.getTag();
 
         // Set the day text view
-        String day = getContext().getResources().getStringArray(R.array.daysOfTheWeek)[(((currentDay -1) + position)%7)];
+        String day = getContext().getResources().getStringArray(R.array.daysOfTheWeek)[(((currentDay - 1) + position)%7)];
         holder.dayTV.setText(day);
 
         if (thisDay.morningWindCompassDirection.equals("")) {

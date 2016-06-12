@@ -43,125 +43,126 @@ public class MainActivity extends AppCompatActivity {
     private boolean initialPageLoad = true;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    protected void onCreate( Bundle savedInstanceState ) {
+        super.onCreate( savedInstanceState );
+        setContentView( R.layout.activity_main );
 
         // Get the toolbar and set it as the actionbar
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        mToolbar = ( Toolbar ) findViewById( R.id.toolbar );
+        setSupportActionBar( mToolbar );
+        getSupportActionBar().setDisplayShowTitleEnabled( false );
 
         // SharedPreference setup, always set the buoys to start at block island
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        String defaultBuoyLocation = sharedPrefs.getString(SettingsActivity.DEFAULT_BUOY_LOCATION_KEY, BuoyModel.MONTAUK_LOCATION);
-        sharedPrefs.edit().putString(SettingsActivity.BUOY_LOCATION_KEY, defaultBuoyLocation).apply();
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences( getApplicationContext() );
+        String defaultBuoyLocation = sharedPrefs.getString( SettingsActivity.DEFAULT_BUOY_LOCATION_KEY,
+                                     BuoyModel.BLOCK_ISLAND_LOCATION );
+        sharedPrefs.edit().putString( SettingsActivity.BUOY_LOCATION_KEY, defaultBuoyLocation ).apply();
 
         // Set up the spinner locations
         initLocationArrays();
-        mLocationAdapter = new LocationArrayAdapter(this, mForecastLocations);
-        mLocationSpinner = (Spinner) findViewById(R.id.navigation_spinner);
-        mLocationSpinner.setEnabled(false);
-        mLocationSpinner.setAdapter(mLocationAdapter);
-        mLocationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        mLocationAdapter = new LocationArrayAdapter( this, mForecastLocations );
+        mLocationSpinner = ( Spinner ) findViewById( R.id.navigation_spinner );
+        mLocationSpinner.setEnabled( false );
+        mLocationSpinner.setAdapter( mLocationAdapter );
+        mLocationSpinner.setOnItemSelectedListener( new AdapterView.OnItemSelectedListener() {
 
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (initialPageLoad) {
+            public void onItemSelected( AdapterView<?> parent, View view, int position, long id ) {
+                if ( initialPageLoad ) {
                     initialPageLoad = false;
                     return;
                 }
 
                 String prefKey;
-                final String currentPageTitle = String.valueOf(mAdapter.getPageTitle(mViewPager.getCurrentItem()));
-                if (currentPageTitle.equals("FORECAST") || currentPageTitle.equals("LIVE")) {
+                final String currentPageTitle = String.valueOf( mAdapter.getPageTitle( mViewPager.getCurrentItem() ) );
+                if ( currentPageTitle.equals( "FORECAST" ) || currentPageTitle.equals( "LIVE" ) ) {
                     prefKey = SettingsActivity.FORECAST_LOCATION_KEY;
-                } else if (currentPageTitle.equals("BUOYS")) {
+                } else if ( currentPageTitle.equals( "BUOYS" ) ) {
                     prefKey = SettingsActivity.BUOY_LOCATION_KEY;
-                } else if (currentPageTitle.equals("TIDE")) {
+                } else if ( currentPageTitle.equals( "TIDE" ) ) {
                     prefKey = SettingsActivity.TIDE_LOCATION_KEY;
                 } else {
                     return;
                 }
-                SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                sharedPrefs.edit().putString(prefKey, mLocationAdapter.getItem(position)).apply();
+                SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences( getApplicationContext() );
+                sharedPrefs.edit().putString( prefKey, mLocationAdapter.getItem( position ) ).apply();
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+            public void onNothingSelected( AdapterView<?> parent ) {
                 // Do nothing
             }
-        });
+        } );
 
         // Create the system tint manager with this context
-        mTintManager = new SystemBarTintManager(this);
+        mTintManager = new SystemBarTintManager( this );
 
         // Enable status bar tint
-        mTintManager.setStatusBarTintEnabled(true);
+        mTintManager.setStatusBarTintEnabled( true );
 
         // Create and set the new pager adapter
-        mViewPager = (ViewPager) findViewById(R.id.pager);
-        mSlidingTabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
-        mAdapter = new MainPagerAdapter(getSupportFragmentManager());
-        mViewPager.setAdapter(mAdapter);
-        mSlidingTabStrip.setViewPager(mViewPager);
+        mViewPager = ( ViewPager ) findViewById( R.id.pager );
+        mSlidingTabStrip = ( PagerSlidingTabStrip ) findViewById( R.id.tabs );
+        mAdapter = new MainPagerAdapter( getSupportFragmentManager() );
+        mViewPager.setAdapter( mAdapter );
+        mSlidingTabStrip.setViewPager( mViewPager );
 
-        mSlidingTabStrip.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        mSlidingTabStrip.setOnPageChangeListener( new ViewPager.OnPageChangeListener() {
 
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            public void onPageScrolled( int position, float positionOffset, int positionOffsetPixels ) {
                 // Do nothing
             }
 
             @Override
-            public void onPageSelected(int position) {
-                String title = String.valueOf(mAdapter.getPageTitle(position));
+            public void onPageSelected( int position ) {
+                String title = String.valueOf( mAdapter.getPageTitle( position ) );
 
-                if (title.equals("LIVE") || title.equals("FORECAST")) {
-                    mLocationAdapter.changeLocations(mForecastLocations);
+                if ( title.equals( "LIVE" ) || title.equals( "FORECAST" ) ) {
+                    mLocationAdapter.changeLocations( mForecastLocations );
                     mLocationAdapter.notifyDataSetChanged();
-                    mLocationSpinner.setSelection(0);
-                    mLocationSpinner.setEnabled(false);
-                } else if (title.equals("BUOYS")) {
-                    mLocationAdapter.changeLocations(mBuoyLocations);
+                    mLocationSpinner.setSelection( 0 );
+                    mLocationSpinner.setEnabled( false );
+                } else if ( title.equals( "BUOYS" ) ) {
+                    mLocationAdapter.changeLocations( mBuoyLocations );
                     mLocationAdapter.notifyDataSetChanged();
                     setSpinnerBuoyLocation();
-                    mLocationSpinner.setEnabled(true);
-                } else if (title.equals("TIDE")) {
-                    mLocationAdapter.changeLocations(mTideLocation);
+                    mLocationSpinner.setEnabled( true );
+                } else if ( title.equals( "TIDE" ) ) {
+                    mLocationAdapter.changeLocations( mTideLocation );
                     mLocationAdapter.notifyDataSetChanged();
-                    mLocationSpinner.setSelection(0);
-                    mLocationSpinner.setEnabled(false);
+                    mLocationSpinner.setSelection( 0 );
+                    mLocationSpinner.setEnabled( false );
                 }
             }
 
             @Override
-            public void onPageScrollStateChanged(int state) {
+            public void onPageScrollStateChanged( int state ) {
                 // Do Nothing
             }
-        });
+        } );
 
         // Set the background color of the tab strip, status bar, and action bar
-        mSlidingTabStrip.setBackgroundColor(getResources().getColor(R.color.hackwinds_blue));
-        mTintManager.setStatusBarTintColor(getResources().getColor(R.color.hackwinds_blue));
-        mToolbar.setBackgroundColor(getResources().getColor(R.color.hackwinds_blue));
+        mSlidingTabStrip.setBackgroundColor( getResources().getColor( R.color.hackwinds_blue ) );
+        mTintManager.setStatusBarTintColor( getResources().getColor( R.color.hackwinds_blue ) );
+        mToolbar.setBackgroundColor( getResources().getColor( R.color.hackwinds_blue ) );
 
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
+    public boolean onCreateOptionsMenu( Menu menu ) {
+        getMenuInflater().inflate( R.menu.main, menu );
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
+    public boolean onOptionsItemSelected( MenuItem item ) {
+        switch ( item.getItemId() ) {
             case R.id.action_settings:
-                startActivity(new Intent(this, SettingsActivity.class));
+                startActivity( new Intent( this, SettingsActivity.class ) );
                 break;
             default:
-                return super.onOptionsItemSelected(item);
+                return super.onOptionsItemSelected( item );
         }
         return true;
     }
@@ -170,59 +171,59 @@ public class MainActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
 
-        ForecastModel.getInstance(this).fetchForecastData();
-        BuoyModel.getInstance(this).fetchBuoyData();
-        TideModel.getInstance(this).fetchTideData();
-        CameraModel.getInstance(this).fetchCameraURLs();
+        ForecastModel.getInstance( this ).fetchForecastData();
+        BuoyModel.getInstance( this ).fetchBuoyData();
+        TideModel.getInstance( this ).fetchTideData();
+        CameraModel.getInstance( this ).fetchCameraURLs();
     }
 
     public void initLocationArrays() {
         mForecastLocations = new ArrayList<>();
-        mForecastLocations.add("Narragansett");
+        mForecastLocations.add( "Narragansett" );
 
         mBuoyLocations = new ArrayList<>();
-        mBuoyLocations.add("Block Island");
-        mBuoyLocations.add("Montauk");
-        mBuoyLocations.add("Nantucket");
+        mBuoyLocations.add( "Block Island" );
+        mBuoyLocations.add( "Montauk" );
+        mBuoyLocations.add( "Nantucket" );
 
         mTideLocation = new ArrayList<>();
-        mTideLocation.add("Point Judith Harbor");
+        mTideLocation.add( "Point Judith Harbor" );
     }
 
     public void setSpinnerBuoyLocation() {
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        String buoyLocation = sharedPrefs.getString(SettingsActivity.BUOY_LOCATION_KEY, BuoyModel.MONTAUK_LOCATION);
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences( getApplicationContext() );
+        String buoyLocation = sharedPrefs.getString( SettingsActivity.BUOY_LOCATION_KEY, BuoyModel.BLOCK_ISLAND_LOCATION );
         int index = 0;
-        for (int i = 0; i < mLocationSpinner.getCount(); i++) {
-            if (mLocationSpinner.getItemAtPosition(i).equals(buoyLocation)){
+        for ( int i = 0; i < mLocationSpinner.getCount(); i++ ) {
+            if ( mLocationSpinner.getItemAtPosition( i ).equals( buoyLocation ) ) {
                 index = i;
                 break;
             }
         }
 
         // Set the spinner to the correct index
-        mLocationSpinner.setSelection(index);
+        mLocationSpinner.setSelection( index );
     }
 
     public class MainPagerAdapter extends FragmentPagerAdapter {
 
-        public MainPagerAdapter(FragmentManager fm) {
-            super(fm);
+        public MainPagerAdapter( FragmentManager fm ) {
+            super( fm );
         }
 
         @Override
-        public CharSequence getPageTitle(int position) {
+        public CharSequence getPageTitle( int position ) {
             // get the title for each of the tabs
             Locale l = Locale.getDefault();
-            switch (position) {
+            switch ( position ) {
                 case 0:
-                    return getString(R.string.action_live).toUpperCase(l);
+                    return getString( R.string.action_live ).toUpperCase( l );
                 case 1:
-                    return getString(R.string.action_forecast).toUpperCase(l);
+                    return getString( R.string.action_forecast ).toUpperCase( l );
                 case 2:
-                    return getString(R.string.action_buoy).toUpperCase(l);
+                    return getString( R.string.action_buoy ).toUpperCase( l );
                 case 3:
-                    return getString(R.string.action_tide).toUpperCase(l);
+                    return getString( R.string.action_tide ).toUpperCase( l );
             }
             return null;
         }
@@ -234,8 +235,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public Fragment getItem(int position) {
-            switch (position) {
+        public Fragment getItem( int position ) {
+            switch ( position ) {
                 case 0:
                     // First tab was clicked, return Live fragment
                     return new CurrentFragment();
