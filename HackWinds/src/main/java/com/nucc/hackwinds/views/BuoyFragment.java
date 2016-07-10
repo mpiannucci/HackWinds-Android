@@ -85,7 +85,7 @@ public class BuoyFragment extends Fragment implements BuoyChangedListener{
             public void run() {
                 TextView currentBuoyStatus = (TextView)getActivity().findViewById(R.id.buoy_current_reading);
                 if (currentBuoyStatus != null) {
-                    currentBuoyStatus.setText(buoy.getPrimarySwellText());
+                    currentBuoyStatus.setText(buoy.getWaveSummaryStatusText());
                 }
 
                 TextView currentPrimaryStatus = (TextView)getActivity().findViewById(R.id.buoy_primary_reading);
