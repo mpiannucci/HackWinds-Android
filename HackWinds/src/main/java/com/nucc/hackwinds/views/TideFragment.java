@@ -202,7 +202,7 @@ public class TideFragment extends Fragment implements TideChangedListener, Lates
         tideChart.clear();
 
         // Get some colors
-        int backgroundGrey = getResources().getColor(R.color.material_background);
+        int backgroundGrey = getResources().getColor(R.color.cardview_light_background);
         int hackWindsBlue = getResources().getColor(R.color.hackwinds_blue);
         int alternateBlue = getResources().getColor(R.color.accent_blue);
         int holoOrange = getResources().getColor(android.R.color.holo_orange_dark);
@@ -360,8 +360,8 @@ public class TideFragment extends Fragment implements TideChangedListener, Lates
         tideChart.getXAxis().addLimitLine(nowLimit);
 
         // Adjust y axis'
-        tideChart.getAxisLeft().setAxisMaxValue(amplitude*1.6f);
-        tideChart.getAxisRight().setAxisMaxValue(amplitude*1.6f);
+        tideChart.getAxisLeft().setAxisMaxValue(max + 1.0f);
+        tideChart.getAxisRight().setAxisMaxValue(max + 1.0f);
         tideChart.getAxisLeft().setAxisMinValue(min - 1.0f);
         tideChart.getAxisRight().setAxisMinValue(min - 1.0f);
 

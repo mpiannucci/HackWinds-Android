@@ -34,7 +34,7 @@
             <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/tide_chart"
                 android:layout_width="match_parent"
-                android:background="@color/material_background"
+                android:background="@color/cardview_light_background"
                 android:layout_height="200dp"/>
 
         </LinearLayout>
