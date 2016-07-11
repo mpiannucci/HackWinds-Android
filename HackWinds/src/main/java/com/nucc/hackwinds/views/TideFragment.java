@@ -200,6 +200,7 @@ public class TideFragment extends Fragment implements TideChangedListener, Lates
         }
 
         tideChart.clear();
+        tideChart.getXAxis().removeAllLimitLines();
 
         // Get some colors
         int backgroundGrey = getResources().getColor(R.color.cardview_light_background);

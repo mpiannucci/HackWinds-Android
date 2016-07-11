@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
 
 public class TideModel {
     // Member variables
@@ -52,9 +53,40 @@ public class TideModel {
         mTideChangedListeners.add(listener);
     }
 
+    public void resetData() {
+        dayCount = 0;
+        tides.clear();
+        otherEvents.clear();
+        mDayIds.clear();
+        mDayDataCounts.clear();
+    }
+
+    public void checkForUpdate() {
+        if (tides == null) {
+            return;
+        }
+
+        if (tides.size() < 1) {
+            return;
+        }
+
+        if (tides.get(0).timestamp == null) {
+            return;
+        }
+
+        java.util.Date now = new java.util.Date();
+        long rawTimeDiff = now.getTime() - tides.get(0).timestamp.getTime();
+
+        if (rawTimeDiff > 0) {
+            resetData();
+        }
+    }
+
     public void fetchTideData() {
         synchronized (this) {
             final String WUNDER_URL = "http://api.wunderground.com/api/2e5424aab8c91757/tide/q/RI/Point_Judith.json";
+
+            checkForUpdate();
 
             if (!tides.isEmpty()) {
                 for (TideChangedListener listener : mTideChangedListeners) {
