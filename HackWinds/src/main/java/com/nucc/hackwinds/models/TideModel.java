@@ -79,6 +79,19 @@ public class TideModel {
 
         if (rawTimeDiff > 0) {
             resetData();
+            return;
+        }
+
+        if (otherEvents == null) {
+            return;
+        }
+
+        // Check the other events list if there are any
+        if (otherEvents.size() > 0) {
+            long rawOtherTimeDiff = now.getTime() - otherEvents.get(0).timestamp.getTime();
+            if (rawOtherTimeDiff > 0) {
+                resetData();
+            }
         }
     }
 
