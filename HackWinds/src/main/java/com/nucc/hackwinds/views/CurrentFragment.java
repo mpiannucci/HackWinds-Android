@@ -181,7 +181,7 @@ public class CurrentFragment extends ListFragment implements ForecastChangedList
     }
 
     private void loadCameraImages() {
-        final int CAMERA_IMAGE_COUNT = 8;
+        final int CAMERA_IMAGE_COUNT = 12;
 
         if (mCameraSliderLayout == null) {
             return;
@@ -191,7 +191,12 @@ public class CurrentFragment extends ListFragment implements ForecastChangedList
         mCameraSliderLayout.removeAllSliders();
 
         for (int i = 1; i < CAMERA_IMAGE_COUNT+1; i++) {
-            String cameraURL = mCamera.imageURL.replace("1.jpg", String.format(Locale.US, "%d.jpg", i));
+            if (i == 5) {
+                // Skip 5 for now cuz its not loading for some werid reason
+                continue;
+            }
+
+            String cameraURL = mCamera.imageURL.replace("01.jpg", String.format(Locale.US, "%02d.jpg", i));
             Ion.with(getActivity()).load(cameraURL).asBitmap().setCallback(new FutureCallback<Bitmap>() {
                 @Override
                 public void onCompleted(Exception e, Bitmap result) {
