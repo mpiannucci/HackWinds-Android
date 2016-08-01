@@ -18,9 +18,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.nucc.hackwinds.R;
+import com.nucc.hackwinds.models.CameraModel;
 
 
 public class SettingsActivity extends AppCompatActivity {
@@ -29,6 +31,7 @@ public class SettingsActivity extends AppCompatActivity {
     public static final String DEFAULT_BUOY_LOCATION_KEY = "defaultBuoyLocation";
     public static final String BUOY_LOCATION_KEY = "buoyLocation";
     public static final String TIDE_LOCATION_KEY = "tideLocation";
+    public static final String SHOW_PREMIUM_CONTENT_KEY = "showPremiumContent";
     public static final String RATE_APP_KEY = "rateApp";
     public static final String CONTACT_DEV_KEY = "contactDeveloper";
     public static final String SHOW_DISCLAIMER_KEY = "aboutDisclaimer";
@@ -62,14 +65,50 @@ public class SettingsActivity extends AppCompatActivity {
             LinearLayout view = (LinearLayout) super.onCreateView(inflater, container, savedInstanceState);
 
             // Get the shared preferences
-            SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+            final SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
 
             // Set the summary of the buoy preference to be the current location
             Preference defaultBuoyLocationPref = findPreference(DEFAULT_BUOY_LOCATION_KEY);
             defaultBuoyLocationPref.setSummary(sharedPrefs.getString(DEFAULT_BUOY_LOCATION_KEY, getResources().getStringArray(R.array.buoyLocations)[1]));
 
             // Callbacks to the preference clicks
-            // First is the call to send the user Google Play to rate the app
+            final Preference showPremiumPref = findPreference(SHOW_PREMIUM_CONTENT_KEY);
+            Boolean premiumContentEnabled = sharedPrefs.getBoolean(SHOW_PREMIUM_CONTENT_KEY, false);
+            if (premiumContentEnabled) {
+                showPremiumPref.setSummary(R.string.pref_premium_content_summary_enabled);
+            } else {
+                showPremiumPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(Preference preference) {
+                        final EditText codeInput = new EditText(getActivity());
+                        android.support.v7.app.AlertDialog.Builder alertBuilder = new android.support.v7.app.AlertDialog.Builder(getActivity());
+                        alertBuilder.setMessage("Enter the access code to activate premium content");
+                        alertBuilder.setView(codeInput);
+                        alertBuilder.setPositiveButton("Activate", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                // Check if the code matches. IF you are lookign at this, its your lucky day cuz you now know the code lol
+                                String input = codeInput.getText().toString();
+                                if (input.equals("109485")) {
+                                    sharedPrefs.edit().putBoolean(SHOW_PREMIUM_CONTENT_KEY, true).apply();
+                                }
+                            }
+                        });
+                        alertBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                // Do nothing for a cancel
+                            }
+                        });
+
+                        alertBuilder.show();
+
+                        return false;
+                    }
+                });
+            }
+
+            // Add the call to send the user Google Play to rate the app
             Preference googlePlayPref = findPreference(RATE_APP_KEY);
             googlePlayPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
@@ -143,6 +182,14 @@ public class SettingsActivity extends AppCompatActivity {
             if (key.equals(DEFAULT_BUOY_LOCATION_KEY)) {
                 Preference defaultBuoyLocationPref = findPreference(key);
                 defaultBuoyLocationPref.setSummary(sharedPreferences.getString(key, getResources().getStringArray(R.array.buoyLocations)[1]));
+            } else if (key.equals(SHOW_PREMIUM_CONTENT_KEY)) {
+                Preference showPremiumPref = findPreference(key);
+                if (sharedPreferences.getBoolean(key, false)) {
+                    showPremiumPref.setSummary(R.string.pref_premium_content_summary_enabled);
+                    CameraModel cameraModel = CameraModel.getInstance(getActivity());
+                    cameraModel.reset();
+                    cameraModel.forceFetchCameraURLs();
+                }
             }
         }
     }

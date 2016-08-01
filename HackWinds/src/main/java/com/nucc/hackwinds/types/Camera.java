@@ -8,4 +8,5 @@ public class Camera {
     public String info;
     public boolean refreshable;
     public int refreshInterval;
+    public boolean premium;
 }

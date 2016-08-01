@@ -2,11 +2,13 @@ package com.nucc.hackwinds.models;
 
 
 import android.content.Context;
+import android.preference.PreferenceManager;
 
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.nucc.hackwinds.listeners.CameraChangedListener;
 import com.nucc.hackwinds.types.Camera;
+import com.nucc.hackwinds.views.SettingsActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,6 +41,14 @@ public class CameraModel {
     private CameraModel(Context ctx) {
         // Initialize the context
         mContext = ctx;
+        reset();
+    }
+
+    public void addCameraChangedListener(CameraChangedListener listener) {
+        mCameraChangedListeners.add(listener);
+    }
+
+    public void reset() {
         mForceReload = true;
         cameraLocations = new HashMap<>();
         locationKeys = new ArrayList<>();
@@ -46,10 +56,6 @@ public class CameraModel {
         mCameraChangedListeners = new ArrayList<>();
         cameraCount = 0;
         locationCount = 0;
-    }
-
-    public void addCameraChangedListener(CameraChangedListener listener) {
-        mCameraChangedListeners.add(listener);
     }
 
     public void fetchCameraURLs() {
@@ -63,7 +69,7 @@ public class CameraModel {
                 return;
             }
 
-            final String HACKWINDS_API_URL = "https://mpiannucci.appspot.com/static/API/hackwinds_camera_locations_v3.json";
+            final String HACKWINDS_API_URL = "https://mpiannucci.appspot.com/static/API/hackwinds_camera_locations_v4.json";
 
             Ion.with(mContext).load(HACKWINDS_API_URL).asString().setCallback(new FutureCallback<String>() {
                 @Override
@@ -105,6 +111,8 @@ public class CameraModel {
     }
 
     private boolean parseCameras(String rawData) {
+        final Boolean PREMIUM_ENABLED = PreferenceManager.getDefaultSharedPreferences(mContext).getBoolean(SettingsActivity.SHOW_PREMIUM_CONTENT_KEY, false);
+
         try {
             JSONObject jsonResp = new JSONObject(rawData);
             JSONObject cameraObject = jsonResp.getJSONObject("camera_locations");
@@ -130,12 +138,24 @@ public class CameraModel {
                     thisCamera.videoURL = thisCameraObject.getString("Video");
                     thisCamera.refreshable = thisCameraObject.getBoolean("Refreshable");
                     thisCamera.refreshInterval = Integer.valueOf(thisCameraObject.getString("RefreshInterval"));
+                    thisCamera.premium = thisCameraObject.getBoolean("Premium");
+
+                    if (thisCamera.premium && !PREMIUM_ENABLED) {
+                        continue;
+                    }
 
                     cameraLocations.get(locationName).put(cameraName, thisCamera);
                     cameraKeys.get(locationCount).add(cameraName);
                     cameraCount++;
                 }
-                locationCount++;
+
+                int locationCameraCount = cameraLocations.get(locationName).size();
+                if (locationCameraCount > 0) {
+                    locationCount++;
+                } else {
+                    cameraLocations.remove(locationName);
+                    locationKeys.remove(locationName);
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();

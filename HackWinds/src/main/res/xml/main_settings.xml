@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="@string/pref_default_buoy_location_group_title" >
+    <PreferenceCategory android:title="@string/pref_user_interface_group_title" >
         <ListPreference
             android:title="@string/pref_change_default_buoy_title"
-            android:summary="Current Location"
+            android:summary="@string/pref_buoy_location_summary"
             android:key="defaultBuoyLocation"
             android:entries="@array/buoyLocations"
             android:entryValues="@array/buoyLocations"
             android:defaultValue="Block Island"/>
+
+        <Preference
+            android:title="@string/pref_activate_premium_title"
+            android:summary="@string/pref_premium_content_summary_disabled"
+            android:key="showPremiumContent" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/pref_about_title">

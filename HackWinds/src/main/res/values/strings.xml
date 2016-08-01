@@ -63,7 +63,7 @@
     <string name="pref_disclaimer_message">I do not own the images displayed or the forecast data, nor do I claim to.</string>
     <string name="pref_forecast_location_group_title">Forecast Location</string>
     <string name="pref_change_forecast_title">Change Forecast Location</string>
-    <string name="pref_default_buoy_location_group_title">Default Buoy Location</string>
+    <string name="pref_user_interface_group_title">User Interface</string>
     <string name="pref_change_default_buoy_title">Change Default Buoy Location</string>
     <string name="pref_review_title">Review on Google Play</string>
     <string name="pref_review_summary">If you like the app, please give it a good review on Google Play</string>
@@ -71,6 +71,10 @@
         the tide information displayed in this app. This app is simply an interface to make checking
         the waves easier for surfers when using a phone. I am specifically operating within the user licensing
         for the Wunderground and WarmWinds API\'s.</string>
+    <string name="pref_activate_premium_title">Activate Premium Content</string>
+    <string name="pref_buoy_location_summary">Current location</string>
+    <string name="pref_premium_content_summary_disabled">Enter code to activate</string>
+    <string name="pref_premium_content_summary_enabled">Premium content enabled</string>
 
     <!-- Detailed Forecast activity -->
     <string name="title_activity_detailed_forecast">DetailedForecastActivity</string>
