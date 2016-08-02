@@ -10,6 +10,10 @@
     <dimen name="card_header_bottom_margin">8dp</dimen>
     <dimen name="card_padding">16dp</dimen>
 
+    <!-- Dialog Views -->
+    <dimen name="dialog_margin_horizontal">24dp</dimen>
+    <dimen name="dialog_margin_vertical">24dp</dimen>
+
     <!-- List Views -->
     <dimen name="list_icon_text_padding_horizontal">72dp</dimen>
 

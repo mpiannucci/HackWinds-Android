@@ -80,14 +80,15 @@ public class SettingsActivity extends AppCompatActivity {
                 showPremiumPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
-                        final EditText codeInput = new EditText(getActivity());
-                        android.support.v7.app.AlertDialog.Builder alertBuilder = new android.support.v7.app.AlertDialog.Builder(getActivity());
+                        View editView = LayoutInflater.from(getActivity()).inflate(R.layout.premium_code_dialog, null);
+                        final EditText codeInput = (EditText) editView.findViewById(R.id.activation_code_input);
+                        android.support.v7.app.AlertDialog.Builder alertBuilder = new android.support.v7.app.AlertDialog.Builder(getActivity(), R.style.Theme_AlertDialog);
                         alertBuilder.setMessage("Enter the access code to activate premium content");
-                        alertBuilder.setView(codeInput);
+                        alertBuilder.setView(editView);
                         alertBuilder.setPositiveButton("Activate", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                // Check if the code matches. IF you are lookign at this, its your lucky day cuz you now know the code lol
+                                // Check if the code matches. If you are looking at this, its your lucky day cuz you now know the code lol
                                 String input = codeInput.getText().toString();
                                 if (input.equals("109485")) {
                                     sharedPrefs.edit().putBoolean(SHOW_PREMIUM_CONTENT_KEY, true).apply();
@@ -144,7 +145,7 @@ public class SettingsActivity extends AppCompatActivity {
             disclaimerPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    new AlertDialog.Builder(getActivity())
+                    new AlertDialog.Builder(getActivity(), R.style.Theme_AlertDialog)
                             .setTitle("Disclaimer")
                             .setMessage(R.string.discalimer_message)
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
@@ -186,6 +187,7 @@ public class SettingsActivity extends AppCompatActivity {
                 Preference showPremiumPref = findPreference(key);
                 if (sharedPreferences.getBoolean(key, false)) {
                     showPremiumPref.setSummary(R.string.pref_premium_content_summary_enabled);
+                    showPremiumPref.setOnPreferenceClickListener(null);
                     CameraModel cameraModel = CameraModel.getInstance(getActivity());
                     cameraModel.reset();
                     cameraModel.forceFetchCameraURLs();

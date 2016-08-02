@@ -75,6 +75,7 @@
     <string name="pref_buoy_location_summary">Current location</string>
     <string name="pref_premium_content_summary_disabled">Enter code to activate</string>
     <string name="pref_premium_content_summary_enabled">Premium content enabled</string>
+    <string name="pref_premium_code_input_hint">Enter code</string>
 
     <!-- Detailed Forecast activity -->
     <string name="title_activity_detailed_forecast">DetailedForecastActivity</string>
