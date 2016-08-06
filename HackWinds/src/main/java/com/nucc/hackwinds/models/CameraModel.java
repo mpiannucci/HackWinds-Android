@@ -69,7 +69,7 @@ public class CameraModel {
                 return;
             }
 
-            final String HACKWINDS_API_URL = "https://mpiannucci.appspot.com/static/API/hackwinds_camera_locations_v4.json";
+            final String HACKWINDS_API_URL = "https://mpiannucci.appspot.com/static/API/hackwinds_camera_locations_v5.json";
 
             Ion.with(mContext).load(HACKWINDS_API_URL).asString().setCallback(new FutureCallback<String>() {
                 @Override
@@ -115,7 +115,7 @@ public class CameraModel {
 
         try {
             JSONObject jsonResp = new JSONObject(rawData);
-            JSONObject cameraObject = jsonResp.getJSONObject("camera_locations");
+            JSONObject cameraObject = jsonResp.getJSONObject("CameraLocations");
 
             Iterator<String> locationIterator = cameraObject.keys();
             while (locationIterator.hasNext()) {
@@ -136,6 +136,7 @@ public class CameraModel {
                     // For now everything else is common
                     thisCamera.imageURL = thisCameraObject.getString("Image");
                     thisCamera.videoURL = thisCameraObject.getString("Video");
+                    thisCamera.webURL = thisCameraObject.getString("Web");
                     thisCamera.refreshable = thisCameraObject.getBoolean("Refreshable");
                     thisCamera.refreshInterval = Integer.valueOf(thisCameraObject.getString("RefreshInterval"));
                     thisCamera.premium = thisCameraObject.getBoolean("Premium");

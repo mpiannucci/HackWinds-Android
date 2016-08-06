@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.Switch;
@@ -36,6 +37,7 @@ public class IsoCameraFragment extends Fragment {
     private ImageView mCameraImage;
     private ImageView mPlayButton;
     private VideoView mVideoView;
+    private WebView mWebView;
 
     Handler mHandler;
     Runnable mRunnable;
@@ -69,6 +71,8 @@ public class IsoCameraFragment extends Fragment {
         mCameraImage = (ImageView) V.findViewById(R.id.latest_camera_image);
         mPlayButton = (ImageView) V.findViewById(R.id.iso_video_play_button);
         mVideoView = (VideoView) V.findViewById(R.id.iso_video_view);
+        mWebView = (WebView) V.findViewById(R.id.camera_web_view);
+        mWebView.getSettings().setJavaScriptEnabled(true);
 
         // Set the onClick callback for the play button to start the VideoView
         mPlayButton.setOnClickListener(new View.OnClickListener() {
@@ -78,6 +82,7 @@ public class IsoCameraFragment extends Fragment {
                     v.setVisibility(View.GONE);
                     ImageView holderImage = (ImageView) getActivity().findViewById(R.id.latest_camera_image);
                     holderImage.setVisibility(View.GONE);
+                    mWebView.setVisibility(View.GONE);
 
                     // Show the VideoView
                     mVideoView.setVisibility(View.VISIBLE);
@@ -156,16 +161,35 @@ public class IsoCameraFragment extends Fragment {
 
     public void loadCameraImage() {
         if (!mCamera.videoURL.equals("")) {
-            // If it is the point judith camera, we want to hide the auto refresh info and show
-            // the hidden video status info view
+            // If it is a video camera get rid of the refresh options
             Switch autoRefreshToggle = (Switch)getActivity().findViewById(R.id.auto_refresh_toggle);
             autoRefreshToggle.performClick();
             getActivity().findViewById(R.id.image_refresh_info_view).setVisibility(View.GONE);
 
-            if (mCamera.info != null) {
-                ((TextView) getActivity().findViewById(R.id.video_info_text)).setText(mCamera.info);
-                getActivity().findViewById(R.id.video_info_view).setVisibility(View.VISIBLE);
-            }
+            // Show the video info
+            ((TextView) getActivity().findViewById(R.id.video_info_text)).setText(mCamera.info);
+            getActivity().findViewById(R.id.video_info_view).setVisibility(View.VISIBLE);
+            return;
+        } else if (!mCamera.webURL.equals("")) {
+            // Hide auto refresh options
+            Switch autoRefreshToggle = (Switch)getActivity().findViewById(R.id.auto_refresh_toggle);
+            autoRefreshToggle.performClick();
+            getActivity().findViewById(R.id.image_refresh_info_view).setVisibility(View.GONE);
+
+            // Show the view info
+            ((TextView) getActivity().findViewById(R.id.video_info_text)).setText(mCamera.info);
+            getActivity().findViewById(R.id.video_info_view).setVisibility(View.VISIBLE);
+
+            // Hide everything that isnt relevant
+            mVideoView.setVisibility(View.GONE);
+            mCameraImage.setVisibility(View.GONE);
+            mPlayButton.setVisibility(View.GONE);
+
+            // Show the web view
+            mWebView.setVisibility(View.VISIBLE);
+            mWebView.loadUrl(mCamera.webURL);
+
+            return;
         }
 
         if (mContext != null) {
