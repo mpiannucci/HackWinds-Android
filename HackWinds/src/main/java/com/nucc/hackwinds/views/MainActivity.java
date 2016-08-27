@@ -179,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void initLocationArrays() {
         mForecastLocations = new ArrayList<>();
-        mForecastLocations.add( "Narragansett" );
+        mForecastLocations.add( "Rhode Island" );
 
         mBuoyLocations = new ArrayList<>();
         mBuoyLocations.add( "Block Island" );

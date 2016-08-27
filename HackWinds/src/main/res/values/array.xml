@@ -9,12 +9,6 @@
         <item name="friday">Friday</item>
         <item name="saturday">Saturday</item>
     </string-array>
-    <string-array name="mswForecastLocations">
-        <item name="narragansett">Narragansett Town Beach</item>
-        <item name="point_judith">Point Judith Lighthouse</item>
-        <item name="matunuck">Matunuck</item>
-        <item name="second_beach">Second Beach</item>
-    </string-array>
     <string-array name="buoyLocations">
         <item name="block_island">Block Island</item>
         <item name="montauk">Montauk</item>
