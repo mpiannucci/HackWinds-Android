@@ -126,7 +126,7 @@ public class BuoyModel {
     }
 
     public void resetData() {
-        mCurrentContainer.buoyData.clear();
+        mCurrentContainer.buoyData = null;
     }
 
     public void changeLocation() {
@@ -147,16 +147,16 @@ public class BuoyModel {
     }
 
     public void checkForUpdate() {
-        if (mCurrentContainer.buoyData.size() < 1) {
+        if (mCurrentContainer.buoyData == null) {
             return;
         }
 
-        if (mCurrentContainer.buoyData.get(0).timestamp == null) {
+        if (mCurrentContainer.buoyData.timestamp == null) {
             return;
         }
 
         Date now = new Date();
-        long rawTimeDiff = now.getTime() - mCurrentContainer.buoyData.get(0).timestamp.getTime();
+        long rawTimeDiff = now.getTime() - mCurrentContainer.buoyData.timestamp.getTime();
         int minuteDiff = (int)TimeUnit.MILLISECONDS.toMinutes(rawTimeDiff);
 
         if (mCurrentContainer.updateInterval < minuteDiff) {
@@ -168,7 +168,7 @@ public class BuoyModel {
         synchronized (this) {
             checkForUpdate();
 
-            if (!mCurrentContainer.buoyData.isEmpty()) {
+            if (mCurrentContainer.buoyData != null) {
                 // Send an update to the listeners cuz the data is already here
                 for (BuoyChangedListener listener : mBuoyChangedListeners) {
                     if (listener != null) {
@@ -178,7 +178,7 @@ public class BuoyModel {
                 return;
             }
 
-            Ion.with(mContext).load(mCurrentContainer.createDetailedWaveURL()).asString().setCallback(new FutureCallback<String>() {
+            Ion.with(mContext).load(mCurrentContainer.createLatestWaveDataURL()).asString().setCallback(new FutureCallback<String>() {
                 @Override
                 public void onCompleted(Exception e, String result) {
                     if (e != null) {
@@ -191,8 +191,10 @@ public class BuoyModel {
                         return;
                     }
 
-                    Boolean successfulParse = parseBuoyData(result);
-                    if (successfulParse) {
+                    Buoy latestBuoy = parseBuoyData(result);
+                    if (latestBuoy != null) {
+                        mCurrentContainer.buoyData = latestBuoy;
+
                         // Tell the children that there is new data!
                         for (BuoyChangedListener listener : mBuoyChangedListeners) {
                             if (listener != null) {
@@ -217,7 +219,7 @@ public class BuoyModel {
         synchronized (this) {
             checkForUpdate();
 
-            if (!mCurrentContainer.buoyData.isEmpty()) {
+            if (mCurrentContainer.buoyData != null) {
                 // Send an update to the listeners cuz the data is already here
                 for (BuoyChangedListener listener : mBuoyChangedListeners) {
                     if (listener != null) {
@@ -227,7 +229,7 @@ public class BuoyModel {
                 return;
             }
 
-            Ion.with(mContext).load(mCurrentContainer.createLatestReportOnlyURL()).asString().setCallback(new FutureCallback<String>() {
+            Ion.with(mContext).load(mCurrentContainer.createLatestSummaryURL()).asString().setCallback(new FutureCallback<String>() {
                 @Override
                 public void onCompleted(Exception e, String result) {
                     if (e != null) {
@@ -240,10 +242,9 @@ public class BuoyModel {
                         return;
                     }
 
-                    Buoy latestBuoy = parseLatestBuoyData(result);
+                    Buoy latestBuoy = parseBuoyData(result);
                     if (latestBuoy != null) {
-                        mCurrentContainer.buoyData.get(0).dominantPeriod = latestBuoy.dominantPeriod;
-                        mCurrentContainer.buoyData.get(0).waterTemperature = latestBuoy.waterTemperature;
+                        mCurrentContainer.buoyData = latestBuoy;
 
                         // Tell the children that there is new data!
                         for (BuoyChangedListener listener : mBuoyChangedListeners) {
@@ -270,7 +271,7 @@ public class BuoyModel {
             final String originalLocation = mCurrentLocation;
             forceChangeLocation(location);
 
-            Ion.with(mContext).load(mCurrentContainer.createLatestReportOnlyURL()).asString().setCallback(new FutureCallback<String>() {
+            Ion.with(mContext).load(mCurrentContainer.createLatestSummaryURL()).asString().setCallback(new FutureCallback<String>() {
                 @Override
                 public void onCompleted(Exception e, String result) {
                     if (e != null) {
@@ -279,7 +280,7 @@ public class BuoyModel {
                         return;
                     }
 
-                    Buoy latestBuoy = parseLatestBuoyData(result);
+                    Buoy latestBuoy = parseBuoyData(result);
                     if (latestBuoy != null) {
                         // Tell the listener we have the new buoy!
                         listener.latestBuoyFetchSuccess(latestBuoy);
@@ -295,174 +296,18 @@ public class BuoyModel {
         }
     }
 
-    public ArrayList<Buoy> getBuoyData() {
+    public Buoy getBuoyData() {
         return mCurrentContainer.buoyData;
     }
 
-    public String getSpectraPlotURL() {
-        return mCurrentContainer.createSpectraPlotURL();
-    }
-
-    private boolean parseBuoyData(String rawData) {
+    private Buoy parseBuoyData(String rawData) {
         String[] data = rawData.split("\\s+");
         if (data.length == 0) {
-            return false;
-        }
-
-        // Constants for parsing buoy data
-        final int DATA_HEADER_LENGTH = 30;
-        final int DATA_LINE_LEN = 15;
-        final int YEAR_OFFSET = 0;
-        final int MONTH_OFFSET = 1;
-        final int DAY_OFFSET = 2;
-        final int HOUR_OFFSET = 3;
-        final int MINUTE_OFFSET = 4;
-        final int SIGNIFICANT_WAVE_HEIGHT_OFFSET = 5;
-        final int SWELL_WAVE_HEIGHT_OFFSET = 6;
-        final int SWELL_PERIOD_OFFSET = 7;
-        final int WIND_WAVE_HEIGHT_OFFSET = 8;
-        final int WIND_WAVE_PERIOD_OFFSET = 9;
-        final int SWELL_DIRECTION_OFFSET = 10;
-        final int WIND_WAVE_DIRECTION_OFFSET = 11;
-        final int WAVE_STEEPNESS_OFFSET = 12;
-        final int MEAN_WAVE_DIRECTION = 14;
-
-        // Loop through the data and make new buoy objects to add to the list
-        int dataCount = 0;
-        while (dataCount < BuoyDataContainer.BUOY_DATA_POINTS) {
-            Buoy buoy = new Buoy();
-
-            int baseOffset = DATA_HEADER_LENGTH + (DATA_LINE_LEN * dataCount);
-            if (baseOffset >= (DATA_HEADER_LENGTH + (DATA_LINE_LEN * BuoyDataContainer.BUOY_DATA_POINTS))) {
-                return false;
-            }
-
-            if (baseOffset > data.length) {
-                return false;
-            }
-
-            // Time
-            String yearVal = data[baseOffset + YEAR_OFFSET];
-            String monthVal = data[baseOffset + MONTH_OFFSET];
-            String dayVal = data[baseOffset + DAY_OFFSET];
-            String hourVal = data[baseOffset + HOUR_OFFSET];
-            String minuteVal = data[baseOffset + MINUTE_OFFSET];
-            String fullDateString = String.format(Locale.US, "%s-%s-%s %s:%s UTC", dayVal, monthVal, yearVal, hourVal, minuteVal);
-            SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy HH:mm ZZZ");
-            try {
-                buoy.timestamp = dateFormatter.parse(fullDateString);
-            } catch (ParseException e) {
-                e.printStackTrace();
-                return false;
-            }
-
-            // Wave Height
-            String significantWaveHeight = data[baseOffset + SIGNIFICANT_WAVE_HEIGHT_OFFSET];
-            String swellWaveHeight = data[baseOffset + SWELL_WAVE_HEIGHT_OFFSET];
-            String windWaveHeight = data[baseOffset + WIND_WAVE_HEIGHT_OFFSET];
-            buoy.significantWaveHeight = String.format(Locale.US, "%4.2f", convertMeterToFoot(Double.valueOf(significantWaveHeight)));
-            buoy.swellWaveHeight = String.format(Locale.US, "%4.2f", convertMeterToFoot(Double.valueOf(swellWaveHeight)));
-            buoy.windWaveHeight = String.format(Locale.US, "%4.2f", convertMeterToFoot(Double.valueOf(windWaveHeight)));
-
-            // Periods
-            buoy.swellPeriod = data[baseOffset + SWELL_PERIOD_OFFSET];
-            buoy.windWavePeriod = data[baseOffset + WIND_WAVE_PERIOD_OFFSET];
-
-            // Steepness
-            buoy.steepness = data[baseOffset + WAVE_STEEPNESS_OFFSET];
-
-            // Directions
-            buoy.swellDirection = data[baseOffset + SWELL_DIRECTION_OFFSET];
-            buoy.windWaveDirection = data[baseOffset + WIND_WAVE_DIRECTION_OFFSET];
-            buoy.meanDirection = Buoy.getCompassDirection(data[baseOffset + MEAN_WAVE_DIRECTION]);
-
-            // Interpolate the Dominant Period
-            buoy.interpolateDominantPeriodWithDirection();
-
-            // Increment the buoy data count
-            dataCount++;
-
-            // Save the buoy object to the list
-            mCurrentContainer.buoyData.add(buoy);
-        }
-
-        // Return that it was successful
-        return true;
-    }
-
-    private Buoy parseLatestBuoyData(String rawData) {
-        if (rawData == null) {
             return null;
         }
 
-        String[] rawDataLines = rawData.split("\n");
-        if (rawDataLines == null) {
-            return null;
-        } else if (rawDataLines.length < 6) {
-            return null;
-        }
-
-        // New Buoy object
-        Buoy latestBuoy = new Buoy();
-
-        // Start with the time
-        String rawDateTime = rawDataLines[4];
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("HHmm ZZZ MM/dd/yy");
-        try {
-            latestBuoy.timestamp = dateFormatter.parse(rawDateTime);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return null;
-        }
-
-        boolean swellPeriodParsed = false;
-        boolean swellDirectionParsed = false;
-        for (int i = 5; i < rawDataLines.length; i++) {
-            String[] components = rawDataLines[i].split(":");
-            if (components == null) {
-                continue;
-            } else if (components.length < 2) {
-                continue;
-            }
-
-            String var = components[0];
-            String val = components[1];
-            if (var.equals("Water Temp")) {
-                latestBuoy.waterTemperature = val.split("\\s")[1];
-            } else if (var.equals("Seas")) {
-                latestBuoy.significantWaveHeight = val.split("\\s")[1];
-            } else if (var.equals("Peak Period")) {
-                latestBuoy.dominantPeriod = val.split("\\s")[1];
-            } else if (var.equals("Swell")) {
-                latestBuoy.swellWaveHeight = val.split("\\s")[1];
-                if (latestBuoy.swellWaveHeight.equals("0.0")) {
-                    swellPeriodParsed = true;
-                    swellDirectionParsed = true;
-                }
-            } else if (var.equals("Wind Wave")) {
-                latestBuoy.windWaveHeight = val.split("\\s")[1];
-            } else if (var.equals("Period")) {
-                String periodVal = val.split("\\s")[1];
-                if (!swellPeriodParsed) {
-                    latestBuoy.swellPeriod = periodVal;
-                    swellPeriodParsed = true;
-                } else {
-                    latestBuoy.windWavePeriod = periodVal;
-                }
-            } else if (var.equals("Direction")) {
-                if (!swellDirectionParsed) {
-                    latestBuoy.swellDirection = val.replace(" ", "");
-                    swellDirectionParsed = true;
-                } else {
-                    latestBuoy.windWaveDirection = val.replace(" ", "");
-                }
-            }
-        }
-
-        // Find the wave direction
-        latestBuoy.interpolateMeanWaveDirection();
-
-        return latestBuoy;
+        // TODO: Parse the JSON data
+        return null;
     }
 
     private double convertMeterToFoot(double meterValue) {

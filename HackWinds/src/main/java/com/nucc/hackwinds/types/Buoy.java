@@ -2,6 +2,7 @@ package com.nucc.hackwinds.types;
 
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
@@ -11,25 +12,16 @@ public class Buoy {
 
     public Date timestamp;
 
-    // Wave Heights
-    public String significantWaveHeight;
-    public String swellWaveHeight;
-    public String windWaveHeight;
+    // Wave data
+    public Swell waveSummary;
+    public ArrayList<Swell> swellComponents;
 
-    // Periods
-    public String dominantPeriod;
-    public String swellPeriod;
-    public String windWavePeriod;
-
-    // Directions
-    public String meanDirection;
-    public String swellDirection;
-    public String windWaveDirection;
-
-    // Wave Steepness
-    public String steepness;
-
+    // Meteorological data
     public String waterTemperature;
+
+    // Charts
+    public byte[] directionalWaveSpectraBase64;
+    public byte[] waveEnergySpectraBase64;
 
     public Buoy() {
 
@@ -45,92 +37,8 @@ public class Buoy {
         return dateFormat.format(timestamp);
     }
 
-    public void interpolateDominantPeriodWithDirection() {
-        if (swellDirection == null && windWaveDirection == null) {
-            return;
-        } else if (meanDirection == null) {
-            return;
-        }
-
-        if (swellDirection == null) {
-            dominantPeriod = windWavePeriod;
-            return;
-        }
-
-        if (windWaveDirection == null) {
-            dominantPeriod = swellPeriod;
-            return;
-        }
-
-        if (swellDirection.equals(meanDirection)) {
-            dominantPeriod = swellPeriod;
-        } else {
-            dominantPeriod = windWavePeriod;
-        }
-    }
-
-    public void interpolateDominantPeriodWithSteepness() {
-        if (steepness == null) {
-            return;
-        }
-
-        if (steepness.equals("SWELL") || steepness.equals("AVERAGE")) {
-            dominantPeriod = swellPeriod;
-        } else {
-            dominantPeriod = windWavePeriod;
-        }
-    }
-
-    public void interpolateMeanWaveDirection() {
-        if (swellDirection == null && windWaveDirection == null) {
-            return;
-        } else if (dominantPeriod == null) {
-            return;
-        }
-
-        if (swellPeriod == null) {
-            meanDirection = windWaveDirection;
-            return;
-        }
-
-        if (windWavePeriod ==null) {
-            meanDirection = swellDirection;
-            return;
-        }
-
-        double periodD = Double.valueOf(dominantPeriod);
-        double swellPeriodD = Double.valueOf(swellPeriod);
-        double windWavePeriodD = Double.valueOf(windWavePeriod);
-
-        if (Math.abs(periodD - windWavePeriodD) > Math.abs(periodD - swellPeriodD)) {
-            meanDirection = swellDirection;
-        } else {
-            meanDirection = windWaveDirection;
-        }
-    }
-
     public String getWaveSummaryStatusText() {
-        return String.format("%s ft @ %s s %s", significantWaveHeight, dominantPeriod, meanDirection);
-    }
-
-    public String getPrimarySwellText() {
-        if (steepness.equals("SWELL") || steepness.equals("AVERAGE")) {
-            return String.format("%s ft @ %s s %s", swellWaveHeight, swellPeriod, swellDirection);
-        } else {
-            return String.format("%s ft @ %s s %s", windWaveHeight, windWavePeriod, windWaveDirection);
-        }
-    }
-
-    public String getSecondarySwellText() {
-        if (steepness.equals("SWELL") || steepness.equals("AVERAGE")) {
-            return String.format("%s ft @ %s s %s", windWaveHeight, windWavePeriod, windWaveDirection);
-        } else {
-            if (swellPeriod.equals("MM")) {
-                return "";
-            } else {
-                return String.format("%s ft @ %s s %s", swellWaveHeight, swellPeriod, swellDirection);
-            }
-        }
+        return String.format("%2.1f ft @ %2.0f s %s", waveSummary.waveHeight, waveSummary.period, waveSummary.compassDirection);
     }
 
     public static String getCompassDirection(String direction) {

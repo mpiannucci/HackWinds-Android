@@ -7,8 +7,8 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 24
-        versionCode 62
-        versionName "5.68"
+        versionCode 63
+        versionName "5.8"
     }
 
     signingConfigs {

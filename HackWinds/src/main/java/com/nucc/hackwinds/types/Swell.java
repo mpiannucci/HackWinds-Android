@@ -12,4 +12,8 @@ public class Swell {
     public String getSwellSummary() {
         return String.format(Locale.US, "%s %2.2f ft @ %2.1f", compassDirection, waveHeight, period);
     }
+
+    public String getDetailedSwellSummary() {
+        return String.format(Locale.US, "%2.2f ft @ %2.1f %d\u2109 %s", waveHeight, period, direction, compassDirection);
+    }
 }

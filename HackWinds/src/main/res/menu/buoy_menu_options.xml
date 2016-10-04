@@ -2,10 +2,4 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto" >
 
-    <item
-        android:id="@+id/action_buoy_history"
-        android:icon="@drawable/ic_history_white_24dp"
-        android:title="@string/action_buoy_history"
-        app:showAsAction="always" />
-
 </menu>

@@ -50,13 +50,6 @@ public class BuoyFragment extends Fragment implements BuoyChangedListener{
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_buoy_history:
-                startActivity(new Intent(getActivity(), BuoyHistoryActivity.class));
-                break;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
         return true;
     }
 
@@ -74,11 +67,11 @@ public class BuoyFragment extends Fragment implements BuoyChangedListener{
 
     @Override
     public void buoyDataUpdated() {
-        if (mBuoyModel.getBuoyData().isEmpty()) {
+        if (mBuoyModel.getBuoyData() == null) {
             return;
         }
 
-        final Buoy buoy = mBuoyModel.getBuoyData().get(0);
+        final Buoy buoy = mBuoyModel.getBuoyData();
 
         getActivity().runOnUiThread(new Runnable() {
             @Override
@@ -90,23 +83,18 @@ public class BuoyFragment extends Fragment implements BuoyChangedListener{
 
                 TextView currentPrimaryStatus = (TextView)getActivity().findViewById(R.id.buoy_primary_reading);
                 if (currentPrimaryStatus != null) {
-                    currentPrimaryStatus.setText(buoy.getPrimarySwellText());
+                    currentPrimaryStatus.setText(buoy.swellComponents.get(0).getDetailedSwellSummary());
                 }
 
                 TextView currentSecondaryStatus = (TextView)getActivity().findViewById(R.id.buoy_secondary_reading);
                 if (currentSecondaryStatus != null) {
-                    currentSecondaryStatus.setText(buoy.getSecondarySwellText());
+                    currentSecondaryStatus.setText(buoy.swellComponents.get(1).getDetailedSwellSummary());
                 }
 
                 TextView latestBuoyReadingTime = (TextView)getActivity().findViewById(R.id.buoy_time_reading);
                 if (latestBuoyReadingTime != null) {
                     String buoyReport = String.format(Locale.US, "Buoy reported at %s %s", buoy.timeString(), buoy.dateString());
                     latestBuoyReadingTime.setText(buoyReport);
-                }
-
-                ImageView latestWaveSpectraImage = (ImageView)getActivity().findViewById(R.id.latest_buoy_spectra_plot);
-                if (latestWaveSpectraImage != null) {
-                    Ion.with(getActivity()).load(mBuoyModel.getSpectraPlotURL()).intoImageView(latestWaveSpectraImage);
                 }
             }
         });
