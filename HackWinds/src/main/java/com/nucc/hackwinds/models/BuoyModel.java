@@ -3,6 +3,7 @@ package com.nucc.hackwinds.models;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Base64;
 
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
@@ -10,8 +11,10 @@ import com.nucc.hackwinds.listeners.BuoyChangedListener;
 import com.nucc.hackwinds.listeners.LatestBuoyFetchListener;
 import com.nucc.hackwinds.types.Buoy;
 import com.nucc.hackwinds.types.BuoyDataContainer;
+import com.nucc.hackwinds.types.Swell;
 import com.nucc.hackwinds.views.SettingsActivity;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -33,11 +36,6 @@ public class BuoyModel {
     final public static String NANTUCKET_LOCATION = "Nantucket";
     final public static String NEWPORT_LOCATION = "Newport";
 
-    // Public data modes
-    final public static String SUMMARY_DATA_MODE = "Summary";
-    final public static String SWELL_DATA_MODE = "Swell";
-    final public static String WIND_DATA_MODE = "Wind Wave";
-
     // Member variables
     private static BuoyModel mInstance;
     private String mCurrentLocation;
@@ -45,7 +43,6 @@ public class BuoyModel {
     private HashMap<String, BuoyDataContainer> mBuoyDataContainers;
     private ArrayList<BuoyChangedListener> mBuoyChangedListeners;
     private SharedPreferences.OnSharedPreferenceChangeListener mPrefsChangedListener;
-    private double mTimeOffset;
     private Context mContext;
 
     public static BuoyModel getInstance(Context context) {
@@ -64,16 +61,6 @@ public class BuoyModel {
 
         // Initialize buoy containers
         initBuoyContainers();
-
-        // Set the time offset variable so the times are correct
-        Calendar mCalendar = new GregorianCalendar();
-        TimeZone mTimeZone = mCalendar.getTimeZone();
-        int mGMTOffset = mTimeZone.getRawOffset();
-        mTimeOffset = TimeUnit.HOURS.convert(mGMTOffset, TimeUnit.MILLISECONDS);
-        if (mTimeZone.inDaylightTime(new Date())) {
-            // If its daylight savings time make fix the gmt offset
-            mTimeOffset++;
-        }
 
         // Set up the settings changed listeners
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
@@ -315,30 +302,61 @@ public class BuoyModel {
             JSONObject jsonObj = new JSONObject(rawData);
             JSONObject rawBuoyObject = jsonObj.getJSONObject("BuoyData");
 
-            SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+            SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+            dateFormatter.setTimeZone(TimeZone.getTimeZone("GMT"));
             try {
-                buoy.timestamp = dateFormatter.parse(rawBuoyObject.getString("Date").replaceAll("z$", "+0000"));
+                buoy.timestamp = dateFormatter.parse(rawBuoyObject.getString("Date"));
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;
             }
 
             // Parse the WaveSummary
+            JSONObject waveSummaryObject = rawBuoyObject.getJSONObject("WaveSummary");
+            String units = waveSummaryObject.getString("Units");
+            Swell waveSummary = new Swell();
+            waveSummary.waveHeight = waveSummaryObject.getDouble("WaveHeight");
+            if (units.equals("metric")) {
+                waveSummary.waveHeight = convertMeterToFoot(waveSummary.waveHeight);
+            }
+            waveSummary.period = waveSummaryObject.getDouble("Period");
+            waveSummary.direction = waveSummaryObject.getDouble("Direction");
+            waveSummary.compassDirection = waveSummaryObject.getString("CompassDirection");
+            buoy.waveSummary = waveSummary;
 
             // Parse the Swell Components
+            JSONArray swellComponentsArray = rawBuoyObject.getJSONArray("SwellComponents");
+            ArrayList<Swell> swellComponents = new ArrayList<>();
+            for (int i = 0; i < swellComponentsArray.length(); i++) {
+                JSONObject swellCompObject = swellComponentsArray.getJSONObject(i);
+                Swell swellComponent = new Swell();
+                swellComponent.waveHeight = swellCompObject.getDouble("WaveHeight");
+                if (units.equals("metric")) {
+                    swellComponent.waveHeight = convertMeterToFoot(swellComponent.waveHeight);
+                }
+                swellComponent.period = swellCompObject.getDouble("Period");
+                swellComponent.direction = swellCompObject.getDouble("Direction");
+                swellComponent.compassDirection = swellCompObject.getString("CompassDirection");
+                swellComponents.add(swellComponent);
+            }
+            buoy.swellComponents = swellComponents;
 
             // Get the temperature
             buoy.waterTemperature = rawBuoyObject.getDouble("WaterTemperature");
 
             // Get the charts
+            String rawDirectionalString = jsonObj.getString("DirectionalSpectraPlot");
+            buoy.directionalWaveSpectraBase64 = Base64.decode(rawDirectionalString, Base64.DEFAULT);
+
+            String rawWaveEnergyString = jsonObj.getString("SpectraDistributionPlot");
+            buoy.waveEnergySpectraBase64 = Base64.decode(rawWaveEnergyString, Base64.DEFAULT);
 
         } catch (JSONException e) {
             e.printStackTrace();
             return null;
         }
 
-        // TODO: Parse the JSON data
-        return null;
+        return buoy;
     }
 
     private double convertMeterToFoot(double meterValue) {

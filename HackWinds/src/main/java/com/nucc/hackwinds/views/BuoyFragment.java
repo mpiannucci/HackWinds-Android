@@ -67,11 +67,23 @@ public class BuoyFragment extends Fragment implements BuoyChangedListener{
 
     @Override
     public void buoyDataUpdated() {
-        if (mBuoyModel.getBuoyData() == null) {
+        final Buoy buoy = mBuoyModel.getBuoyData();
+
+        if (buoy == null) {
             return;
         }
 
-        final Buoy buoy = mBuoyModel.getBuoyData();
+        if (buoy.waveSummary == null) {
+            return;
+        }
+
+        if (buoy.swellComponents == null) {
+            return;
+        }
+
+        if (buoy.swellComponents.size() < 2) {
+            return;
+        }
 
         getActivity().runOnUiThread(new Runnable() {
             @Override
