@@ -146,16 +146,7 @@ public class TideFragment extends Fragment implements TideChangedListener, Lates
         }
 
         if (mWaterTemp == null) {
-
-            if (latestBuoy.waterTemperature == null) {
-                return;
-            }
-
-            if (latestBuoy.waterTemperature.isEmpty()) {
-                return;
-            }
-
-            mWaterTemp = latestBuoy.waterTemperature;
+            mWaterTemp = String.valueOf(latestBuoy.waterTemperature);
         }
 
         getActivity().runOnUiThread(new Runnable() {

@@ -12,6 +12,9 @@ import com.nucc.hackwinds.types.Buoy;
 import com.nucc.hackwinds.types.BuoyDataContainer;
 import com.nucc.hackwinds.views.SettingsActivity;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -301,8 +304,36 @@ public class BuoyModel {
     }
 
     private Buoy parseBuoyData(String rawData) {
-        String[] data = rawData.split("\\s+");
-        if (data.length == 0) {
+        if (rawData == null) {
+            return null;
+        }
+
+        Buoy buoy = new Buoy();
+
+        try {
+            // Make a json array from the response string
+            JSONObject jsonObj = new JSONObject(rawData);
+            JSONObject rawBuoyObject = jsonObj.getJSONObject("BuoyData");
+
+            SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+            try {
+                buoy.timestamp = dateFormatter.parse(rawBuoyObject.getString("Date").replaceAll("z$", "+0000"));
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+
+            // Parse the WaveSummary
+
+            // Parse the Swell Components
+
+            // Get the temperature
+            buoy.waterTemperature = rawBuoyObject.getDouble("WaterTemperature");
+
+            // Get the charts
+
+        } catch (JSONException e) {
+            e.printStackTrace();
             return null;
         }
 

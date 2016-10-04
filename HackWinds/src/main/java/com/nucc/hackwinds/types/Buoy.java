@@ -17,7 +17,7 @@ public class Buoy {
     public ArrayList<Swell> swellComponents;
 
     // Meteorological data
-    public String waterTemperature;
+    public double waterTemperature;
 
     // Charts
     public byte[] directionalWaveSpectraBase64;
