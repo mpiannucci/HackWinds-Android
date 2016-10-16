@@ -185,6 +185,7 @@ public class MainActivity extends AppCompatActivity {
         mBuoyLocations.add( "Block Island" );
         mBuoyLocations.add( "Montauk" );
         mBuoyLocations.add( "Nantucket" );
+        mBuoyLocations.add( "Texas Tower" );
 
         mTideLocation = new ArrayList<>();
         mTideLocation.add( "Point Judith Harbor" );

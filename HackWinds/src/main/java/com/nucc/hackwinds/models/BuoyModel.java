@@ -35,6 +35,7 @@ public class BuoyModel {
     final public static String MONTAUK_LOCATION = "Montauk";
     final public static String NANTUCKET_LOCATION = "Nantucket";
     final public static String NEWPORT_LOCATION = "Newport";
+    final public static String TEXAS_TOWER_LOCATION = "Texas Tower";
 
     // Member variables
     private static BuoyModel mInstance;
@@ -88,6 +89,7 @@ public class BuoyModel {
         final String MONTAUK_BUOY_ID = "44017";
         final String NANTUCKET_BUOY_ID = "44008";
         final String NEWPORT_BUOY_ID = "nwpr1";
+        final String TEXAS_TOWER_BUOY_ID = "44066";
 
         // Initialize the buoy dictionary
         mBuoyDataContainers = new HashMap<>();
@@ -108,9 +110,13 @@ public class BuoyModel {
         BuoyDataContainer nwpContainer = new BuoyDataContainer(NEWPORT_BUOY_ID);
         mBuoyDataContainers.put(NEWPORT_LOCATION, nwpContainer);
 
+        // Texas Tower
+        BuoyDataContainer ttContainer = new BuoyDataContainer(TEXAS_TOWER_BUOY_ID);
+        mBuoyDataContainers.put(TEXAS_TOWER_LOCATION, ttContainer);
+
         // Initialize to the default location
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
-        String location = sharedPrefs.getString(SettingsActivity.BUOY_LOCATION_KEY, MONTAUK_LOCATION);
+        String location = sharedPrefs.getString(SettingsActivity.BUOY_LOCATION_KEY, BLOCK_ISLAND_LOCATION);
         mCurrentContainer = mBuoyDataContainers.get(location);
         mCurrentLocation = location;
     }
@@ -121,7 +127,7 @@ public class BuoyModel {
 
     public void changeLocation() {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
-        String location = sharedPrefs.getString(SettingsActivity.BUOY_LOCATION_KEY, MONTAUK_LOCATION);
+        String location = sharedPrefs.getString(SettingsActivity.BUOY_LOCATION_KEY, BLOCK_ISLAND_LOCATION);
         mCurrentContainer = mBuoyDataContainers.get(location);
         mCurrentLocation = location;
 
