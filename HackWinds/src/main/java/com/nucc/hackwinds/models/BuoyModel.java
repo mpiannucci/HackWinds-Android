@@ -45,6 +45,7 @@ public class BuoyModel {
     private ArrayList<BuoyChangedListener> mBuoyChangedListeners;
     private SharedPreferences.OnSharedPreferenceChangeListener mPrefsChangedListener;
     private Context mContext;
+    private Boolean refreshing = false;
 
     public static BuoyModel getInstance(Context context) {
         if (mInstance == null) {
@@ -160,6 +161,11 @@ public class BuoyModel {
         }
     }
 
+    public void fetchNewBuoyData() {
+        resetData();
+        fetchBuoyData();
+    }
+
     public void fetchBuoyData() {
         synchronized (this) {
             checkForUpdate();
@@ -174,6 +180,7 @@ public class BuoyModel {
                 return;
             }
 
+            refreshing = true;
             Ion.with(mContext).load(mCurrentContainer.createLatestWaveDataURL()).asString().setCallback(new FutureCallback<String>() {
                 @Override
                 public void onCompleted(Exception e, String result) {
@@ -184,10 +191,12 @@ public class BuoyModel {
                                 listener.buoyDataUpdateFailed();
                             }
                         }
+                        refreshing = false;
                         return;
                     }
 
                     Buoy latestBuoy = parseBuoyData(result);
+                    refreshing = false;
                     if (latestBuoy != null) {
                         mCurrentContainer.buoyData = latestBuoy;
 
@@ -225,6 +234,7 @@ public class BuoyModel {
                 return;
             }
 
+            refreshing = true;
             Ion.with(mContext).load(mCurrentContainer.createLatestSummaryURL()).asString().setCallback(new FutureCallback<String>() {
                 @Override
                 public void onCompleted(Exception e, String result) {
@@ -235,10 +245,12 @@ public class BuoyModel {
                                 listener.buoyDataUpdateFailed();
                             }
                         }
+                        refreshing = false;
                         return;
                     }
 
                     Buoy latestBuoy = parseBuoyData(result);
+                    refreshing = false;
                     if (latestBuoy != null) {
                         mCurrentContainer.buoyData = latestBuoy;
 
@@ -290,6 +302,10 @@ public class BuoyModel {
                 }
             });
         }
+    }
+
+    public Boolean isRefreshing() {
+        return refreshing;
     }
 
     public Buoy getBuoyData() {

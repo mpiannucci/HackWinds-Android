@@ -181,7 +181,7 @@ public class CurrentFragment extends ListFragment implements ForecastChangedList
     }
 
     private void loadCameraImages() {
-        final int CAMERA_IMAGE_COUNT = 12;
+        final int CAMERA_IMAGE_COUNT = 9;
 
         if (mCameraSliderLayout == null) {
             return;

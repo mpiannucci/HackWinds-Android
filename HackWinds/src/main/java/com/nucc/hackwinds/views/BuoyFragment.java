@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,9 +23,10 @@ import com.nucc.hackwinds.types.Buoy;
 
 import java.util.Locale;
 
-public class BuoyFragment extends Fragment implements BuoyChangedListener{
+public class BuoyFragment extends Fragment implements BuoyChangedListener, SwipeRefreshLayout.OnRefreshListener{
 
     private BuoyModel mBuoyModel;
+    private SwipeRefreshLayout mRefreshLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,10 @@ public class BuoyFragment extends Fragment implements BuoyChangedListener{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View V = inflater.inflate(R.layout.buoy_fragment, container, false);
+
+        mRefreshLayout = (SwipeRefreshLayout) V.findViewById(R.id.buoy_refresh_layout);
+        mRefreshLayout.setOnRefreshListener(this);
+        mRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.hackwinds_blue), getResources().getColor(R.color.accent_blue));
 
         return V;
     }
@@ -59,6 +65,12 @@ public class BuoyFragment extends Fragment implements BuoyChangedListener{
     public void onResume() {
         super.onResume();
 
+        if (mBuoyModel.isRefreshing()) {
+            if (mRefreshLayout != null) {
+                mRefreshLayout.setRefreshing(true);
+            }
+        }
+
         buoyDataUpdated();
     }
 
@@ -72,24 +84,32 @@ public class BuoyFragment extends Fragment implements BuoyChangedListener{
         final Buoy buoy = mBuoyModel.getBuoyData();
 
         if (buoy == null) {
+            buoyDataUpdateFailed();
             return;
         }
 
         if (buoy.waveSummary == null) {
+            buoyDataUpdateFailed();
             return;
         }
 
         if (buoy.swellComponents == null) {
+            buoyDataUpdateFailed();
             return;
         }
 
         if (buoy.swellComponents.size() < 2) {
+            buoyDataUpdateFailed();
             return;
         }
 
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                if (mRefreshLayout != null) {
+                    mRefreshLayout.setRefreshing(false);
+                }
+
                 TextView currentBuoyStatus = (TextView) getActivity().findViewById(R.id.buoy_current_reading);
                 if (currentBuoyStatus != null) {
                     currentBuoyStatus.setText(buoy.getWaveSummaryStatusText());
@@ -132,6 +152,22 @@ public class BuoyFragment extends Fragment implements BuoyChangedListener{
 
     @Override
     public void buoyDataUpdateFailed() {
+        if (mBuoyModel.isRefreshing()) {
+            return;
+        }
 
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (mRefreshLayout != null) {
+                    mRefreshLayout.setRefreshing(false);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onRefresh() {
+        mBuoyModel.fetchNewBuoyData();
     }
 }
