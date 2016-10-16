@@ -1,6 +1,8 @@
 package com.nucc.hackwinds.views;
 
 import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -88,25 +90,41 @@ public class BuoyFragment extends Fragment implements BuoyChangedListener{
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                TextView currentBuoyStatus = (TextView)getActivity().findViewById(R.id.buoy_current_reading);
+                TextView currentBuoyStatus = (TextView) getActivity().findViewById(R.id.buoy_current_reading);
                 if (currentBuoyStatus != null) {
                     currentBuoyStatus.setText(buoy.getWaveSummaryStatusText());
                 }
 
-                TextView currentPrimaryStatus = (TextView)getActivity().findViewById(R.id.buoy_primary_reading);
+                TextView currentPrimaryStatus = (TextView) getActivity().findViewById(R.id.buoy_primary_reading);
                 if (currentPrimaryStatus != null) {
                     currentPrimaryStatus.setText(buoy.swellComponents.get(0).getDetailedSwellSummary());
                 }
 
-                TextView currentSecondaryStatus = (TextView)getActivity().findViewById(R.id.buoy_secondary_reading);
+                TextView currentSecondaryStatus = (TextView) getActivity().findViewById(R.id.buoy_secondary_reading);
                 if (currentSecondaryStatus != null) {
                     currentSecondaryStatus.setText(buoy.swellComponents.get(1).getDetailedSwellSummary());
                 }
 
-                TextView latestBuoyReadingTime = (TextView)getActivity().findViewById(R.id.buoy_time_reading);
+                TextView latestBuoyReadingTime = (TextView) getActivity().findViewById(R.id.buoy_time_reading);
                 if (latestBuoyReadingTime != null) {
                     String buoyReport = String.format(Locale.US, "Buoy reported at %s %s", buoy.timeString(), buoy.dateString());
                     latestBuoyReadingTime.setText(buoyReport);
+                }
+
+                ImageView directionalSpectraPlot = (ImageView) getActivity().findViewById(R.id.directional_spectra_plot);
+                if (directionalSpectraPlot != null) {
+                    directionalSpectraPlot.setImageBitmap(BitmapFactory.decodeByteArray(buoy.directionalWaveSpectraBase64, 0, buoy.directionalWaveSpectraBase64.length));
+                }
+
+                ImageView energyDistributionPlot = (ImageView) getActivity().findViewById(R.id.energy_distribution_plot);
+                if (energyDistributionPlot != null) {
+                    energyDistributionPlot.setImageBitmap(BitmapFactory.decodeByteArray(buoy.waveEnergySpectraBase64, 0, buoy.waveEnergySpectraBase64.length));
+                }
+
+                final String waveHeightSource = "https://dl.dropboxusercontent.com/s/uplzpw44vva91a1/test.png";
+                ImageView waveHeightEstimationImage = (ImageView) getActivity().findViewById(R.id.wave_height_estimation_image);
+                if (waveHeightEstimationImage != null) {
+                    Ion.with(getActivity()).load(waveHeightSource).intoImageView(waveHeightEstimationImage);
                 }
             }
         });
