@@ -167,6 +167,13 @@ public class BuoyFragment extends Fragment implements BuoyChangedListener, Swipe
     }
 
     @Override
+    public void buoyRefreshStarted() {
+        if (mRefreshLayout != null) {
+            mRefreshLayout.setRefreshing(true);
+        }
+    }
+
+    @Override
     public void onRefresh() {
         mBuoyModel.fetchNewBuoyData();
     }

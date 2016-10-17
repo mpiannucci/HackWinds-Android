@@ -181,6 +181,12 @@ public class BuoyModel {
             }
 
             refreshing = true;
+            for (BuoyChangedListener listener : mBuoyChangedListeners) {
+                if (listener != null) {
+                    listener.buoyRefreshStarted();
+                }
+            }
+
             Ion.with(mContext).load(mCurrentContainer.createLatestWaveDataURL()).asString().setCallback(new FutureCallback<String>() {
                 @Override
                 public void onCompleted(Exception e, String result) {
@@ -235,6 +241,12 @@ public class BuoyModel {
             }
 
             refreshing = true;
+            for (BuoyChangedListener listener : mBuoyChangedListeners) {
+                if (listener != null) {
+                    listener.buoyRefreshStarted();
+                }
+            }
+
             Ion.with(mContext).load(mCurrentContainer.createLatestSummaryURL()).asString().setCallback(new FutureCallback<String>() {
                 @Override
                 public void onCompleted(Exception e, String result) {
@@ -276,10 +288,13 @@ public class BuoyModel {
     public void fetchLatestBuoyReadingForLocation(String location, final LatestBuoyFetchListener listener) {
         synchronized (this) {
             // Change the location. Get the original first to change the location back.
-            final String originalLocation = mCurrentLocation;
-            forceChangeLocation(location);
+            BuoyDataContainer buoyDataContainer = mBuoyDataContainers.get(location);
+            if (buoyDataContainer == null) {
+                listener.latestBuoyFetchFailed();
+                return;
+            }
 
-            Ion.with(mContext).load(mCurrentContainer.createLatestSummaryURL()).asString().setCallback(new FutureCallback<String>() {
+            Ion.with(mContext).load(buoyDataContainer.createLatestSummaryURL()).asString().setCallback(new FutureCallback<String>() {
                 @Override
                 public void onCompleted(Exception e, String result) {
                     if (e != null) {
@@ -296,9 +311,6 @@ public class BuoyModel {
                         // Throw message saying failure to the listener
                         listener.latestBuoyFetchFailed();
                     }
-
-                    // Change the location back to what it was before.
-                    forceChangeLocation(originalLocation);
                 }
             });
         }
@@ -367,11 +379,15 @@ public class BuoyModel {
             buoy.waterTemperature = rawBuoyObject.getDouble("WaterTemperature");
 
             // Get the charts
-            String rawDirectionalString = jsonObj.getString("DirectionalSpectraPlot");
-            buoy.directionalWaveSpectraBase64 = Base64.decode(rawDirectionalString, Base64.DEFAULT);
+            if (jsonObj.has("DirectionalSpectraPlot")) {
+                String rawDirectionalString = jsonObj.getString("DirectionalSpectraPlot");
+                buoy.directionalWaveSpectraBase64 = Base64.decode(rawDirectionalString, Base64.DEFAULT);
+            }
 
-            String rawWaveEnergyString = jsonObj.getString("SpectraDistributionPlot");
-            buoy.waveEnergySpectraBase64 = Base64.decode(rawWaveEnergyString, Base64.DEFAULT);
+            if (jsonObj.has("SpectraDistributionPlot")) {
+                String rawWaveEnergyString = jsonObj.getString("SpectraDistributionPlot");
+                buoy.waveEnergySpectraBase64 = Base64.decode(rawWaveEnergyString, Base64.DEFAULT);
+            }
 
         } catch (JSONException e) {
             e.printStackTrace();
