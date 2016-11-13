@@ -1,8 +1,6 @@
 package com.nucc.hackwinds.views;
 
-import android.content.Intent;
 import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -15,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.koushikdutta.ion.Ion;
 import com.nucc.hackwinds.R;
 import com.nucc.hackwinds.listeners.BuoyChangedListener;
 import com.nucc.hackwinds.models.BuoyModel;
@@ -139,12 +136,6 @@ public class BuoyFragment extends Fragment implements BuoyChangedListener, Swipe
                 ImageView energyDistributionPlot = (ImageView) getActivity().findViewById(R.id.energy_distribution_plot);
                 if (energyDistributionPlot != null) {
                     energyDistributionPlot.setImageBitmap(BitmapFactory.decodeByteArray(buoy.waveEnergySpectraBase64, 0, buoy.waveEnergySpectraBase64.length));
-                }
-
-                final String waveHeightSource = "https://dl.dropboxusercontent.com/s/uplzpw44vva91a1/test.png";
-                ImageView waveHeightEstimationImage = (ImageView) getActivity().findViewById(R.id.wave_height_estimation_image);
-                if (waveHeightEstimationImage != null) {
-                    Ion.with(getActivity()).load(waveHeightSource).intoImageView(waveHeightEstimationImage);
                 }
             }
         });

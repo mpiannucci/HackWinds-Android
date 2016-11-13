@@ -36,7 +36,6 @@
     <string name="buoy_component_header">Components</string>
     <string name="directional_spectra_plot_title">Directional Wave Spectra</string>
     <string name="energy_spectra_plot_title">Wave Energy Distribution</string>
-    <string name="wave_height_estimation_title">Wave Height Estimation</string>
 
     <!-- Tide Page -->
     <string name="low_tide">Low Tide</string>
