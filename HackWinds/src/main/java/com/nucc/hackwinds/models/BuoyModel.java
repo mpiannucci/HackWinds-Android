@@ -380,13 +380,11 @@ public class BuoyModel {
 
             // Get the charts
             if (jsonObj.has("DirectionalSpectraPlot")) {
-                String rawDirectionalString = jsonObj.getString("DirectionalSpectraPlot");
-                buoy.directionalWaveSpectraBase64 = Base64.decode(rawDirectionalString, Base64.DEFAULT);
+                buoy.directionalWaveSpectraPlotURL = jsonObj.getString("DirectionalSpectraPlot");
             }
 
             if (jsonObj.has("SpectraDistributionPlot")) {
-                String rawWaveEnergyString = jsonObj.getString("SpectraDistributionPlot");
-                buoy.waveEnergySpectraBase64 = Base64.decode(rawWaveEnergyString, Base64.DEFAULT);
+                buoy.waveEnergySpectraPlotURL = jsonObj.getString("SpectraDistributionPlot");
             }
 
         } catch (JSONException e) {

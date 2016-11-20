@@ -20,8 +20,8 @@ public class Buoy {
     public double waterTemperature;
 
     // Charts
-    public byte[] directionalWaveSpectraBase64;
-    public byte[] waveEnergySpectraBase64;
+    public String directionalWaveSpectraPlotURL;
+    public String waveEnergySpectraPlotURL;
 
     public Buoy() {
 

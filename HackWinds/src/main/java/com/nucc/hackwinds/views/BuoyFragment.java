@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.koushikdutta.ion.Ion;
 import com.nucc.hackwinds.R;
 import com.nucc.hackwinds.listeners.BuoyChangedListener;
 import com.nucc.hackwinds.models.BuoyModel;
@@ -130,12 +131,12 @@ public class BuoyFragment extends Fragment implements BuoyChangedListener, Swipe
 
                 ImageView directionalSpectraPlot = (ImageView) getActivity().findViewById(R.id.directional_spectra_plot);
                 if (directionalSpectraPlot != null) {
-                    directionalSpectraPlot.setImageBitmap(BitmapFactory.decodeByteArray(buoy.directionalWaveSpectraBase64, 0, buoy.directionalWaveSpectraBase64.length));
+                    Ion.with(getActivity()).load(buoy.directionalWaveSpectraPlotURL).intoImageView(directionalSpectraPlot);
                 }
 
                 ImageView energyDistributionPlot = (ImageView) getActivity().findViewById(R.id.energy_distribution_plot);
                 if (energyDistributionPlot != null) {
-                    energyDistributionPlot.setImageBitmap(BitmapFactory.decodeByteArray(buoy.waveEnergySpectraBase64, 0, buoy.waveEnergySpectraBase64.length));
+                    Ion.with(getActivity()).load(buoy.waveEnergySpectraPlotURL).intoImageView(energyDistributionPlot);
                 }
             }
         });
