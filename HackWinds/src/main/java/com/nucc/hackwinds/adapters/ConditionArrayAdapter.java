@@ -30,7 +30,7 @@ public class ConditionArrayAdapter extends ArrayAdapter<Forecast> {
     }
 
     public ConditionArrayAdapter(Context ctx, ArrayList<Forecast> vals) {
-        super(ctx, R.layout.current_item, vals);
+        super(ctx, R.layout.simple_forecast_item, vals);
         this.context = ctx;
         this.values = vals;
     }
@@ -55,7 +55,7 @@ public class ConditionArrayAdapter extends ArrayAdapter<Forecast> {
         if (rowView == null) {
             LayoutInflater inflater = (LayoutInflater) context
                                       .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            rowView = inflater.inflate(R.layout.current_item, parent, false);
+            rowView = inflater.inflate(R.layout.simple_forecast_item, parent, false);
 
             // Set the view holder
             ViewHolder viewHolder = new ViewHolder();
