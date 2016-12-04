@@ -40,4 +40,8 @@ public class Forecast {
         }
         return time;
     }
+
+    public String getConditionSummary() {
+        return String.format(Locale.US, "%d - %d ft, Wind %s %d mph", (int)minimumBreakingHeight, (int)maximumBreakingHeight, windCompassDirection, (int)windSpeed);
+    }
 }

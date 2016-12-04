@@ -2,6 +2,69 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/abc_dialog_list_padding_vertical_material"
+    android:paddingLeft="@dimen/abc_list_item_padding_horizontal_material"
+    android:paddingRight="@dimen/abc_list_item_padding_horizontal_material"
+    android:paddingTop="@dimen/abc_dialog_list_padding_vertical_material"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/time_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7"
+            style="@style/DetailedForecastItemHeaderText" />
+
+        <TextView
+            android:id="@+id/conditions_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            style="@style/DetailedForecastItemHeaderText" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="4dp">
+
+        <TextView
+            android:id="@+id/swell_component_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7"
+            style="@style/DetailedForecastItemSwellText"
+            android:text="@string/detailed_forecast_item_swell_text" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="0.3">
+
+            <TextView
+                android:id="@+id/primary_swell_data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/DetailedForecastItemSwellText" />
+
+            <TextView
+                android:id="@+id/secondary_swell_data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/DetailedForecastItemSwellText"
+                android:layout_marginTop="4dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </LinearLayout>

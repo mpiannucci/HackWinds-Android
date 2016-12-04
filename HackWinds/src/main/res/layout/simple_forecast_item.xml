@@ -15,39 +15,35 @@
         android:paddingTop="@dimen/abc_dialog_list_padding_vertical_material">
 
         <TextView
-            android:id="@+id/timeData"
+            android:id="@+id/time_data"
             style="@style/TableDataText"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="start|center_vertical"
-            android:layout_weight="1"
-            android:text="@string/loading_text" />
+            android:layout_weight="1" />
 
         <TextView
-            android:id="@+id/breakData"
+            android:id="@+id/break_data"
             style="@style/TableDataText"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="start|center_vertical"
-            android:layout_weight="1"
-            android:text="@string/loading_text" />
+            android:layout_weight="1" />
 
         <TextView
-            android:id="@+id/windData"
+            android:id="@+id/wind_data"
             style="@style/TableDataText"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="start|center_vertical"
-            android:layout_weight="1"
-            android:text="@string/loading_text" />
+            android:layout_weight="1" />
 
         <TextView
-            android:id="@+id/swellData"
+            android:id="@+id/swell_data"
             style="@style/TableDataText"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="start|center_vertical"
-            android:layout_weight="0.8"
-            android:text="@string/loading_text" />
+            android:layout_weight="0.8" />
     </LinearLayout>
 </LinearLayout>

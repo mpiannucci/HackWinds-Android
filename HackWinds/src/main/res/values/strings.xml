@@ -112,4 +112,7 @@
     <string name="wavewatch_animation_speed_title">Animation Speed</string>
     <string name="wavewatch_manual_control_title">Manual Control</string>
 
+    <!-- Misc Strings -->
+    <string name="detailed_forecast_item_swell_text">Swell:</string>
+
 </resources>

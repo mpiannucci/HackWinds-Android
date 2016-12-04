@@ -30,6 +30,7 @@ public class ForecastModel {
     public ArrayList<Forecast> forecasts;
     public ArrayList<ForecastDailySummary> dailyForecasts;
     public final int FORECAST_DATA_COUNT = 60;
+    public final int FORECAST_DATA_BEGIN_INDEX = 2;
 
     // Private Member variables
     private Context mContext;
@@ -226,7 +227,7 @@ public class ForecastModel {
             JSONArray forecastJsonAray = jsonObj.getJSONArray("ForecastData");
             dayCount = 0;
             int forecastOffset = 0;
-            for (int i = 0; i < FORECAST_DATA_COUNT; i++) {
+            for (int i = FORECAST_DATA_BEGIN_INDEX; i < FORECAST_DATA_COUNT; i++) {
                 Forecast newForecast = new Forecast();
 
                 // Grab the next forecast object from the raw array
@@ -234,11 +235,6 @@ public class ForecastModel {
 
                 newForecast.date = rawForecast.getString("Date");
                 newForecast.time = rawForecast.getString("Time");
-                if ((i == 0) && (newForecast.time.equals("07 PM") || (newForecast.time.equals("08 PM")))) {
-                    i += 1;
-                    forecastOffset = 2;
-                    continue;
-                }
 
                 newForecast.minimumBreakingHeight = rawForecast.getDouble("MinimumBreakingHeight");
                 newForecast.maximumBreakingHeight = rawForecast.getDouble("MaximumBreakingHeight");
@@ -268,10 +264,10 @@ public class ForecastModel {
                 newForecast.tertiarySwellComponent = tertiarySwell;
 
                 if (newForecast.time.equals("01 AM") || newForecast.time.equals("02 AM")) {
-                    dayIndices[dayCount] = i - forecastOffset;
+                    dayIndices[dayCount] = i - FORECAST_DATA_BEGIN_INDEX - forecastOffset;
                     dayCount++;
                 } else if (forecasts.size() == 0) {
-                    dayIndices[dayCount] = i - forecastOffset;
+                    dayIndices[dayCount] = i - FORECAST_DATA_BEGIN_INDEX - forecastOffset;
                     dayCount++;
                 }
 
