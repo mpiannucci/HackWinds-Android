@@ -376,7 +376,7 @@ public class BuoyModel {
             buoy.swellComponents = swellComponents;
 
             // Get the temperature
-            buoy.waterTemperature = rawBuoyObject.getDouble("WaterTemperature");
+            buoy.waterTemperature = convertCelsiusToFahrenheit(rawBuoyObject.getDouble("WaterTemperature"));
 
             // Get the charts
             if (jsonObj.has("DirectionalSpectraPlot")) {
@@ -397,5 +397,9 @@ public class BuoyModel {
 
     private double convertMeterToFoot(double meterValue) {
         return meterValue * 3.28;
+    }
+
+    private double convertCelsiusToFahrenheit(double celsiusValue) {
+        return (celsiusValue * 1.8) + 32.0;
     }
 }
