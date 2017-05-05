@@ -333,59 +333,56 @@ public class BuoyModel {
 
         try {
             // Make a json array from the response string
-            JSONObject jsonObj = new JSONObject(rawData);
-            JSONObject rawBuoyObject = jsonObj.getJSONObject("BuoyData");
+            JSONObject rawBuoyObject = new JSONObject(rawData);
 
-            SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+            SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
             dateFormatter.setTimeZone(TimeZone.getTimeZone("GMT"));
             try {
-                buoy.timestamp = dateFormatter.parse(rawBuoyObject.getString("Date"));
+                buoy.timestamp = dateFormatter.parse(rawBuoyObject.getString("date"));
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;
             }
 
             // Parse the WaveSummary
-            JSONObject waveSummaryObject = rawBuoyObject.getJSONObject("WaveSummary");
-            String units = waveSummaryObject.getString("Units");
+            JSONObject waveSummaryObject = rawBuoyObject.getJSONObject("wave_summary");
+            String units = waveSummaryObject.getString("unit");
             Swell waveSummary = new Swell();
-            waveSummary.waveHeight = waveSummaryObject.getDouble("WaveHeight");
+            waveSummary.waveHeight = waveSummaryObject.getDouble("wave_height");
             if (units.equals("metric")) {
                 waveSummary.waveHeight = convertMeterToFoot(waveSummary.waveHeight);
             }
-            waveSummary.period = waveSummaryObject.getDouble("Period");
-            waveSummary.direction = waveSummaryObject.getDouble("Direction");
-            waveSummary.compassDirection = waveSummaryObject.getString("CompassDirection");
+            waveSummary.period = waveSummaryObject.getDouble("period");
+            waveSummary.direction = waveSummaryObject.getDouble("direction");
+            waveSummary.compassDirection = waveSummaryObject.getString("compass_direction");
             buoy.waveSummary = waveSummary;
 
             // Parse the Swell Components
-            JSONArray swellComponentsArray = rawBuoyObject.getJSONArray("SwellComponents");
+            JSONArray swellComponentsArray = rawBuoyObject.getJSONArray("swell_components");
             ArrayList<Swell> swellComponents = new ArrayList<>();
             for (int i = 0; i < swellComponentsArray.length(); i++) {
                 JSONObject swellCompObject = swellComponentsArray.getJSONObject(i);
                 Swell swellComponent = new Swell();
-                swellComponent.waveHeight = swellCompObject.getDouble("WaveHeight");
+                swellComponent.waveHeight = swellCompObject.getDouble("wave_height");
                 if (units.equals("metric")) {
                     swellComponent.waveHeight = convertMeterToFoot(swellComponent.waveHeight);
                 }
-                swellComponent.period = swellCompObject.getDouble("Period");
-                swellComponent.direction = swellCompObject.getDouble("Direction");
-                swellComponent.compassDirection = swellCompObject.getString("CompassDirection");
+                swellComponent.period = swellCompObject.getDouble("period");
+                swellComponent.direction = swellCompObject.getDouble("direction");
+                swellComponent.compassDirection = swellCompObject.getString("compass_direction");
                 swellComponents.add(swellComponent);
             }
             buoy.swellComponents = swellComponents;
 
             // Get the temperature
-            buoy.waterTemperature = convertCelsiusToFahrenheit(rawBuoyObject.getDouble("WaterTemperature"));
+            buoy.waterTemperature = rawBuoyObject.optDouble("water_temperature", 0.0);
+            if (units.equals("metric")) {
+                buoy.waterTemperature = convertCelsiusToFahrenheit(buoy.waterTemperature);
+            }
 
             // Get the charts
-            if (jsonObj.has("DirectionalSpectraPlot")) {
-                buoy.directionalWaveSpectraPlotURL = jsonObj.getString("DirectionalSpectraPlot");
-            }
-
-            if (jsonObj.has("SpectraDistributionPlot")) {
-                buoy.waveEnergySpectraPlotURL = jsonObj.getString("SpectraDistributionPlot");
-            }
+            buoy.directionalWaveSpectraPlotURL = mCurrentContainer.createWavePlotURL("direction");
+            buoy.waveEnergySpectraPlotURL = mCurrentContainer.createWavePlotURL("energy");
 
         } catch (JSONException e) {
             e.printStackTrace();
