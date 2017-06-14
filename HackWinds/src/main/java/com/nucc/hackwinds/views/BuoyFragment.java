@@ -96,11 +96,6 @@ public class BuoyFragment extends Fragment implements BuoyChangedListener, Swipe
             return;
         }
 
-        if (buoy.swellComponents.size() < 2) {
-            buoyDataUpdateFailed();
-            return;
-        }
-
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -115,12 +110,20 @@ public class BuoyFragment extends Fragment implements BuoyChangedListener, Swipe
 
                 TextView currentPrimaryStatus = (TextView) getActivity().findViewById(R.id.buoy_primary_reading);
                 if (currentPrimaryStatus != null) {
-                    currentPrimaryStatus.setText(buoy.swellComponents.get(0).getDetailedSwellSummary());
+                    if (buoy.swellComponents.size() > 0) {
+                        currentPrimaryStatus.setText(buoy.swellComponents.get(0).getDetailedSwellSummary());
+                    } else {
+                        currentPrimaryStatus.setText("No primary swell");
+                    }
                 }
 
                 TextView currentSecondaryStatus = (TextView) getActivity().findViewById(R.id.buoy_secondary_reading);
                 if (currentSecondaryStatus != null) {
-                    currentSecondaryStatus.setText(buoy.swellComponents.get(1).getDetailedSwellSummary());
+                    if (buoy.swellComponents.size() > 1) {
+                        currentSecondaryStatus.setText(buoy.swellComponents.get(1).getDetailedSwellSummary());
+                    } else {
+                        currentSecondaryStatus.setText("No secondary swell");
+                    }
                 }
 
                 TextView latestBuoyReadingTime = (TextView) getActivity().findViewById(R.id.buoy_time_reading);
