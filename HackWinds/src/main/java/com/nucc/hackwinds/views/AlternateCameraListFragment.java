@@ -1,9 +1,12 @@
 package com.nucc.hackwinds.views;
 
 
+import android.net.Uri;
+import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,6 +66,22 @@ public class AlternateCameraListFragment extends ListFragment {
             fragmentTransaction.replace(R.id.content_frame, cameraFragment);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
+        } else {
+            String url = "";
+            if (camera.isVideoCamera()) {
+                url = camera.videoURL;
+            } else if (camera.isWebCamera()) {
+                url = camera.webURL;
+            } else {
+                return;
+            }
+
+            CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+            builder.setToolbarColor(getResources().getColor(R.color.hackwinds_blue));
+            builder.setSecondaryToolbarColor(getResources().getColor(R.color.white));
+            builder.setShowTitle(true);
+            CustomTabsIntent customTabsIntent = builder.build();
+            customTabsIntent.launchUrl(getActivity(), Uri.parse(url));
         }
     }
 }
