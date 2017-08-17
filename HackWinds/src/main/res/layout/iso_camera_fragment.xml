@@ -10,40 +10,13 @@
         android:layout_height="match_parent"
         android:layout_weight="1">
 
-        <FrameLayout
+        <ImageView
+            android:id="@+id/latest_camera_image"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <VideoView
-                android:id="@+id/iso_video_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_horizontal"
-                android:visibility="gone"/>
-
-            <ImageView
-                android:id="@+id/latest_camera_image"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/photo_loading_holder"
-                android:scaleType="fitXY"
-                android:adjustViewBounds="true"/>
-
-            <ImageView
-                android:id="@+id/iso_video_play_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_av_play_over_video_big"
-                android:layout_gravity="center_horizontal|center_vertical"
-                android:visibility="gone"/>
-
-            <WebView
-                android:id="@+id/camera_web_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone"/>
-
-        </FrameLayout>
+            android:layout_height="wrap_content"
+            android:src="@drawable/photo_loading_holder"
+            android:scaleType="fitXY"
+            android:adjustViewBounds="true"/>
 
     </LinearLayout>
 

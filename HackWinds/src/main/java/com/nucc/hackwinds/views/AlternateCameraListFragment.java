@@ -12,6 +12,7 @@ import android.widget.ListView;
 import com.nucc.hackwinds.R;
 import com.nucc.hackwinds.adapters.AlternateCameraListAdapter;
 import com.nucc.hackwinds.models.CameraModel;
+import com.nucc.hackwinds.types.Camera;
 
 public class AlternateCameraListFragment extends ListFragment {
 
@@ -46,15 +47,22 @@ public class AlternateCameraListFragment extends ListFragment {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        String camera = mAlternateCameraListAdapter.getItem(position);
-        String location = mAlternateCameraListAdapter.getHeaderTitle(position);
+        String locationName = mAlternateCameraListAdapter.getHeaderTitle(position);
+        String cameraName = mAlternateCameraListAdapter.getItem(position);
 
-        IsoCameraFragment cameraFragment = new IsoCameraFragment();
-        cameraFragment.setCamera(location, camera);
+        Camera camera = CameraModel.getInstance(getActivity().getApplicationContext()).getCamera(locationName, cameraName);
+        if (camera == null) {
+            return;
+        }
 
-        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.content_frame, cameraFragment);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+        if (camera.isImageOnlyCamera()) {
+            IsoCameraFragment cameraFragment = new IsoCameraFragment();
+            cameraFragment.setCamera(camera);
+
+            FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.content_frame, cameraFragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+        }
     }
 }

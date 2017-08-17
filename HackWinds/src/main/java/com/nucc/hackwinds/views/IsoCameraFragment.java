@@ -1,43 +1,31 @@
 package com.nucc.hackwinds.views;
 
-import android.app.ProgressDialog;
+
 import android.graphics.Bitmap;
-import android.media.MediaPlayer;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.widget.ImageView;
-import android.widget.MediaController;
 import android.widget.Switch;
 import android.os.Handler;
 import android.widget.TextView;
 import android.content.Context;
-import android.widget.VideoView;
 
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.nucc.hackwinds.R;
 import com.nucc.hackwinds.models.CameraModel;
 import com.nucc.hackwinds.types.Camera;
-import com.nucc.hackwinds.utilities.ReachabilityHelper;
 
 public class IsoCameraFragment extends Fragment {
 
     private Camera mCamera;
-    private String mLocationName;
-    private String mCameraName;
     private boolean mAutoRefresh;
 
     private Context mContext;
     private ImageView mCameraImage;
-    private ImageView mPlayButton;
-    private VideoView mVideoView;
-    private WebView mWebView;
 
     Handler mHandler;
     Runnable mRunnable;
@@ -69,43 +57,6 @@ public class IsoCameraFragment extends Fragment {
         View V = inflater.inflate(R.layout.iso_camera_fragment, container, false);
 
         mCameraImage = (ImageView) V.findViewById(R.id.latest_camera_image);
-        mPlayButton = (ImageView) V.findViewById(R.id.iso_video_play_button);
-        mVideoView = (VideoView) V.findViewById(R.id.iso_video_view);
-        mWebView = (WebView) V.findViewById(R.id.camera_web_view);
-        mWebView.getSettings().setJavaScriptEnabled(true);
-
-        // Set the onClick callback for the play button to start the VideoView
-        mPlayButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // Hide the play button and the holder image
-                if (ReachabilityHelper.deviceHasInternetAccess(getActivity())) {
-                    v.setVisibility(View.GONE);
-                    ImageView holderImage = (ImageView) getActivity().findViewById(R.id.latest_camera_image);
-                    holderImage.setVisibility(View.GONE);
-                    mWebView.setVisibility(View.GONE);
-
-                    // Show the VideoView
-                    mVideoView.setVisibility(View.VISIBLE);
-
-                    // Execute the video loading AsyncTask
-                    new LoadVideoStreamTask().execute(mCamera.videoURL);
-                }
-            }
-        });
-
-        // Set long click listener to launch in the full screen intent
-        mPlayButton.setLongClickable(true);
-        mPlayButton.setOnLongClickListener(new View.OnLongClickListener() {
-            public boolean onLongClick(View v) {
-                if (ReachabilityHelper.deviceHasInternetAccess(getActivity())) {
-                    // Launch the full screen video activity
-                    VideoPlayerActivity.showRemoteVideo(getActivity(), mCamera.videoURL);
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        });
 
         final Switch autoRefreshSwitch = (Switch) V.findViewById(R.id.auto_refresh_toggle);
         mAutoRefresh = autoRefreshSwitch.isChecked();
@@ -133,7 +84,7 @@ public class IsoCameraFragment extends Fragment {
         if (mCamera != null) {
             // Only trigger an image load if there is a url
             AlternateCameraActivity alternateCameraActivity = (AlternateCameraActivity) getActivity();
-            alternateCameraActivity.setToolbarTitle(mCameraName);
+            alternateCameraActivity.setToolbarTitle(mCamera.getCameraName());
             loadCameraImage();
         }
 
@@ -149,49 +100,16 @@ public class IsoCameraFragment extends Fragment {
         mHandler.removeCallbacks(mRunnable);
     }
 
-    public void setCamera(String location, String camera) {
-        mLocationName = location;
-        mCameraName = camera;
+    public void setCamera(Camera camera) {
+        if (camera == null) {
+            return;
+        }
 
-        // Calling this ona  null object reference is fine because the camera model already needs to have
-        // a context
-        mCamera = CameraModel.getInstance(null).cameraLocations.get(mLocationName).get(mCameraName);
+        mCamera = camera;
         mAutoRefresh = mCamera.refreshable;
     }
 
     public void loadCameraImage() {
-        if (!mCamera.videoURL.equals("")) {
-            // If it is a video camera get rid of the refresh options
-            Switch autoRefreshToggle = (Switch)getActivity().findViewById(R.id.auto_refresh_toggle);
-            autoRefreshToggle.performClick();
-            getActivity().findViewById(R.id.image_refresh_info_view).setVisibility(View.GONE);
-
-            // Show the video info
-            ((TextView) getActivity().findViewById(R.id.video_info_text)).setText(mCamera.info);
-            getActivity().findViewById(R.id.video_info_view).setVisibility(View.VISIBLE);
-            return;
-        } else if (!mCamera.webURL.equals("")) {
-            // Hide auto refresh options
-            Switch autoRefreshToggle = (Switch)getActivity().findViewById(R.id.auto_refresh_toggle);
-            autoRefreshToggle.performClick();
-            getActivity().findViewById(R.id.image_refresh_info_view).setVisibility(View.GONE);
-
-            // Show the view info
-            ((TextView) getActivity().findViewById(R.id.video_info_text)).setText(mCamera.info);
-            getActivity().findViewById(R.id.video_info_view).setVisibility(View.VISIBLE);
-
-            // Hide everything that isnt relevant
-            mVideoView.setVisibility(View.GONE);
-            mCameraImage.setVisibility(View.GONE);
-            mPlayButton.setVisibility(View.GONE);
-
-            // Show the web view
-            mWebView.setVisibility(View.VISIBLE);
-            mWebView.loadUrl(mCamera.webURL);
-
-            return;
-        }
-
         if (mContext != null) {
             // If there is a context, then load the next image and create the callback to set it as the current image
             Ion.with(mContext).load(mCamera.imageURL).noCache().asBitmap().setCallback(new FutureCallback<Bitmap>() {
@@ -203,11 +121,6 @@ public class IsoCameraFragment extends Fragment {
                     } else {
                         // Everything is ok, so set the image
                         mCameraImage.setImageBitmap(result);
-
-                        // If its the point judith view, show the play button
-                        if (!mCamera.videoURL.equals("")) {
-                            mPlayButton.setVisibility(View.VISIBLE);
-                        }
 
                         // If enabled, start the countdown to loading the next view
                         if (mAutoRefresh) {
@@ -229,96 +142,6 @@ public class IsoCameraFragment extends Fragment {
             autoRefreshDurationLabel.setVisibility(View.VISIBLE);
         } else {
             autoRefreshDurationLabel.setVisibility(View.GONE);
-        }
-    }
-
-    private void finishedWithVideo() {
-        if (mVideoView != null) {
-            if (mVideoView.isPlaying()) {
-                mVideoView.stopPlayback();
-
-                // And make sure to hide it again
-                mVideoView.setVisibility(View.GONE);
-            }
-
-            // Show the play button again
-            mPlayButton.setVisibility(View.VISIBLE);
-
-            // Show the holder image again
-            ImageView holderPic = (ImageView) getActivity().findViewById(R.id.latest_camera_image);
-            holderPic.setVisibility(View.VISIBLE);
-        }
-    }
-
-    public class LoadVideoStreamTask extends AsyncTask<String, Uri, Void> {
-        ProgressDialog dialog;
-
-        protected void onPreExecute() {
-            // Show a progress dialog so the user knows the videoview is loading
-            dialog = new ProgressDialog(getActivity());
-            dialog.setMessage("Loading Live Stream...");
-            dialog.setCancelable(false);
-            dialog.show();
-        }
-
-        protected void onProgressUpdate(final Uri... uri) {
-
-            try {
-                // Set the video url to the stream
-                mVideoView.setVideoURI(uri[0]);
-                mVideoView.requestFocus();
-
-                // Set the media controls
-                mVideoView.setMediaController(new MediaController(getActivity()));
-
-                // On Prepared Listener
-                mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-
-                    public void onPrepared(MediaPlayer mp) {
-                        // When the stream is ready start the videoview and
-                        // hide the progress dialog
-                        mVideoView.start();
-                        dialog.dismiss();
-                    }
-                });
-
-                // On Completion Listener
-                mVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                    public void onCompletion(MediaPlayer mp) {
-                        // The video is done so show the original interface
-                        finishedWithVideo();
-                    }
-                });
-
-                // On Error Listener
-                mVideoView.setOnErrorListener(new MediaPlayer.OnErrorListener() {
-                    public boolean onError(MediaPlayer mp, int what, int extra) {
-                        // This is expected because the video times out in a way that I can't catch.
-                        // Just show the original interface
-                        finishedWithVideo();
-                        return true;
-                    }
-                });
-
-            } catch (IllegalArgumentException e) {
-                e.printStackTrace();
-            } catch (IllegalStateException e) {
-                e.printStackTrace();
-            } catch (SecurityException e) {
-                e.printStackTrace();
-            }
-        }
-
-        @Override
-        protected Void doInBackground(String... params) {
-            try {
-                // Check the progress of the download
-                Uri uri = Uri.parse(params[0]);
-                publishProgress(uri);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
         }
     }
 

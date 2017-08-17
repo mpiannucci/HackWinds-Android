@@ -58,6 +58,10 @@ public class CameraModel {
         locationCount = 0;
     }
 
+    public Camera getCamera(String locationName, String cameraName) {
+        return cameraLocations.get(locationName).get(cameraName);
+    }
+
     public void fetchCameraURLs() {
         synchronized (this) {
             if (!mForceReload) {
@@ -131,7 +135,7 @@ public class CameraModel {
                     JSONObject thisCameraObject = locationObject.getJSONObject(cameraName);
 
                     // Create the new camera object for the camera
-                    Camera thisCamera = new Camera();
+                    Camera thisCamera = new Camera(locationName, cameraName);
 
                     // For now everything else is common
                     thisCamera.imageURL = thisCameraObject.getString("Image");
