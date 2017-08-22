@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         mToolbar = ( Toolbar ) findViewById( R.id.toolbar );
         setSupportActionBar( mToolbar );
         getSupportActionBar().setDisplayShowTitleEnabled( false );
+        mToolbar.setTitle("Rhode Island");
 
         // SharedPreference setup, always set the buoys to start at block island
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences( getApplicationContext() );
@@ -60,39 +61,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Set up the spinner locations
         initLocationArrays();
-        mLocationAdapter = new LocationArrayAdapter( this, mForecastLocations );
-        mLocationSpinner = ( Spinner ) findViewById( R.id.navigation_spinner );
-        mLocationSpinner.setEnabled( false );
-        mLocationSpinner.setAdapter( mLocationAdapter );
-        mLocationSpinner.setOnItemSelectedListener( new AdapterView.OnItemSelectedListener() {
-
-            @Override
-            public void onItemSelected( AdapterView<?> parent, View view, int position, long id ) {
-                if ( initialPageLoad ) {
-                    initialPageLoad = false;
-                    return;
-                }
-
-                String prefKey;
-                final String currentPageTitle = String.valueOf( mAdapter.getPageTitle( mViewPager.getCurrentItem() ) );
-                if ( currentPageTitle.equals( "FORECAST" ) || currentPageTitle.equals( "LIVE" ) ) {
-                    prefKey = SettingsActivity.FORECAST_LOCATION_KEY;
-                } else if ( currentPageTitle.equals( "BUOYS" ) ) {
-                    prefKey = SettingsActivity.BUOY_LOCATION_KEY;
-                } else if ( currentPageTitle.equals( "TIDE" ) ) {
-                    prefKey = SettingsActivity.TIDE_LOCATION_KEY;
-                } else {
-                    return;
-                }
-                SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences( getApplicationContext() );
-                sharedPrefs.edit().putString( prefKey, mLocationAdapter.getItem( position ) ).apply();
-            }
-
-            @Override
-            public void onNothingSelected( AdapterView<?> parent ) {
-                // Do nothing
-            }
-        } );
 
         // Create the system tint manager with this context
         mTintManager = new SystemBarTintManager( this );
@@ -119,20 +87,12 @@ public class MainActivity extends AppCompatActivity {
                 String title = String.valueOf( mAdapter.getPageTitle( position ) );
 
                 if ( title.equals( "LIVE" ) || title.equals( "FORECAST" ) ) {
-                    mLocationAdapter.changeLocations( mForecastLocations );
-                    mLocationAdapter.notifyDataSetChanged();
-                    mLocationSpinner.setSelection( 0 );
-                    mLocationSpinner.setEnabled( false );
+                    mToolbar.setTitle(mForecastLocations.get(0));
                 } else if ( title.equals( "BUOYS" ) ) {
-                    mLocationAdapter.changeLocations( mBuoyLocations );
-                    mLocationAdapter.notifyDataSetChanged();
-                    setSpinnerBuoyLocation();
-                    mLocationSpinner.setEnabled( true );
+                    // TODO
+
                 } else if ( title.equals( "TIDE" ) ) {
-                    mLocationAdapter.changeLocations( mTideLocation );
-                    mLocationAdapter.notifyDataSetChanged();
-                    mLocationSpinner.setSelection( 0 );
-                    mLocationSpinner.setEnabled( false );
+                    mToolbar.setTitle(mForecastLocations.get(0));
                 }
             }
 
@@ -189,21 +149,6 @@ public class MainActivity extends AppCompatActivity {
 
         mTideLocation = new ArrayList<>();
         mTideLocation.add( "Point Judith Harbor" );
-    }
-
-    public void setSpinnerBuoyLocation() {
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences( getApplicationContext() );
-        String buoyLocation = sharedPrefs.getString( SettingsActivity.BUOY_LOCATION_KEY, BuoyModel.BLOCK_ISLAND_LOCATION );
-        int index = 0;
-        for ( int i = 0; i < mLocationSpinner.getCount(); i++ ) {
-            if ( mLocationSpinner.getItemAtPosition( i ).equals( buoyLocation ) ) {
-                index = i;
-                break;
-            }
-        }
-
-        // Set the spinner to the correct index
-        mLocationSpinner.setSelection( index );
     }
 
     public class MainPagerAdapter extends FragmentPagerAdapter {
