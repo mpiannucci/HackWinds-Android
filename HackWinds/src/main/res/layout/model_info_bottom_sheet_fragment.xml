@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/abc_dialog_list_padding_vertical_material"
+    android:paddingLeft="@dimen/abc_list_item_padding_horizontal_material"
+    android:paddingRight="@dimen/abc_list_item_padding_horizontal_material"
+    android:paddingTop="@dimen/abc_dialog_list_padding_vertical_material">
+
+    <TextView
+        android:id="@+id/model_info_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/title_model_info_fragment"
+        android:layout_marginBottom="@dimen/card_header_bottom_margin"
+        style="@style/DetailedForecastItemHeaderText"/>
+
+    <TextView
+        android:id="@+id/model_info_update_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/card_header_bottom_margin"
+        style="@style/WaveWatchOptionText" />
+
+    <TextView
+        android:id="@+id/model_info_wave"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/card_header_bottom_margin"
+        style="@style/WaveWatchOptionText"/>
+
+    <TextView
+        android:id="@+id/model_info_wind"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/card_header_bottom_margin"
+        style="@style/WaveWatchOptionText"/>
+
+</LinearLayout>

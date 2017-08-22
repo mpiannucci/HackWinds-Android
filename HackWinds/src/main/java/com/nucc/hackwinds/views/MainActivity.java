@@ -3,9 +3,14 @@ package com.nucc.hackwinds.views;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.BottomSheetDialog;
+import android.support.design.widget.BottomSheetDialogFragment;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -37,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<String> mForecastLocations;
     private ArrayList<String> mBuoyLocations;
     private ArrayList<String> mTideLocations;
+    private ToolbarClickListener mToolbarClickListener;
     private SharedPreferences.OnSharedPreferenceChangeListener mSharedPrefsChangedListener;
     private boolean initialPageLoad = true;
 
@@ -72,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
         mAdapter = new MainPagerAdapter( getSupportFragmentManager() );
         mViewPager.setAdapter( mAdapter );
         mSlidingTabStrip.setViewPager( mViewPager );
+        mToolbarClickListener = new ToolbarClickListener(getString(R.string.action_live).toUpperCase(Locale.getDefault()));
 
         mSlidingTabStrip.setOnPageChangeListener( new ViewPager.OnPageChangeListener() {
 
@@ -83,18 +90,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageSelected( int position ) {
                 String title = String.valueOf( mAdapter.getPageTitle( position ) );
-
-                if ( title.equals( "LIVE" ) || title.equals( "FORECAST" ) ) {
+                Locale l = Locale.getDefault();
+                if ( title.equals( getString(R.string.action_live).toUpperCase(l)) || title.equals( getString(R.string.action_forecast).toUpperCase(l) ) ) {
                     mToolbar.setTitle(mForecastLocations.get(0));
-                } else if ( title.equals( "BUOYS" ) ) {
-                    // TODO
+
+                } else if ( title.equals(getString(R.string.action_buoy).toUpperCase(l) ) ) {
                     SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences( getApplicationContext() );
                     String buoyLocation = sharedPrefs.getString( SettingsActivity.BUOY_LOCATION_KEY,
                             BuoyModel.BLOCK_ISLAND_LOCATION );
                     mToolbar.setTitle(buoyLocation);
-                } else if ( title.equals( "TIDE" ) ) {
+                } else if ( title.equals( getString(R.string.action_tide) ) ) {
                     mToolbar.setTitle(mTideLocations.get(0));
                 }
+                mToolbarClickListener.setCurrentPageTitle(title);
             }
 
             @Override
@@ -108,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
         mTintManager.setStatusBarTintColor( getResources().getColor( R.color.hackwinds_blue ) );
         mToolbar.setBackgroundColor( getResources().getColor( R.color.hackwinds_blue ) );
 
+        mToolbar.setOnClickListener(mToolbarClickListener);
     }
 
     @Override
@@ -199,5 +208,38 @@ public class MainActivity extends AppCompatActivity {
             }
             return null;
         }
+    }
+
+    public class ToolbarClickListener implements View.OnClickListener {
+
+        String mCurrentPageTitle;
+
+        public ToolbarClickListener (String pageTitle) {
+            mCurrentPageTitle = pageTitle;
+        }
+
+        public void setCurrentPageTitle(String pageTitle) {
+            mCurrentPageTitle = pageTitle;
+        }
+
+        @Override
+        public void onClick(View v) {
+            Locale l = Locale.getDefault();
+            if (mCurrentPageTitle.equals(getString(R.string.action_live).toUpperCase(l)) || mCurrentPageTitle.equals(getString(R.string.action_forecast).toUpperCase(l))) {
+                showModelInfoDialog();
+            } else if (mCurrentPageTitle.equals(getString(R.string.action_buoy).toUpperCase(l))) {
+                showBuoyLocationPickerDialog();
+            }
+        }
+
+        private void showModelInfoDialog() {
+            ModelInfoBottomSheetFragment fragmentModalBottomSheet = new ModelInfoBottomSheetFragment();
+            fragmentModalBottomSheet.show(getSupportFragmentManager(), "Model Info");
+        }
+
+        private void showBuoyLocationPickerDialog() {
+            // TODO
+        }
+
     }
 }
