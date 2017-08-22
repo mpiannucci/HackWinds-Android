@@ -1,21 +1,17 @@
 package com.nucc.hackwinds.views;
 
 import android.app.Dialog;
+import android.support.annotation.IdRes;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.design.widget.CoordinatorLayout;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.RadioGroup;
 
 import com.nucc.hackwinds.R;
-import com.nucc.hackwinds.models.ForecastModel;
 
 
-public class ModelInfoBottomSheetFragment extends BottomSheetDialogFragment {
-
-    private TextView mWaveModelInfoTextView;
-    private TextView mWindModelInfoTextView;
-    private TextView mUpdateTimeTextView;
+public class BuoyPickerBottomSheetDialogFragment extends BottomSheetDialogFragment {
 
     private BottomSheetBehavior.BottomSheetCallback mBottomSheetBehaviorCallback = new BottomSheetBehavior.BottomSheetCallback() {
 
@@ -45,14 +41,16 @@ public class ModelInfoBottomSheetFragment extends BottomSheetDialogFragment {
     @Override
     public void setupDialog(Dialog dialog, int style) {
         super.setupDialog(dialog, style);
-        View contentView = View.inflate(getContext(), R.layout.model_info_bottom_sheet_fragment, null);
+        View contentView = View.inflate(getContext(), R.layout.buoy_picker_bottom_sheet_fragment, null);
         dialog.setContentView(contentView);
 
-        mWaveModelInfoTextView = (TextView) contentView.findViewById(R.id.model_info_wave);
-        mWindModelInfoTextView = (TextView) contentView.findViewById(R.id.model_info_wind);
-        mUpdateTimeTextView = (TextView) contentView.findViewById(R.id.model_info_update_time);
-
-        updateModelInfo();
+        RadioGroup buoyLocationRadioGroup = (RadioGroup) contentView.findViewById(R.id.buoy_location_radio_group);
+        buoyLocationRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
+                // TODO
+            }
+        });
 
         CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) ((View) contentView.getParent()).getLayoutParams();
         CoordinatorLayout.Behavior behavior = params.getBehavior();
@@ -61,13 +59,4 @@ public class ModelInfoBottomSheetFragment extends BottomSheetDialogFragment {
             ((BottomSheetBehavior) behavior).setBottomSheetCallback(mBottomSheetBehaviorCallback);
         }
     }
-
-    public void updateModelInfo() {
-        ForecastModel forecastModel = ForecastModel.getInstance(getActivity());
-
-        mWaveModelInfoTextView.setText("Wave Model: " + forecastModel.waveModelName);
-        mWindModelInfoTextView.setText("Wind Model: " + forecastModel.windModelName);
-        mUpdateTimeTextView.setText("Updated: " + forecastModel.waveModelRun);
-    }
-
 }

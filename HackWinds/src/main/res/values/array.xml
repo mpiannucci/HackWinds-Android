@@ -13,5 +13,6 @@
         <item name="block_island">Block Island</item>
         <item name="montauk">Montauk</item>
         <item name="nantucket">Nantucket</item>
+        <item name="texastower">Texas Tower</item>
     </string-array>
 </resources>

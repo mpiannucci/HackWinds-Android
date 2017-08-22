@@ -233,12 +233,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
         private void showModelInfoDialog() {
-            ModelInfoBottomSheetFragment fragmentModalBottomSheet = new ModelInfoBottomSheetFragment();
-            fragmentModalBottomSheet.show(getSupportFragmentManager(), "Model Info");
+            ModelInfoBottomSheetFragment modelInfoBottomSheetFragment = new ModelInfoBottomSheetFragment();
+            modelInfoBottomSheetFragment.show(getSupportFragmentManager(), "Model Info");
         }
 
         private void showBuoyLocationPickerDialog() {
-            // TODO
+            BuoyPickerBottomSheetDialogFragment buoyPickerBottomSheetDialogFragment = new BuoyPickerBottomSheetDialogFragment();
+            buoyPickerBottomSheetDialogFragment.show(getSupportFragmentManager(), "Buoy Picker");
         }
 
     }

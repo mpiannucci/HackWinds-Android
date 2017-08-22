@@ -115,7 +115,16 @@
     <!-- Model Info Dialog Fragment -->
     <string name="title_model_info_fragment">Rhode Island Surf Forecast</string>
 
+    <!-- Buoy Picker Dialog Fragment -->
+    <string name="title_buoy_picker_fragment">Change Buoy Location</string>
+
     <!-- Misc Strings -->
     <string name="detailed_forecast_item_swell_text">Swell:</string>
+
+    <!-- Buoy Location Strings -->
+    <string name="block_island_location">Block Island</string>
+    <string name="montauk_location">Montauk</string>
+    <string name="nantucket_location">Nantucket</string>
+    <string name="texas_tower_location">Texas Tower</string>
 
 </resources>
