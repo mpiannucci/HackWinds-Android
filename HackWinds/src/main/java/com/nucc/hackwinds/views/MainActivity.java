@@ -5,6 +5,7 @@ import java.util.Locale;
 
 import android.app.Dialog;
 import android.content.SharedPreferences;
+import android.media.audiofx.BassBoost;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.BottomSheetBehavior;
@@ -34,6 +35,12 @@ import com.nucc.hackwinds.models.TideModel;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 public class MainActivity extends AppCompatActivity {
+
+    static final int LIVE_PAGE_INDEX = 0;
+    static final int FORECAST_PAGE_INDEX = 1;
+    static final int BUOY_PAGE_INDEX = 2;
+    static final int TIDE_PAGE_INDEX = 3;
+
     private Toolbar mToolbar;
     private PagerSlidingTabStrip mSlidingTabStrip;
     private ViewPager mViewPager;
@@ -44,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<String> mTideLocations;
     private ToolbarClickListener mToolbarClickListener;
     private SharedPreferences.OnSharedPreferenceChangeListener mSharedPrefsChangedListener;
-    private boolean initialPageLoad = true;
 
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
@@ -78,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         mAdapter = new MainPagerAdapter( getSupportFragmentManager() );
         mViewPager.setAdapter( mAdapter );
         mSlidingTabStrip.setViewPager( mViewPager );
-        mToolbarClickListener = new ToolbarClickListener(getString(R.string.action_live).toUpperCase(Locale.getDefault()));
+        mToolbarClickListener = new ToolbarClickListener();
 
         mSlidingTabStrip.setOnPageChangeListener( new ViewPager.OnPageChangeListener() {
 
@@ -89,20 +95,20 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected( int position ) {
-                String title = String.valueOf( mAdapter.getPageTitle( position ) );
-                Locale l = Locale.getDefault();
-                if ( title.equals( getString(R.string.action_live).toUpperCase(l)) || title.equals( getString(R.string.action_forecast).toUpperCase(l) ) ) {
-                    mToolbar.setTitle(mForecastLocations.get(0));
-
-                } else if ( title.equals(getString(R.string.action_buoy).toUpperCase(l) ) ) {
-                    SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences( getApplicationContext() );
-                    String buoyLocation = sharedPrefs.getString( SettingsActivity.BUOY_LOCATION_KEY,
-                            BuoyModel.BLOCK_ISLAND_LOCATION );
-                    mToolbar.setTitle(buoyLocation);
-                } else if ( title.equals( getString(R.string.action_tide) ) ) {
-                    mToolbar.setTitle(mTideLocations.get(0));
+                switch (position) {
+                    case LIVE_PAGE_INDEX:
+                    case FORECAST_PAGE_INDEX:
+                        mToolbar.setTitle(mForecastLocations.get(0));
+                        break;
+                    case BUOY_PAGE_INDEX:
+                        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences( getApplicationContext() );
+                        String buoyLocation = sharedPrefs.getString( SettingsActivity.BUOY_LOCATION_KEY,
+                                BuoyModel.BLOCK_ISLAND_LOCATION );
+                        mToolbar.setTitle(buoyLocation);
+                        break;
+                    case TIDE_PAGE_INDEX:
+                        mToolbar.setTitle(mTideLocations.get(0));
                 }
-                mToolbarClickListener.setCurrentPageTitle(title);
             }
 
             @Override
@@ -117,6 +123,16 @@ public class MainActivity extends AppCompatActivity {
         mToolbar.setBackgroundColor( getResources().getColor( R.color.hackwinds_blue ) );
 
         mToolbar.setOnClickListener(mToolbarClickListener);
+
+        mSharedPrefsChangedListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+            @Override
+            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+                if (mViewPager.getCurrentItem() == 2 && s.equals(SettingsActivity.BUOY_LOCATION_KEY)) {
+                    mToolbar.setTitle(sharedPreferences.getString(SettingsActivity.BUOY_LOCATION_KEY,BuoyModel.BLOCK_ISLAND_LOCATION));
+                }
+            }
+        };
+        sharedPrefs.registerOnSharedPreferenceChangeListener(mSharedPrefsChangedListener);
     }
 
     @Override
@@ -172,13 +188,13 @@ public class MainActivity extends AppCompatActivity {
             // get the title for each of the tabs
             Locale l = Locale.getDefault();
             switch ( position ) {
-                case 0:
+                case LIVE_PAGE_INDEX:
                     return getString( R.string.action_live ).toUpperCase( l );
-                case 1:
+                case FORECAST_PAGE_INDEX:
                     return getString( R.string.action_forecast ).toUpperCase( l );
-                case 2:
+                case BUOY_PAGE_INDEX:
                     return getString( R.string.action_buoy ).toUpperCase( l );
-                case 3:
+                case TIDE_PAGE_INDEX:
                     return getString( R.string.action_tide ).toUpperCase( l );
             }
             return null;
@@ -193,16 +209,16 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public Fragment getItem( int position ) {
             switch ( position ) {
-                case 0:
+                case LIVE_PAGE_INDEX:
                     // First tab was clicked, return Live fragment
                     return new CurrentFragment();
-                case 1:
+                case FORECAST_PAGE_INDEX:
                     // Second is the Forecast fragment
                     return new ForecastFragment();
-                case 2:
+                case BUOY_PAGE_INDEX:
                     // Then the Buoy Fragment
                     return new BuoyFragment();
-                case 3:
+                case TIDE_PAGE_INDEX:
                     // Lastly the Tide Fragment
                     return new TideFragment();
             }
@@ -212,23 +228,22 @@ public class MainActivity extends AppCompatActivity {
 
     public class ToolbarClickListener implements View.OnClickListener {
 
-        String mCurrentPageTitle;
-
-        public ToolbarClickListener (String pageTitle) {
-            mCurrentPageTitle = pageTitle;
-        }
-
-        public void setCurrentPageTitle(String pageTitle) {
-            mCurrentPageTitle = pageTitle;
+        public ToolbarClickListener () {
         }
 
         @Override
         public void onClick(View v) {
-            Locale l = Locale.getDefault();
-            if (mCurrentPageTitle.equals(getString(R.string.action_live).toUpperCase(l)) || mCurrentPageTitle.equals(getString(R.string.action_forecast).toUpperCase(l))) {
-                showModelInfoDialog();
-            } else if (mCurrentPageTitle.equals(getString(R.string.action_buoy).toUpperCase(l))) {
-                showBuoyLocationPickerDialog();
+            int currentPageIndex = mViewPager.getCurrentItem();
+            switch(currentPageIndex) {
+                case LIVE_PAGE_INDEX:
+                case FORECAST_PAGE_INDEX:
+                    showModelInfoDialog();
+                    break;
+                case BUOY_PAGE_INDEX:
+                    showBuoyLocationPickerDialog();
+                    break;
+                default:
+                    break;
             }
         }
 
