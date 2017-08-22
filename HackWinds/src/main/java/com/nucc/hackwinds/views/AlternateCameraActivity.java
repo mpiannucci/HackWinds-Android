@@ -51,7 +51,7 @@ public class AlternateCameraActivity extends AppCompatActivity {
     }
 
     public void resetToolbarTitle() {
-        setToolbarTitle("Alternate Cameras");
+        setToolbarTitle(getResources().getString(R.string.title_activity_alternate_cameras));
     }
 
 }

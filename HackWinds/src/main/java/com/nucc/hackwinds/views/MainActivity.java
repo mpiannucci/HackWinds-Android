@@ -34,11 +34,9 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private MainPagerAdapter mAdapter;
     private SystemBarTintManager mTintManager;
-    private Spinner mLocationSpinner;
-    private LocationArrayAdapter mLocationAdapter;
     private ArrayList<String> mForecastLocations;
     private ArrayList<String> mBuoyLocations;
-    private ArrayList<String> mTideLocation;
+    private ArrayList<String> mTideLocations;
     private SharedPreferences.OnSharedPreferenceChangeListener mSharedPrefsChangedListener;
     private boolean initialPageLoad = true;
 
@@ -90,9 +88,12 @@ public class MainActivity extends AppCompatActivity {
                     mToolbar.setTitle(mForecastLocations.get(0));
                 } else if ( title.equals( "BUOYS" ) ) {
                     // TODO
-
+                    SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences( getApplicationContext() );
+                    String buoyLocation = sharedPrefs.getString( SettingsActivity.BUOY_LOCATION_KEY,
+                            BuoyModel.BLOCK_ISLAND_LOCATION );
+                    mToolbar.setTitle(buoyLocation);
                 } else if ( title.equals( "TIDE" ) ) {
-                    mToolbar.setTitle(mForecastLocations.get(0));
+                    mToolbar.setTitle(mTideLocations.get(0));
                 }
             }
 
@@ -147,8 +148,8 @@ public class MainActivity extends AppCompatActivity {
         mBuoyLocations.add( "Nantucket" );
         mBuoyLocations.add( "Texas Tower" );
 
-        mTideLocation = new ArrayList<>();
-        mTideLocation.add( "Point Judith Harbor" );
+        mTideLocations = new ArrayList<>();
+        mTideLocations.add( "Point Judith Harbor" );
     }
 
     public class MainPagerAdapter extends FragmentPagerAdapter {

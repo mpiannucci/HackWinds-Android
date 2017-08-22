@@ -10,7 +10,7 @@
     <string name="action_buoy">Buoys</string>
     <string name="action_tide">Tide</string>
     <string name="action_pics">Still Camera</string>
-    <string name="action_alt_cameras">Alternate Cameras</string>
+    <string name="action_alt_cameras">Cameras</string>
     <string name="action_buoy_history">Buoy History</string>
 
     <!-- Overview Page -->
@@ -79,14 +79,14 @@
     <string name="pref_premium_code_input_hint">Enter code</string>
 
     <!-- Detailed Forecast activity -->
-    <string name="title_activity_detailed_forecast">DetailedForecastActivity</string>
+    <string name="title_activity_detailed_forecast">Detailed Forecast</string>
     <string name="detailed_forecast_toolbar_title_holder">Weekday</string>
     <string name="swell_chart_segment">Swell</string>
     <string name="wind_chart_segment">Wind</string>
     <string name="period_chart_segment">Period</string>
 
     <!-- Alternate cameras activity -->
-    <string name="title_activity_alternate_cameras">AlternateCamerasActivity</string>
+    <string name="title_activity_alternate_cameras">Cameras</string>
     <string name="auto_refresh_label">Auto Refresh</string>
     <string name="auto_refresh_frequency">Refresh interval is 3 seconds</string>
     <string name="video_info_holder">Video info loading...</string>
