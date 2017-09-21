@@ -161,6 +161,15 @@ public class BuoyModel {
         }
     }
 
+    public Boolean fetchBuoyActive() {
+        try {
+            String rawActiveData = Ion.with(mContext).load(mCurrentContainer.createStationInfoURL()).asString().get();
+            return parseStationActive(rawActiveData);
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     public void fetchNewBuoyData() {
         resetData();
         fetchBuoyData();
@@ -390,6 +399,24 @@ public class BuoyModel {
         }
 
         return buoy;
+    }
+
+    private Boolean parseStationActive(String rawData) {
+        Boolean active = false;
+
+        if (rawData == null) {
+            return active;
+        }
+
+        try {
+            // Make a json array from the response string
+            JSONObject rawBuoyObject = new JSONObject(rawData);
+            active = rawBuoyObject.getBoolean("active");
+        } catch(JSONException e) {
+            return active;
+        }
+
+        return active;
     }
 
     private double convertMeterToFoot(double meterValue) {

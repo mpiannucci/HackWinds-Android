@@ -14,6 +14,11 @@ public class BuoyDataContainer {
         buoyID = id;
     }
 
+    public String createStationInfoURL() {
+        final String BASE_STATION_INFO_URL = "https://mpitester-13.appspot.com/api/station/%@/info";
+        return String.format(Locale.US, BASE_STATION_INFO_URL, buoyID);
+    }
+
     public String createLatestWaveDataURL() {
         final String BASE_DATA_URL = "https://mpitester-13.appspot.com/api/station/%s/data/latest/spectra";
         return String.format(Locale.US, BASE_DATA_URL, buoyID);
