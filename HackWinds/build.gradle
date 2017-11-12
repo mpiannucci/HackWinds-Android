@@ -37,12 +37,12 @@ dependencies {
     compile 'com.android.support:cardview-v7:24.2.0'
     compile 'com.android.support:design:24.2.0'
     compile 'com.koushikdutta.ion:ion:2.+'
-    compile 'info.hoang8f:android-segmented:1.0.2'
     compile 'com.jpardogo.materialtabstrip:library:1.0.6'
     compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
     compile 'com.squareup.picasso:picasso:2.3.2'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.github.PhilJay:MPAndroidChart:v2.2.4'
     compile 'com.android.support:customtabs:24.2.0'
+    compile ([group: 'com.google.api-client', name: 'google-api-client', version: '1.23.0'])
     compile project(':AndroidImageSlider')
 }
