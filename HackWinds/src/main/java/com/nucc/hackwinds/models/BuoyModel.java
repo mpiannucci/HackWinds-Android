@@ -5,10 +5,18 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Base64;
 
+import com.appspot.mpitester_13.station.Station;
+import com.appspot.mpitester_13.station.model.ApiApiMessagesDataMessage;
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.json.gson.GsonFactory;
+import com.google.gson.GsonBuilder;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.nucc.hackwinds.listeners.BuoyChangedListener;
 import com.nucc.hackwinds.listeners.LatestBuoyFetchListener;
+import com.nucc.hackwinds.tasks.Credentials;
+import com.nucc.hackwinds.tasks.FetchBuoyLatestDataTask;
+import com.nucc.hackwinds.tasks.FetchBuoySpectraDataTask;
 import com.nucc.hackwinds.types.Buoy;
 import com.nucc.hackwinds.types.BuoyDataContainer;
 import com.nucc.hackwinds.types.Swell;
@@ -34,11 +42,13 @@ public class BuoyModel {
     final public static String BLOCK_ISLAND_LOCATION = "Block Island";
     final public static String MONTAUK_LOCATION = "Montauk";
     final public static String NANTUCKET_LOCATION = "Nantucket";
+    final public static String LONG_ISLAND_LOCATION = "Long Island";
     final public static String NEWPORT_LOCATION = "Newport";
     final public static String TEXAS_TOWER_LOCATION = "Texas Tower";
 
     // Member variables
     private static BuoyModel mInstance;
+    private Station mStationService;
     private String mCurrentLocation;
     private BuoyDataContainer mCurrentContainer;
     private HashMap<String, BuoyDataContainer> mBuoyDataContainers;
@@ -63,6 +73,10 @@ public class BuoyModel {
 
         // Initialize buoy containers
         initBuoyContainers();
+
+        // Create the service
+        Station.Builder serviceBuilder = new Station.Builder(AndroidHttp.newCompatibleTransport(), new GsonFactory(),null);
+        mStationService = serviceBuilder.build();
 
         // Set up the settings changed listeners
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
@@ -89,6 +103,7 @@ public class BuoyModel {
         final String BLOCK_ISLAND_BUOY_ID = "44097";
         final String MONTAUK_BUOY_ID = "44017";
         final String NANTUCKET_BUOY_ID = "44008";
+        final String LONG_ISLAND_BUOY_ID = "44025";
         final String NEWPORT_BUOY_ID = "nwpr1";
         final String TEXAS_TOWER_BUOY_ID = "44066";
 
@@ -106,6 +121,10 @@ public class BuoyModel {
         // Nantucket
         BuoyDataContainer ackContainer = new BuoyDataContainer(NANTUCKET_BUOY_ID);
         mBuoyDataContainers.put(NANTUCKET_LOCATION, ackContainer);
+
+        // Long Island
+        BuoyDataContainer liContainer = new BuoyDataContainer(LONG_ISLAND_BUOY_ID);
+        mBuoyDataContainers.put(LONG_ISLAND_LOCATION, liContainer);
 
         // Newport
         BuoyDataContainer nwpContainer = new BuoyDataContainer(NEWPORT_BUOY_ID);
@@ -148,12 +167,12 @@ public class BuoyModel {
             return;
         }
 
-        if (mCurrentContainer.buoyData.timestamp == null) {
+        if (mCurrentContainer.buoyData.getDate() == null) {
             return;
         }
 
         Date now = new Date();
-        long rawTimeDiff = now.getTime() - mCurrentContainer.buoyData.timestamp.getTime();
+        long rawTimeDiff = now.getTime() - mCurrentContainer.buoyData.getDate().getValue();
         int minuteDiff = (int)TimeUnit.MILLISECONDS.toMinutes(rawTimeDiff);
 
         if (mCurrentContainer.updateInterval < minuteDiff) {
@@ -163,8 +182,7 @@ public class BuoyModel {
 
     public Boolean fetchBuoyActive() {
         try {
-            String rawActiveData = Ion.with(mContext).load(mCurrentContainer.createStationInfoURL()).asString().get();
-            return parseStationActive(rawActiveData);
+           return mStationService.info(mCurrentContainer.buoyID).setKey(Credentials.BUOYFINDER_API_KEY).execute().getActive();
         } catch (Exception e) {
             return false;
         }
@@ -196,24 +214,12 @@ public class BuoyModel {
                 }
             }
 
-            Ion.with(mContext).load(mCurrentContainer.createLatestWaveDataURL()).asString().setCallback(new FutureCallback<String>() {
+            FetchBuoySpectraDataTask buoyDataTask = new FetchBuoySpectraDataTask(new FetchBuoySpectraDataTask.BuoySpectraDataTaskListener() {
                 @Override
-                public void onCompleted(Exception e, String result) {
-                    if (e != null) {
-                        // Throw message saying failure to the children listeners
-                        for (BuoyChangedListener listener : mBuoyChangedListeners) {
-                            if (listener != null) {
-                                listener.buoyDataUpdateFailed();
-                            }
-                        }
-                        refreshing = false;
-                        return;
-                    }
-
-                    Buoy latestBuoy = parseBuoyData(result);
+                public void onFinished(ApiApiMessagesDataMessage data) {
                     refreshing = false;
-                    if (latestBuoy != null) {
-                        mCurrentContainer.buoyData = latestBuoy;
+                    if (data != null) {
+                        mCurrentContainer.buoyData = data;
 
                         // Tell the children that there is new data!
                         for (BuoyChangedListener listener : mBuoyChangedListeners) {
@@ -231,7 +237,7 @@ public class BuoyModel {
                     }
                 }
             });
-
+            buoyDataTask.execute(mCurrentContainer.buoyID);
         }
     }
 
@@ -256,24 +262,12 @@ public class BuoyModel {
                 }
             }
 
-            Ion.with(mContext).load(mCurrentContainer.createLatestSummaryURL()).asString().setCallback(new FutureCallback<String>() {
+            FetchBuoyLatestDataTask latestBuoyDataTask = new FetchBuoyLatestDataTask(new FetchBuoyLatestDataTask.BuoyLatestDataTaskListener() {
                 @Override
-                public void onCompleted(Exception e, String result) {
-                    if (e != null) {
-                        // Throw message saying failure to the children listeners
-                        for (BuoyChangedListener listener : mBuoyChangedListeners) {
-                            if (listener != null) {
-                                listener.buoyDataUpdateFailed();
-                            }
-                        }
-                        refreshing = false;
-                        return;
-                    }
-
-                    Buoy latestBuoy = parseBuoyData(result);
+                public void onFinished(ApiApiMessagesDataMessage data) {
                     refreshing = false;
-                    if (latestBuoy != null) {
-                        mCurrentContainer.buoyData = latestBuoy;
+                    if (data != null) {
+                        mCurrentContainer.buoyData = data;
 
                         // Tell the children that there is new data!
                         for (BuoyChangedListener listener : mBuoyChangedListeners) {
@@ -291,6 +285,7 @@ public class BuoyModel {
                     }
                 }
             });
+            latestBuoyDataTask.execute(mCurrentContainer.buoyID);
         }
     }
 
@@ -303,25 +298,19 @@ public class BuoyModel {
                 return;
             }
 
-            Ion.with(mContext).load(buoyDataContainer.createLatestSummaryURL()).asString().setCallback(new FutureCallback<String>() {
+            FetchBuoyLatestDataTask latestDataTask = new FetchBuoyLatestDataTask(new FetchBuoyLatestDataTask.BuoyLatestDataTaskListener() {
                 @Override
-                public void onCompleted(Exception e, String result) {
-                    if (e != null) {
-                        // Throw message saying failure to the listener
-                        listener.latestBuoyFetchFailed();
-                        return;
-                    }
-
-                    Buoy latestBuoy = parseBuoyData(result);
-                    if (latestBuoy != null) {
+                public void onFinished(ApiApiMessagesDataMessage data) {
+                    if (data != null) {
                         // Tell the listener we have the new buoy!
-                        listener.latestBuoyFetchSuccess(latestBuoy);
+                        listener.latestBuoyFetchSuccess(data);
                     } else {
                         // Throw message saying failure to the listener
                         listener.latestBuoyFetchFailed();
                     }
                 }
             });
+            latestDataTask.execute(mBuoyDataContainers.get(location).buoyID);
         }
     }
 
@@ -329,98 +318,8 @@ public class BuoyModel {
         return refreshing;
     }
 
-    public Buoy getBuoyData() {
+    public ApiApiMessagesDataMessage getBuoyData() {
         return mCurrentContainer.buoyData;
-    }
-
-    private Buoy parseBuoyData(String rawData) {
-        if (rawData == null) {
-            return null;
-        }
-
-        Buoy buoy = new Buoy();
-
-        try {
-            // Make a json array from the response string
-            JSONObject rawBuoyObject = new JSONObject(rawData);
-
-            SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-            dateFormatter.setTimeZone(TimeZone.getTimeZone("GMT"));
-            try {
-                buoy.timestamp = dateFormatter.parse(rawBuoyObject.getString("date"));
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
-            }
-
-            // Parse the WaveSummary
-            JSONObject waveSummaryObject = rawBuoyObject.getJSONObject("wave_summary");
-            String units = waveSummaryObject.getString("unit");
-            Swell waveSummary = new Swell();
-            waveSummary.waveHeight = waveSummaryObject.getDouble("wave_height");
-            if (units.equals("metric")) {
-                waveSummary.waveHeight = convertMeterToFoot(waveSummary.waveHeight);
-            }
-            waveSummary.period = waveSummaryObject.getDouble("period");
-            waveSummary.direction = waveSummaryObject.getDouble("direction");
-            waveSummary.compassDirection = waveSummaryObject.getString("compass_direction");
-            buoy.waveSummary = waveSummary;
-
-            // Parse the Swell Components
-            JSONArray swellComponentsArray = rawBuoyObject.getJSONArray("swell_components");
-            ArrayList<Swell> swellComponents = new ArrayList<>();
-            for (int i = 0; i < swellComponentsArray.length(); i++) {
-                JSONObject swellCompObject = swellComponentsArray.getJSONObject(i);
-                Swell swellComponent = new Swell();
-                swellComponent.waveHeight = swellCompObject.getDouble("wave_height");
-                if (units.equals("metric")) {
-                    swellComponent.waveHeight = convertMeterToFoot(swellComponent.waveHeight);
-                }
-                swellComponent.period = swellCompObject.getDouble("period");
-                swellComponent.direction = swellCompObject.getDouble("direction");
-                swellComponent.compassDirection = swellCompObject.getString("compass_direction");
-                swellComponents.add(swellComponent);
-            }
-            buoy.swellComponents = swellComponents;
-
-            // Get the temperature
-            buoy.waterTemperature = rawBuoyObject.optDouble("water_temperature", 0.0);
-            if (units.equals("metric")) {
-                buoy.waterTemperature = convertCelsiusToFahrenheit(buoy.waterTemperature);
-            }
-
-            // Get the charts
-            buoy.directionalWaveSpectraPlotURL = mCurrentContainer.createWavePlotURL("direction");
-            buoy.waveEnergySpectraPlotURL = mCurrentContainer.createWavePlotURL("energy");
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-            return null;
-        }
-
-        return buoy;
-    }
-
-    private Boolean parseStationActive(String rawData) {
-        Boolean active = false;
-
-        if (rawData == null) {
-            return active;
-        }
-
-        try {
-            // Make a json array from the response string
-            JSONObject rawBuoyObject = new JSONObject(rawData);
-            active = rawBuoyObject.getBoolean("active");
-        } catch(JSONException e) {
-            return active;
-        }
-
-        return active;
-    }
-
-    private double convertMeterToFoot(double meterValue) {
-        return meterValue * 3.28;
     }
 
     private double convertCelsiusToFahrenheit(double celsiusValue) {

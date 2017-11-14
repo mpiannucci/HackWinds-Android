@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.appspot.mpitester_13.station.model.ApiApiMessagesDataMessage;
 import com.koushikdutta.ion.Ion;
 import com.nucc.hackwinds.R;
 import com.nucc.hackwinds.listeners.BuoyChangedListener;
@@ -79,19 +80,19 @@ public class BuoyFragment extends Fragment implements BuoyChangedListener, Swipe
 
     @Override
     public void buoyDataUpdated() {
-        final Buoy buoy = mBuoyModel.getBuoyData();
+        final ApiApiMessagesDataMessage data = mBuoyModel.getBuoyData();
 
-        if (buoy == null) {
+        if (data == null) {
             buoyDataUpdateFailed();
             return;
         }
 
-        if (buoy.waveSummary == null) {
+        if (data.waveSummary == null) {
             buoyDataUpdateFailed();
             return;
         }
 
-        if (buoy.swellComponents == null) {
+        if (data.swellComponents == null) {
             buoyDataUpdateFailed();
             return;
         }

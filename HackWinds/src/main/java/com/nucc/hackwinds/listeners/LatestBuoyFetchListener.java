@@ -1,8 +1,8 @@
 package com.nucc.hackwinds.listeners;
 
-import com.nucc.hackwinds.types.Buoy;
+import com.appspot.mpitester_13.station.model.ApiApiMessagesDataMessage;
 
 public interface LatestBuoyFetchListener {
-    void latestBuoyFetchSuccess(Buoy latestBuoy);
+    void latestBuoyFetchSuccess(ApiApiMessagesDataMessage latestBuoy);
     void latestBuoyFetchFailed();
 }
