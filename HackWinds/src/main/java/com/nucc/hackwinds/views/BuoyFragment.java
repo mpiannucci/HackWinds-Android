@@ -1,6 +1,5 @@
 package com.nucc.hackwinds.views;
 
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -18,7 +17,7 @@ import com.koushikdutta.ion.Ion;
 import com.nucc.hackwinds.R;
 import com.nucc.hackwinds.listeners.BuoyChangedListener;
 import com.nucc.hackwinds.models.BuoyModel;
-import com.nucc.hackwinds.types.Buoy;
+import com.nucc.hackwinds.utilities.Extensions;
 
 import java.util.Locale;
 
@@ -87,12 +86,12 @@ public class BuoyFragment extends Fragment implements BuoyChangedListener, Swipe
             return;
         }
 
-        if (data.waveSummary == null) {
+        if (data.getWaveSummary() == null) {
             buoyDataUpdateFailed();
             return;
         }
 
-        if (data.swellComponents == null) {
+        if (data.getSwellComponents() == null) {
             buoyDataUpdateFailed();
             return;
         }
@@ -106,13 +105,13 @@ public class BuoyFragment extends Fragment implements BuoyChangedListener, Swipe
 
                 TextView currentBuoyStatus = (TextView) getActivity().findViewById(R.id.buoy_current_reading);
                 if (currentBuoyStatus != null) {
-                    currentBuoyStatus.setText(buoy.getWaveSummaryStatusText());
+                    currentBuoyStatus.setText(Extensions.getSwellSummary(data.getWaveSummary()));
                 }
 
                 TextView currentPrimaryStatus = (TextView) getActivity().findViewById(R.id.buoy_primary_reading);
                 if (currentPrimaryStatus != null) {
-                    if (buoy.swellComponents.size() > 0) {
-                        currentPrimaryStatus.setText(buoy.swellComponents.get(0).getDetailedSwellSummary());
+                    if (data.getSwellComponents().size() > 0) {
+                        currentPrimaryStatus.setText(Extensions.getDetailedSwellSummary(data.getSwellComponents().get(0)));
                     } else {
                         currentPrimaryStatus.setText("No primary swell");
                     }
@@ -120,8 +119,8 @@ public class BuoyFragment extends Fragment implements BuoyChangedListener, Swipe
 
                 TextView currentSecondaryStatus = (TextView) getActivity().findViewById(R.id.buoy_secondary_reading);
                 if (currentSecondaryStatus != null) {
-                    if (buoy.swellComponents.size() > 1) {
-                        currentSecondaryStatus.setText(buoy.swellComponents.get(1).getDetailedSwellSummary());
+                    if (data.getSwellComponents().size() > 1) {
+                        currentSecondaryStatus.setText(Extensions.getDetailedSwellSummary(data.getSwellComponents().get(1)));
                     } else {
                         currentSecondaryStatus.setText("No secondary swell");
                     }
@@ -129,18 +128,18 @@ public class BuoyFragment extends Fragment implements BuoyChangedListener, Swipe
 
                 TextView latestBuoyReadingTime = (TextView) getActivity().findViewById(R.id.buoy_time_reading);
                 if (latestBuoyReadingTime != null) {
-                    String buoyReport = String.format(Locale.US, "Buoy reported at %s %s", buoy.timeString(), buoy.dateString());
+                    String buoyReport = String.format(Locale.US, "Buoy reported at %s %s", Extensions.getTimeString(data), Extensions.getDateString(data));
                     latestBuoyReadingTime.setText(buoyReport);
                 }
 
                 ImageView directionalSpectraPlot = (ImageView) getActivity().findViewById(R.id.directional_spectra_plot);
                 if (directionalSpectraPlot != null) {
-                    Ion.with(getActivity()).load(buoy.directionalWaveSpectraPlotURL).intoImageView(directionalSpectraPlot);
+                    Ion.with(getActivity()).load(data.getDirectionSpectraPlot()).intoImageView(directionalSpectraPlot);
                 }
 
                 ImageView energyDistributionPlot = (ImageView) getActivity().findViewById(R.id.energy_distribution_plot);
                 if (energyDistributionPlot != null) {
-                    Ion.with(getActivity()).load(buoy.waveEnergySpectraPlotURL).intoImageView(energyDistributionPlot);
+                    Ion.with(getActivity()).load(data.getEnergySpectraPlot()).intoImageView(energyDistributionPlot);
                 }
             }
         });

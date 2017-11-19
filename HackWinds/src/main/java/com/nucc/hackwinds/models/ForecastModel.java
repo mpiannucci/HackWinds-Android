@@ -2,12 +2,12 @@ package com.nucc.hackwinds.models;
 
 import android.content.Context;
 
+import com.appspot.mpitester_13.station.model.ApiApiMessagesSwellMessage;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.nucc.hackwinds.types.Forecast;
 import com.nucc.hackwinds.listeners.ForecastChangedListener;
 import com.nucc.hackwinds.types.ForecastDailySummary;
-import com.nucc.hackwinds.types.Swell;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -242,25 +242,25 @@ public class ForecastModel {
                 newForecast.windDirection = rawForecast.getDouble("WindDirection");
                 newForecast.windCompassDirection = rawForecast.getString("WindCompassDirection");
 
-                Swell primarySwell = new Swell();
-                primarySwell.waveHeight = rawForecast.getJSONObject("PrimarySwellComponent").getDouble("WaveHeight");
-                primarySwell.period = rawForecast.getJSONObject("PrimarySwellComponent").getDouble("Period");
-                primarySwell.direction = rawForecast.getJSONObject("PrimarySwellComponent").getDouble("Direction");
-                primarySwell.compassDirection = rawForecast.getJSONObject("PrimarySwellComponent").getString("CompassDirection");
+                ApiApiMessagesSwellMessage primarySwell = new ApiApiMessagesSwellMessage();
+                primarySwell.setWaveHeight(rawForecast.getJSONObject("PrimarySwellComponent").getDouble("WaveHeight"));
+                primarySwell.setPeriod(rawForecast.getJSONObject("PrimarySwellComponent").getDouble("Period"));
+                primarySwell.setDirection(rawForecast.getJSONObject("PrimarySwellComponent").getDouble("Direction"));
+                primarySwell.setCompassDirection( rawForecast.getJSONObject("PrimarySwellComponent").getString("CompassDirection"));
                 newForecast.primarySwellComponent = primarySwell;
 
-                Swell secondarySwell = new Swell();
-                secondarySwell.waveHeight = rawForecast.getJSONObject("SecondarySwellComponent").getDouble("WaveHeight");
-                secondarySwell.period = rawForecast.getJSONObject("SecondarySwellComponent").getDouble("Period");
-                secondarySwell.direction = rawForecast.getJSONObject("SecondarySwellComponent").getDouble("Direction");
-                secondarySwell.compassDirection = rawForecast.getJSONObject("SecondarySwellComponent").getString("CompassDirection");
+                ApiApiMessagesSwellMessage secondarySwell = new ApiApiMessagesSwellMessage();
+                secondarySwell.setWaveHeight(rawForecast.getJSONObject("SecondarySwellComponent").getDouble("WaveHeight"));
+                secondarySwell.setPeriod(rawForecast.getJSONObject("SecondarySwellComponent").getDouble("Period"));
+                secondarySwell.setDirection(rawForecast.getJSONObject("SecondarySwellComponent").getDouble("Direction"));
+                secondarySwell.setCompassDirection(rawForecast.getJSONObject("SecondarySwellComponent").getString("CompassDirection"));
                 newForecast.secondarySwellComponent = secondarySwell;
 
-                Swell tertiarySwell = new Swell();
-                tertiarySwell.waveHeight = rawForecast.getJSONObject("TertiarySwellComponent").getDouble("WaveHeight");
-                tertiarySwell.period = rawForecast.getJSONObject("TertiarySwellComponent").getDouble("Period");
-                tertiarySwell.direction = rawForecast.getJSONObject("TertiarySwellComponent").getDouble("Direction");
-                tertiarySwell.compassDirection = rawForecast.getJSONObject("TertiarySwellComponent").getString("CompassDirection");
+                ApiApiMessagesSwellMessage tertiarySwell = new ApiApiMessagesSwellMessage();
+                tertiarySwell.setWaveHeight(rawForecast.getJSONObject("TertiarySwellComponent").getDouble("WaveHeight"));
+                tertiarySwell.setPeriod(rawForecast.getJSONObject("TertiarySwellComponent").getDouble("Period"));
+                tertiarySwell.setDirection(rawForecast.getJSONObject("TertiarySwellComponent").getDouble("Direction"));
+                tertiarySwell.setCompassDirection(rawForecast.getJSONObject("TertiarySwellComponent").getString("CompassDirection"));
                 newForecast.tertiarySwellComponent = tertiarySwell;
 
                 if (newForecast.time.equals("01 AM") || newForecast.time.equals("02 AM")) {

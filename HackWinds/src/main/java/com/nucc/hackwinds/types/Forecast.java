@@ -1,5 +1,7 @@
 package com.nucc.hackwinds.types;
 
+import com.appspot.mpitester_13.station.model.ApiApiMessagesSwellMessage;
+
 import java.util.Locale;
 
 public class Forecast {
@@ -11,9 +13,9 @@ public class Forecast {
     public double windSpeed;
     public double windDirection;
     public String windCompassDirection;
-    public Swell primarySwellComponent;
-    public Swell secondarySwellComponent;
-    public Swell tertiarySwellComponent;
+    public ApiApiMessagesSwellMessage primarySwellComponent;
+    public ApiApiMessagesSwellMessage secondarySwellComponent;
+    public ApiApiMessagesSwellMessage tertiarySwellComponent;
 
     public Forecast() {
 

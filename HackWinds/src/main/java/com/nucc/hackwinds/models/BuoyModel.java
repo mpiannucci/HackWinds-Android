@@ -3,38 +3,22 @@ package com.nucc.hackwinds.models;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Base64;
 
 import com.appspot.mpitester_13.station.Station;
 import com.appspot.mpitester_13.station.model.ApiApiMessagesDataMessage;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.json.gson.GsonFactory;
-import com.google.gson.GsonBuilder;
-import com.koushikdutta.async.future.FutureCallback;
-import com.koushikdutta.ion.Ion;
 import com.nucc.hackwinds.listeners.BuoyChangedListener;
 import com.nucc.hackwinds.listeners.LatestBuoyFetchListener;
 import com.nucc.hackwinds.tasks.Credentials;
 import com.nucc.hackwinds.tasks.FetchBuoyLatestDataTask;
 import com.nucc.hackwinds.tasks.FetchBuoySpectraDataTask;
-import com.nucc.hackwinds.types.Buoy;
 import com.nucc.hackwinds.types.BuoyDataContainer;
-import com.nucc.hackwinds.types.Swell;
 import com.nucc.hackwinds.views.SettingsActivity;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.Locale;
-import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 public class BuoyModel {

@@ -2,7 +2,6 @@ package com.nucc.hackwinds.views;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -11,19 +10,17 @@ import android.view.*;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.appspot.mpitester_13.station.model.ApiApiMessagesDataMessage;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.utils.Utils;
 import com.nucc.hackwinds.R;
 import com.nucc.hackwinds.listeners.LatestBuoyFetchListener;
 import com.nucc.hackwinds.listeners.TideChangedListener;
-import com.nucc.hackwinds.types.Buoy;
 import com.nucc.hackwinds.types.Tide;
 import com.nucc.hackwinds.models.BuoyModel;
 import com.nucc.hackwinds.models.TideModel;
@@ -141,14 +138,18 @@ public class TideFragment extends Fragment implements TideChangedListener, Lates
     }
 
     @Override
-    public void latestBuoyFetchSuccess(final Buoy latestBuoy) {
+    public void latestBuoyFetchSuccess(final ApiApiMessagesDataMessage latestData) {
 
-        if (latestBuoy == null) {
+        if (latestData == null) {
+            latestBuoyFetchFailed();
+            return;
+        } else if (latestData.getWaterTemperature() == null) {
+            latestBuoyFetchFailed();
             return;
         }
 
         if (mWaterTemp == null) {
-            mWaterTemp = String.valueOf(latestBuoy.waterTemperature);
+            mWaterTemp = String.valueOf(latestData.getWaterTemperature());
         }
 
         getActivity().runOnUiThread(new Runnable() {

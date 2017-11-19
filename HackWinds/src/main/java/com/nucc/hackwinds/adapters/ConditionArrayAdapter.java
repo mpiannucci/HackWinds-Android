@@ -13,6 +13,7 @@ import android.text.format.DateFormat;
 
 import com.nucc.hackwinds.R;
 import com.nucc.hackwinds.types.Forecast;
+import com.nucc.hackwinds.utilities.Extensions;
 
 import java.util.ArrayList;
 
@@ -81,11 +82,11 @@ public class ConditionArrayAdapter extends ArrayAdapter<Forecast> {
             holder.dateTV.setText(condition.timeStringNoZero());
         }
         holder.conditionsTV.setText(condition.getConditionSummary());
-        holder.primarySwellTV.setText(condition.primarySwellComponent.getDetailedSwellSummary());
-        if (condition.secondarySwellComponent.compassDirection.equals("NULL")) {
+        holder.primarySwellTV.setText(Extensions.getDetailedSwellSummary(condition.primarySwellComponent));
+        if (condition.secondarySwellComponent.getCompassDirection().equals("NULL")) {
             holder.secondarySwellTV.setText("No Secondary Swell Component");
         } else {
-            holder.secondarySwellTV.setText(condition.secondarySwellComponent.getDetailedSwellSummary());
+            holder.secondarySwellTV.setText(Extensions.getDetailedSwellSummary(condition.secondarySwellComponent));
         }
 
         // Return the completed view to render on screen
