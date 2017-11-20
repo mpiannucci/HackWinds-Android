@@ -32,6 +32,7 @@ import com.nucc.hackwinds.models.BuoyModel;
 import com.nucc.hackwinds.models.CameraModel;
 import com.nucc.hackwinds.models.ForecastModel;
 import com.nucc.hackwinds.models.TideModel;
+import com.nucc.hackwinds.tasks.FetchBuoyActiveTask;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 public class MainActivity extends AppCompatActivity {
@@ -158,9 +159,9 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
         ForecastModel.getInstance( this ).fetchForecastData();
-        BuoyModel.getInstance( this ).fetchBuoyData();
-        TideModel.getInstance( this ).fetchTideData();
         CameraModel.getInstance( this ).fetchCameraURLs();
+        TideModel.getInstance( this ).fetchTideData();
+        BuoyModel.getInstance(this).fetchBuoyData();
     }
 
     public void initLocationArrays() {

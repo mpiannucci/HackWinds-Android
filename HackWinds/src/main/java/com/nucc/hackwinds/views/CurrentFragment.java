@@ -7,12 +7,14 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.daimajia.slider.library.SliderAdapter;
@@ -41,6 +43,8 @@ public class CurrentFragment extends ListFragment implements ForecastChangedList
     private ConditionArrayAdapter mConditionArrayAdapter;
     private Camera mCamera;
     private SliderLayout mCameraSliderLayout;
+    private TextView mDateheader;
+    private View mHeaderView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -75,9 +79,11 @@ public class CurrentFragment extends ListFragment implements ForecastChangedList
         View V = inflater.inflate(R.layout.current_fragment, container, false);
 
         // Find the image slider, and initialize it
-        mCameraSliderLayout = (SliderLayout) V.findViewById(R.id.camera_image_slider);
+        mHeaderView = inflater.inflate(R.layout.current_camera_day_header, null);
+        mCameraSliderLayout = (SliderLayout) mHeaderView.findViewById(R.id.camera_image_slider);
         int hackWindsColor = Color.parseColor("#47A3FF");
         mCameraSliderLayout.getPagerIndicator().setDefaultIndicatorColor(hackWindsColor, Color.WHITE);
+        mDateheader = (TextView) mHeaderView.findViewById(R.id.today_date_header);
 
         // return the view
         return V;
@@ -86,6 +92,10 @@ public class CurrentFragment extends ListFragment implements ForecastChangedList
     @Override
     public void onResume() {
         super.onResume();
+
+        if (getListView().getHeaderViewsCount() == 0) {
+            getListView().addHeaderView(mHeaderView);
+        }
 
         forecastDataUpdated();
         cameraDataUpdated();
@@ -120,20 +130,19 @@ public class CurrentFragment extends ListFragment implements ForecastChangedList
             @Override
             public void run() {
                 // Set the day header to the current day
-                TextView date = (TextView) getActivity().findViewById(R.id.today_date_header);
-                if (date == null) {
+                if (mDateheader == null) {
                     return;
                 }
                 Calendar calendar = Calendar.getInstance();
                 int day = calendar.get(Calendar.DAY_OF_WEEK);
                 String dayName = getResources().getStringArray(R.array.daysOfTheWeek)[day-1];
-                date.setText(dayName);
+                mDateheader.setText(dayName);
 
                 // Get the forecast model
                 ForecastModel forecastModel = ForecastModel.getInstance(getActivity());
 
                 // Set the condition adapter for the list
-                if (mConditionArrayAdapter == null) {
+                if (mConditionArrayAdapter == null){
                     ArrayList<Forecast> conditions = forecastModel.getForecastsForDay(0);
                     mConditionArrayAdapter = new ConditionArrayAdapter(getActivity(), conditions);
                     setListAdapter(mConditionArrayAdapter);

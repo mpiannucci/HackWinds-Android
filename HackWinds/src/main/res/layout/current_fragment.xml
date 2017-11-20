@@ -6,33 +6,10 @@
               android:background="@color/material_background">
 
     <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.8">
-
-        <com.daimajia.slider.library.SliderLayout
-                android:id="@+id/camera_image_slider"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                />
-
-    </LinearLayout>
-
-    <LinearLayout
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
             android:layout_width="match_parent"
             android:orientation="vertical"
-            android:background="@color/material_background"
-            android:layout_weight="1">
-
-        <TextView
-                android:id="@+id/today_date_header"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start|center_vertical"
-                android:paddingLeft="@dimen/abc_list_item_padding_horizontal_material"
-                android:paddingTop="@dimen/abc_dialog_list_padding_vertical_material"
-                style="@style/CardHeaderText"/>
+            android:background="@color/material_background">
 
         <ListView
                 android:id="@android:id/list"

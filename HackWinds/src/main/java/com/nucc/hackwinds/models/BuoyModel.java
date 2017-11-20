@@ -11,6 +11,7 @@ import com.google.api.client.json.gson.GsonFactory;
 import com.nucc.hackwinds.listeners.BuoyChangedListener;
 import com.nucc.hackwinds.listeners.LatestBuoyFetchListener;
 import com.nucc.hackwinds.tasks.Credentials;
+import com.nucc.hackwinds.tasks.FetchBuoyActiveTask;
 import com.nucc.hackwinds.tasks.FetchBuoyLatestDataTask;
 import com.nucc.hackwinds.tasks.FetchBuoySpectraDataTask;
 import com.nucc.hackwinds.types.BuoyDataContainer;
@@ -164,12 +165,23 @@ public class BuoyModel {
         }
     }
 
-    public Boolean fetchBuoyActive() {
-        try {
-           return mStationService.info(mCurrentContainer.buoyID).setKey(Credentials.BUOYFINDER_API_KEY).execute().getActive();
-        } catch (Exception e) {
-            return false;
-        }
+    public void fetchBuoyActive() {
+        FetchBuoyActiveTask fetchActiveTask = new FetchBuoyActiveTask(new FetchBuoyActiveTask.BuoyActiveTaskListener() {
+            @Override
+            public void onFinished(Boolean active) {
+                if (active == null) {
+                    active = false;
+                }
+
+                mCurrentContainer.active = active;
+            }
+        });
+        fetchActiveTask.execute(mCurrentContainer.buoyID);
+    }
+
+    public void fetchBuoyActive(final FetchBuoyActiveTask.BuoyActiveTaskListener callback) {
+        FetchBuoyActiveTask fetchActiveTask = new FetchBuoyActiveTask(callback);
+        fetchActiveTask.execute(mCurrentContainer.buoyID);
     }
 
     public void fetchNewBuoyData() {
