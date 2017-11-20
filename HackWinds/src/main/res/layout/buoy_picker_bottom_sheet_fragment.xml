@@ -47,6 +47,14 @@
             style="@style/WaveWatchOptionText"/>
 
         <RadioButton
+            android:id="@+id/long_island_radio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/card_header_bottom_margin"
+            android:text="@string/long_island_location"
+            style="@style/WaveWatchOptionText"/>
+
+        <RadioButton
             android:id="@+id/texas_tower_radio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

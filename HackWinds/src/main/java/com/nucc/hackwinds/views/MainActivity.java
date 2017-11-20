@@ -168,10 +168,11 @@ public class MainActivity extends AppCompatActivity {
         mForecastLocations.add( "Rhode Island" );
 
         mBuoyLocations = new ArrayList<>();
-        mBuoyLocations.add( "Block Island" );
-        mBuoyLocations.add( "Montauk" );
-        mBuoyLocations.add( "Nantucket" );
-        mBuoyLocations.add( "Texas Tower" );
+        mBuoyLocations.add(BuoyModel.BLOCK_ISLAND_LOCATION);
+        mBuoyLocations.add(BuoyModel.MONTAUK_LOCATION);
+        mBuoyLocations.add(BuoyModel.NANTUCKET_LOCATION);
+        mBuoyLocations.add(BuoyModel.LONG_ISLAND_LOCATION);
+        mBuoyLocations.add(BuoyModel.TEXAS_TOWER_LOCATION);
 
         mTideLocations = new ArrayList<>();
         mTideLocations.add( "Point Judith Harbor" );

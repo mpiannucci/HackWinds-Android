@@ -74,7 +74,9 @@ public class BuoyPickerBottomSheetDialogFragment extends BottomSheetDialogFragme
             return R.id.montauk_radio;
         } else if (buoyLocation.equals(BuoyModel.NANTUCKET_LOCATION)) {
             return R.id.nantucket_radio;
-        } else {
+        } else if (buoyLocation.equals(BuoyModel.LONG_ISLAND_LOCATION)) {
+            return R.id.long_island_radio;
+        } {
             return R.id.texas_tower_radio;
         }
     }
@@ -92,8 +94,12 @@ public class BuoyPickerBottomSheetDialogFragment extends BottomSheetDialogFragme
             case R.id.nantucket_radio:
                 location = BuoyModel.NANTUCKET_LOCATION;
                 break;
+            case R.id.long_island_radio:
+                location = BuoyModel.LONG_ISLAND_LOCATION;
+                break;
             case R.id.texas_tower_radio:
                 location = BuoyModel.TEXAS_TOWER_LOCATION;
+                break;
         }
 
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences( getActivity().getApplicationContext() );

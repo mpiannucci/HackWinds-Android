@@ -5,6 +5,7 @@ import com.appspot.mpitester_13.station.model.ApiApiMessagesDataMessage;
 import com.appspot.mpitester_13.station.model.ApiApiMessagesSwellMessage;
 
 import java.text.DateFormat;
+import java.util.Date;
 import java.util.Locale;
 
 public class Extensions {
@@ -13,16 +14,16 @@ public class Extensions {
 
     public static String getTimeString(ApiApiMessagesDataMessage data) {
         DateFormat dateFormat = DateFormat.getTimeInstance(DateFormat.SHORT, Locale.US);
-        return dateFormat.format(data.getDate());
+        return dateFormat.format(new Date(data.getDate().getValue()));
     }
 
     public static String getDateString(ApiApiMessagesDataMessage data) {
         DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.SHORT, Locale.US);
-        return dateFormat.format(data.getDate());
+        return dateFormat.format(new Date(data.getDate().getValue()));
     }
 
     public static String getSwellSummary(ApiApiMessagesSwellMessage swell) {
-        return String.format(Locale.US, "%s %2.2f ft @ %2.1f", swell.getCompassDirection(), swell.getWaveHeight(), swell.getPeriod());
+        return String.format(Locale.US, "%2.2f ft @ %2.1f %s", swell.getWaveHeight(), swell.getPeriod(), swell.getCompassDirection());
     }
 
     public static String getDetailedSwellSummary(ApiApiMessagesSwellMessage swell) {

@@ -125,6 +125,7 @@
     <string name="block_island_location">Block Island</string>
     <string name="montauk_location">Montauk</string>
     <string name="nantucket_location">Nantucket</string>
+    <string name="long_island_location">Long Island</string>
     <string name="texas_tower_location">Texas Tower</string>
 
 </resources>
