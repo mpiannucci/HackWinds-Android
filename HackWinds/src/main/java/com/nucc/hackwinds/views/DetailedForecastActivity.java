@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import android.view.View;
 import android.widget.ListView;
 import com.astuetz.PagerSlidingTabStrip;
 import com.nucc.hackwinds.R;
@@ -30,6 +31,7 @@ public class DetailedForecastActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private PagerSlidingTabStrip mSlidingTabStrip;
     private DetailedForecastPagerAdapter mAdapter;
+    private View mDetailedForecastListHeaderView;
 
     // Forecast values
     private ForecastModel mForecastModel;
@@ -54,8 +56,9 @@ public class DetailedForecastActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // Create and set the new pager adapter
-        mViewPager = (WrappableViewPager) findViewById(R.id.chart_type_pager);
-        mSlidingTabStrip = (PagerSlidingTabStrip) findViewById(R.id.chart_mode_tabs);
+        mDetailedForecastListHeaderView = getLayoutInflater().inflate(R.layout.detailed_forecast_chart_layout, null);
+        mViewPager = (WrappableViewPager) mDetailedForecastListHeaderView.findViewById(R.id.chart_type_pager);
+        mSlidingTabStrip = (PagerSlidingTabStrip) mDetailedForecastListHeaderView.findViewById(R.id.chart_mode_tabs);
         mAdapter = new DetailedForecastPagerAdapter(getSupportFragmentManager());
         mViewPager.setOffscreenPageLimit(1);
         mViewPager.setAdapter(mAdapter);
@@ -66,6 +69,7 @@ public class DetailedForecastActivity extends AppCompatActivity {
         mDayConditions = mForecastModel.getForecastsForDay(dayIndex);
         mConditionArrayAdapter = new ConditionArrayAdapter(this, mDayConditions);
         ListView conditionList = (ListView) findViewById(R.id.detailed_condition_list);
+        conditionList.addHeaderView(mDetailedForecastListHeaderView);
         conditionList.setAdapter(mConditionArrayAdapter);
     }
 

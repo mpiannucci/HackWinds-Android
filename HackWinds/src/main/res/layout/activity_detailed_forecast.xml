@@ -18,20 +18,6 @@
         app:title="@string/detailed_forecast_toolbar_title_holder"
         />
 
-    <com.astuetz.PagerSlidingTabStrip
-            android:id="@+id/chart_mode_tabs"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:pstsPaddingMiddle="false"
-            app:pstsShouldExpand="true"/>
-
-    <com.nucc.hackwinds.utilities.WrappableViewPager
-            android:id="@+id/chart_type_pager"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:context=".views.DetailedForecastActivity"/>
-
     <ListView
             android:id="@+id/detailed_condition_list"
             android:layout_width="match_parent"
