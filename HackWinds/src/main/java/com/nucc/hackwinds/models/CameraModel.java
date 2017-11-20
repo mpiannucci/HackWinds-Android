@@ -30,6 +30,7 @@ public class CameraModel {
     private Context mContext;
     private ArrayList<CameraChangedListener> mCameraChangedListeners;
     private boolean mForceReload;
+    private Camera mDefaultCamera;
 
     public static CameraModel getInstance(Context ctx) {
         if ( mInstance == null ) {
@@ -58,6 +59,10 @@ public class CameraModel {
         locationCount = 0;
     }
 
+    public Camera getDefaultCamera() {
+        return mDefaultCamera;
+    }
+
     public Camera getCamera(String locationName, String cameraName) {
         return cameraLocations.get(locationName).get(cameraName);
     }
@@ -73,7 +78,7 @@ public class CameraModel {
                 return;
             }
 
-            final String HACKWINDS_API_URL = "https://mpiannucci.appspot.com/static/API/hackwinds_camera_locations_v5.json";
+            final String HACKWINDS_API_URL = "https://hackwinds.appspot.com/api/hackwinds_camera_locations_v5.json";
 
             Ion.with(mContext).load(HACKWINDS_API_URL).asString().setCallback(new FutureCallback<String>() {
                 @Override
@@ -144,6 +149,10 @@ public class CameraModel {
                     thisCamera.refreshable = thisCameraObject.getBoolean("Refreshable");
                     thisCamera.refreshInterval = Integer.valueOf(thisCameraObject.getString("RefreshInterval"));
                     thisCamera.premium = thisCameraObject.getBoolean("Premium");
+
+                    if (cameraName.equals("Warm Winds")) {
+                        mDefaultCamera = thisCamera;
+                    }
 
                     if (thisCamera.premium && !PREMIUM_ENABLED) {
                         continue;

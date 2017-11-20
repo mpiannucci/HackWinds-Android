@@ -169,14 +169,7 @@ public class CurrentFragment extends ListFragment implements ForecastChangedList
         // Get the camera model instance
         CameraModel cameraModel = CameraModel.getInstance(getActivity());
 
-        if (cameraModel.cameraCount < 1) {
-            return;
-        }
-
-        if (mCamera == null) {
-            mCamera = cameraModel.cameraLocations.get("Narragansett").get("Warm Winds");
-        }
-
+        mCamera = cameraModel.getDefaultCamera();
         if (mCamera == null) {
             return;
         }
