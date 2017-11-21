@@ -11,7 +11,8 @@ public class BuoyDataContainer {
     public String buoyID;
     public ApiApiMessagesDataMessage buoyData;
     public int updateInterval = 60;
-    public Boolean active = true;
+    public Boolean active = false;
+    public Boolean statusFetched = false;
 
     public BuoyDataContainer(String id) {
         buoyID = id;

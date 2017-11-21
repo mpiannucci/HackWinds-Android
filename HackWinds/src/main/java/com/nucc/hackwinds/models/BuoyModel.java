@@ -33,7 +33,6 @@ public class BuoyModel {
 
     // Member variables
     private static BuoyModel mInstance;
-    private Station mStationService;
     private String mCurrentLocation;
     private BuoyDataContainer mCurrentContainer;
     private HashMap<String, BuoyDataContainer> mBuoyDataContainers;
@@ -46,6 +45,7 @@ public class BuoyModel {
         if (mInstance == null) {
             mInstance = new BuoyModel(context);
         }
+
         return mInstance;
     }
 
@@ -58,10 +58,6 @@ public class BuoyModel {
 
         // Initialize buoy containers
         initBuoyContainers();
-
-        // Create the service
-        Station.Builder serviceBuilder = new Station.Builder(AndroidHttp.newCompatibleTransport(), new GsonFactory(),null);
-        mStationService = serviceBuilder.build();
 
         // Set up the settings changed listeners
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
@@ -165,6 +161,32 @@ public class BuoyModel {
         }
     }
 
+    public Boolean allBuoyStatusFetched() {
+        for (final BuoyDataContainer buoyDataContainer : mBuoyDataContainers.values()) {
+            if (!buoyDataContainer.statusFetched) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public String getClosestActiveBuoy() {
+        if (mBuoyDataContainers.get(BuoyModel.BLOCK_ISLAND_LOCATION).active) {
+            return BuoyModel.BLOCK_ISLAND_LOCATION;
+        } else if (mBuoyDataContainers.get(BuoyModel.MONTAUK_LOCATION).active) {
+            return BuoyModel.MONTAUK_LOCATION;
+        } else if (mBuoyDataContainers.get(BuoyModel.NANTUCKET_LOCATION).active) {
+            return BuoyModel.NANTUCKET_LOCATION;
+        } else if (mBuoyDataContainers.get(BuoyModel.LONG_ISLAND_LOCATION).active) {
+            return BuoyModel.LONG_ISLAND_LOCATION;
+        }else if (mBuoyDataContainers.get(BuoyModel.TEXAS_TOWER_LOCATION).active) {
+            return BuoyModel.TEXAS_TOWER_LOCATION;
+        }
+
+        return BuoyModel.BLOCK_ISLAND_LOCATION;
+    }
+
     public void fetchBuoyActive() {
         FetchBuoyActiveTask fetchActiveTask = new FetchBuoyActiveTask(new FetchBuoyActiveTask.BuoyActiveTaskListener() {
             @Override
@@ -179,9 +201,28 @@ public class BuoyModel {
         fetchActiveTask.execute(mCurrentContainer.buoyID);
     }
 
-    public void fetchBuoyActive(final FetchBuoyActiveTask.BuoyActiveTaskListener callback) {
-        FetchBuoyActiveTask fetchActiveTask = new FetchBuoyActiveTask(callback);
-        fetchActiveTask.execute(mCurrentContainer.buoyID);
+    public void fetchBuoysActive() {
+        for (final BuoyDataContainer buoyContainer : mBuoyDataContainers.values()) {
+            FetchBuoyActiveTask fetchActiveTask = new FetchBuoyActiveTask(new FetchBuoyActiveTask.BuoyActiveTaskListener() {
+                @Override
+                public void onFinished(Boolean active) {
+                    buoyContainer.active = active;
+                    buoyContainer.statusFetched = true;
+
+                    if (allBuoyStatusFetched()) {
+                        String closestLocation = getClosestActiveBuoy();
+
+                        // Change the location
+                        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+                        sharedPrefs.edit().putString(SettingsActivity.BUOY_LOCATION_KEY, closestLocation).apply();
+
+                        // Fetch buoy data
+                        fetchBuoyData();
+                    }
+                }
+            });
+            fetchActiveTask.execute(buoyContainer.buoyID);
+        }
     }
 
     public void fetchNewBuoyData() {
@@ -318,7 +359,15 @@ public class BuoyModel {
         return mCurrentContainer.buoyData;
     }
 
-    private double convertCelsiusToFahrenheit(double celsiusValue) {
-        return (celsiusValue * 1.8) + 32.0;
+    public ApiApiMessagesDataMessage getBuoyData(String buoyLocation) {
+        return mBuoyDataContainers.get(buoyLocation).buoyData;
+    }
+
+    public Boolean getBuoyStatus() {
+        return mCurrentContainer.active;
+    }
+
+    public Boolean getBuoyStatus(String buoyLocation) {
+        return mBuoyDataContainers.get(buoyLocation).active;
     }
 }

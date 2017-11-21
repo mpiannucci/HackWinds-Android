@@ -48,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
     private MainPagerAdapter mAdapter;
     private SystemBarTintManager mTintManager;
     private ArrayList<String> mForecastLocations;
-    private ArrayList<String> mBuoyLocations;
     private ArrayList<String> mTideLocations;
     private ToolbarClickListener mToolbarClickListener;
     private SharedPreferences.OnSharedPreferenceChangeListener mSharedPrefsChangedListener;
@@ -66,9 +65,6 @@ public class MainActivity extends AppCompatActivity {
 
         // SharedPreference setup, always set the buoys to start at block island
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences( getApplicationContext() );
-        String defaultBuoyLocation = sharedPrefs.getString( SettingsActivity.DEFAULT_BUOY_LOCATION_KEY,
-                                     BuoyModel.BLOCK_ISLAND_LOCATION );
-        sharedPrefs.edit().putString( SettingsActivity.BUOY_LOCATION_KEY, defaultBuoyLocation ).apply();
 
         // Set up the spinner locations
         initLocationArrays();
@@ -161,19 +157,12 @@ public class MainActivity extends AppCompatActivity {
         ForecastModel.getInstance( this ).fetchForecastData();
         CameraModel.getInstance( this ).fetchCameraURLs();
         TideModel.getInstance( this ).fetchTideData();
-        BuoyModel.getInstance(this).fetchBuoyData();
+        BuoyModel.getInstance(this).fetchBuoysActive();
     }
 
     public void initLocationArrays() {
         mForecastLocations = new ArrayList<>();
         mForecastLocations.add( "Rhode Island" );
-
-        mBuoyLocations = new ArrayList<>();
-        mBuoyLocations.add(BuoyModel.BLOCK_ISLAND_LOCATION);
-        mBuoyLocations.add(BuoyModel.MONTAUK_LOCATION);
-        mBuoyLocations.add(BuoyModel.NANTUCKET_LOCATION);
-        mBuoyLocations.add(BuoyModel.LONG_ISLAND_LOCATION);
-        mBuoyLocations.add(BuoyModel.TEXAS_TOWER_LOCATION);
 
         mTideLocations = new ArrayList<>();
         mTideLocations.add( "Point Judith Harbor" );
