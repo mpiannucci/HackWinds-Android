@@ -2,14 +2,6 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory android:title="@string/pref_user_interface_group_title" >
-        <ListPreference
-            android:title="@string/pref_change_default_buoy_title"
-            android:summary="@string/pref_buoy_location_summary"
-            android:key="defaultBuoyLocation"
-            android:entries="@array/buoyLocations"
-            android:entryValues="@array/buoyLocations"
-            android:defaultValue="Block Island"/>
-
         <Preference
             android:title="@string/pref_activate_premium_title"
             android:summary="@string/pref_premium_content_summary_disabled"

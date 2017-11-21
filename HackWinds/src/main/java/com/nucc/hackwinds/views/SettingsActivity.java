@@ -28,7 +28,6 @@ import com.nucc.hackwinds.models.CameraModel;
 public class SettingsActivity extends AppCompatActivity {
 
     public static final String FORECAST_LOCATION_KEY = "forecastLocation";
-    public static final String DEFAULT_BUOY_LOCATION_KEY = "defaultBuoyLocation";
     public static final String BUOY_LOCATION_KEY = "buoyLocation";
     public static final String TIDE_LOCATION_KEY = "tideLocation";
     public static final String SHOW_PREMIUM_CONTENT_KEY = "showPremiumContent";
@@ -66,10 +65,6 @@ public class SettingsActivity extends AppCompatActivity {
 
             // Get the shared preferences
             final SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
-
-            // Set the summary of the buoy preference to be the current location
-            Preference defaultBuoyLocationPref = findPreference(DEFAULT_BUOY_LOCATION_KEY);
-            defaultBuoyLocationPref.setSummary(sharedPrefs.getString(DEFAULT_BUOY_LOCATION_KEY, getResources().getStringArray(R.array.buoyLocations)[1]));
 
             // Callbacks to the preference clicks
             final Preference showPremiumPref = findPreference(SHOW_PREMIUM_CONTENT_KEY);
@@ -180,10 +175,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-            if (key.equals(DEFAULT_BUOY_LOCATION_KEY)) {
-                Preference defaultBuoyLocationPref = findPreference(key);
-                defaultBuoyLocationPref.setSummary(sharedPreferences.getString(key, getResources().getStringArray(R.array.buoyLocations)[1]));
-            } else if (key.equals(SHOW_PREMIUM_CONTENT_KEY)) {
+            if (key.equals(SHOW_PREMIUM_CONTENT_KEY)) {
                 Preference showPremiumPref = findPreference(key);
                 if (sharedPreferences.getBoolean(key, false)) {
                     showPremiumPref.setSummary(R.string.pref_premium_content_summary_enabled);

@@ -170,8 +170,7 @@ public class TideFragment extends Fragment implements TideChangedListener, Lates
 
     public void reloadWaterTemperature() {
         if (mBuoyFailed) {
-            SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
-            mBuoyLocation = sharedPrefs.getString(SettingsActivity.DEFAULT_BUOY_LOCATION_KEY, BuoyModel.BLOCK_ISLAND_LOCATION);
+            mBuoyLocation = BuoyModel.BLOCK_ISLAND_LOCATION;
         }
         // Fetch the data from the models
         BuoyModel.getInstance(getActivity()).fetchLatestBuoyReadingForLocation(mBuoyLocation, this);
