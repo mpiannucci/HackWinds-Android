@@ -26,6 +26,12 @@ android {
     }
 }
 
+configurations {
+    all {
+        exclude module: 'httpclient'
+    }
+}
+
 repositories {
     mavenCentral()
     maven { url "https://jitpack.io" }
