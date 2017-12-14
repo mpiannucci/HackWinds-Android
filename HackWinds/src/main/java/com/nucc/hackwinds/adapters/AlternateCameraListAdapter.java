@@ -36,28 +36,22 @@ public class AlternateCameraListAdapter extends BaseAdapter implements ListAdapt
         // Start the location index at 0
         int locationIndex = 0;
 
-        // Rip the cameras from the model into the CameraLocation object list
-        for (String location : cameraModel.locationKeys) {
-            // Add a camera object to initialize the section
+        for (int iRegion = 0; iRegion < cameraModel.getCameraRegionCount(); iRegion++) {
             CameraLocation thisLocation = new CameraLocation();
-            thisLocation.Location = location;
+            thisLocation.Location = cameraModel.getRegionName(iRegion);
             thisLocation.isSection = true;
 
-            // Add the location to the list
             cameraLocations.add(thisLocation);
 
-            for (String cameraName : cameraModel.cameraKeys.get(locationIndex)) {
+            for (int iCamera = 0; iCamera < cameraModel.getCameraCount(iRegion); iCamera++ ) {
                 // Add a camera location for the next camera
                 CameraLocation thisCamera = new CameraLocation();
-                thisCamera.Location = cameraName;
+                thisCamera.Location = cameraModel.getCameraName(iRegion, iCamera);
                 thisCamera.isSection = false;
 
                 // Add the camera to the location list
                 cameraLocations.add(thisCamera);
             }
-
-            // Move to the next location
-            locationIndex++;
         }
     }
 
@@ -95,7 +89,7 @@ public class AlternateCameraListAdapter extends BaseAdapter implements ListAdapt
             prevPosition--;
         }
 
-        // We somehow didnt find a section
+        // We somehow didn't find a section
         return "";
     }
 

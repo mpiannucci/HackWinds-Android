@@ -12,10 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.appspot.hackwinds.camera.model.ModelCameraMessagesCameraMessage;
 import com.nucc.hackwinds.R;
 import com.nucc.hackwinds.adapters.AlternateCameraListAdapter;
 import com.nucc.hackwinds.models.CameraModel;
-import com.nucc.hackwinds.types.Camera;
+import com.nucc.hackwinds.utilities.Extensions;
 
 public class AlternateCameraListFragment extends ListFragment {
 
@@ -53,12 +54,12 @@ public class AlternateCameraListFragment extends ListFragment {
         String locationName = mAlternateCameraListAdapter.getHeaderTitle(position);
         String cameraName = mAlternateCameraListAdapter.getItem(position);
 
-        Camera camera = CameraModel.getInstance(getActivity().getApplicationContext()).getCamera(locationName, cameraName);
+        ModelCameraMessagesCameraMessage camera = CameraModel.getInstance(getActivity().getApplicationContext()).getCamera(locationName, cameraName);
         if (camera == null) {
             return;
         }
 
-        if (camera.isImageOnlyCamera()) {
+        if (Extensions.isImageOnlyCamera(camera)) {
             IsoCameraFragment cameraFragment = new IsoCameraFragment();
             cameraFragment.setCamera(camera);
 
@@ -68,10 +69,10 @@ public class AlternateCameraListFragment extends ListFragment {
             fragmentTransaction.commit();
         } else {
             String url = "";
-            if (camera.isVideoCamera()) {
-                url = camera.videoURL;
-            } else if (camera.isWebCamera()) {
-                url = camera.webURL;
+            if (Extensions.isVideoCamera(camera)) {
+                url = camera.getVideoUrl();
+            } else if (Extensions.isWebCamera(camera)) {
+                url = camera.getWebUrl();
             } else {
                 return;
             }

@@ -155,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
         ForecastModel.getInstance( this ).fetchForecastData();
-        CameraModel.getInstance( this ).fetchCameraURLs();
+        CameraModel.getInstance( this ).fetchCameras();
         TideModel.getInstance( this ).fetchTideData();
         BuoyModel.getInstance(this).fetchBuoysActive();
     }

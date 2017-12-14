@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.appspot.hackwinds.camera.model.ModelCameraMessagesCameraMessage;
 import com.daimajia.slider.library.SliderAdapter;
 import com.daimajia.slider.library.SliderLayout;
 
@@ -27,7 +28,6 @@ import com.nucc.hackwinds.R;
 import com.nucc.hackwinds.adapters.ConditionArrayAdapter;
 import com.nucc.hackwinds.listeners.CameraChangedListener;
 import com.nucc.hackwinds.listeners.ForecastChangedListener;
-import com.nucc.hackwinds.types.Camera;
 import com.nucc.hackwinds.models.CameraModel;
 import com.nucc.hackwinds.models.ForecastModel;
 import com.nucc.hackwinds.types.Forecast;
@@ -41,7 +41,7 @@ import java.util.Locale;
 public class CurrentFragment extends ListFragment implements ForecastChangedListener, CameraChangedListener {
     // Initialize the other variables
     private ConditionArrayAdapter mConditionArrayAdapter;
-    private Camera mCamera;
+    private ModelCameraMessagesCameraMessage mCamera;
     private SliderLayout mCameraSliderLayout;
     private TextView mDateheader;
     private View mHeaderView;
@@ -198,7 +198,7 @@ public class CurrentFragment extends ListFragment implements ForecastChangedList
                 continue;
             }
 
-            String cameraURL = mCamera.imageURL.replace("01.jpg", String.format(Locale.US, "%02d.jpg", i));
+            String cameraURL = mCamera.getImageUrl().replace("01.jpg", String.format(Locale.US, "%02d.jpg", i));
             Ion.with(getActivity()).load(cameraURL).asBitmap().setCallback(new FutureCallback<Bitmap>() {
                 @Override
                 public void onCompleted(Exception e, Bitmap result) {

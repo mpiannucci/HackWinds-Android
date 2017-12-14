@@ -182,7 +182,7 @@ public class SettingsActivity extends AppCompatActivity {
                     showPremiumPref.setOnPreferenceClickListener(null);
                     CameraModel cameraModel = CameraModel.getInstance(getActivity());
                     cameraModel.reset();
-                    cameraModel.forceFetchCameraURLs();
+                    cameraModel.forceFetchCameras();
                 }
             }
         }

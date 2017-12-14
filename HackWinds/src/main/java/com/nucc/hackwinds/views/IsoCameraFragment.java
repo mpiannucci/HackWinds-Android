@@ -13,15 +13,14 @@ import android.os.Handler;
 import android.widget.TextView;
 import android.content.Context;
 
+import com.appspot.hackwinds.camera.model.ModelCameraMessagesCameraMessage;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.nucc.hackwinds.R;
-import com.nucc.hackwinds.models.CameraModel;
-import com.nucc.hackwinds.types.Camera;
 
 public class IsoCameraFragment extends Fragment {
 
-    private Camera mCamera;
+    private ModelCameraMessagesCameraMessage mCamera;
     private boolean mAutoRefresh;
 
     private Context mContext;
@@ -84,7 +83,7 @@ public class IsoCameraFragment extends Fragment {
         if (mCamera != null) {
             // Only trigger an image load if there is a url
             AlternateCameraActivity alternateCameraActivity = (AlternateCameraActivity) getActivity();
-            alternateCameraActivity.setToolbarTitle(mCamera.getCameraName());
+            alternateCameraActivity.setToolbarTitle(mCamera.getName());
             loadCameraImage();
         }
 
@@ -100,19 +99,19 @@ public class IsoCameraFragment extends Fragment {
         mHandler.removeCallbacks(mRunnable);
     }
 
-    public void setCamera(Camera camera) {
+    public void setCamera(ModelCameraMessagesCameraMessage camera) {
         if (camera == null) {
             return;
         }
 
         mCamera = camera;
-        mAutoRefresh = mCamera.refreshable;
+        mAutoRefresh = mCamera.getRefreshable();
     }
 
     public void loadCameraImage() {
         if (mContext != null) {
             // If there is a context, then load the next image and create the callback to set it as the current image
-            Ion.with(mContext).load(mCamera.imageURL).noCache().asBitmap().setCallback(new FutureCallback<Bitmap>() {
+            Ion.with(mContext).load(mCamera.getImageUrl()).noCache().asBitmap().setCallback(new FutureCallback<Bitmap>() {
                 @Override
                 public void onCompleted(Exception e, Bitmap result) {
                     if (e != null) {
@@ -124,7 +123,7 @@ public class IsoCameraFragment extends Fragment {
 
                         // If enabled, start the countdown to loading the next view
                         if (mAutoRefresh) {
-                            mHandler.postDelayed(mRunnable, mCamera.refreshInterval * 1000);
+                            mHandler.postDelayed(mRunnable, mCamera.getRefreshInterval() * 1000);
                         }
                     }
                 }
@@ -138,7 +137,7 @@ public class IsoCameraFragment extends Fragment {
     private void updateAutoRefreshDurationLabel() {
         TextView autoRefreshDurationLabel = (TextView) getActivity().findViewById(R.id.auto_refresh_duration);
         if (mAutoRefresh) {
-            autoRefreshDurationLabel.setText("Refresh interval is " + String.valueOf(mCamera.refreshInterval) + " seconds");
+            autoRefreshDurationLabel.setText("Refresh interval is " + String.valueOf(mCamera.getRefreshInterval()) + " seconds");
             autoRefreshDurationLabel.setVisibility(View.VISIBLE);
         } else {
             autoRefreshDurationLabel.setVisibility(View.GONE);
