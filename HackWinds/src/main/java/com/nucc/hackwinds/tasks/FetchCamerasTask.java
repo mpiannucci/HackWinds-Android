@@ -2,8 +2,8 @@ package com.nucc.hackwinds.tasks;
 
 import android.os.AsyncTask;
 
-import com.appspot.hackwinds.camera.Camera;
-import com.appspot.hackwinds.camera.model.ModelCameraMessagesCameraLocationsMessage;
+import com.appspot.hackwinds.hackwinds.Hackwinds;
+import com.appspot.hackwinds.hackwinds.model.ModelCameraMessagesCameraLocationsMessage;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.json.gson.GsonFactory;
 
@@ -15,20 +15,20 @@ public class FetchCamerasTask extends AsyncTask<Boolean, Void, ModelCameraMessag
     }
 
     private final CameraTaskListener mListener;
-    private Camera mCameraService;
+    private Hackwinds mCameraService;
 
     public FetchCamerasTask(CameraTaskListener taskListener) {
         mListener = taskListener;
 
         // Set up the service
-        Camera.Builder serviceBuilder = new Camera.Builder(AndroidHttp.newCompatibleTransport(), new GsonFactory(),null);
+        Hackwinds.Builder serviceBuilder = new Hackwinds.Builder(AndroidHttp.newCompatibleTransport(), new GsonFactory(),null);
         mCameraService = serviceBuilder.build();
     }
 
     @Override
     protected ModelCameraMessagesCameraLocationsMessage doInBackground(Boolean... premiums) {
         try {
-            return mCameraService.cameras(premiums[0]).setKey(Credentials.HACKWINDS_API_KEY).execute();
+            return mCameraService.camera().cameras(premiums[0]).setKey(Credentials.HACKWINDS_API_KEY).execute();
         } catch (Exception e) {
             return null;
         }

@@ -17,7 +17,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.appspot.hackwinds.camera.model.ModelCameraMessagesCameraMessage;
+import com.appspot.hackwinds.hackwinds.model.ModelCameraMessagesCameraMessage;
 import com.daimajia.slider.library.SliderAdapter;
 import com.daimajia.slider.library.SliderLayout;
 

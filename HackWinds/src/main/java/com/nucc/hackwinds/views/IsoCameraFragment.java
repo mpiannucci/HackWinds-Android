@@ -13,7 +13,7 @@ import android.os.Handler;
 import android.widget.TextView;
 import android.content.Context;
 
-import com.appspot.hackwinds.camera.model.ModelCameraMessagesCameraMessage;
+import com.appspot.hackwinds.hackwinds.model.ModelCameraMessagesCameraMessage;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.nucc.hackwinds.R;

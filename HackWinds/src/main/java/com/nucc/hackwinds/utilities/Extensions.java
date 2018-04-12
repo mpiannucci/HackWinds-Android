@@ -1,7 +1,7 @@
 package com.nucc.hackwinds.utilities;
 
 
-import com.appspot.hackwinds.camera.model.ModelCameraMessagesCameraMessage;
+import com.appspot.hackwinds.hackwinds.model.ModelCameraMessagesCameraMessage;
 import com.appspot.mpitester_13.station.model.ApiApiMessagesDataMessage;
 import com.appspot.mpitester_13.station.model.ApiApiMessagesSwellMessage;
 

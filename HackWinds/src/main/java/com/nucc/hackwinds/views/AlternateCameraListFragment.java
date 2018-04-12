@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.appspot.hackwinds.camera.model.ModelCameraMessagesCameraMessage;
+import com.appspot.hackwinds.hackwinds.model.ModelCameraMessagesCameraMessage;
 import com.nucc.hackwinds.R;
 import com.nucc.hackwinds.adapters.AlternateCameraListAdapter;
 import com.nucc.hackwinds.models.CameraModel;

@@ -3,9 +3,9 @@ package com.nucc.hackwinds.models;
 import android.content.Context;
 import android.preference.PreferenceManager;
 
-import com.appspot.hackwinds.camera.model.ModelCameraMessagesCameraLocationsMessage;
-import com.appspot.hackwinds.camera.model.ModelCameraMessagesCameraMessage;
-import com.appspot.hackwinds.camera.model.ModelCameraMessagesCameraRegionMessage;
+import com.appspot.hackwinds.hackwinds.model.ModelCameraMessagesCameraLocationsMessage;
+import com.appspot.hackwinds.hackwinds.model.ModelCameraMessagesCameraMessage;
+import com.appspot.hackwinds.hackwinds.model.ModelCameraMessagesCameraRegionMessage;
 import com.nucc.hackwinds.listeners.CameraChangedListener;
 import com.nucc.hackwinds.tasks.FetchCamerasTask;
 import com.nucc.hackwinds.views.SettingsActivity;
