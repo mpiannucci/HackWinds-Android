@@ -3,15 +3,15 @@ package com.nucc.hackwinds.tasks;
 import android.os.AsyncTask;
 
 import com.appspot.hackwinds.hackwinds.Hackwinds;
-import com.appspot.hackwinds.hackwinds.model.ModelCameraMessagesCameraLocationsMessage;
+import com.appspot.hackwinds.hackwinds.model.MessagesCameraCameraLocationsMessage;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.json.gson.GsonFactory;
 
 
-public class FetchCamerasTask extends AsyncTask<Boolean, Void, ModelCameraMessagesCameraLocationsMessage> {
+public class FetchCamerasTask extends AsyncTask<Boolean, Void, MessagesCameraCameraLocationsMessage> {
 
     public interface CameraTaskListener {
-        public void onFinished(ModelCameraMessagesCameraLocationsMessage cameraLocations);
+        public void onFinished(MessagesCameraCameraLocationsMessage cameraLocations);
     }
 
     private final CameraTaskListener mListener;
@@ -26,7 +26,7 @@ public class FetchCamerasTask extends AsyncTask<Boolean, Void, ModelCameraMessag
     }
 
     @Override
-    protected ModelCameraMessagesCameraLocationsMessage doInBackground(Boolean... premiums) {
+    protected MessagesCameraCameraLocationsMessage doInBackground(Boolean... premiums) {
         try {
             return mCameraService.camera().cameras(premiums[0]).setKey(Credentials.HACKWINDS_API_KEY).execute();
         } catch (Exception e) {
@@ -35,7 +35,7 @@ public class FetchCamerasTask extends AsyncTask<Boolean, Void, ModelCameraMessag
     }
 
     @Override
-    protected void onPostExecute(ModelCameraMessagesCameraLocationsMessage result) {
+    protected void onPostExecute(MessagesCameraCameraLocationsMessage result) {
         super.onPostExecute(result);
 
         // In onPostExecute we check if the listener is valid

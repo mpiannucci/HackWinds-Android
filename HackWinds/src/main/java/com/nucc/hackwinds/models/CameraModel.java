@@ -3,9 +3,9 @@ package com.nucc.hackwinds.models;
 import android.content.Context;
 import android.preference.PreferenceManager;
 
-import com.appspot.hackwinds.hackwinds.model.ModelCameraMessagesCameraLocationsMessage;
-import com.appspot.hackwinds.hackwinds.model.ModelCameraMessagesCameraMessage;
-import com.appspot.hackwinds.hackwinds.model.ModelCameraMessagesCameraRegionMessage;
+import com.appspot.hackwinds.hackwinds.model.MessagesCameraCameraMessage;
+import com.appspot.hackwinds.hackwinds.model.MessagesCameraCameraLocationsMessage;
+import com.appspot.hackwinds.hackwinds.model.MessagesCameraCameraRegionMessage;
 import com.nucc.hackwinds.listeners.CameraChangedListener;
 import com.nucc.hackwinds.tasks.FetchCamerasTask;
 import com.nucc.hackwinds.views.SettingsActivity;
@@ -18,8 +18,8 @@ public class CameraModel {
     private Context mContext;
     private ArrayList<CameraChangedListener> mCameraChangedListeners;
     private boolean mForceReload;
-    private ModelCameraMessagesCameraMessage mDefaultCamera;
-    private ModelCameraMessagesCameraLocationsMessage mCameraLocations;
+    private MessagesCameraCameraMessage mDefaultCamera;
+    private MessagesCameraCameraLocationsMessage mCameraLocations;
 
     public static CameraModel getInstance(Context ctx) {
         if ( mInstance == null ) {
@@ -43,22 +43,22 @@ public class CameraModel {
         mCameraChangedListeners = new ArrayList<>();
     }
 
-    public ModelCameraMessagesCameraMessage getDefaultCamera() {
+    public MessagesCameraCameraMessage getDefaultCamera() {
         return mDefaultCamera;
     }
 
-    public ModelCameraMessagesCameraLocationsMessage getmCameraLocations() {
+    public MessagesCameraCameraLocationsMessage getmCameraLocations() {
         return mCameraLocations;
     }
 
-    public ModelCameraMessagesCameraMessage getCamera(String regionName, String cameraName) {
+    public MessagesCameraCameraMessage getCamera(String regionName, String cameraName) {
         int regionIndex = getRegionIndex(regionName);
         if (regionIndex < 0) {
             return null;
         }
 
-        ModelCameraMessagesCameraRegionMessage region = mCameraLocations.getCameraLocations().get(regionIndex);
-        for (ModelCameraMessagesCameraMessage camera : region.getCameras()) {
+        MessagesCameraCameraRegionMessage region = mCameraLocations.getCameraLocations().get(regionIndex);
+        for (MessagesCameraCameraMessage camera : region.getCameras()) {
             if (camera.getName().equals(cameraName)) {
                 return camera;
             }
@@ -66,7 +66,7 @@ public class CameraModel {
         return null;
     }
 
-    public ModelCameraMessagesCameraMessage getCamera(int regionIndex, int cameraIndex) {
+    public MessagesCameraCameraMessage getCamera(int regionIndex, int cameraIndex) {
         try {
             return mCameraLocations.getCameraLocations().get(regionIndex).getCameras().get(cameraIndex);
         } catch (Exception e) {
@@ -119,7 +119,7 @@ public class CameraModel {
     public void fetchCameras() {
         FetchCamerasTask fetchCamerasTask = new FetchCamerasTask(new FetchCamerasTask.CameraTaskListener() {
             @Override
-            public void onFinished(ModelCameraMessagesCameraLocationsMessage cameraLocations) {
+            public void onFinished(MessagesCameraCameraLocationsMessage cameraLocations) {
                 if (cameraLocations == null) {
                     for (CameraChangedListener listener : mCameraChangedListeners) {
                         if (listener != null) {

@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.appspot.hackwinds.hackwinds.model.ModelCameraMessagesCameraMessage;
+import com.appspot.hackwinds.hackwinds.model.MessagesCameraCameraMessage;
 import com.nucc.hackwinds.R;
 import com.nucc.hackwinds.adapters.AlternateCameraListAdapter;
 import com.nucc.hackwinds.models.CameraModel;
@@ -54,7 +54,7 @@ public class AlternateCameraListFragment extends ListFragment {
         String locationName = mAlternateCameraListAdapter.getHeaderTitle(position);
         String cameraName = mAlternateCameraListAdapter.getItem(position);
 
-        ModelCameraMessagesCameraMessage camera = CameraModel.getInstance(getActivity().getApplicationContext()).getCamera(locationName, cameraName);
+        MessagesCameraCameraMessage camera = CameraModel.getInstance(getActivity().getApplicationContext()).getCamera(locationName, cameraName);
         if (camera == null) {
             return;
         }

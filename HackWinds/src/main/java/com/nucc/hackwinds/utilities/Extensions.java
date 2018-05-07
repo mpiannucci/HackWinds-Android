@@ -1,7 +1,7 @@
 package com.nucc.hackwinds.utilities;
 
 
-import com.appspot.hackwinds.hackwinds.model.ModelCameraMessagesCameraMessage;
+import com.appspot.hackwinds.hackwinds.model.MessagesCameraCameraMessage;
 import com.appspot.mpitester_13.station.model.ApiApiMessagesDataMessage;
 import com.appspot.mpitester_13.station.model.ApiApiMessagesSwellMessage;
 
@@ -48,15 +48,15 @@ public class Extensions {
         }
     }
 
-    public static Boolean isVideoCamera(ModelCameraMessagesCameraMessage camera) {
+    public static Boolean isVideoCamera(MessagesCameraCameraMessage camera) {
         return camera.getVideoUrl() != null;
     }
 
-    public static Boolean isWebCamera(ModelCameraMessagesCameraMessage camera) {
+    public static Boolean isWebCamera(MessagesCameraCameraMessage camera) {
         return camera.getWebUrl() != null;
     }
 
-    public static Boolean isImageOnlyCamera(ModelCameraMessagesCameraMessage camera) {
+    public static Boolean isImageOnlyCamera(MessagesCameraCameraMessage camera) {
         return !isWebCamera(camera) && !isVideoCamera(camera);
     }
 }

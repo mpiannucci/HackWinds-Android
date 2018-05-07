@@ -17,8 +17,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.appspot.hackwinds.hackwinds.model.ModelCameraMessagesCameraMessage;
-import com.daimajia.slider.library.SliderAdapter;
+import com.appspot.hackwinds.hackwinds.model.MessagesCameraCameraMessage;
 import com.daimajia.slider.library.SliderLayout;
 
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
@@ -41,7 +40,7 @@ import java.util.Locale;
 public class CurrentFragment extends ListFragment implements ForecastChangedListener, CameraChangedListener {
     // Initialize the other variables
     private ConditionArrayAdapter mConditionArrayAdapter;
-    private ModelCameraMessagesCameraMessage mCamera;
+    private MessagesCameraCameraMessage mCamera;
     private SliderLayout mCameraSliderLayout;
     private TextView mDateheader;
     private View mHeaderView;

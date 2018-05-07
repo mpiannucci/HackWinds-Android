@@ -13,14 +13,14 @@ import android.os.Handler;
 import android.widget.TextView;
 import android.content.Context;
 
-import com.appspot.hackwinds.hackwinds.model.ModelCameraMessagesCameraMessage;
+import com.appspot.hackwinds.hackwinds.model.MessagesCameraCameraMessage;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.nucc.hackwinds.R;
 
 public class IsoCameraFragment extends Fragment {
 
-    private ModelCameraMessagesCameraMessage mCamera;
+    private MessagesCameraCameraMessage mCamera;
     private boolean mAutoRefresh;
 
     private Context mContext;
@@ -99,7 +99,7 @@ public class IsoCameraFragment extends Fragment {
         mHandler.removeCallbacks(mRunnable);
     }
 
-    public void setCamera(ModelCameraMessagesCameraMessage camera) {
+    public void setCamera(MessagesCameraCameraMessage camera) {
         if (camera == null) {
             return;
         }
